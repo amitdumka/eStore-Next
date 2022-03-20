@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Extensions\" />
+    <None Remove="Helpers\" />
+    <None Remove="Utilites\" />
+    <None Remove="Documents\" />
+    <None Remove="Documents\Pdfs\" />
+    <None Remove="itext7" />
+    <None Remove="itext7.pdfinvoice" />
+    <None Remove="itext7.pdfcalligraph" />
+    <None Remove="Microsoft.Report.Viewer" />
+    <None Remove="Microsoft.ReportViewer.Runtime.WebForms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Utilites\" />
+    <Folder Include="Documents\" />
+    <Folder Include="Documents\Pdfs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="itext7" Version="7.2.1" />
+    <PackageReference Include="itext7.pdfinvoice" Version="2.0.1" />
+    <PackageReference Include="itext7.pdfcalligraph" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Report.Viewer" Version="11.0.0" />
+    <PackageReference Include="Microsoft.ReportViewer.Runtime.WebForms" Version="12.0.2402.15" />
+  </ItemGroup>
+</Project>

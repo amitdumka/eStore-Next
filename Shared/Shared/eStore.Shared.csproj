@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Models\" />
+    <None Remove="Models\Payrolls\" />
+    <None Remove="Models\Accounting\" />
+    <None Remove="Models\Stores\" />
+    <None Remove="Models\Accounting\Vouchers\" />
+    <None Remove="Models\Accounting\Banking\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Models\Payrolls\" />
+    <Folder Include="Models\Accounting\" />
+    <Folder Include="Models\Stores\" />
+    <Folder Include="Models\Accounting\Vouchers\" />
+    <Folder Include="Models\Accounting\Banking\" />
+  </ItemGroup>
+</Project>

@@ -1,5 +1,6 @@
-﻿namespace AKS.EmailService;
-public class Class1
+﻿namespace AKS.EmailServices;
+
+public class EmailService
 {
 
 }

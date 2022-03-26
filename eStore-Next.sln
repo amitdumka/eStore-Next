@@ -1,39 +1,50 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 25.0.1700.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore", "eStore\eStore.csproj", "{1D1C39CB-9E28-4D1C-9260-AEAE62F3780E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore", "eStore\eStore.csproj", "{1D1C39CB-9E28-4D1C-9260-AEAE62F3780E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7D0BC82E-856E-484C-9BAE-231FEA43A4C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AKS", "AKS", "{95460877-FCF8-4D4F-B461-E504B0F4EC48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.EmailServices", "aks\AKS.EmailService\AKS.EmailServices.csproj", "{1ED28974-9217-402E-A500-CC0A61556E38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.EmailServices", "aks\AKS.EmailService\AKS.EmailServices.csproj", "{1ED28974-9217-402E-A500-CC0A61556E38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.CommonOperations", "aks\AKS.CommonOperations\AKS.CommonOperations.csproj", "{C82D5465-172C-40E5-8C8F-C2A9ED3011CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.CommonOperations", "aks\AKS.CommonOperations\AKS.CommonOperations.csproj", "{C82D5465-172C-40E5-8C8F-C2A9ED3011CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.BL", "Core\eStore.BL\eStore.BL.csproj", "{899BAC31-8F31-4C66-AF66-52500BC2E1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.BL", "Core\eStore.BL\eStore.BL.csproj", "{899BAC31-8F31-4C66-AF66-52500BC2E1E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Database", "Core\eStore.Database\eStore.Database.csproj", "{5BC842FD-1769-41E8-A84A-50571F2B5B3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Database", "Core\eStore.Database\eStore.Database.csproj", "{5BC842FD-1769-41E8-A84A-50571F2B5B3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Reporting", "Core\eStore.Reporting\eStore.Reporting.csproj", "{C204A654-FC1F-448C-876D-725A43FD0466}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Reporting", "Core\eStore.Reporting\eStore.Reporting.csproj", "{C204A654-FC1F-448C-876D-725A43FD0466}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{30410300-3B60-486C-A711-417B7AA44605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Shared", "Shared\Shared\eStore.Shared.csproj", "{3AEF6895-324E-4C53-9425-C8AF3AC3730F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Shared", "Shared\Shared\eStore.Shared.csproj", "{3AEF6895-324E-4C53-9425-C8AF3AC3730F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{1D2386B8-198B-44A2-8C2B-BEDFF4035DB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.BUI", "Blazor\eStore.BUI\eStore.BUI.csproj", "{45FABFC4-946A-47A8-86F6-7BDF8B05D57E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.BUI", "Blazor\eStore.BUI\eStore.BUI.csproj", "{45FABFC4-946A-47A8-86F6-7BDF8B05D57E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.UI.Server", "Blazor\eStore.UI\Server\eStore.UI.Server.csproj", "{4B91EF1A-E1D7-4550-AECE-9635D5D6F942}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.UI.Server", "Blazor\eStore.UI\Server\eStore.UI.Server.csproj", "{4B91EF1A-E1D7-4550-AECE-9635D5D6F942}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.UI.Client", "Blazor\eStore.UI\Client\eStore.UI.Client.csproj", "{D40A2C18-EC6E-4B2A-BB73-9C983D67A4A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.UI.Client", "Blazor\eStore.UI\Client\eStore.UI.Client.csproj", "{D40A2C18-EC6E-4B2A-BB73-9C983D67A4A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.ChatServiecs", "aks\AKS.CharServiecs\AKS.ChatServiecs.csproj", "{1D980D64-98F9-4114-9E28-36B1AF9F1CAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.ChatServiecs", "aks\AKS.CharServiecs\AKS.ChatServiecs.csproj", "{1D980D64-98F9-4114-9E28-36B1AF9F1CAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win", "Win", "{973E0952-17AA-4B6C-A230-36F1746E9AEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS Payroll", "AKS Payroll\AKS Payroll.csproj", "{CAED0830-8A7B-4115-81FA-5A27B2CE98E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payroll", "Payroll", "{25AF3891-FFEC-41F2-BA60-FA1923570C95}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Payroll", "aks\Payroll\AKS.Shared.Payroll\AKS.Shared.Payroll.shproj", "{16FD2819-9919-417D-91DD-DFBA0693AEEB}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		aks\Payroll\AKS.Shared.Payroll\AKS.Shared.Payroll.projitems*{16fd2819-9919-417d-91dd-dfba0693aeeb}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -83,12 +94,13 @@ Global
 		{1D980D64-98F9-4114-9E28-36B1AF9F1CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D980D64-98F9-4114-9E28-36B1AF9F1CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D980D64-98F9-4114-9E28-36B1AF9F1CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAED0830-8A7B-4115-81FA-5A27B2CE98E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAED0830-8A7B-4115-81FA-5A27B2CE98E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAED0830-8A7B-4115-81FA-5A27B2CE98E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAED0830-8A7B-4115-81FA-5A27B2CE98E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FC9C1CED-0654-4DF4-BFD3-2AF36097B7C3}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1ED28974-9217-402E-A500-CC0A61556E38} = {95460877-FCF8-4D4F-B461-E504B0F4EC48}
@@ -101,5 +113,12 @@ Global
 		{4B91EF1A-E1D7-4550-AECE-9635D5D6F942} = {1D2386B8-198B-44A2-8C2B-BEDFF4035DB9}
 		{D40A2C18-EC6E-4B2A-BB73-9C983D67A4A1} = {1D2386B8-198B-44A2-8C2B-BEDFF4035DB9}
 		{1D980D64-98F9-4114-9E28-36B1AF9F1CAF} = {95460877-FCF8-4D4F-B461-E504B0F4EC48}
+		{973E0952-17AA-4B6C-A230-36F1746E9AEF} = {95460877-FCF8-4D4F-B461-E504B0F4EC48}
+		{CAED0830-8A7B-4115-81FA-5A27B2CE98E7} = {973E0952-17AA-4B6C-A230-36F1746E9AEF}
+		{25AF3891-FFEC-41F2-BA60-FA1923570C95} = {95460877-FCF8-4D4F-B461-E504B0F4EC48}
+		{16FD2819-9919-417D-91DD-DFBA0693AEEB} = {25AF3891-FFEC-41F2-BA60-FA1923570C95}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC9C1CED-0654-4DF4-BFD3-2AF36097B7C3}
 	EndGlobalSection
 EndGlobal

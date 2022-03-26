@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2147e9df-8118-4daa-8611-40dd72c259f9</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>eStore.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseNT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\Attendance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\CurrentSalary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\Employee.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\PaySlip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\SalaryPayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Payroll\StaffAdvanceReceipt.cs" />
+  </ItemGroup>
+</Project>

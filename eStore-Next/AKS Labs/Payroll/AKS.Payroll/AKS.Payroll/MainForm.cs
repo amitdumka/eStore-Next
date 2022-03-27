@@ -53,6 +53,7 @@ namespace AKS.Payroll
         private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+            Application.Exit();
         }
 
         private void CutToolStripMenuItem_Click(object sender, EventArgs e)

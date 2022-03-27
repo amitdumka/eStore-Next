@@ -1,4 +1,4 @@
-﻿using eStore.Shared.Models.Stores;
+﻿
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,7 +10,7 @@ namespace eStore.Shared.Models
         [Display(Name = "Store")]
         public int StoreId { get; set; }
 
-        public virtual Store Store { get; set; }
+       
     }
 
     public class BaseGT
@@ -32,6 +32,6 @@ namespace eStore.Shared.Models
         [Display(Name = "Store")]
         public int StoreId { get; set; }
 
-        public virtual Store Store { get; set; }
+       
     }
 }

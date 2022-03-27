@@ -4,6 +4,7 @@ namespace AKS.DatabaseMigrator
 {
     public class eStoreDbContext : DbContext
     {
+        public eStoreDbContext() { }
         public eStoreDbContext(DbContextOptions<eStoreDbContext> options) : base(options)
         {
             //ApplyMigrations(this);
@@ -188,12 +189,26 @@ namespace AKS.DatabaseMigrator
         //public DbSet<AdjustedBill> AdjustedBills { get; set; }
 
         public DbSet<eStore.Shared.Models.Payroll.MonthlyAttendance> MonthlyAttendances { get; set; }
-       // public DbSet<YearlyAttendance> YearlyAttendances { get; set; }
+        // public DbSet<YearlyAttendance> YearlyAttendances { get; set; }
+         
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
 
+                //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+                //string connectionString = String.IsNullOrEmpty( ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString)? "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654": ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString;
+                string connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
+
+                optionsBuilder.UseSqlServer(connectionString);
+
+            }
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.HasDatabaseMaxSize("2 GB");
             //modelBuilder.Entity<TodoItem>().ToTable("Todo");
             //modelBuilder.Entity<FileInfo>().ToTable("File");
             //modelBuilder.Entity<TodoItem>()

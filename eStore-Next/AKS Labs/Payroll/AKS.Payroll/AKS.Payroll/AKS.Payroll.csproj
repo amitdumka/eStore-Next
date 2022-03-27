@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0a708b45-aa74-4f5f-8d18-9ec3fdf24b5f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AKS.ParyollSystem\AKS.ParyollSystem.csproj" />
     <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+    <ProjectReference Include="..\AKS.DatabaseMigrator\AKS.DatabaseMigrator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,10 +26,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

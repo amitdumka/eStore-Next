@@ -11,6 +11,25 @@ namespace AKS.DatabaseMigrator
         public DbSet<Shared.Payroll.Models.SalaryPayment> SalaryPayment { get; set; }
         public DbSet<Shared.Payroll.Models.EmployeeDetails> EmployeeDetails { get; set; }
         public DbSet<Shared.Payroll.Models.StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDatabaseMaxSize("2 GB");
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+
+                //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+                //string connectionString = String.IsNullOrEmpty( ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString)? "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654": ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString;
+                string connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
+
+                optionsBuilder.UseSqlServer(connectionString);
+
+            }
+
+        }
 
     }
 }

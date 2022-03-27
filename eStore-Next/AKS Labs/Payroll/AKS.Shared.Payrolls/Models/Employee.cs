@@ -9,7 +9,7 @@ namespace AKS.Shared.Payroll.Models
     public class MonthlyAttendance:BaseST
     {
         public int MonthlyAttendanceId { get; set; }
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
         public DateTime OnDate { get; set; }
         public virtual Employee Employee { get; set; }
         public int Present { get; set; }
@@ -29,7 +29,8 @@ namespace AKS.Shared.Payroll.Models
     public class Attendance:BaseST
     {
         public int AttendanceId { get; set; }
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
+        public int EmpId { get; set; }
         public DateTime OnDate { get; set; }
         public AttUnit Status { get; set; }
         public string EntryTime { get; set; }

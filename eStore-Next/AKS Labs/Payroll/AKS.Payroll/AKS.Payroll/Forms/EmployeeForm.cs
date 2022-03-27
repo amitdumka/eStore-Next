@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+//https://docs.microsoft.com/en-gb/ef/ef6/fundamentals/databinding/winforms
 namespace AKS.Payroll.Forms
 {
     public partial class EmployeeForm : Form

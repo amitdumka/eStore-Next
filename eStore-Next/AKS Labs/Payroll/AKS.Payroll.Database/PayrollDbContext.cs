@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+//https://docs.microsoft.com/en-gb/ef/ef6/fundamentals/databinding/winforms
 namespace AKS.Payroll.Database
 {
     public class PayrollDbContext:DbContext

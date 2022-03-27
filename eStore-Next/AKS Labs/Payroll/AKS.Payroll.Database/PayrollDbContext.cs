@@ -24,23 +24,46 @@ namespace AKS.Payroll.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
             modelBuilder.HasDatabaseMaxSize("2 GB");
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+<<<<<<< Updated upstream
 
 
 
 
                 optionsBuilder.UseSqlServer(@"Server=.\SQLExpress;Database=SchoolDB;Trusted_Connection=True;");
        
+=======
+                optionsBuilder.UseSqlServer("Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+
+                optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["mssql1"].ConnectionString);
+
+>>>>>>> Stashed changes
             }
 
         }
 
+    }
+
+    public class ObservableListSource<T> : ObservableCollection<T>, IListSource
+            where T : class
+    {
+        private IBindingList _bindingList;
+
+        bool IListSource.ContainsListCollection { get { return false; } }
+
+        IList IListSource.GetList()
+        {
+            return _bindingList ?? (_bindingList = this.ToBindingList());
+        }
     }
 }

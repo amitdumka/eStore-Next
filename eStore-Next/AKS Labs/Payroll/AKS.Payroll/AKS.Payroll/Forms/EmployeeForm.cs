@@ -21,5 +21,12 @@ namespace AKS.Payroll.Forms
         {
 
         }
+
+        private voiad LoadData()
+        {
+            using context= new PayrollDbContext();
+            context.Employees.Load();
+            context.EmployeeDetails.Load();
+        }
     }
 }

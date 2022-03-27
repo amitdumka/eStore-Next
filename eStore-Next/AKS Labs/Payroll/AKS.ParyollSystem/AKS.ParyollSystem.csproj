@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+  </ItemGroup>
+
 </Project>

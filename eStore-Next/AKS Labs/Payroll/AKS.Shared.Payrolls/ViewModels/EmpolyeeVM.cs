@@ -6,15 +6,17 @@ namespace AKS.Shared.Payrolls.ViewModels
     public class AttendanceVM
     {
         public int AttendanceId { get; set; }
+        public DateTime OnDate { get; set; }
         public string EmployeeId { get; set; }
+        public string StaffName { get; set; }
+
         public string EntryTime { get; set; }
+
+        public string Remarks { get; set; }
 
         [Display(Name = "Tailor")]
         public bool IsTailoring { get; set; }
 
-        public DateTime OnDate { get; set; }
-        public string Remarks { get; set; }
-        public string StaffName { get; set; }
         public AttUnit Status { get; set; }
     }
 
@@ -28,7 +30,6 @@ namespace AKS.Shared.Payrolls.ViewModels
         [Display(Name = "Date Of Birth")]
         public DateTime DateOfBirth { get; set; }
 
-        
         public string FatherName { get; set; }
         public string HighestQualification { get; set; }
 
@@ -92,7 +93,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public int Absent { get; set; }
         public decimal BillableDays { get; set; }
         public int CasualLeave { get; set; }
-       
+
         public int HalfDay { get; set; }
         public int Holidays { get; set; }
         public int MonthlyAttendanceId { get; set; }

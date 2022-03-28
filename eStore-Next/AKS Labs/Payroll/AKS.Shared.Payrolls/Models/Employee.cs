@@ -44,6 +44,8 @@ namespace AKS.Shared.Payroll.Models
     {
         [Key]
         public string EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
+        public virtual Employee Employee { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date Of Birth")]
@@ -89,6 +91,7 @@ namespace AKS.Shared.Payroll.Models
         [DefaultValue(false)]
         [Display(Name = "Tailoring Division")]
         public bool IsTailors { get; set; }
+        //public virtual EmployeeDetails Details { get; set; }
     }
 
     public class Salary:BaseST

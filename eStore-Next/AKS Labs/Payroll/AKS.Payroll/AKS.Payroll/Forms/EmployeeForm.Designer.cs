@@ -37,13 +37,24 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dgvEmployeeDetails = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.tbcEmployee.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployee)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmployeeDetails)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbcEmployee
@@ -58,7 +69,6 @@
             this.tbcEmployee.SelectedIndex = 0;
             this.tbcEmployee.Size = new System.Drawing.Size(1010, 578);
             this.tbcEmployee.TabIndex = 0;
-            this.tbcEmployee.SelectedIndexChanged += new System.EventHandler(this.tbcEmployee_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -91,22 +101,26 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "List";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // dgvEmployee
             // 
+            this.dgvEmployee.AllowUserToAddRows = false;
+            this.dgvEmployee.AllowUserToDeleteRows = false;
             this.dgvEmployee.AllowUserToOrderColumns = true;
             this.dgvEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvEmployee.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.dgvEmployee.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgvEmployee.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEmployee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEmployee.GridColor = System.Drawing.Color.LightSalmon;
             this.dgvEmployee.Location = new System.Drawing.Point(3, 23);
             this.dgvEmployee.Name = "dgvEmployee";
+            this.dgvEmployee.ReadOnly = true;
             this.dgvEmployee.RowHeadersWidth = 51;
             this.dgvEmployee.RowTemplate.Height = 29;
             this.dgvEmployee.Size = new System.Drawing.Size(990, 408);
             this.dgvEmployee.TabIndex = 0;
-            this.dgvEmployee.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmployee_CellContentClick);
             // 
             // groupBox1
             // 
@@ -143,22 +157,91 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.LightGray;
+            this.tabPage2.Controls.Add(this.groupBox4);
+            this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1002, 545);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Employee Details";
+            this.tabPage2.Enter += new System.EventHandler(this.tabPage2_Enter);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.Color.MistyRose;
+            this.groupBox4.Controls.Add(this.dgvEmployeeDetails);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(3, 68);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(996, 474);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Employee Details";
+            // 
+            // dgvEmployeeDetails
+            // 
+            this.dgvEmployeeDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvEmployeeDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEmployeeDetails.Location = new System.Drawing.Point(3, 23);
+            this.dgvEmployeeDetails.Name = "dgvEmployeeDetails";
+            this.dgvEmployeeDetails.RowHeadersWidth = 51;
+            this.dgvEmployeeDetails.RowTemplate.Height = 29;
+            this.dgvEmployeeDetails.Size = new System.Drawing.Size(990, 448);
+            this.dgvEmployeeDetails.TabIndex = 0;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(996, 65);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Controls";
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox6);
+            this.tabPage3.Controls.Add(this.groupBox5);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(1002, 545);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.Text = "Reports";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox6.Location = new System.Drawing.Point(151, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(848, 539);
+            this.groupBox6.TabIndex = 1;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Report";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.listView1);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBox5.Location = new System.Drawing.Point(3, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(148, 539);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Report Types";
+            // 
+            // listView1
+            // 
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Location = new System.Drawing.Point(3, 23);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(142, 513);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // EmployeeForm
             // 
@@ -176,6 +259,11 @@
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployee)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvEmployeeDetails)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -192,5 +280,11 @@
         private DataGridView dgvEmployee;
         private Button button1;
         private Button button2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
+        private DataGridView dgvEmployeeDetails;
+        private GroupBox groupBox5;
+        private GroupBox groupBox6;
+        private ListView listView1;
     }
 }

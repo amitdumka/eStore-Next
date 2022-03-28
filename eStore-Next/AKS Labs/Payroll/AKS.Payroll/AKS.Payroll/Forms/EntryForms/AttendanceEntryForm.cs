@@ -14,6 +14,8 @@ namespace AKS.Payroll.Forms.EntryForms
 {
     public partial class AttendanceEntryForm : Form
     {
+        private List<string> storeList; 
+        
         private PayrollDbContext db;
         public AttendanceEntryForm()
         {
@@ -22,14 +24,23 @@ namespace AKS.Payroll.Forms.EntryForms
              IsTailoring=false, Remarks="Entry ", StoreId=1, StoreCode="1", Status=AttUnit.Present, UserId="WinUI"
             };
             db= new PayrollDbContext();
+            storeList= new List<string> { "Aprajita Retails, Dumka", "Aprajita Retails, Jamshedpur"};
         }
         private Attendance newAtt;
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(btnAdd.Text == "Add") { }
-            else if(btnAdd.Text =="Edit"){}
-            else if(btnAdd.Text == "Save") { }
+            if(btnAdd.Text == "Add") {
+                ClearFiled();
+                btnAdd.Text = "Save";
+            }
+            else if(btnAdd.Text =="Edit"){
+                btnAdd.Text = "Save";
+            }
+            else if(btnAdd.Text == "Save") {
+                ClearFiled();
+                MessageBox.Show(newAtt.ToString());
+            }
         }
 
         private void ClearFiled()
@@ -37,14 +48,13 @@ namespace AKS.Payroll.Forms.EntryForms
 
         }
 
-        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void AttendanceEntryForm_Load(object sender, EventArgs e)
         {
             bindingSource1.DataSource = newAtt;
+            cbxStores.Items.Add("Dumka");
+            cbxStores.Items.Add("Jamshepur");
    
         }
         private void LoadData()

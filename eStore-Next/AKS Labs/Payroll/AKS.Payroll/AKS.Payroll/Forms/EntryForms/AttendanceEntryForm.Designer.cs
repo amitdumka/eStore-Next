@@ -159,16 +159,16 @@
             // cbxStores
             // 
             this.cbxStores.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbxStores.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbxStores.DataSource = this.bindingSource1;
-            this.cbxStores.DisplayMember = "StoreId";
             this.cbxStores.FormattingEnabled = true;
             resources.ApplyResources(this.cbxStores, "cbxStores");
             this.cbxStores.Name = "cbxStores";
+            this.cbxStores.ValueMember = "StoreId";
             // 
             // bindingSource1
             // 
             this.bindingSource1.DataSource = typeof(AKS.Shared.Payroll.Models.Attendance);
-            this.bindingSource1.CurrentChanged += new System.EventHandler(this.bindingSource1_CurrentChanged);
             // 
             // dtpOnDate
             // 

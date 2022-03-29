@@ -30,7 +30,7 @@ namespace AKS.DatabaseMigrator
             var emps = db.Employees.ToList();
             foreach (var emp in emps)
             {
-                AKS.Shared.Payroll.Models.Employee nEmp = new Shared.Payroll.Models.Employee
+                AKS.Shared.Payroll.Models.Employee nEmp = new()
                 {
                     EmployeeId = $"ARD/{emp.JoiningDate.Year}/{emp.Category.ToString()}/{emp.EmployeeId}",
                     AddressLine = emp.Address,
@@ -125,7 +125,7 @@ namespace AKS.DatabaseMigrator
 
                 foreach (var item in attd)
                 {
-                    AKS.Shared.Payroll.Models.Attendance Attendance = new AKS.Shared.Payroll.Models.Attendance
+                    Shared.Payroll.Models.Attendance Attendance = new()
                     {
                         //AttendanceId = item.AttendanceId,
                         EntryStatus = item.EntryStatus,

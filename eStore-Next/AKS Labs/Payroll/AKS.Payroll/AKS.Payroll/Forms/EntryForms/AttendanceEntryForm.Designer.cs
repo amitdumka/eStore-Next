@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AttendanceEntryForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,20 +42,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.cbxStores = new System.Windows.Forms.ComboBox();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dtpOnDate = new System.Windows.Forms.DateTimePicker();
             this.cbxEmployees = new System.Windows.Forms.ComboBox();
             this.cbxStatus = new System.Windows.Forms.ComboBox();
             this.txtEntryTime = new System.Windows.Forms.TextBox();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.cbIsTailors = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -81,6 +79,7 @@
             resources.ApplyResources(this.btnDelete, "btnDelete");
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnCancel
             // 
@@ -111,7 +110,6 @@
             this.tableLayoutPanel1.Controls.Add(this.label4, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label6, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbxStores, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.dtpOnDate, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbxEmployees, 1, 1);
@@ -119,6 +117,8 @@
             this.tableLayoutPanel1.Controls.Add(this.txtEntryTime, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtRemarks, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbIsTailors, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // label1
@@ -151,29 +151,18 @@
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
             // cbxStores
             // 
             this.cbxStores.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbxStores.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbxStores.DataSource = this.bindingSource1;
+            this.cbxStores.DisplayMember = "StoreId";
             this.cbxStores.FormattingEnabled = true;
             resources.ApplyResources(this.cbxStores, "cbxStores");
             this.cbxStores.Name = "cbxStores";
             this.cbxStores.ValueMember = "StoreId";
             // 
-            // bindingSource1
-            // 
-            this.bindingSource1.DataSource = typeof(AKS.Shared.Payroll.Models.Attendance);
-            // 
             // dtpOnDate
             // 
-            this.dtpOnDate.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource1, "OnDate", true));
-            this.dtpOnDate.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bindingSource1, "OnDate", true));
             resources.ApplyResources(this.dtpOnDate, "dtpOnDate");
             this.dtpOnDate.Name = "dtpOnDate";
             // 
@@ -181,39 +170,48 @@
             // 
             this.cbxEmployees.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbxEmployees.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cbxEmployees.DataSource = this.bindingSource1;
-            this.cbxEmployees.DisplayMember = "EmployeeId";
+            this.cbxEmployees.DisplayMember = "StaffName";
             this.cbxEmployees.FormattingEnabled = true;
             resources.ApplyResources(this.cbxEmployees, "cbxEmployees");
             this.cbxEmployees.Name = "cbxEmployees";
+            this.cbxEmployees.Tag = "StaffName";
+            this.cbxEmployees.ValueMember = "EmployeeId";
             // 
             // cbxStatus
             // 
-            this.cbxStatus.DataSource = this.bindingSource1;
+            this.cbxStatus.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbxStatus.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbxStatus.DisplayMember = "Status";
             this.cbxStatus.FormattingEnabled = true;
             resources.ApplyResources(this.cbxStatus, "cbxStatus");
             this.cbxStatus.Name = "cbxStatus";
-            // 
+            this.cbxStatus.ValueMember = "Status";
+             // 
             // txtEntryTime
             // 
-            this.txtEntryTime.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource1, "EntryTime", true));
             resources.ApplyResources(this.txtEntryTime, "txtEntryTime");
             this.txtEntryTime.Name = "txtEntryTime";
             // 
             // txtRemarks
             // 
-            this.txtRemarks.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.bindingSource1, "Remarks", true));
             resources.ApplyResources(this.txtRemarks, "txtRemarks");
             this.txtRemarks.Name = "txtRemarks";
             // 
             // cbIsTailors
             // 
             resources.ApplyResources(this.cbIsTailors, "cbIsTailors");
-            this.cbIsTailors.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bindingSource1, "IsTailoring", true));
-            this.cbIsTailors.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.bindingSource1, "IsTailoring", true));
             this.cbIsTailors.Name = "cbIsTailors";
             this.cbIsTailors.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
             // 
             // AttendanceEntryForm
             // 
@@ -231,7 +229,6 @@
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -259,6 +256,6 @@
         private Button btnAdd;
         private Button btnCancel;
         private Button btnDelete;
-        private BindingSource bindingSource1;
+        private Label label8;
     }
 }

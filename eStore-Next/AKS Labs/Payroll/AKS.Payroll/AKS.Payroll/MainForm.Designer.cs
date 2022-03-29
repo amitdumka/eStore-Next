@@ -89,6 +89,11 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.addAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSalaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addPaymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -445,7 +450,12 @@
             this.salaryToolStripMenuItem,
             this.paymentToolStripMenuItem,
             this.recieptToolStripMenuItem,
-            this.monthlyAttendanceToolStripMenuItem});
+            this.monthlyAttendanceToolStripMenuItem,
+            this.addAttendanceToolStripMenuItem,
+            this.addEmployeeToolStripMenuItem,
+            this.addSalaryToolStripMenuItem,
+            this.addPaymentToolStripMenuItem,
+            this.addReceiptToolStripMenuItem});
             this.payrollToolStripMenuItem.Name = "payrollToolStripMenuItem";
             this.payrollToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
             this.payrollToolStripMenuItem.Text = "Payroll";
@@ -592,6 +602,37 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // addAttendanceToolStripMenuItem
+            // 
+            this.addAttendanceToolStripMenuItem.Name = "addAttendanceToolStripMenuItem";
+            this.addAttendanceToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addAttendanceToolStripMenuItem.Text = "Add Attendance";
+            this.addAttendanceToolStripMenuItem.Click += new System.EventHandler(this.addAttendanceToolStripMenuItem_Click);
+            // 
+            // addEmployeeToolStripMenuItem
+            // 
+            this.addEmployeeToolStripMenuItem.Name = "addEmployeeToolStripMenuItem";
+            this.addEmployeeToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addEmployeeToolStripMenuItem.Text = "Add Employee";
+            // 
+            // addSalaryToolStripMenuItem
+            // 
+            this.addSalaryToolStripMenuItem.Name = "addSalaryToolStripMenuItem";
+            this.addSalaryToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addSalaryToolStripMenuItem.Text = "Add Salary";
+            // 
+            // addPaymentToolStripMenuItem
+            // 
+            this.addPaymentToolStripMenuItem.Name = "addPaymentToolStripMenuItem";
+            this.addPaymentToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addPaymentToolStripMenuItem.Text = "Add Payment";
+            // 
+            // addReceiptToolStripMenuItem
+            // 
+            this.addReceiptToolStripMenuItem.Name = "addReceiptToolStripMenuItem";
+            this.addReceiptToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addReceiptToolStripMenuItem.Text = "Add Receipt";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -680,6 +721,11 @@
         private ToolStripMenuItem paymentToolStripMenuItem;
         private ToolStripMenuItem recieptToolStripMenuItem;
         private ToolStripMenuItem monthlyAttendanceToolStripMenuItem;
+        private ToolStripMenuItem addAttendanceToolStripMenuItem;
+        private ToolStripMenuItem addEmployeeToolStripMenuItem;
+        private ToolStripMenuItem addSalaryToolStripMenuItem;
+        private ToolStripMenuItem addPaymentToolStripMenuItem;
+        private ToolStripMenuItem addReceiptToolStripMenuItem;
     }
 }
 

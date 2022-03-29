@@ -131,5 +131,10 @@ namespace AKS.Payroll
         {
             LoadForm(new MonthlyAttendanceForm());
         }
+
+        private void addAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new Forms.EntryForms.AttendanceEntryForm());
+        }
     }
 }

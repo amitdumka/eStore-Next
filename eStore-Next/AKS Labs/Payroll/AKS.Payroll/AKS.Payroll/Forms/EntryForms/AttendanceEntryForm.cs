@@ -6,15 +6,15 @@ namespace AKS.Payroll.Forms.EntryForms
 {
     public partial class AttendanceEntryForm : Form
     {
-        private List<string> storeList; private Attendance newAtt;
+        private Attendance newAtt;
 
         private PayrollDbContext db;
+        private bool isNew { get; set; }
 
-        public AttendanceEntryForm()
+        private void LaxyInit()
         {
-            InitializeComponent();
             db = new PayrollDbContext();
-
+           if(isNew)
             newAtt = new Attendance
             {
                 EntryStatus = EntryStatus.Added,
@@ -31,6 +31,20 @@ namespace AKS.Payroll.Forms.EntryForms
                 StoreCode = "1",
                 UserId = "WinUI"
             };
+            LoadData();
+        }
+        public AttendanceEntryForm(Attendance att)
+        {
+            InitializeComponent();
+            isNew = false;
+            newAtt = att;
+            newAtt.StoreId= Int16.Parse(att.StoreCode.Trim());
+            btnAdd.Text = "Edit";
+        }
+        public AttendanceEntryForm()
+        {
+            InitializeComponent();
+            isNew = true;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -38,40 +52,66 @@ namespace AKS.Payroll.Forms.EntryForms
             if (btnAdd.Text == "Add")
             {
                 ClearFiled();
+                isNew = true;
                 btnAdd.Text = "Save";
             }
             else if (btnAdd.Text == "Edit")
             {
                 btnAdd.Text = "Save";
+                isNew = false;
             }
             else if (btnAdd.Text == "Save")
             {
-                ClearFiled();
+                if (SaveAttendance(ReadFormData()))
+                {
+                    ClearFiled();
+                    isNew = false;
+                    MessageBox.Show("Attendance is saved");
+                    btnAdd.Text = "Add";
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Some error occured while saving attednace, Kindly Try again");
+                }
             }
+        }
+
+        private bool SaveAttendance(Attendance att)
+        {
+            att.UserId = "WinFormUI";
+            if (isNew)
+                db.Attendances.Add(att);
+            else db.Attendances.Update(att);
+            
+            return db.SaveChanges() > 0;
         }
 
         private void ClearFiled()
         {
+            DefaultValue();
         }
 
         private void AttendanceEntryForm_Load(object sender, EventArgs e)
         {
-            LoadData();
+            LaxyInit();
         }
 
         private void LoadData()
         {
             var empList = db.Employees.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName, c.IsTailors }).ToList();
             cbxEmployees.DataSource = empList;
-            // storeList = new List<string> { "Aprajita Retails, Dumka", "Aprajita Retails, Jamshedpur" };
+
             var sl = new Dictionary<int, string>();
             sl.Add(1, "Aprajita Retails, Dumka");
             sl.Add(2, "Aprajita Retails, Jamshedpur");
 
             cbxStatus.Items.AddRange(Enum.GetNames(typeof(AttUnit)));
+
             cbxStores.DataSource = sl.ToList();
             cbxStores.DisplayMember = "Value";
             cbxStores.ValueMember = "Key";
+
             DefaultValue();
         }
 
@@ -88,13 +128,28 @@ namespace AKS.Payroll.Forms.EntryForms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            //MetroForm1 metroForm1 = new MetroForm1();
-            //metroForm1.ShowDialog();
-            ReadFormData();
-            DisplayData();
+            //TODO: ask for confirmation for delete.
+            var confirmResult = MessageBox.Show("Are you sure to delete this Attedance ??",
+                                      "Confirm Delete!!",
+                                      MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                db.Attendances.Remove(newAtt);
+                if (db.SaveChanges() > 0) { MessageBox.Show("Attendance is deleted!", "Delete");
+                   var xy= ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
+                    xy.UpdateRecord("Empid", 1, 1);
+                    this.Close(); }
+                else MessageBox.Show("Faild to delete, please try again!", "Delete");
+            }
+            else
+            {
+                MessageBox.Show("Not Deleted");
+            }
+           
+
         }
 
-        private void ReadFormData()
+        private Attendance ReadFormData()
         {
             newAtt.OnDate = dtpOnDate.Value;
             newAtt.Status = (AttUnit)cbxStatus.SelectedIndex;
@@ -104,11 +159,17 @@ namespace AKS.Payroll.Forms.EntryForms
             newAtt.EmployeeId = (string)cbxEmployees.SelectedValue;
             newAtt.IsTailoring = cbIsTailors.Checked;
             newAtt.StoreId = (int)cbxStores.SelectedValue;
+            return newAtt;
         }
 
         private void DisplayData()
         {
             label8.Text = $"OnDate:{newAtt.OnDate.Date}\t Status:{newAtt.Status}\nRmk:{newAtt.Remarks}\tET:{newAtt.EntryTime}\n Emp:{newAtt.EmployeeId}\n SId:{newAtt.StoreId}\n{newAtt.StoreCode}";
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            ClearFiled();
         }
     }
 }

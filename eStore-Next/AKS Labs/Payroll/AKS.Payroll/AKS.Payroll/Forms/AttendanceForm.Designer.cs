@@ -139,6 +139,7 @@
             this.dgvAttendances.RowTemplate.Height = 29;
             this.dgvAttendances.Size = new System.Drawing.Size(986, 434);
             this.dgvAttendances.TabIndex = 0;
+            this.dgvAttendances.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAttendances_CellContentClick);
             // 
             // groupBox2
             // 
@@ -187,7 +188,6 @@
             // cbAllEmployee
             // 
             this.cbAllEmployee.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.cbAllEmployee.AutoEllipsis = true;
             this.cbAllEmployee.AutoSize = true;
             this.cbAllEmployee.BackColor = System.Drawing.Color.Aquamarine;
             this.cbAllEmployee.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;

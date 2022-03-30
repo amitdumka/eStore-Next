@@ -86,6 +86,7 @@
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnAdd
             // 
@@ -186,7 +187,7 @@
             resources.ApplyResources(this.cbxStatus, "cbxStatus");
             this.cbxStatus.Name = "cbxStatus";
             this.cbxStatus.ValueMember = "Status";
-             // 
+            // 
             // txtEntryTime
             // 
             resources.ApplyResources(this.txtEntryTime, "txtEntryTime");
@@ -215,6 +216,7 @@
             // 
             // AttendanceEntryForm
             // 
+            this.AcceptButton = this.btnAdd;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;

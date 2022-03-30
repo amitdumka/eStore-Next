@@ -18,6 +18,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public bool IsTailoring { get; set; }
 
         public AttUnit Status { get; set; }
+        public string StoreCode { get; set; }
     }
 
     public class EmployeeDetailVM : EmployeeVM

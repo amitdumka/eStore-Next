@@ -43,7 +43,8 @@ namespace AKS.Payroll.Forms
                 ;
                 cfg.CreateMap<Employee, EmployeeVM>();
                 cfg.CreateMap<Attendance, AttendanceVM>();
-                //.ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
+                cfg.CreateMap<AttendanceVM, Attendance>();
+                
             });
             var mapper = new Mapper(config);
             return mapper;
@@ -68,18 +69,21 @@ namespace AKS.Payroll.Forms
             if (cbAllEmployee.Checked)
                 lbEmployees.DataSource = context.Employees.Local.ToBindingList();
             else
-                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).ToList();//.ToBindingList();
+                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c=>c.Id).ToList();//.ToBindingList();
+            
             Attendances = new ObservableListSource<AttendanceVM>();
-            AddToList(context.Attendances.Where(c => c.EmpId == 1 && c.OnDate.Month == OnDate.Month
-            && c.OnDate.Year == OnDate.Year).ToList());
-            dgvAttendances.DataSource = Attendances.ToBindingList();
+
+            AddToList(context.Attendances.Where(c => c.OnDate.Month == OnDate.Month
+            && c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
+            
+            dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == context.Employees.Local.OrderBy(c=>c.Id).First().EmployeeId).ToList();
             tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();
         }
 
         private void UpdateGridView(string empId, DateTime onDate)
         {
-            AddToList(context.Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Month == onDate.Month
-            && c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
+            //AddToList(context.Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Month == onDate.Month
+            //&& c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
 
             dgvAttendances.DataBindings.Clear();
             dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == empId).ToList();
@@ -116,6 +120,20 @@ namespace AKS.Payroll.Forms
             else
                 lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).ToList();//.ToBindingList();
             lbEmployees.Refresh();
+        }
+
+        private void dgvAttendances_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var a = _mapper.Map<Attendance>( dgvAttendances.CurrentRow.DataBoundItem);
+
+            var x = new AttendanceEntryForm(a);
+            x.MdiParent = this.MdiParent;
+            x.Show();
+           
+        }
+        public void UpdateRecord(string empId, int attd , int mode)
+        {
+            MessageBox.Show($"{empId}=>{attd}=>{mode}");
         }
     }
 }

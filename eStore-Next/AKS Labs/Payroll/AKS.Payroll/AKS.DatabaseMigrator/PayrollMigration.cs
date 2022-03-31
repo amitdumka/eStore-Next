@@ -19,42 +19,46 @@ namespace AKS.DatabaseMigrator
         {
             if (AKS == null) AKS = new AKSDbContext();
             if (db == null) db = new eStoreDbContext();
-           // MigrateStore();
-           // MigrateEmployee();
-            MigrateAttendance();
-            this.MigrateSalaryPayment();
-            this.MigrateSalesman(); 
-
-
+            // MigrateStore();
+            // MigrateEmployee();
+            //this.MigrateSalaryPayment();
+             this.MigrateSalesman();
+            // MigrateAttendance();
+            //var s = db.Salesmen.Distinct();
+           // Console.WriteLine(s);
         }
 
         private void MigrateSalesman()
         {
-            var slms= db.Salesmen.ToList();
+            var slms = db.Salesmen.ToList();
             foreach (var s in slms)
             {
-                Shared.Commons.Models.Salesman man = new() {
-                   StoreId="ARD", UserId="AutoMigration", 
-                   IsReadOnly=true, MarkedDeleted=false,
-                   Name=s.SalesmanName, IsActive=true,
-                   SalesmanId="SMN/2016/"+s.SalesmanId, 
-                   EntryStatus=s.EntryStatus
+                Shared.Commons.Models.Salesman man = new()
+                {
+                    StoreId = "ARD",
+                    UserId = "AutoMigration",
+                    IsReadOnly = true,
+                    MarkedDeleted = false,
+                    Name = s.SalesmanName,
+                    IsActive = true,
+                    SalesmanId = "SMN/2016/" + s.SalesmanId,
+                    EntryStatus = s.EntryStatus
                 };
                 man.EmployeeId = String.IsNullOrEmpty(s.EmployeeId.ToString()) ? "n/a" : s.EmployeeId.ToString();
 
                 AKS.Salesmen.Add(man);
-
             }
-            AKS.SaveChanges(); 
-
+            int x = AKS.SaveChanges();
+            Console.WriteLine(x);
         }
+
         private void MigrateStore()
         {
             db.Stores.Load();
             if (db.Stores.Local.Count < 0)
                 Console.WriteLine("errpr");
             var stores = db.Stores.Local.ToList();
-            
+
             foreach (var store in stores)
             {
                 Shared.Commons.Models.Store nStore = new()
@@ -204,44 +208,62 @@ namespace AKS.DatabaseMigrator
                 };
                 AKS.SalaryPayment.Add(nSal);
             }
-            AKS.SaveChanges();
-
+            int x = AKS.SaveChanges();
+            Console.WriteLine(x);
         }
 
         private void MigrateAttendance()
         {
             if (db == null)
                 db = new eStoreDbContext();
+
             var empList = AKS.Employees.Select(c => new { c.EmployeeId, c.EmpId }).OrderBy(c => c.EmpId).ToList();
             foreach (var emp in empList)
             {
                 //$"ARD/{emp.JoiningDate.Year}/{emp.Category.ToString()}/{emp.EmployeeId}"
 
-                var attd = db.Attendances.Where(c => c.EmployeeId == emp.EmpId).ToList();
-
-                foreach (var item in attd)
                 {
-                    Shared.Payroll.Models.Attendance Attendance = new()
+                    string errorid = $"#{emp.EmpId}#{emp.EmployeeId}# ";
+                    int missed = 0;
+                    var attd = db.Attendances.Where(c => c.EmployeeId == emp.EmpId).OrderBy(c => c.AttDate).ToList();
+                    foreach (var item in attd)
                     {
-                        AttendanceId = $"{item.AttDate.Year}/{item.AttDate.Month}/{item.AttDate.Day}/{emp.EmpId}",
-                        EntryStatus = item.EntryStatus,
-                        EmployeeId = emp.EmployeeId,
-                        EntryTime = item.EntryTime,
-                        IsReadOnly = item.IsReadOnly,
-                        IsTailoring = item.IsTailoring,
-                        OnDate = item.AttDate,
-                        Remarks = item.Remarks + $"#Old_ID={item.AttendanceId}#EID={item.EmployeeId}#",
-                        Status = item.Status,
-                        StoreId = "ARD",
-                        UserId = item.UserId,
-                        MarkedDeleted = false
-                    };
-                    AKS.Attendances.Add(Attendance);
+                        Shared.Payroll.Models.Attendance Attendance = new()
+                        {
+                            AttendanceId = $"{item.AttDate.Year}/{item.AttDate.Month}/{item.AttDate.Day}/{emp.EmpId}",
+                            EntryStatus = item.EntryStatus,
+                            EmployeeId = emp.EmployeeId,
+                            EntryTime = item.EntryTime,
+                            IsReadOnly = item.IsReadOnly,
+                            IsTailoring = item.IsTailoring,
+                            OnDate = item.AttDate,
+                            Remarks = item.Remarks + $"#Old_ID={item.AttendanceId}#EID={item.EmployeeId}#",
+                            Status = item.Status,
+                            StoreId = "ARD",
+                            UserId = item.UserId,
+                            MarkedDeleted = false
+                        };
+                        try
+                        {
+                            AKS.Attendances.Add(Attendance);
+                        }
+                        catch (Exception ex)
+                        {
+                            errorid += Attendance.OnDate.ToString() + "\n";
+                            AKS.Attendances.Remove(Attendance);
+                            missed++;
+                        }
+                    }
+                    if (missed > 0)
+                        AKS.Attendances.Local.Distinct();
+                    int ctr = AKS.Attendances.Local.Count();
+                    int c = AKS.SaveChanges();
+                    Console.WriteLine(c);
+                    if (c != attd.Count)
+                        Console.WriteLine($"C={c}\te={attd.Count}");
+                    if (missed > 0)
+                        Console.WriteLine(errorid);
                 }
-                int c = AKS.SaveChanges();
-                Console.WriteLine(c);
-                if (c != attd.Count)
-                    Console.WriteLine($"C={c}\te={attd.Count}");
             }
         }
     }

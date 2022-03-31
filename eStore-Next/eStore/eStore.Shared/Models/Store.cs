@@ -59,6 +59,8 @@ namespace eStore.Shared.Models
     /// <summary>
     /// @Version: 5.0
     /// </summary>
+    
+    [Table("Salesmen")]
     public class Salesman : BaseST
     {
         public int SalesmanId { get; set; }

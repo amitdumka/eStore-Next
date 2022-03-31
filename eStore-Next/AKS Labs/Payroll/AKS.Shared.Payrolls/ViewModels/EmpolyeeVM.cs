@@ -5,7 +5,7 @@ namespace AKS.Shared.Payrolls.ViewModels
 {
     public class AttendanceVM
     {
-        public int AttendanceId { get; set; }
+        public string AttendanceId { get; set; }
         public DateTime OnDate { get; set; }
         public string EmployeeId { get; set; }
         public string StaffName { get; set; }
@@ -18,7 +18,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public bool IsTailoring { get; set; }
 
         public AttUnit Status { get; set; }
-        public string StoreCode { get; set; }
+        public string StoreId { get; set; }
     }
 
     public class EmployeeDetailVM : EmployeeVM
@@ -84,10 +84,12 @@ namespace AKS.Shared.Payrolls.ViewModels
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Leaving Date")]
         public DateTime? LeavingDate { get; set; }
+        public string StoreId { get; set; }
     }
 
     public class MonthlyAttendanceVM
     {
+        public string MonthlyAttendanceId { get; set; }
         public string EmployeeId { get; set; }
         public string StaffName { get; set; }
 
@@ -97,7 +99,7 @@ namespace AKS.Shared.Payrolls.ViewModels
 
         public int HalfDay { get; set; }
         public int Holidays { get; set; }
-        public int MonthlyAttendanceId { get; set; }
+       
         public int NoOfWorkingDays { get; set; }
         public DateTime OnDate { get; set; }
         public int PaidLeave { get; set; }

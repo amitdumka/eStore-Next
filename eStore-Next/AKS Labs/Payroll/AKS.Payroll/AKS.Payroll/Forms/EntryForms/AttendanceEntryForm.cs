@@ -137,8 +137,8 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (db.SaveChanges() > 0)
                 {
                     MessageBox.Show("Attendance is deleted!", "Delete");
-                    var xy = ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
-                    xy.UpdateRecord("Empid", 1, 1);
+                    //var xy = ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
+                    //xy.UpdateRecord("Empid", 1, 1);
                     this.Close();
                 }
                 else MessageBox.Show("Faild to delete, please try again!", "Delete");

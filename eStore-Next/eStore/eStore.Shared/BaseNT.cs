@@ -9,6 +9,7 @@ namespace eStore.Shared.Models
         [DefaultValue(1)]
         [Display(Name = "Store")]
         public int StoreId { get; set; }
+        public virtual Store Store { get; set; }
 
        
     }

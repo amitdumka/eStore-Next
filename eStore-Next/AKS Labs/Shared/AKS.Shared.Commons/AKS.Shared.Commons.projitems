@@ -9,9 +9,7 @@
     <Import_RootNamespace>AKS.Shared.Commons</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Models\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Data\Types\DataTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
   </ItemGroup>
 </Project>

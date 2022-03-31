@@ -11,9 +11,9 @@ namespace AKS.Payroll.Forms
     public partial class AttendanceForm : Form
     {
         private readonly IMapper _mapper;
-        private  PayrollDbContext context;
+        private  AzurePayrollDbContext context;
         private ObservableListSource<AttendanceVM> Attendances;
-        private ObservableListSource<string> EmpIDs;
+        private readonly ObservableListSource<string> EmpIDs;
         private DateTime OnDate;
 
         private static Mapper InitializeAutomapper()
@@ -64,7 +64,7 @@ namespace AKS.Payroll.Forms
 
         private void AttendanceForm_Load(object sender, EventArgs e)
         {
-            context = new  PayrollDbContext();
+            context = new  AzurePayrollDbContext();
             context.Employees.Load();
             if (cbAllEmployee.Checked)
                 lbEmployees.DataSource = context.Employees.Local.ToBindingList();
@@ -82,9 +82,6 @@ namespace AKS.Payroll.Forms
 
         private void UpdateGridView(string empId, DateTime onDate)
         {
-            //AddToList(context.Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Month == onDate.Month
-            //&& c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
-
             dgvAttendances.DataBindings.Clear();
             dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == empId).ToList();
             tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();

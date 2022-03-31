@@ -10,7 +10,7 @@ namespace AKS.Payroll.Forms
 {
     public partial class EmployeeForm : Form
     {
-        private  PayrollDbContext context;
+        private  AzurePayrollDbContext context;
         private readonly IMapper _mapper;
         private ObservableListSource<EmployeeVM> _employeesView { get; set; }
         private ObservableListSource<EmployeeDetailVM> _employeeDetailsView { get; set; }
@@ -67,7 +67,7 @@ namespace AKS.Payroll.Forms
 
         private void LoadData()
         {
-            context = new  PayrollDbContext();
+            context = new  AzurePayrollDbContext();
             UpdateEmployeeVMList(context.Employees.ToList());
             dgvEmployee.DataSource = this._employeesView.ToBindingList();
         }
@@ -95,8 +95,7 @@ namespace AKS.Payroll.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PayrollMigration pm = new PayrollMigration();
-            pm.Migrate();
+           
         }
 
         private void button2_Click(object sender, EventArgs e)

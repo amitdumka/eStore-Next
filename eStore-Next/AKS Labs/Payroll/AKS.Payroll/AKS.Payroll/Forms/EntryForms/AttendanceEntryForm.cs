@@ -8,38 +8,37 @@ namespace AKS.Payroll.Forms.EntryForms
     {
         private Attendance newAtt;
 
-        private PayrollDbContext db;
+        private AzurePayrollDbContext db;
         private bool isNew { get; set; }
 
         private void LaxyInit()
         {
-           // db = new PayrollDbContext();
-           //if(isNew)
-           // newAtt = new Attendance
-           // {
-           //     EntryStatus = EntryStatus.Added,
-           //     EntryTime = "AM/PM",
-           //     IsReadOnly = false,
-           //     OnDate = DateTime.Now,
-           //     EmployeeId = "",
-           //     AttendanceId = 0,
-           //     EmpId = 0,
-           //     Status = AttUnit.Present,
-           //     IsTailoring = false,
-           //     Remarks = "....",
-           //     StoreId = 1,
-           //     StoreCode = "1",
-           //     UserId = "WinUI"
-           // };
-           // LoadData();
+            db = new AzurePayrollDbContext();
+            if (isNew)
+                newAtt = new Attendance
+                {
+                    EntryStatus = EntryStatus.Added,
+                    EntryTime = "AM/PM",
+                    IsReadOnly = false,
+                    OnDate = DateTime.Now,
+                    EmployeeId = "",
+                    AttendanceId = "",                 
+                    Status = AttUnit.Present,
+                    IsTailoring = false,
+                    Remarks = "",
+                    StoreId = "ARD",// TODO: read from Global Variable/session
+                    MarkedDeleted = false,
+                    UserId = "WinUI"
+                };
+            LoadData();
         }
         public AttendanceEntryForm(Attendance att)
         {
             InitializeComponent();
-            //isNew = false;
-            //newAtt = att;
-            //newAtt.StoreId= Int16.Parse(att.StoreCode.Trim());
-            //btnAdd.Text = "Edit";
+            isNew = false;
+            newAtt = att;
+            newAtt.StoreId = att.StoreId;
+            btnAdd.Text = "Edit";
         }
         public AttendanceEntryForm()
         {
@@ -102,9 +101,9 @@ namespace AKS.Payroll.Forms.EntryForms
             var empList = db.Employees.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName, c.IsTailors }).ToList();
             cbxEmployees.DataSource = empList;
 
-            var sl = new Dictionary<int, string>();
-            sl.Add(1, "Aprajita Retails, Dumka");
-            sl.Add(2, "Aprajita Retails, Jamshedpur");
+            var sl = new Dictionary<string, string>();
+            sl.Add("ARD", "Aprajita Retails, Dumka");
+            sl.Add("ARJ", "Aprajita Retails, Jamshedpur");
 
             cbxStatus.Items.AddRange(Enum.GetNames(typeof(AttUnit)));
 

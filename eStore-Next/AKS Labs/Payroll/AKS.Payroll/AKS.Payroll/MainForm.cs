@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.DatabaseMigrator;
+using AKS.Payroll.Database;
 using AKS.Payroll.Forms;
 using System;
 using System.Collections.Generic;
@@ -148,6 +149,12 @@ namespace AKS.Payroll
             {
                 MessageBox.Show("Local:" + db.SaveChanges());
             }
+        }
+
+        private void addPaymentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PayrollMigration pm = new PayrollMigration();
+            pm.Migrate();
         }
     }
 }

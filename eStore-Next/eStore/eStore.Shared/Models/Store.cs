@@ -1,8 +1,10 @@
 ﻿using eStore.Shared.Models.Payroll;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eStore.Shared.Models
 {
+    [Table("Stores")]
     public class Store : BaseGT
     {
         public int StoreId { get; set; }

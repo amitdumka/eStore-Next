@@ -1,4 +1,6 @@
-﻿namespace AKS.DatabaseMigrator
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace AKS.DatabaseMigrator
 {
     public class PayrollMigration
     {
@@ -17,8 +19,8 @@
         {
             if (AKS == null) AKS = new AKSDbContext();
             if (db == null) db = new eStoreDbContext();
-            MigrateStore();
-            MigrateEmployee();
+           // MigrateStore();
+           // MigrateEmployee();
             MigrateAttendance();
             this.MigrateSalaryPayment();
             this.MigrateSalesman(); 
@@ -48,7 +50,11 @@
         }
         private void MigrateStore()
         {
-            var stores = db.Stores.ToList();
+            db.Stores.Load();
+            if (db.Stores.Local.Count < 0)
+                Console.WriteLine("errpr");
+            var stores = db.Stores.Local.ToList();
+            
             foreach (var store in stores)
             {
                 Shared.Commons.Models.Store nStore = new()
@@ -149,7 +155,7 @@
                         break;
                 }
                 AKS.Employees.Add(nEmp);
-                AKS.Shared.Payroll.Models.EmployeeDetails nEmpDetails = new Shared.Payroll.Models.EmployeeDetails
+                AKS.Shared.Payroll.Models.EmployeeDetails nEmpDetails = new()
                 {
                     AdharNumber = emp.AdharNumber,
                     DateOfBirth = emp.DateOfBirth,

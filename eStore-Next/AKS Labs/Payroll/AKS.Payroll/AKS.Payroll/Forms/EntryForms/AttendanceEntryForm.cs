@@ -13,33 +13,33 @@ namespace AKS.Payroll.Forms.EntryForms
 
         private void LaxyInit()
         {
-            db = new PayrollDbContext();
-           if(isNew)
-            newAtt = new Attendance
-            {
-                EntryStatus = EntryStatus.Added,
-                EntryTime = "AM/PM",
-                IsReadOnly = false,
-                OnDate = DateTime.Now,
-                EmployeeId = "",
-                AttendanceId = 0,
-                EmpId = 0,
-                Status = AttUnit.Present,
-                IsTailoring = false,
-                Remarks = "....",
-                StoreId = 1,
-                StoreCode = "1",
-                UserId = "WinUI"
-            };
-            LoadData();
+           // db = new PayrollDbContext();
+           //if(isNew)
+           // newAtt = new Attendance
+           // {
+           //     EntryStatus = EntryStatus.Added,
+           //     EntryTime = "AM/PM",
+           //     IsReadOnly = false,
+           //     OnDate = DateTime.Now,
+           //     EmployeeId = "",
+           //     AttendanceId = 0,
+           //     EmpId = 0,
+           //     Status = AttUnit.Present,
+           //     IsTailoring = false,
+           //     Remarks = "....",
+           //     StoreId = 1,
+           //     StoreCode = "1",
+           //     UserId = "WinUI"
+           // };
+           // LoadData();
         }
         public AttendanceEntryForm(Attendance att)
         {
             InitializeComponent();
-            isNew = false;
-            newAtt = att;
-            newAtt.StoreId= Int16.Parse(att.StoreCode.Trim());
-            btnAdd.Text = "Edit";
+            //isNew = false;
+            //newAtt = att;
+            //newAtt.StoreId= Int16.Parse(att.StoreCode.Trim());
+            //btnAdd.Text = "Edit";
         }
         public AttendanceEntryForm()
         {
@@ -83,7 +83,7 @@ namespace AKS.Payroll.Forms.EntryForms
             if (isNew)
                 db.Attendances.Add(att);
             else db.Attendances.Update(att);
-            
+
             return db.SaveChanges() > 0;
         }
 
@@ -135,17 +135,20 @@ namespace AKS.Payroll.Forms.EntryForms
             if (confirmResult == DialogResult.Yes)
             {
                 db.Attendances.Remove(newAtt);
-                if (db.SaveChanges() > 0) { MessageBox.Show("Attendance is deleted!", "Delete");
-                   var xy= ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
+                if (db.SaveChanges() > 0)
+                {
+                    MessageBox.Show("Attendance is deleted!", "Delete");
+                    var xy = ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
                     xy.UpdateRecord("Empid", 1, 1);
-                    this.Close(); }
+                    this.Close();
+                }
                 else MessageBox.Show("Faild to delete, please try again!", "Delete");
             }
             else
             {
                 MessageBox.Show("Not Deleted");
             }
-           
+
 
         }
 
@@ -153,18 +156,18 @@ namespace AKS.Payroll.Forms.EntryForms
         {
             newAtt.OnDate = dtpOnDate.Value;
             newAtt.Status = (AttUnit)cbxStatus.SelectedIndex;
-            newAtt.StoreCode = (string)cbxStores.SelectedText;
+            newAtt.StoreId = (string)cbxStores.SelectedText;
             newAtt.Remarks = txtRemarks.Text;
             newAtt.EntryTime = txtEntryTime.Text;
             newAtt.EmployeeId = (string)cbxEmployees.SelectedValue;
             newAtt.IsTailoring = cbIsTailors.Checked;
-            newAtt.StoreId = (int)cbxStores.SelectedValue;
+         
             return newAtt;
         }
 
         private void DisplayData()
         {
-            label8.Text = $"OnDate:{newAtt.OnDate.Date}\t Status:{newAtt.Status}\nRmk:{newAtt.Remarks}\tET:{newAtt.EntryTime}\n Emp:{newAtt.EmployeeId}\n SId:{newAtt.StoreId}\n{newAtt.StoreCode}";
+            label8.Text = $"OnDate:{newAtt.OnDate.Date}\t Status:{newAtt.Status}\nRmk:{newAtt.Remarks}\tET:{newAtt.EntryTime}\n Emp:{newAtt.EmployeeId}\n SId:{newAtt.StoreId}\n";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

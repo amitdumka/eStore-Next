@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace AKS.DatabaseMigrator
+﻿namespace AKS.DatabaseMigrator
 {
     public class PayrollMigration
     {
@@ -19,24 +17,80 @@ namespace AKS.DatabaseMigrator
         {
             if (AKS == null) AKS = new AKSDbContext();
             if (db == null) db = new eStoreDbContext();
-
-          //  MigrateEmployee();
+            MigrateStore();
+            MigrateEmployee();
             MigrateAttendance();
+            this.MigrateSalaryPayment();
+            this.MigrateSalesman(); 
+
+
+        }
+
+        private void MigrateSalesman()
+        {
+            var slms= db.Salesmen.ToList();
+            foreach (var s in slms)
+            {
+                Shared.Commons.Models.Salesman man = new() {
+                   StoreId="ARD", UserId="AutoMigration", 
+                   IsReadOnly=true, MarkedDeleted=false,
+                   Name=s.SalesmanName, IsActive=true,
+                   SalesmanId="SMN/2016/"+s.SalesmanId, 
+                   EntryStatus=s.EntryStatus
+                };
+                man.EmployeeId = String.IsNullOrEmpty(s.EmployeeId.ToString()) ? "n/a" : s.EmployeeId.ToString();
+
+                AKS.Salesmen.Add(man);
+
+            }
+            AKS.SaveChanges(); 
+
+        }
+        private void MigrateStore()
+        {
+            var stores = db.Stores.ToList();
+            foreach (var store in stores)
+            {
+                Shared.Commons.Models.Store nStore = new()
+                {
+                    BeginDate = store.OpeningDate,
+                    City = store.City,
+                    Country = "India",
+                    EndDate = store.ClosingDate,
+                    GSTIN = store.GSTNO,
+                    IsActive = store.Status,
+                    PanNo = store.PanNo,
+                    State = "Jharkhand",
+                    StoreCode = store.StoreCode,
+                    StoreEmailId = "thearvindstoredumka@gmail.com",
+                    StoreId = "ARD",
+                    StoreManager = store.StoreManagerName,
+                    StoreManagerContactNo = store.StoreManagerPhoneNo,
+                    StoreName = store.StoreName,
+                    StorePhoneNumber = store.PhoneNo,
+                    VatNo = "Pending",
+                    ZipCode = store.PinCode
+                   ,
+                    MarkedDeleted = false
+                };
+                AKS.Stores.Add(nStore);
+                int c = AKS.SaveChanges();
+                Console.WriteLine(c);
+            }
         }
 
         private void MigrateEmployee()
         {
-                
             var emps = db.Employees.ToList();
             foreach (var emp in emps)
             {
                 AKS.Shared.Payroll.Models.Employee nEmp = new()
                 {
                     EmployeeId = $"ARD/{emp.JoiningDate.Year}/{emp.Category.ToString()}/{emp.EmployeeId}",
+                    EmpId = emp.EmployeeId,
                     AddressLine = emp.Address,
                     Category = emp.Category,
-                    Id = emp.EmployeeId,
-                    Gender = Shared.Payroll.Models.Base.Gender.Male,
+                    Gender = Gender.Male,
                     IsTailors = emp.IsTailors,
                     City = emp.City,
                     Country = "India",
@@ -49,37 +103,48 @@ namespace AKS.DatabaseMigrator
                     State = emp.State,
                     StreetName = emp.Address,
                     ZipCode = "814101",
-                    Title = "Mr."
+                    Title = "Mr.",
+                    StoreId = "ARD",
+                    MarkedDeleted = false
                 };
                 switch (emp.Category)
                 {
                     case EmpType.Salesman:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "SLM");
                         break;
+
                     case EmpType.StoreManager:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "SM");
                         break;
+
                     case EmpType.HouseKeeping:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "HK");
                         break;
+
                     case EmpType.Owner:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "OWN");
                         break;
+
                     case EmpType.Accounts:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "ACC");
                         break;
+
                     case EmpType.TailorMaster:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "TM");
                         break;
+
                     case EmpType.Tailors:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "TLS");
                         break;
+
                     case EmpType.TailoringAssistance:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "TLA");
                         break;
+
                     case EmpType.Others:
                         nEmp.EmployeeId = nEmp.EmployeeId.Replace(nEmp.Category.ToString(), "OTH");
                         break;
+
                     default:
                         break;
                 }
@@ -97,55 +162,77 @@ namespace AKS.DatabaseMigrator
                     OtherIdDetails = emp.OtherIdDetails,
                     PanNo = emp.PanNo,
                     SpouseName = "NA",
-                    StoreId = emp.StoreId,
-                    StoreCode = emp.StoreId.ToString(),
-                    UserId = emp.UserId
+                    UserId = emp.UserId,
+                    MarkedDeleted = false,
+                    StoreId = "ARD"
                 };
                 AKS.EmployeeDetails.Add(nEmpDetails);
             }
-            int c= AKS.SaveChanges();
+            int c = AKS.SaveChanges();
             Console.WriteLine(c);
-            if(c!=emps.Count)
+            if (c != emps.Count)
                 Console.WriteLine($"C={c}\te={emps.Count}");
         }
 
-        private void MigrateSalary()
-        { }
+        private void MigrateSalaryPayment()
+        {
+            var salP = db.SalaryPayments.ToList();
+            var empList = AKS.Employees.Select(c => new { c.EmpId, c.EmployeeId }).OrderBy(c => c.EmpId).ToList();
+            foreach (var sal in salP)
+            {
+                Shared.Payroll.Models.SalaryPayment nSal = new()
+                {
+                    SalaryPaymentId = $"SP/{sal.PaymentDate.Year}/{sal.PaymentDate.Month}/{sal.PaymentDate.Day}/{sal.SalaryPaymentId}",
+                    Amount = sal.Amount,
+                    OnDate = sal.PaymentDate,
+                    SalaryComponet = sal.SalaryComponet,
+                    Details = sal.Details + $"#{sal.SalaryMonth}#",
+                    PayMode = sal.PayMode,
+                    EmployeeId = empList.Where(x => x.EmpId == sal.EmployeeId).First().EmployeeId,
+                    SalaryMonth = 0000,
+                    UserId = "AutoMigration",
+                    IsReadOnly = false,
+                    MarkedDeleted = false,
+                    EntryStatus = sal.EntryStatus,
+                    StoreId = "ARD"
+                };
+                AKS.SalaryPayment.Add(nSal);
+            }
+            AKS.SaveChanges();
+
+        }
 
         private void MigrateAttendance()
         {
             if (db == null)
                 db = new eStoreDbContext();
-            var empList = AKS.Employees.Select(c => new { c.EmployeeId, c.Id }).OrderBy(c=>c.Id).ToList();
+            var empList = AKS.Employees.Select(c => new { c.EmployeeId, c.EmpId }).OrderBy(c => c.EmpId).ToList();
             foreach (var emp in empList)
             {
+                //$"ARD/{emp.JoiningDate.Year}/{emp.Category.ToString()}/{emp.EmployeeId}"
 
-
-                var attd = db.Attendances.Where(c=>c.EmployeeId==emp.Id).ToList();
+                var attd = db.Attendances.Where(c => c.EmployeeId == emp.EmpId).ToList();
 
                 foreach (var item in attd)
                 {
                     Shared.Payroll.Models.Attendance Attendance = new()
                     {
-                        //AttendanceId = item.AttendanceId,
+                        AttendanceId = $"{item.AttDate.Year}/{item.AttDate.Month}/{item.AttDate.Day}/{emp.EmpId}",
                         EntryStatus = item.EntryStatus,
-                        EmpId = item.EmployeeId,
-                        EmployeeId = empList.Where(e => e.Id == item.EmployeeId).First().EmployeeId,
+                        EmployeeId = emp.EmployeeId,
                         EntryTime = item.EntryTime,
                         IsReadOnly = item.IsReadOnly,
                         IsTailoring = item.IsTailoring,
                         OnDate = item.AttDate,
-                        Remarks = item.Remarks + $"#Old_ID={item.AttendanceId}#",
+                        Remarks = item.Remarks + $"#Old_ID={item.AttendanceId}#EID={item.EmployeeId}#",
                         Status = item.Status,
-                        StoreCode = item.StoreId.ToString(),
-                        StoreId = item.StoreId,
-                        UserId = item.UserId
+                        StoreId = "ARD",
+                        UserId = item.UserId,
+                        MarkedDeleted = false
                     };
                     AKS.Attendances.Add(Attendance);
                 }
-                AKS.Database.ExecuteSqlRaw("SET IDENTITY_INSERT V1_Attendance ON;");
                 int c = AKS.SaveChanges();
-                AKS.Database.ExecuteSqlRaw("SET IDENTITY_INSERT V1_Attendance OFF");
                 Console.WriteLine(c);
                 if (c != attd.Count)
                     Console.WriteLine($"C={c}\te={attd.Count}");

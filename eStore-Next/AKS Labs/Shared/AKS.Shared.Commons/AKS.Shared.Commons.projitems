@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Data\Types\DataTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Base\BaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
   </ItemGroup>
 </Project>

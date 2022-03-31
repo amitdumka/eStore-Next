@@ -9,7 +9,6 @@
     <Import_RootNamespace>AKS.Shared.Payrolls</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Models\Base\BaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Employee.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EmpolyeeVM.cs" />
   </ItemGroup>

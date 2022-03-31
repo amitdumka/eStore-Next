@@ -10,11 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BaseNT.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\Attendance.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\CurrentSalary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\Employee.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\PaySlip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\SalaryPayment.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Payroll\StaffAdvanceReceipt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\Attendance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\CurrentSalary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\Employee.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\PaySlip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\SalaryPayment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\StaffAdvanceReceipt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
   </ItemGroup>
 </Project>

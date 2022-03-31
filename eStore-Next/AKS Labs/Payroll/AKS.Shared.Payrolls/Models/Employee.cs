@@ -1,14 +1,17 @@
-﻿using AKS.Shared.Payroll.Models.Base;
+﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Base;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Payroll.Models
 {
-    [Table("V1_MonthlyAttendance")]
-    public class MonthlyAttendance:BaseST
+    [Table("V1_MonthlyAttendances")]
+    public class MonthlyAttendance : BaseST
     {
-        public int MonthlyAttendanceId { get; set; }
+        [Key]
+        public string MonthlyAttendanceId { get; set; }
+
         public string EmployeeId { get; set; }
         public DateTime OnDate { get; set; }
         public virtual Employee Employee { get; set; }
@@ -25,12 +28,13 @@ namespace AKS.Shared.Payroll.Models
         public decimal BillableDays { get; set; }
     }
 
-    [Table("V1_Attendance")]
-    public class Attendance:BaseST
+    [Table("V1_Attendances")]
+    public class Attendance : BaseST
     {
-        public int AttendanceId { get; set; }
+        [Key]
+        public string AttendanceId { get; set; }
+
         public string EmployeeId { get; set; }
-        public int EmpId { get; set; }
         public DateTime OnDate { get; set; }
         public AttUnit Status { get; set; }
         public string EntryTime { get; set; }
@@ -40,10 +44,11 @@ namespace AKS.Shared.Payroll.Models
         public bool IsTailoring { get; set; }
     }
 
-    public class EmployeeDetails:BaseST
+    public class EmployeeDetails : BaseST
     {
         [Key]
         public string EmployeeId { get; set; }
+
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
 
@@ -61,14 +66,12 @@ namespace AKS.Shared.Payroll.Models
         public string HighestQualification { get; set; }
     }
 
-    [Table("V1_Employee")]
+    [Table("V1_Employees")]
     public class Employee : Person
     {
-        public int Id { get; set; }
-
         [Key]
         public string EmployeeId { get; set; }
-
+        public int EmpId { get; set; } // Temp Till full migratin is done. 
         [Display(Name = "Employee Name")]
         public string StaffName
         { get { return (FirstName + " " + LastName).Trim(); } }
@@ -91,12 +94,22 @@ namespace AKS.Shared.Payroll.Models
         [DefaultValue(false)]
         [Display(Name = "Tailoring Division")]
         public bool IsTailors { get; set; }
-        //public virtual EmployeeDetails Details { get; set; }
+
+        [Required]
+        public string StoreId { get; set; }
+
+        public virtual Store Store { get; set; }
+        public bool MarkedDeleted { get; set; }
     }
 
-    public class Salary:BaseST
+    [Table("V1_Salaries")]
+    public class Salary : BaseST
     {
-        public int SalaryId { get; set; }
+        public int Id { get; set; }
+
+        [Key]
+        public string SalaryId { get; set; }
+
         public string EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
 
@@ -121,10 +134,10 @@ namespace AKS.Shared.Payroll.Models
         public bool IsTailoring { get; set; }
     }
 
-    [Table("V1_SalaryPayment")]
-    public class SalaryPayment
+    [Table("V1_SalaryPayments")]
+    public class SalaryPayment:BaseST
     {
-        public int SalaryPaymentId { get; set; }
+        public string SalaryPaymentId { get; set; }
 
         [Display(Name = "Staff Name")]
         public string EmployeeId { get; set; }
@@ -139,7 +152,7 @@ namespace AKS.Shared.Payroll.Models
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Payment Date")]
-        public DateTime PaymentDate { get; set; }
+        public DateTime OnDate { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal Amount { get; set; }
@@ -149,15 +162,17 @@ namespace AKS.Shared.Payroll.Models
 
         public string Details { get; set; }
     }
-    [Table("V1_StaffAdvanceReceipt")]
+
+    [Table("V1_StaffAdvanceReceipts")]
     public class StaffAdvanceReceipt : BaseST
     {
-        public int StaffAdvanceReceiptId { get; set; }
+        [Key]
+        public string StaffAdvanceReceiptId { get; set; }
 
         [Display(Name = "Staff Name")]
         public string EmployeeId { get; set; }
 
-        public Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Receipt Date")]
@@ -170,12 +185,13 @@ namespace AKS.Shared.Payroll.Models
         public PayMode PayMode { get; set; }
 
         public string Details { get; set; }
-
     }
+
     //TODO: use from payslip report one. for better use
-    public class PaySlip
+    [Table("V1_PaySlips")]
+    public class PaySlip:BaseST
     {
-        public int PaySlipId { get; set; }
+        public string PaySlipId { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime OnDate { get; set; }

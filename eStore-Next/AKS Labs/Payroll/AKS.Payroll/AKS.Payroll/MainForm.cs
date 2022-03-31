@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Forms;
+﻿using AKS.Payroll.Database;
+using AKS.Payroll.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -135,6 +136,18 @@ namespace AKS.Payroll
         private void addAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new Forms.EntryForms.AttendanceEntryForm());
+        }
+
+        private void addSalaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (AzurePayrollDbContext db = new AzurePayrollDbContext())
+            {
+                MessageBox.Show("Azure:"+ db.SaveChanges());
+            }
+            using (LocalPayrollDbContext db = new LocalPayrollDbContext())
+            {
+                MessageBox.Show("Local:" + db.SaveChanges());
+            }
         }
     }
 }

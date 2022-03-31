@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace AKS.Shared.Payroll.Models.Base
+namespace AKS.Shared.Commons.Models.Base
 {
     public class Base
     {
         public string UserId { get; set; }
         public bool IsReadOnly { get; set; }
+        public bool MarkedDeleted { get; set; }
     }
 
     public class BaseST : Base
     {
         [DefaultValue(1)]
         [Display(Name = "Store")]
-        public int StoreId { get; set; }
-        public string StoreCode { get; set; }
-        //public virtual Store Store { get; set; }
+        public string StoreId { get; set; }
+        public virtual Store Store { get; set; }
         public EntryStatus EntryStatus { get; set; }
     }
 
@@ -75,5 +72,5 @@ namespace AKS.Shared.Payroll.Models.Base
         [Key]
         public string CountryName { get; set; }
     }
-    public enum Gender { Male, Female, Transgender}
+   // public enum Gender { Male, Female, Transgender}
 }

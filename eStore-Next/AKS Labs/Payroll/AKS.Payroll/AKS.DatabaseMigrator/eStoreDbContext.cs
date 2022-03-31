@@ -28,7 +28,7 @@ namespace AKS.DatabaseMigrator
 
         //public DbSet<PettyCashBook> PettyCashBooks { get; set; }
 
-        //public DbSet<Store> Stores { get; set; } //Ok//UI /API
+        public DbSet<eStore.Shared.Models.Store> Stores { get; set; } //Ok//UI /API
         //public DbSet<RegisteredUser> RegisteredUsers { get; set; }
         //public DbSet<AppInfo> Apps { get; set; } //ok//API
         //public DbSet<StoreClose> StoreCloses { get; set; }//api
@@ -40,7 +40,7 @@ namespace AKS.DatabaseMigrator
 
        // public DbSet<EmployeeUser> EmployeeUsers { get; set; }
         public DbSet<eStore.Shared.Models.Payroll.Attendance> Attendances { get; set; } //ok//UI//API
-        //public DbSet<Salesman> Salesmen { get; set; } //ok//API
+         public DbSet<eStore.Shared.Models.Salesman> Salesmen { get; set; } //ok//API
 
         //public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
         //public DbSet<SaleTaxType> SaleTaxTypes { get; set; } //ok//UI //API

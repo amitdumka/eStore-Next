@@ -11,7 +11,7 @@ namespace AKS.Payroll.Forms
     public partial class AttendanceForm : Form
     {
         private readonly IMapper _mapper;
-        private PayrollDbContext context;
+        private  PayrollDbContext context;
         private ObservableListSource<AttendanceVM> Attendances;
         private ObservableListSource<string> EmpIDs;
         private DateTime OnDate;
@@ -64,19 +64,19 @@ namespace AKS.Payroll.Forms
 
         private void AttendanceForm_Load(object sender, EventArgs e)
         {
-            context = new PayrollDbContext();
+            context = new  PayrollDbContext();
             context.Employees.Load();
             if (cbAllEmployee.Checked)
                 lbEmployees.DataSource = context.Employees.Local.ToBindingList();
             else
-                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c=>c.Id).ToList();//.ToBindingList();
-            
+                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c => c.EmployeeId).ToList();//.ToBindingList();
+
             Attendances = new ObservableListSource<AttendanceVM>();
 
             AddToList(context.Attendances.Where(c => c.OnDate.Month == OnDate.Month
             && c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
-            
-            dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == context.Employees.Local.OrderBy(c=>c.Id).First().EmployeeId).ToList();
+
+            dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == context.Employees.Local.OrderBy(c => c.EmployeeId).First().EmployeeId).ToList();
             tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();
         }
 

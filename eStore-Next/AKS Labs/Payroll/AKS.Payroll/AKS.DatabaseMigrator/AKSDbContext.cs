@@ -11,6 +11,8 @@ namespace AKS.DatabaseMigrator
         public DbSet<Shared.Payroll.Models.SalaryPayment> SalaryPayment { get; set; }
         public DbSet<Shared.Payroll.Models.EmployeeDetails> EmployeeDetails { get; set; }
         public DbSet<Shared.Payroll.Models.StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
+        public DbSet<Shared.Commons.Models.Store> Stores { get; set; }
+        public DbSet<Shared.Commons.Models.Salesman> Salesmen { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

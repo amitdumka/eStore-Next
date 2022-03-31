@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace eStore.Shared.Models.Payroll
 {
@@ -29,15 +28,13 @@ namespace eStore.Shared.Models.Payroll
         [Display(Name = "Tailor")]
         public bool IsTailoring { get; set; }
     }
-    public class MonthlyAttendance: AttendanceBase
+    public class MonthlyAttendance : AttendanceBase
     {
         public int MonthlyAttendanceId { get; set; }
-        
     }
     public class YearlyAttendance : AttendanceBase
     {
         public int YearlyAttendanceId { get; set; }
-
     }
     public class AttendanceBase : BaseST
     {

@@ -77,6 +77,11 @@
             this.paymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recieptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.monthlyAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSalaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addPaymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -89,11 +94,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.addAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addSalaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPaymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -412,7 +412,7 @@
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.contentsToolStripMenuItem.Text = "&Contents";
             // 
             // indexToolStripMenuItem
@@ -420,7 +420,7 @@
             this.indexToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indexToolStripMenuItem.Image")));
             this.indexToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.indexToolStripMenuItem.Text = "&Index";
             // 
             // searchToolStripMenuItem
@@ -428,18 +428,18 @@
             this.searchToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("searchToolStripMenuItem.Image")));
             this.searchToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.searchToolStripMenuItem.Text = "&Search";
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(204, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(221, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.aboutToolStripMenuItem.Text = "&About ... ...";
             // 
             // payrollToolStripMenuItem
@@ -499,6 +499,38 @@
             this.monthlyAttendanceToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
             this.monthlyAttendanceToolStripMenuItem.Text = "Monthly Attendance";
             this.monthlyAttendanceToolStripMenuItem.Click += new System.EventHandler(this.monthlyAttendanceToolStripMenuItem_Click);
+            // 
+            // addAttendanceToolStripMenuItem
+            // 
+            this.addAttendanceToolStripMenuItem.Name = "addAttendanceToolStripMenuItem";
+            this.addAttendanceToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addAttendanceToolStripMenuItem.Text = "Add Attendance";
+            this.addAttendanceToolStripMenuItem.Click += new System.EventHandler(this.addAttendanceToolStripMenuItem_Click);
+            // 
+            // addEmployeeToolStripMenuItem
+            // 
+            this.addEmployeeToolStripMenuItem.Name = "addEmployeeToolStripMenuItem";
+            this.addEmployeeToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addEmployeeToolStripMenuItem.Text = "Add Employee";
+            // 
+            // addSalaryToolStripMenuItem
+            // 
+            this.addSalaryToolStripMenuItem.Name = "addSalaryToolStripMenuItem";
+            this.addSalaryToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addSalaryToolStripMenuItem.Text = "Add Salary";
+            this.addSalaryToolStripMenuItem.Click += new System.EventHandler(this.addSalaryToolStripMenuItem_Click);
+            // 
+            // addPaymentToolStripMenuItem
+            // 
+            this.addPaymentToolStripMenuItem.Name = "addPaymentToolStripMenuItem";
+            this.addPaymentToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addPaymentToolStripMenuItem.Text = "Add Payment";
+            // 
+            // addReceiptToolStripMenuItem
+            // 
+            this.addReceiptToolStripMenuItem.Name = "addReceiptToolStripMenuItem";
+            this.addReceiptToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
+            this.addReceiptToolStripMenuItem.Text = "Add Receipt";
             // 
             // toolStrip
             // 
@@ -601,37 +633,6 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
-            // 
-            // addAttendanceToolStripMenuItem
-            // 
-            this.addAttendanceToolStripMenuItem.Name = "addAttendanceToolStripMenuItem";
-            this.addAttendanceToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
-            this.addAttendanceToolStripMenuItem.Text = "Add Attendance";
-            this.addAttendanceToolStripMenuItem.Click += new System.EventHandler(this.addAttendanceToolStripMenuItem_Click);
-            // 
-            // addEmployeeToolStripMenuItem
-            // 
-            this.addEmployeeToolStripMenuItem.Name = "addEmployeeToolStripMenuItem";
-            this.addEmployeeToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
-            this.addEmployeeToolStripMenuItem.Text = "Add Employee";
-            // 
-            // addSalaryToolStripMenuItem
-            // 
-            this.addSalaryToolStripMenuItem.Name = "addSalaryToolStripMenuItem";
-            this.addSalaryToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
-            this.addSalaryToolStripMenuItem.Text = "Add Salary";
-            // 
-            // addPaymentToolStripMenuItem
-            // 
-            this.addPaymentToolStripMenuItem.Name = "addPaymentToolStripMenuItem";
-            this.addPaymentToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
-            this.addPaymentToolStripMenuItem.Text = "Add Payment";
-            // 
-            // addReceiptToolStripMenuItem
-            // 
-            this.addReceiptToolStripMenuItem.Name = "addReceiptToolStripMenuItem";
-            this.addReceiptToolStripMenuItem.Size = new System.Drawing.Size(226, 26);
-            this.addReceiptToolStripMenuItem.Text = "Add Receipt";
             // 
             // MainForm
             // 

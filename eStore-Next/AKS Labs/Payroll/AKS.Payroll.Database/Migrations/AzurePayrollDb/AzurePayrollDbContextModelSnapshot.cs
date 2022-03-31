@@ -4,18 +4,16 @@ using AKS.Payroll.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AKS.Payroll.Database.Migrations
+namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 {
-    [DbContext(typeof(PayrollDbContext))]
-    [Migration("20220327165047_IntialCreate")]
-    partial class IntialCreate
+    [DbContext(typeof(AzurePayrollDbContext))]
+    partial class AzurePayrollDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +23,128 @@ namespace AKS.Payroll.Database.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
             SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Salesman", b =>
+                {
+                    b.Property<string>("SalesmanId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SalesmanId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Salesmen");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Store", b =>
+                {
+                    b.Property<string>("StoreId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GSTIN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PanNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreEmailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreManager")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreManagerContactNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StorePhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VatNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StoreId");
+
+                    b.ToTable("V1_Stores");
+                });
+
             modelBuilder.Entity("AKS.Shared.Payroll.Models.Attendance", b =>
                 {
-                    b.Property<int>("AttendanceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("AttendanceId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceId"), 1L, 1);
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
@@ -49,6 +159,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("IsTailoring")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("OnDate")
                         .HasColumnType("datetime2");
 
@@ -59,12 +172,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("StoreCode")
+                    b.Property<string>("StoreId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -72,7 +182,9 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasKey("AttendanceId");
 
-                    b.ToTable("V1_Attendance");
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Attendances");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.Employee", b =>
@@ -98,14 +210,14 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmpId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsTailors")
@@ -124,9 +236,16 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<DateTime?>("LeavingDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("StreetName")
                         .IsRequired()
@@ -142,7 +261,9 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("V1_Employee");
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Employees");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.EmployeeDetails", b =>
@@ -175,6 +296,9 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("OtherIdDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -187,12 +311,9 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StoreCode")
+                    b.Property<string>("StoreId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -200,16 +321,15 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasKey("EmployeeId");
 
+                    b.HasIndex("StoreId");
+
                     b.ToTable("EmployeeDetails");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.MonthlyAttendance", b =>
                 {
-                    b.Property<int>("MonthlyAttendanceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyAttendanceId"), 1L, 1);
+                    b.Property<string>("MonthlyAttendanceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Absent")
                         .HasColumnType("int");
@@ -236,6 +356,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("IsReadOnly")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("NoOfWorkingDays")
                         .HasColumnType("int");
 
@@ -252,12 +375,9 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StoreCode")
+                    b.Property<string>("StoreId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Sunday")
                         .HasColumnType("int");
@@ -273,16 +393,15 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("V1_MonthlyAttendance");
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_MonthlyAttendances");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.Salary", b =>
                 {
-                    b.Property<int>("SalaryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaryId"), 1L, 1);
+                    b.Property<string>("SalaryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("BasicSalary")
                         .HasColumnType("money");
@@ -303,6 +422,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("FullMonth")
                         .HasColumnType("bit");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Incentive")
                         .HasColumnType("bit");
 
@@ -318,12 +440,12 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("LastPcs")
                         .HasColumnType("bit");
 
-                    b.Property<string>("StoreCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("SundayBillable")
                         .HasColumnType("bit");
@@ -339,54 +461,15 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Salarys");
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Salaries");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryPayment", b =>
                 {
-                    b.Property<int>("SalaryPaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaryPaymentId"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("money");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
+                    b.Property<string>("SalaryPaymentId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PayMode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SalaryComponet")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SalaryMonth")
-                        .HasColumnType("int");
-
-                    b.HasKey("SalaryPaymentId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("V1_SalaryPayment");
-                });
-
-            modelBuilder.Entity("AKS.Shared.Payroll.Models.StaffAdvanceReceipt", b =>
-                {
-                    b.Property<int>("StaffAdvanceReceiptId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffAdvanceReceiptId"), 1L, 1);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("money");
@@ -405,18 +488,72 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("IsReadOnly")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PayMode")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryComponet")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryMonth")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SalaryPaymentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_SalaryPayments");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.StaffAdvanceReceipt", b =>
+                {
+                    b.Property<string>("StaffAdvanceReceiptId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("money");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PayMode")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReceiptDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StoreCode")
+                    b.Property<string>("StoreId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -426,7 +563,61 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("V1_StaffAdvanceReceipt");
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_StaffAdvanceReceipts");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Salesman", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.Attendance", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.Employee", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.EmployeeDetails", b =>
+                {
+                    b.HasOne("AKS.Shared.Payroll.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.MonthlyAttendance", b =>
@@ -437,7 +628,15 @@ namespace AKS.Payroll.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.Salary", b =>
@@ -448,7 +647,15 @@ namespace AKS.Payroll.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryPayment", b =>
@@ -459,7 +666,15 @@ namespace AKS.Payroll.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Payroll.Models.StaffAdvanceReceipt", b =>
@@ -470,7 +685,15 @@ namespace AKS.Payroll.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Store");
                 });
 #pragma warning restore 612, 618
         }

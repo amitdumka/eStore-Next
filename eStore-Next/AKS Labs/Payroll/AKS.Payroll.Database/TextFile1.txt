@@ -10,10 +10,7 @@ namespace AKS.Payroll.Database
 {
     public class LocalPayrollDbContext : PayrollDbContext
     {
-        private static readonly string _connectionString = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = eStoreDb_Local_Ver1_0; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-
-        //"Server=(localdb)\\mssqllocaldb;Database=eStoreDb_Local_Ver1_0;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private static readonly string _connectionString = "Server=(localdb)\\mssqllocaldb;Database=eStoreDb_Local_Ver1_0;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public LocalPayrollDbContext() : base(_connectionString, false)
         {
@@ -51,9 +48,7 @@ namespace AKS.Payroll.Database
         private bool azure = false;
 
         public PayrollDbContext()
-        {
-            ApplyMigrations(this);
-        }
+        { ApplyMigrations(this); }
 
         public PayrollDbContext(string connectionString, bool remote)
         {
@@ -70,8 +65,7 @@ namespace AKS.Payroll.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            if (azure)
-                modelBuilder.HasDatabaseMaxSize("2 GB");
+            modelBuilder.HasDatabaseMaxSize("2 GB");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

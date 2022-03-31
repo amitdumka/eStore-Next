@@ -31,7 +31,7 @@ namespace AKS.Shared.Payroll.Models
     [Table("V1_Attendances")]
     public class Attendance : BaseST
     {
-        [Key]
+        [Key]//TODO: need to mention min length and max length
         public string AttendanceId { get; set; }
 
         public string EmployeeId { get; set; }

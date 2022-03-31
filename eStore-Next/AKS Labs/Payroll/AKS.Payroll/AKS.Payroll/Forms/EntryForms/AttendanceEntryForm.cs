@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.ParyollSystem;
+using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
 using System.Data;
 
@@ -65,25 +66,39 @@ namespace AKS.Payroll.Forms.EntryForms
                 {
                     ClearFiled();
                     isNew = false;
-                    MessageBox.Show("Attendance is saved");
+                    MessageBox.Show("Attendance is saved","Alert");
                     btnAdd.Text = "Add";
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Some error occured while saving attednace, Kindly Try again");
+                    MessageBox.Show("Some error occured while saving attednace, Kindly Try again","Error");
                 }
             }
         }
 
         private bool SaveAttendance(Attendance att)
         {
-            att.UserId = "WinFormUI";
-            if (isNew)
-                db.Attendances.Add(att);
-            else db.Attendances.Update(att);
+            try
+            {
+                att.UserId = "WinFormUI";
+                if (isNew)
+                {
+                    att.AttendanceId = IdentityGenerator.GenerateAttendanceId(att);
+                    db.Attendances.Add(att);
+                }
+                else db.Attendances.Update(att);
 
-            return db.SaveChanges() > 0;
+                int x = db.SaveChanges();
+                return x > 0;
+            }
+            catch (Exception ex)
+            {
+                if(ex.InnerException.Message.ToLower().Contains("duplicate"))
+                MessageBox.Show($"Attendance for Current Employee for {att.OnDate} is already stored","Error");
+                
+                return false;
+            }
         }
 
         private void ClearFiled()
@@ -106,10 +121,11 @@ namespace AKS.Payroll.Forms.EntryForms
             sl.Add("ARJ", "Aprajita Retails, Jamshedpur");
 
             cbxStatus.Items.AddRange(Enum.GetNames(typeof(AttUnit)));
-
+            
             cbxStores.DataSource = sl.ToList();
             cbxStores.DisplayMember = "Value";
             cbxStores.ValueMember = "Key";
+            
 
             DefaultValue();
         }
@@ -155,7 +171,7 @@ namespace AKS.Payroll.Forms.EntryForms
         {
             newAtt.OnDate = dtpOnDate.Value;
             newAtt.Status = (AttUnit)cbxStatus.SelectedIndex;
-            newAtt.StoreId = (string)cbxStores.SelectedText;
+            newAtt.StoreId = (string)cbxStores.SelectedValue;
             newAtt.Remarks = txtRemarks.Text;
             newAtt.EntryTime = txtEntryTime.Text;
             newAtt.EmployeeId = (string)cbxEmployees.SelectedValue;

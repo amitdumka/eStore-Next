@@ -1,4 +1,4 @@
-﻿using AKS.DatabaseMigrator;
+﻿
 using AKS.Payroll.Database;
 using AKS.Payroll.Forms;
 using System;
@@ -141,20 +141,39 @@ namespace AKS.Payroll
 
         private void addSalaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (AzurePayrollDbContext db = new AzurePayrollDbContext())
-            {
-                MessageBox.Show("Azure:"+ db.SaveChanges());
-            }
-            using (LocalPayrollDbContext db = new LocalPayrollDbContext())
-            {
-                MessageBox.Show("Local:" + db.SaveChanges());
-            }
+             
         }
 
         private void addPaymentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PayrollMigration pm = new PayrollMigration();
-            pm.Migrate();
+            //PayrollMigration pm = new PayrollMigration();
+            //pm.Migrate();
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Application.Exit();
+        }
+
+        private void paymentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void recieptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addReceiptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

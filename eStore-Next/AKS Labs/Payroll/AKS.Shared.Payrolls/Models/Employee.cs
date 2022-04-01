@@ -15,17 +15,32 @@ namespace AKS.Shared.Payroll.Models
         public string EmployeeId { get; set; }
         public DateTime OnDate { get; set; }
         public virtual Employee Employee { get; set; }
+
+        //Postive
         public int Present { get; set; }
+
         public int HalfDay { get; set; }
         public int Sunday { get; set; }
         public int PaidLeave { get; set; }
+        public int Holidays { get; set; }
+
+        //Negative
         public int CasualLeave { get; set; }
+
         public int Absent { get; set; }
         public int WeeklyLeave { get; set; }
-        public int Holidays { get; set; }
+
         public string Remarks { get; set; }
         public int NoOfWorkingDays { get; set; }
-        public decimal BillableDays { get; set; }
+        //public decimal BillableDays { get; set; }
+
+        public int DayInMonths
+        { get { return (DateTime.DaysInMonth(OnDate.Year, OnDate.Month)); } }
+        public int Count
+        { get { return Present + HalfDay + Sunday + PaidLeave + CasualLeave + Absent + WeeklyLeave + Holidays; } }
+        public decimal BillableDays
+        { get { return ((HalfDay / 2) + Present + Sunday + PaidLeave + Holidays); } }
+        public bool Valid { get { return (Count == DayInMonths); } }
     }
 
     [Table("V1_Attendances")]
@@ -71,7 +86,9 @@ namespace AKS.Shared.Payroll.Models
     {
         [Key]
         public string EmployeeId { get; set; }
-        public int EmpId { get; set; } // Temp Till full migratin is done. 
+
+        public int EmpId { get; set; } // Temp Till full migratin is done.
+
         [Display(Name = "Employee Name")]
         public string StaffName
         { get { return (FirstName + " " + LastName).Trim(); } }
@@ -135,7 +152,7 @@ namespace AKS.Shared.Payroll.Models
     }
 
     [Table("V1_SalaryPayments")]
-    public class SalaryPayment:BaseST
+    public class SalaryPayment : BaseST
     {
         public string SalaryPaymentId { get; set; }
 
@@ -189,7 +206,7 @@ namespace AKS.Shared.Payroll.Models
 
     //TODO: use from payslip report one. for better use
     [Table("V1_PaySlips")]
-    public class PaySlip:BaseST
+    public class PaySlip : BaseST
     {
         public string PaySlipId { get; set; }
 

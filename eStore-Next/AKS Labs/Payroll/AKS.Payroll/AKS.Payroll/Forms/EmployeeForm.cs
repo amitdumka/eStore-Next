@@ -1,4 +1,4 @@
-﻿using AKS.DatabaseMigrator;
+﻿
 using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;

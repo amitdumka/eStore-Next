@@ -60,5 +60,11 @@ namespace AKS.ParyollSystem
             }
             return id;
         }
+
+        public static string GenerateMonthlyAttendance(DateTime on, string empid)
+        {
+            string id = $"{on.Year}/{on.Month}/{empid}";
+            return id;
+        }
     }
 }

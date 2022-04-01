@@ -11,9 +11,9 @@ namespace AKS.Payroll.Forms
     public partial class AttendanceForm : Form
     {
         private readonly IMapper _mapper;
-        private  AzurePayrollDbContext context;
+        private AzurePayrollDbContext context;
         private ObservableListSource<AttendanceVM> Attendances;
-        private readonly ObservableListSource<string> EmpIDs;
+       // public readonly ObservableListSource<string> EmpIDs;
         private DateTime OnDate;
 
         private static Mapper InitializeAutomapper()
@@ -44,7 +44,6 @@ namespace AKS.Payroll.Forms
                 cfg.CreateMap<Employee, EmployeeVM>();
                 cfg.CreateMap<Attendance, AttendanceVM>();
                 cfg.CreateMap<AttendanceVM, Attendance>();
-                
             });
             var mapper = new Mapper(config);
             return mapper;
@@ -64,19 +63,29 @@ namespace AKS.Payroll.Forms
 
         private void AttendanceForm_Load(object sender, EventArgs e)
         {
-            context = new  AzurePayrollDbContext();
-            context.Employees.Load();
-            if (cbAllEmployee.Checked)
-                lbEmployees.DataSource = context.Employees.Local.ToBindingList();
-            else
-                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c => c.EmployeeId).ToList();//.ToBindingList();
+            context = new AzurePayrollDbContext();
 
+            context.Employees.Load();
+            
+            if (cbAllEmployee.Checked)
+                lbEmployees.DataSource = context.Employees.Local.OrderBy(c => c.EmployeeId).ToList();
+            else
+                lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c => c.EmployeeId).ToList();
+            
+            //.ToBindingList();
+            lbEmployees.SelectedItems.Clear();
             Attendances = new ObservableListSource<AttendanceVM>();
 
             AddToList(context.Attendances.Where(c => c.OnDate.Month == OnDate.Month
-            && c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).ToList());
+            && c.OnDate.Year == OnDate.Year).OrderByDescending(c => c.OnDate).OrderBy(c => c.EmployeeId).ToList());
 
-            dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == context.Employees.Local.OrderBy(c => c.EmployeeId).First().EmployeeId).ToList();
+            dgvAttendances.DataSource = Attendances.Where(c => c.OnDate.Date == DateTime.Today).ToList();
+            tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();
+        }
+
+        private void UpdateGridView(DateTime onDate)
+        {
+            dgvAttendances.DataSource = Attendances.Where(c => c.OnDate.Date == onDate.Date).ToList();
             tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();
         }
 
@@ -106,12 +115,31 @@ namespace AKS.Payroll.Forms
         private void btnAddAttendance_Click(object sender, EventArgs e)
         {
             AttendanceEntryForm form = new AttendanceEntryForm();
-            form.ShowDialog();
+            form.ParentForm = this;
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("ok");
+                var newAttend = _mapper.Map<AttendanceVM>(form.SavedAtt);
+                newAttend.StaffName = form.EmployeeName;
+
+                if (form.SavedAtt.EntryStatus == EntryStatus.Added)
+                    Attendances.Add(newAttend);
+                else
+                {
+                    Attendances.Remove(Attendances.Where(c => c.AttendanceId == newAttend.AttendanceId).First());
+                    Attendances.Add(newAttend);
+                }
+                if (form.DeletedAttednance != null)
+                {
+                    Attendances.Remove(Attendances.Where(c => c.AttendanceId == form.DeletedAttednance).First());
+                }
+                UpdateGridView(newAttend.OnDate.Date);
+            }
         }
 
         private void cbAllEmployee_CheckStateChanged(object sender, EventArgs e)
         {
-
             if (cbAllEmployee.Checked)
                 lbEmployees.DataSource = context.Employees.Local.ToBindingList();
             else
@@ -121,14 +149,34 @@ namespace AKS.Payroll.Forms
 
         private void dgvAttendances_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var a = _mapper.Map<Attendance>( dgvAttendances.CurrentRow.DataBoundItem);
+            var a = _mapper.Map<Attendance>(dgvAttendances.CurrentRow.DataBoundItem);
 
             var x = new AttendanceEntryForm(a);
-            x.MdiParent = this.MdiParent;
-            x.Show();
-           
+            // x.MdiParent = this.MdiParent;
+            x.ParentForm = this;
+            if (x.ShowDialog() == DialogResult.OK)
+            {
+                if (x.SavedAtt != null)
+                {
+                    var newAttend = _mapper.Map<AttendanceVM>(x.SavedAtt);
+                    newAttend.StaffName = x.EmployeeName;
+                    if (x.SavedAtt.EntryStatus == EntryStatus.Added)
+                        Attendances.Add(newAttend);
+                    else
+                    {
+                        Attendances.Remove(Attendances.Where(c => c.AttendanceId == newAttend.AttendanceId).First());
+                        Attendances.Add(newAttend);
+                    }
+                }
+                else if (x.DeletedAttednance != null)
+                {
+                    Attendances.Remove(Attendances.Where(c => c.AttendanceId == x.DeletedAttednance).First());
+                }
+                UpdateGridView(DateTime.Today.Date);
+            }
         }
-        public void UpdateRecord(string empId, int attd , int mode)
+
+        public void UpdateRecord(string empId, int attd, int mode)
         {
             MessageBox.Show($"{empId}=>{attd}=>{mode}");
         }

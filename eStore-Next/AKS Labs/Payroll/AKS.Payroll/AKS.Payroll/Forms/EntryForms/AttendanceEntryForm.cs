@@ -1,6 +1,7 @@
 ﻿using AKS.ParyollSystem;
 using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
+using AKS.Shared.Payrolls.ViewModels;
 using System.Data;
 
 namespace AKS.Payroll.Forms.EntryForms
@@ -8,7 +9,10 @@ namespace AKS.Payroll.Forms.EntryForms
     public partial class AttendanceEntryForm : Form
     {
         private Attendance newAtt;
-
+        public AttendanceForm ParentForm;
+        public Attendance SavedAtt = null;
+        public string DeletedAttednance = null;
+        public string EmployeeName = null;
         private AzurePayrollDbContext db;
         private bool isNew { get; set; }
 
@@ -23,7 +27,7 @@ namespace AKS.Payroll.Forms.EntryForms
                     IsReadOnly = false,
                     OnDate = DateTime.Now,
                     EmployeeId = "",
-                    AttendanceId = "",                 
+                    AttendanceId = "",
                     Status = AttUnit.Present,
                     IsTailoring = false,
                     Remarks = "",
@@ -45,6 +49,7 @@ namespace AKS.Payroll.Forms.EntryForms
         {
             InitializeComponent();
             isNew = true;
+
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -66,13 +71,15 @@ namespace AKS.Payroll.Forms.EntryForms
                 {
                     ClearFiled();
                     isNew = false;
-                    MessageBox.Show("Attendance is saved","Alert");
+                    MessageBox.Show("Attendance is saved", "Alert");
                     btnAdd.Text = "Add";
+                    this.DialogResult=DialogResult.OK;
                     this.Close();
+
                 }
                 else
                 {
-                    MessageBox.Show("Some error occured while saving attednace, Kindly Try again","Error");
+                    MessageBox.Show("Some error occured while saving attednace, Kindly Try again", "Error");
                 }
             }
         }
@@ -81,22 +88,48 @@ namespace AKS.Payroll.Forms.EntryForms
         {
             try
             {
-                att.UserId = "WinFormUI";
-                if (isNew)
+                if (att.OnDate.Date > new DateTime(2022, 3, 31))
                 {
-                    att.AttendanceId = IdentityGenerator.GenerateAttendanceId(att);
-                    db.Attendances.Add(att);
-                }
-                else db.Attendances.Update(att);
+                    att.UserId = "WinFormUI";
+                    if (isNew)
+                    {
+                        att.EntryStatus = EntryStatus.Added;
+                        att.AttendanceId = IdentityGenerator.GenerateAttendanceId(att);
+                        db.Attendances.Add(att);
+                    }
+                    else
+                    {
 
-                int x = db.SaveChanges();
-                return x > 0;
+
+                        att.EntryStatus = EntryStatus.Updated;
+                        db.Attendances.Update(att);
+
+
+
+                    }
+
+                    int x = db.SaveChanges();
+                    if (x > 0)
+                    {
+                        SavedAtt = att;
+                        EmployeeName = cbxEmployees.Text;
+
+                    }
+                    return x > 0;
+                }
+                else
+                {
+                    MessageBox.Show("You cannot change/add attendance before 1st April 2022", "Accessed denied");
+                    return false;
+                }
+                
+                
             }
             catch (Exception ex)
             {
-                if(ex.InnerException.Message.ToLower().Contains("duplicate"))
-                MessageBox.Show($"Attendance for Current Employee for {att.OnDate} is already stored","Error");
-                
+                if (ex.InnerException.Message.ToLower().Contains("duplicate"))
+                    MessageBox.Show($"Attendance for Current Employee for {att.OnDate} is already stored", "Error");
+
                 return false;
             }
         }
@@ -121,11 +154,11 @@ namespace AKS.Payroll.Forms.EntryForms
             sl.Add("ARJ", "Aprajita Retails, Jamshedpur");
 
             cbxStatus.Items.AddRange(Enum.GetNames(typeof(AttUnit)));
-            
+
             cbxStores.DataSource = sl.ToList();
             cbxStores.DisplayMember = "Value";
             cbxStores.ValueMember = "Key";
-            
+
 
             DefaultValue();
         }
@@ -149,20 +182,25 @@ namespace AKS.Payroll.Forms.EntryForms
                                       MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
-                db.Attendances.Remove(newAtt);
-                if (db.SaveChanges() > 0)
+                 if(newAtt.OnDate.Date>new DateTime(2022, 3, 31))
                 {
-                    MessageBox.Show("Attendance is deleted!", "Delete");
-                    //var xy = ((AttendanceForm)this.ParentForm.MdiChildren.Where(c => c.Text == "Attednance Entry").First());
-                    //xy.UpdateRecord("Empid", 1, 1);
-                    this.Close();
+                    db.Attendances.Remove(newAtt);
+                    if (db.SaveChanges() > 0)
+                    {
+                        MessageBox.Show("Attendance is deleted!", "Delete");
+                        this.DeletedAttednance = newAtt.AttendanceId;
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    else MessageBox.Show("Faild to delete, please try again!", "Delete");
                 }
-                else MessageBox.Show("Faild to delete, please try again!", "Delete");
+                else
+                {
+                    MessageBox.Show("Attendace before 1st April 2022 cannot be deleted. You don't have accessed","Access Denied");
+                }
+               
             }
-            else
-            {
-                MessageBox.Show("Not Deleted");
-            }
+            
 
 
         }
@@ -176,7 +214,7 @@ namespace AKS.Payroll.Forms.EntryForms
             newAtt.EntryTime = txtEntryTime.Text;
             newAtt.EmployeeId = (string)cbxEmployees.SelectedValue;
             newAtt.IsTailoring = cbIsTailors.Checked;
-         
+
             return newAtt;
         }
 

@@ -334,9 +334,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<int>("Absent")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("BillableDays")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("CasualLeave")
                         .HasColumnType("int");
 

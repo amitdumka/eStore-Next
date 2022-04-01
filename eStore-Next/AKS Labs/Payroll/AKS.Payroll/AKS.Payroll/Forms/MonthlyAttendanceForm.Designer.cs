@@ -41,9 +41,13 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbEmployees = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnProcessAll = new System.Windows.Forms.Button();
-            this.btnSelectedEmployee = new System.Windows.Forms.Button();
+            this.pnlControlReports = new System.Windows.Forms.Panel();
+            this.btnVerifyAttendance = new System.Windows.Forms.Button();
+            this.btnPrintMissingAttendances = new System.Windows.Forms.Button();
+            this.pnlControlsAttendances = new System.Windows.Forms.Panel();
             this.btnCurrentMonth = new System.Windows.Forms.Button();
+            this.btnSelectedEmployee = new System.Windows.Forms.Button();
+            this.btnProcessAll = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -53,6 +57,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttendances)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.pnlControlReports.SuspendLayout();
+            this.pnlControlsAttendances.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -71,9 +77,9 @@
             // 
             this.groupBox4.Controls.Add(this.statusStrip1);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox4.Location = new System.Drawing.Point(152, 461);
+            this.groupBox4.Location = new System.Drawing.Point(174, 461);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(967, 68);
+            this.groupBox4.Size = new System.Drawing.Size(945, 68);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Status";
@@ -86,7 +92,7 @@
             this.tsslCountVaue});
             this.statusStrip1.Location = new System.Drawing.Point(3, 39);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(961, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(939, 26);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -106,9 +112,9 @@
             // 
             this.groupBox3.Controls.Add(this.tabControl1);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(152, 79);
+            this.groupBox3.Location = new System.Drawing.Point(174, 79);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(967, 450);
+            this.groupBox3.Size = new System.Drawing.Size(945, 450);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Attendances";
@@ -121,8 +127,10 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 23);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(961, 424);
+            this.tabControl1.Size = new System.Drawing.Size(939, 424);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.Enter += new System.EventHandler(this.tabControl1_Enter);
+            this.tabControl1.Leave += new System.EventHandler(this.tabControl1_Leave);
             // 
             // tabPage1
             // 
@@ -130,7 +138,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(953, 391);
+            this.tabPage1.Size = new System.Drawing.Size(931, 391);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Attendances";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -147,7 +155,7 @@
             this.dgvAttendances.ReadOnly = true;
             this.dgvAttendances.RowHeadersWidth = 51;
             this.dgvAttendances.RowTemplate.Height = 29;
-            this.dgvAttendances.Size = new System.Drawing.Size(947, 385);
+            this.dgvAttendances.Size = new System.Drawing.Size(925, 385);
             this.dgvAttendances.TabIndex = 0;
             // 
             // tabPage2
@@ -166,7 +174,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(0, 79);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(152, 450);
+            this.groupBox2.Size = new System.Drawing.Size(174, 450);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employee List";
@@ -180,16 +188,15 @@
             this.lbEmployees.Location = new System.Drawing.Point(3, 23);
             this.lbEmployees.MinimumSize = new System.Drawing.Size(100, 400);
             this.lbEmployees.Name = "lbEmployees";
-            this.lbEmployees.Size = new System.Drawing.Size(146, 424);
+            this.lbEmployees.Size = new System.Drawing.Size(168, 424);
             this.lbEmployees.TabIndex = 0;
             this.lbEmployees.ValueMember = "EmployeeId";
             this.lbEmployees.DoubleClick += new System.EventHandler(this.lbEmployees_DoubleClick);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnProcessAll);
-            this.groupBox1.Controls.Add(this.btnSelectedEmployee);
-            this.groupBox1.Controls.Add(this.btnCurrentMonth);
+            this.groupBox1.Controls.Add(this.pnlControlReports);
+            this.groupBox1.Controls.Add(this.pnlControlsAttendances);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -198,21 +205,68 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
             // 
-            // btnProcessAll
+            // pnlControlReports
             // 
-            this.btnProcessAll.AutoSize = true;
-            this.btnProcessAll.Location = new System.Drawing.Point(524, 36);
-            this.btnProcessAll.Name = "btnProcessAll";
-            this.btnProcessAll.Size = new System.Drawing.Size(104, 30);
-            this.btnProcessAll.TabIndex = 2;
-            this.btnProcessAll.Text = "Process All";
-            this.btnProcessAll.UseVisualStyleBackColor = true;
-            this.btnProcessAll.Click += new System.EventHandler(this.btnProcessAll_Click);
+            this.pnlControlReports.AutoSize = true;
+            this.pnlControlReports.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlControlReports.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.pnlControlReports.Controls.Add(this.btnVerifyAttendance);
+            this.pnlControlReports.Controls.Add(this.btnPrintMissingAttendances);
+            this.pnlControlReports.Location = new System.Drawing.Point(492, 17);
+            this.pnlControlReports.Name = "pnlControlReports";
+            this.pnlControlReports.Size = new System.Drawing.Size(299, 37);
+            this.pnlControlReports.TabIndex = 6;
+            // 
+            // btnVerifyAttendance
+            // 
+            this.btnVerifyAttendance.AutoSize = true;
+            this.btnVerifyAttendance.Location = new System.Drawing.Point(6, 4);
+            this.btnVerifyAttendance.Name = "btnVerifyAttendance";
+            this.btnVerifyAttendance.Size = new System.Drawing.Size(142, 30);
+            this.btnVerifyAttendance.TabIndex = 3;
+            this.btnVerifyAttendance.Text = "Verify Attendances";
+            this.btnVerifyAttendance.UseVisualStyleBackColor = true;
+            this.btnVerifyAttendance.Click += new System.EventHandler(this.btnVerifyAttendance_Click);
+            // 
+            // btnPrintMissingAttendances
+            // 
+            this.btnPrintMissingAttendances.AutoSize = true;
+            this.btnPrintMissingAttendances.Location = new System.Drawing.Point(154, 4);
+            this.btnPrintMissingAttendances.Name = "btnPrintMissingAttendances";
+            this.btnPrintMissingAttendances.Size = new System.Drawing.Size(142, 30);
+            this.btnPrintMissingAttendances.TabIndex = 4;
+            this.btnPrintMissingAttendances.Text = "Print Missing";
+            this.btnPrintMissingAttendances.UseVisualStyleBackColor = true;
+            this.btnPrintMissingAttendances.Click += new System.EventHandler(this.btnPrintMissingAttendances_Click);
+            // 
+            // pnlControlsAttendances
+            // 
+            this.pnlControlsAttendances.AutoSize = true;
+            this.pnlControlsAttendances.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlControlsAttendances.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlControlsAttendances.Controls.Add(this.btnCurrentMonth);
+            this.pnlControlsAttendances.Controls.Add(this.btnSelectedEmployee);
+            this.pnlControlsAttendances.Controls.Add(this.btnProcessAll);
+            this.pnlControlsAttendances.Location = new System.Drawing.Point(72, 18);
+            this.pnlControlsAttendances.Name = "pnlControlsAttendances";
+            this.pnlControlsAttendances.Size = new System.Drawing.Size(420, 36);
+            this.pnlControlsAttendances.TabIndex = 5;
+            // 
+            // btnCurrentMonth
+            // 
+            this.btnCurrentMonth.AutoSize = true;
+            this.btnCurrentMonth.Location = new System.Drawing.Point(3, 3);
+            this.btnCurrentMonth.Name = "btnCurrentMonth";
+            this.btnCurrentMonth.Size = new System.Drawing.Size(114, 30);
+            this.btnCurrentMonth.TabIndex = 0;
+            this.btnCurrentMonth.Text = "Current Month";
+            this.btnCurrentMonth.UseVisualStyleBackColor = true;
+            this.btnCurrentMonth.Click += new System.EventHandler(this.btnCurrentMonth_Click);
             // 
             // btnSelectedEmployee
             // 
             this.btnSelectedEmployee.AutoSize = true;
-            this.btnSelectedEmployee.Location = new System.Drawing.Point(372, 35);
+            this.btnSelectedEmployee.Location = new System.Drawing.Point(123, 3);
             this.btnSelectedEmployee.Name = "btnSelectedEmployee";
             this.btnSelectedEmployee.Size = new System.Drawing.Size(146, 30);
             this.btnSelectedEmployee.TabIndex = 1;
@@ -220,16 +274,18 @@
             this.btnSelectedEmployee.UseVisualStyleBackColor = true;
             this.btnSelectedEmployee.Click += new System.EventHandler(this.btnSelectedEmployee_Click);
             // 
-            // btnCurrentMonth
+            // btnProcessAll
             // 
-            this.btnCurrentMonth.AutoSize = true;
-            this.btnCurrentMonth.Location = new System.Drawing.Point(252, 35);
-            this.btnCurrentMonth.Name = "btnCurrentMonth";
-            this.btnCurrentMonth.Size = new System.Drawing.Size(114, 30);
-            this.btnCurrentMonth.TabIndex = 0;
-            this.btnCurrentMonth.Text = "Current Month";
-            this.btnCurrentMonth.UseVisualStyleBackColor = true;
-            this.btnCurrentMonth.Click += new System.EventHandler(this.btnCurrentMonth_Click);
+            this.btnProcessAll.AutoSize = true;
+            this.btnProcessAll.Enabled = false;
+            this.btnProcessAll.Location = new System.Drawing.Point(275, 3);
+            this.btnProcessAll.Name = "btnProcessAll";
+            this.btnProcessAll.Size = new System.Drawing.Size(142, 30);
+            this.btnProcessAll.TabIndex = 2;
+            this.btnProcessAll.Text = "Process All";
+            this.btnProcessAll.UseVisualStyleBackColor = true;
+            this.btnProcessAll.Visible = false;
+            this.btnProcessAll.Click += new System.EventHandler(this.btnProcessAll_Click);
             // 
             // MonthlyAttendanceForm
             // 
@@ -252,6 +308,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.pnlControlReports.ResumeLayout(false);
+            this.pnlControlReports.PerformLayout();
+            this.pnlControlsAttendances.ResumeLayout(false);
+            this.pnlControlsAttendances.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -274,5 +334,9 @@
         private ToolStripStatusLabel tsslCountVaue;
         private ListBox lbEmployees;
         private DataGridView dgvAttendances;
+        private Button btnVerifyAttendance;
+        private Button btnPrintMissingAttendances;
+        private Panel pnlControlsAttendances;
+        private Panel pnlControlReports;
     }
 }

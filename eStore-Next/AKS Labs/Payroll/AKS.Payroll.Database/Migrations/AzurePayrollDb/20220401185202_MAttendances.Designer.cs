@@ -4,16 +4,18 @@ using AKS.Payroll.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AKS.Payroll.Database.Migrations
+namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 {
-    [DbContext(typeof(LocalPayrollDbContext))]
-    partial class LocalPayrollDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AzurePayrollDbContext))]
+    [Migration("20220401185202_MAttendances")]
+    partial class MAttendances
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,7 @@ namespace AKS.Payroll.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Salesman", b =>
                 {

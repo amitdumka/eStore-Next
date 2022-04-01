@@ -57,8 +57,8 @@ namespace AKS.ParyollSystem
         public bool CalculateMonthlyAttendance(AzurePayrollDbContext db, string empId)
         {
             if (db == null) db = new AzurePayrollDbContext();
-            var yearList = db.Attendances.Where(c => c.EmployeeId == empId).Select(c => c.OnDate.Year).ToList();
-
+            var yearList = db.Attendances.Where(c => c.EmployeeId == empId).Select(c => c.OnDate.Year).Distinct().ToList();
+            //yearList.Distinct();
             foreach (var year in yearList)
             {
                 var attnds = db.Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Year == year).ToList();

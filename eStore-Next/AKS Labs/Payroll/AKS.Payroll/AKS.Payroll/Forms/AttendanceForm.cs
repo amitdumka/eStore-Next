@@ -119,7 +119,7 @@ namespace AKS.Payroll.Forms
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("ok");
+               
                 var newAttend = _mapper.Map<AttendanceVM>(form.SavedAtt);
                 newAttend.StaffName = form.EmployeeName;
 

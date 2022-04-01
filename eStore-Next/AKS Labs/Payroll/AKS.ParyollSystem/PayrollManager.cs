@@ -167,4 +167,19 @@ namespace AKS.ParyollSystem
             }
         }
     }
+
+    public class PayrollValidator
+    {
+        public void ValidateAttendances() { }
+        public void FindMissingAttendances() { }
+
+    }
+
+    //TODO: move to DTO's
+
+    public class MissingAttendance
+    {
+        public string EmployeeId { get; set; }
+        public DateTime OnDate { get; set; }
+    }
 }

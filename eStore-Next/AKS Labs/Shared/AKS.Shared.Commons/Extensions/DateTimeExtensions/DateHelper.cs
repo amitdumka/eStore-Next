@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace AKS.Shared.Commons.Extensions.DateTimeExtensions
@@ -106,14 +107,62 @@ namespace AKS.Shared.Commons.Extensions.DateTimeExtensions
     }
     public static class DateTimeExtensions
     {
+        public static IEnumerable<(int Month, int Year)> MonthsBetween(this DateTime startDate, DateTime endDate)
+        {
+            DateTime sDate, eDate;
+            if (endDate > startDate)
+            {
+                sDate = new DateTime(startDate.Year, startDate.Month, 1);
+                eDate = new DateTime(endDate.Year, endDate.Month, 1); ;
+            }
+            else
+            {
+                sDate = new DateTime(endDate.Year, endDate.Month, 1);
+                eDate = new DateTime(startDate.Year, startDate.Month, 1);
+            }
+
+            while (sDate <= eDate)
+            {
+                yield return (sDate.Month, sDate.Year);
+                sDate = sDate.AddMonths(1);
+            }
+        }
+
+        public static IEnumerable<(string Month, int Year)> MonthsNameBetween( this DateTime startDate, DateTime endDate)
+        {
+            DateTime iterator;
+            DateTime limit;
+
+            if (endDate > startDate)
+            {
+                iterator = new DateTime(startDate.Year, startDate.Month, 1);
+                limit = endDate;
+            }
+            else
+            {
+                iterator = new DateTime(endDate.Year, endDate.Month, 1);
+                limit = startDate;
+            }
+
+            var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+            while (iterator <= limit)
+            {
+                yield return (
+                    dateTimeFormat.GetMonthName(iterator.Month),
+                    iterator.Year
+                );
+
+                iterator = iterator.AddMonths(1);
+            }
+        }
         public static IEnumerable<DateTime> Range(this DateTime startDate, DateTime endDate)
         {
             return Enumerable.Range(0, (int)(endDate - startDate).TotalDays + 1)
                              .Select(i => startDate.AddDays(i));
         }
-        public static IEnumerable<DateTime> MissingDates(this DateTime startDate, DateTime endDate,List<DateTime> dates)
+        public static IEnumerable<DateTime> MissingDates(this DateTime startDate, DateTime endDate, List<DateTime> dates)
         {
-            return ( Enumerable.Range(0, (int)(endDate - startDate).TotalDays + 1)
+            return (Enumerable.Range(0, (int)(endDate - startDate).TotalDays + 1)
                              .Select(i => startDate.AddDays(i))).Except(dates);
         }
         public const String ISTTimeZone = "India Standard Time";

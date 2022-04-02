@@ -106,6 +106,16 @@ namespace AKS.Shared.Commons.Extensions.DateTimeExtensions
     }
     public static class DateTimeExtensions
     {
+        public static IEnumerable<DateTime> Range(this DateTime startDate, DateTime endDate)
+        {
+            return Enumerable.Range(0, (int)(endDate - startDate).TotalDays + 1)
+                             .Select(i => startDate.AddDays(i));
+        }
+        public static IEnumerable<DateTime> MissingDates(this DateTime startDate, DateTime endDate,List<DateTime> dates)
+        {
+            return ( Enumerable.Range(0, (int)(endDate - startDate).TotalDays + 1)
+                             .Select(i => startDate.AddDays(i))).Except(dates);
+        }
         public const String ISTTimeZone = "India Standard Time";
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 

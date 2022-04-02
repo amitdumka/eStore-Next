@@ -95,6 +95,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.testFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testFormToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -111,6 +113,7 @@
             this.windowsMenu,
             this.helpMenu,
             this.payrollToolStripMenuItem,
+            this.testFormToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
@@ -657,6 +660,21 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // testFormToolStripMenuItem
+            // 
+            this.testFormToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testFormToolStripMenuItem1});
+            this.testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
+            this.testFormToolStripMenuItem.Size = new System.Drawing.Size(96, 24);
+            this.testFormToolStripMenuItem.Text = "Operations";
+            // 
+            // testFormToolStripMenuItem1
+            // 
+            this.testFormToolStripMenuItem1.Name = "testFormToolStripMenuItem1";
+            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.testFormToolStripMenuItem1.Text = "TestForm";
+            this.testFormToolStripMenuItem1.Click += new System.EventHandler(this.testFormToolStripMenuItem1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -751,6 +769,8 @@
         private ToolStripMenuItem addPaymentToolStripMenuItem;
         private ToolStripMenuItem addReceiptToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem1;
+        private ToolStripMenuItem testFormToolStripMenuItem;
+        private ToolStripMenuItem testFormToolStripMenuItem1;
     }
 }
 

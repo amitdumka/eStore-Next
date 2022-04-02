@@ -167,17 +167,37 @@ namespace AKS.Payroll.Forms
 
         private void btnPrintMissingAttendances_Click(object sender, EventArgs e)
         {
+            PayrollValidator payrollValidator = new PayrollValidator();
+            if (lbEmployees.SelectedValue != null)
+            {
+                var empId = lbEmployees.SelectedValue.ToString();
+                MessageBox.Show(empId);
+                var emp = azureDb.Employees.Local.Where(c => c.EmployeeId == empId).FirstOrDefault();
+                var data = payrollValidator.FindMissingAttendances(azureDb, empId, emp.JoiningDate, emp.LeavingDate);
+                if (data != null && data.Found)
+                {
+                    string[] line = new string[data.MissingDates.Count];
+                    int i = 0;
+                    foreach (var item in data.MissingDates)
+                    {
+                        line[i++] = item.ToString();
+                    }
+                    string path = "C:\\SaveData\\" + empId.Replace("/", "-");
 
+                    File.WriteAllLines(path + ".txt", line);
+                    dataGridView1.DataSource = data.MissingDates.ToList();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Kindly select one Employee");
+            }
+           
         }
 
-        private void tabControl1_Leave(object sender, EventArgs e)
+        private void tcMonthlyAttendances_TabIndexChanged(object sender, EventArgs e)
         {
-            pnlControlsAttendances.Visible = false;
-        }
-
-        private void tabControl1_Enter(object sender, EventArgs e)
-        {
-            pnlControlsAttendances.Visible = true;
+            MessageBox.Show(sender.ToString()+"\n"+e.ToString()+"\n"+tcMonthlyAttendances.SelectedTab.Name);
         }
     }
 }

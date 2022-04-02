@@ -211,10 +211,12 @@ namespace AKS.ParyollSystem
                     {
                         // Missing Attendance.
                         missing.Found = true;
+
                         var days = db.Attendances.Where(c => c.EmployeeId == employeeId
-                        && c.OnDate.Year == month.Year && c.OnDate.Month == month.Month).Select(c => c.OnDate).OrderBy(c => c).ToList();
+                        && c.OnDate.Year == month.Year && c.OnDate.Month == month.Month).Select(c => c.OnDate.Date).OrderBy(c => c).ToList();
+
                         int noOyDays = DateTime.DaysInMonth(month.Year, month.Month);
-                        
+
                         missing.MissingDates.AddRange(new DateTime(month.Year, month.Month, 1)
                             .MissingDates(new DateTime(month.Year, month.Month, noOyDays), days).ToList());
                     }
@@ -237,6 +239,18 @@ namespace AKS.ParyollSystem
             else
             {
                 missing.Found = false;
+            }
+
+            if(missing.Found && endDate.Value.Date == DateTime.Today.Date)
+            {
+                //TODO: need to reduce 
+                var dates= endDate.Value.AddDays(1).Range(new DateTime(endDate.Value.Year, endDate.Value.Month, 
+                    DateTime.DaysInMonth(endDate.Value.Year,endDate.Value.Month))).ToList();
+                foreach (var date in dates)
+                {
+                    missing.MissingDates.Remove(date);
+                }
+               
             }
             return missing;
         }
@@ -262,19 +276,19 @@ namespace AKS.ParyollSystem
             DateTime sDate, eDate;
             if (endDate > startDate)
             {
-                sDate = new DateTime(startDate.Year,startDate.Month,1);
+                sDate = new DateTime(startDate.Year, startDate.Month, 1);
                 eDate = new DateTime(endDate.Year, endDate.Month, 1); ;
             }
             else
             {
-                sDate = new DateTime(endDate.Year, endDate.Month, 1); 
+                sDate = new DateTime(endDate.Year, endDate.Month, 1);
                 eDate = new DateTime(startDate.Year, startDate.Month, 1);
             }
             var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
             while (sDate <= eDate)
             {
                 yield return (sDate.Month, sDate.Year);
-                sDate= sDate.AddMonths(1);
+                sDate = sDate.AddMonths(1);
             }
         }
 

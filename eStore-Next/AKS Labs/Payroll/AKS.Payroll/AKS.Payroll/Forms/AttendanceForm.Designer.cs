@@ -38,14 +38,12 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dgvAttendances = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lbEmployees = new System.Windows.Forms.ListBox();
             this.employeeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lbEmployees = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbAllEmployee = new System.Windows.Forms.CheckBox();
             this.btnAddAttendance = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -143,8 +141,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.listBox2);
-            this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Controls.Add(this.lbEmployees);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(3, 77);
@@ -153,6 +149,10 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
+            // 
+            // employeeBindingSource
+            // 
+            this.employeeBindingSource.DataSource = typeof(AKS.Shared.Payroll.Models.Employee);
             // 
             // lbEmployees
             // 
@@ -168,10 +168,6 @@
             this.lbEmployees.TabIndex = 0;
             this.lbEmployees.ValueMember = "EmployeeId";
             this.lbEmployees.DoubleClick += new System.EventHandler(this.lbEmployees_DoubleClick);
-            // 
-            // employeeBindingSource
-            // 
-            this.employeeBindingSource.DataSource = typeof(AKS.Shared.Payroll.Models.Employee);
             // 
             // groupBox1
             // 
@@ -222,34 +218,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Add/Update";
             // 
-            // listBox1
-            // 
-            this.listBox1.DataSource = this.employeeBindingSource;
-            this.listBox1.DisplayMember = "StaffName";
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 20;
-            this.listBox1.Location = new System.Drawing.Point(3, 23);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(128, 434);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.ValueMember = "EmployeeId";
-            // 
-            // listBox2
-            // 
-            this.listBox2.DataSource = this.employeeBindingSource;
-            this.listBox2.DisplayMember = "StaffName";
-            this.listBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 20;
-            this.listBox2.Location = new System.Drawing.Point(3, 23);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(128, 434);
-            this.listBox2.TabIndex = 2;
-            this.listBox2.ValueMember = "EmployeeId";
-            // 
             // AttendanceForm
             // 
             this.AcceptButton = this.btnAddAttendance;
@@ -296,7 +264,5 @@
         private Button btnAddAttendance;
         private BindingSource employeeBindingSource;
         private CheckBox cbAllEmployee;
-        private ListBox listBox2;
-        private ListBox listBox1;
     }
 }

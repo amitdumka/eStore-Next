@@ -66,5 +66,14 @@ namespace AKS.ParyollSystem
             string id = $"{on.Year}/{on.Month}/{empid}";
             return id;
         }
+        public static string GenerateSalaryPayment(DateTime on, string storeid, int count)
+        {
+            string c = "";
+            if (++count < 10) c = "000" + count;
+            else if (count > 9) c = "00" + count;
+            else if (count > 99) c = "0" + count; else c = count + "";
+
+            return $"SP-{storeid}/{on.Year}/{on.Month}/{on.Day}/{c}";
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
+using AKS.Payroll.Forms.EntryForms;
 using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace AKS.Payroll
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
         }
+      
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             UpdateGridView("",DateTime.Now);
@@ -46,7 +48,7 @@ namespace AKS.Payroll
 
             dgvPayments.DataSource = Payments.ToBindingList();
 
-            dgvPayments.Columns[0].Visible = false;
+            //dgvPayments.Columns[0].Visible = false;
             dgvPayments.Columns["EmployeeId"].Visible = false;
             dgvPayments.Columns["StoreId"].Visible = false;
 
@@ -96,6 +98,84 @@ namespace AKS.Payroll
             else
                 lbEmoloyees.DataSource = azureDb.Employees.Local.Where(c => c.IsWorking).ToList();
             lbEmoloyees.Refresh();
+        }
+
+        private void btnAddPayment_Click(object sender, EventArgs e)
+        {
+            SalaryPaymentEntryForm x = new ();
+            x.ParentForm = this;
+            if (x.ShowDialog() == DialogResult.OK)
+            {
+                if (x.SavedPayment != null)
+                {
+                    var newAttend = DMMapper.Mapper.Map<SalaryPaymentVM>(x.SavedPayment);
+                    newAttend.StaffName = x.EmployeeName;
+
+                    if (x.SavedPayment.EntryStatus == EntryStatus.Added)
+                        Payments.Add(newAttend);
+                    else
+                    {
+                        Payments.Remove(Payments.Where(c => c.SalaryPaymentId == newAttend.SalaryPaymentId).First());
+                        Payments.Add(newAttend);
+                    }
+                }
+                else if (x.DeletedPayment != null)
+                {
+                    Payments.Remove(Payments.Where(c => c.SalaryPaymentId == x.DeletedPayment).First());
+                }
+                UpdateGridView("", DateTime.Now);
+            }
+            else
+            {
+                MessageBox.Show( DialogResult.ToString(),"else");
+            }
+        }
+
+        private void dgvPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var a = DMMapper.Mapper.Map<SalaryPayment>(dgvPayments.CurrentRow.DataBoundItem);
+
+            var x = new SalaryPaymentEntryForm(a)
+            {
+                
+                ParentForm = this
+            };
+
+            if (x.ShowDialog() == DialogResult.OK)
+            {
+                if (x.SavedPayment != null)
+                {
+                    var newAttend = DMMapper.Mapper.Map<SalaryPaymentVM>(x.SavedPayment);
+                    newAttend.StaffName = x.EmployeeName;
+
+                    if (x.SavedPayment.EntryStatus == EntryStatus.Added)
+                        Payments.Add(newAttend);
+                    else
+                    {
+                        Payments.Remove(Payments.Where(c => c.SalaryPaymentId == newAttend.SalaryPaymentId).First());
+                        Payments.Add(newAttend);
+                    }
+                }
+                else if (x.DeletedPayment != null)
+                {
+                    Payments.Remove(Payments.Where(c => c.SalaryPaymentId == x.DeletedPayment).First());
+                }
+                UpdateGridView("", DateTime.Now);
+            }
+            else if(x.DialogResult == DialogResult.Yes)
+            {
+                if (x.DeletedPayment != null)
+                {
+                    Payments.Remove(Payments.Where(c => c.SalaryPaymentId == x.DeletedPayment).First());
+                }
+                UpdateGridView("", DateTime.Now);
+                //MessageBox.Show("YES");
+            }
+            else
+            {
+                MessageBox.Show(DialogResult.ToString());
+            }
+            
         }
     }
 }

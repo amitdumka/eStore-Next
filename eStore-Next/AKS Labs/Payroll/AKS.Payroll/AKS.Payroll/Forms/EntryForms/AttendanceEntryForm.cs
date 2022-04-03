@@ -173,7 +173,7 @@ namespace AKS.Payroll.Forms.EntryForms
             cbxStatus.SelectedIndex = (int)newAtt.Status;
             cbxStores.SelectedValue = newAtt.StoreId;
             cbIsTailors.Checked = newAtt.IsTailoring;
-            DisplayData();
+            
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -220,10 +220,10 @@ namespace AKS.Payroll.Forms.EntryForms
             return newAtt;
         }
 
-        private void DisplayData()
-        {
-            label8.Text = $"OnDate:{newAtt.OnDate.Date}\t Status:{newAtt.Status}\nRmk:{newAtt.Remarks}\tET:{newAtt.EntryTime}\n Emp:{newAtt.EmployeeId}\n SId:{newAtt.StoreId}\n";
-        }
+        //private void DisplayData()
+        //{
+        //    label8.Text = $"OnDate:{newAtt.OnDate.Date}\t Status:{newAtt.Status}\nRmk:{newAtt.Remarks}\tET:{newAtt.EntryTime}\n Emp:{newAtt.EmployeeId}\n SId:{newAtt.StoreId}\n";
+        //}
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

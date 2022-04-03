@@ -513,33 +513,6 @@
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>387, 101</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 20</value>
-  </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -568,7 +541,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbxStores" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="dtpOnDate" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbxEmployees" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbxStatus" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="txtEntryTime" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtRemarks" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbIsTailors" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label8" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="cbxStores" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="dtpOnDate" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbxEmployees" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cbxStatus" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="txtEntryTime" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="txtRemarks" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="cbIsTailors" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label7" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

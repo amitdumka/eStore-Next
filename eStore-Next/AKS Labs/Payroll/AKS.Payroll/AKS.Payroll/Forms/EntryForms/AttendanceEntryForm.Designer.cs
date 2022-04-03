@@ -50,7 +50,6 @@
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.cbIsTailors = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -119,7 +118,6 @@
             this.tableLayoutPanel1.Controls.Add(this.txtRemarks, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbIsTailors, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label7, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label8, 3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // label1
@@ -209,11 +207,6 @@
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
             // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
             // AttendanceEntryForm
             // 
             this.AcceptButton = this.btnAdd;
@@ -258,6 +251,5 @@
         private Button btnAdd;
         private Button btnCancel;
         private Button btnDelete;
-        private Label label8;
     }
 }

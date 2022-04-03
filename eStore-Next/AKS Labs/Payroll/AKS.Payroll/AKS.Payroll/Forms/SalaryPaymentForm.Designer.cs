@@ -107,6 +107,7 @@
             this.dgvPayments.RowTemplate.Height = 29;
             this.dgvPayments.Size = new System.Drawing.Size(886, 442);
             this.dgvPayments.TabIndex = 0;
+            this.dgvPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPayments_CellContentClick);
             // 
             // tpReciepts
             // 
@@ -207,9 +208,10 @@
             // 
             this.cbAllEmployees.AutoSize = true;
             this.cbAllEmployees.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAllEmployees.Location = new System.Drawing.Point(955, 28);
+            this.cbAllEmployees.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cbAllEmployees.Location = new System.Drawing.Point(977, 23);
             this.cbAllEmployees.Name = "cbAllEmployees";
-            this.cbAllEmployees.Size = new System.Drawing.Size(125, 24);
+            this.cbAllEmployees.Size = new System.Drawing.Size(125, 51);
             this.cbAllEmployees.TabIndex = 3;
             this.cbAllEmployees.Text = "All Empolyees";
             this.cbAllEmployees.UseVisualStyleBackColor = true;
@@ -242,6 +244,7 @@
             this.btnAddPayment.TabIndex = 0;
             this.btnAddPayment.Text = "Payment";
             this.btnAddPayment.UseVisualStyleBackColor = true;
+            this.btnAddPayment.Click += new System.EventHandler(this.btnAddPayment_Click);
             // 
             // SalaryPaymentForm
             // 
@@ -250,7 +253,7 @@
             this.ClientSize = new System.Drawing.Size(1105, 584);
             this.Controls.Add(this.panel1);
             this.Name = "SalaryPaymentForm";
-            this.Text = "SalaryPaymentForm";
+            this.Text = "Salary Payment/Receipts";
             this.Load += new System.EventHandler(this.SalaryPaymentForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

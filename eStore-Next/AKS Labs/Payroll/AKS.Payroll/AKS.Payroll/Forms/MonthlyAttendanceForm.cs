@@ -75,7 +75,7 @@ namespace AKS.Payroll.Forms
 
         private void btnProcessAll_Click(object sender, EventArgs e)
         {
-            PayrollManager pm = new PayrollManager();
+            PayrollManager pm = new();
 
             pm.ProcessMonthlyAttendanceForAllEmployee(null);
         }
@@ -167,7 +167,7 @@ namespace AKS.Payroll.Forms
 
         private void btnPrintMissingAttendances_Click(object sender, EventArgs e)
         {
-            PayrollValidator payrollValidator = new PayrollValidator();
+            PayrollValidator payrollValidator = new();
             if (lbEmployees.SelectedValue != null)
             {
                 var empId = lbEmployees.SelectedValue.ToString();

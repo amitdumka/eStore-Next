@@ -114,7 +114,7 @@ namespace AKS.Payroll.Forms
 
         private void btnAddAttendance_Click(object sender, EventArgs e)
         {
-            AttendanceEntryForm form = new AttendanceEntryForm();
+            AttendanceEntryForm form = new();
             form.ParentForm = this;
 
             if (form.ShowDialog() == DialogResult.OK)
@@ -151,9 +151,11 @@ namespace AKS.Payroll.Forms
         {
             var a = _mapper.Map<Attendance>(dgvAttendances.CurrentRow.DataBoundItem);
 
-            var x = new AttendanceEntryForm(a);
-            // x.MdiParent = this.MdiParent;
-            x.ParentForm = this;
+            var x = new AttendanceEntryForm(a)
+            {
+                // x.MdiParent = this.MdiParent;
+                ParentForm = this
+            };
             if (x.ShowDialog() == DialogResult.OK)
             {
                 if (x.SavedAtt != null)
@@ -176,9 +178,9 @@ namespace AKS.Payroll.Forms
             }
         }
 
-        public void UpdateRecord(string empId, int attd, int mode)
-        {
-            MessageBox.Show($"{empId}=>{attd}=>{mode}");
-        }
+        //public void UpdateRecord(string empId, int attd, int mode)
+        //{
+        //    MessageBox.Show($"{empId}=>{attd}=>{mode}");
+        //}
     }
 }

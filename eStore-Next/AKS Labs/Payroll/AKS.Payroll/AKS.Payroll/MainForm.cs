@@ -24,17 +24,21 @@ namespace AKS.Payroll
 
         private void ShowNewForm(object sender, EventArgs e)
         {
-            Form childForm = new Form();
-            childForm.MdiParent = this;
-            childForm.Text = "Window " + childFormNumber++;
+            Form childForm = new()
+            {
+                MdiParent = this,
+                Text = "Window " + childFormNumber++
+            };
             childForm.Show();
         }
 
         private void OpenFile(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            OpenFileDialog openFileDialog = new()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            };
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 string FileName = openFileDialog.FileName;
@@ -43,12 +47,14 @@ namespace AKS.Payroll
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            SaveFileDialog saveFileDialog = new()
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            };
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                string FileName = saveFileDialog.FileName;
+                //string FileName = saveFileDialog.FileName;
             }
         }
 

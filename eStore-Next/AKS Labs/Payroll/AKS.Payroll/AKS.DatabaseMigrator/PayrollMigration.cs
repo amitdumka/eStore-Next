@@ -44,7 +44,7 @@ namespace AKS.DatabaseMigrator
                     SalesmanId = "SMN/2016/" + s.SalesmanId,
                     EntryStatus = s.EntryStatus
                 };
-                man.EmployeeId = String.IsNullOrEmpty(s.EmployeeId.ToString()) ? "n/a" : s.EmployeeId.ToString();
+                man.EmployeeId = string.IsNullOrEmpty(s.EmployeeId.ToString()) ? "n/a" : s.EmployeeId.ToString();
 
                 AKS.Salesmen.Add(man);
             }
@@ -96,7 +96,7 @@ namespace AKS.DatabaseMigrator
             {
                 AKS.Shared.Payroll.Models.Employee nEmp = new()
                 {
-                    EmployeeId = $"ARD/{emp.JoiningDate.Year}/{emp.Category.ToString()}/{emp.EmployeeId}",
+                    EmployeeId = $"ARD/{emp.JoiningDate.Year}/{emp.Category}/{emp.EmployeeId}",
                     EmpId = emp.EmployeeId,
                     AddressLine = emp.Address,
                     Category = emp.Category,
@@ -247,16 +247,17 @@ namespace AKS.DatabaseMigrator
                         {
                             AKS.Attendances.Add(Attendance);
                         }
-                        catch (Exception ex)
+                        catch (Exception  )
                         {
                             errorid += Attendance.OnDate.ToString() + "\n";
                             AKS.Attendances.Remove(Attendance);
                             missed++;
                         }
                     }
-                    if (missed > 0)
-                        AKS.Attendances.Local.Distinct();
-                    int ctr = AKS.Attendances.Local.Count();
+                    //TODO: Check if it is effecting intensions
+                    //if (missed > 0)
+                    //    AKS.Attendances.Local.Distinct();
+                    int ctr = AKS.Attendances.Local.Count;
                     int c = AKS.SaveChanges();
                     Console.WriteLine(c);
                     if (c != attd.Count)

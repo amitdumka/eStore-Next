@@ -29,7 +29,7 @@ namespace AKS.Payroll
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-
+            UpdateGridView("",DateTime.Now);
         }
         private void LoadData()
         {
@@ -41,8 +41,8 @@ namespace AKS.Payroll
             lbEmoloyees.ValueMember = "EmployeeId";
             lbEmoloyees.DisplayMember = "StaffName";
 
-            UpdateSalaryPaymentList(azureDb.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year
-            && c.OnDate.Month == DateTime.Today.Month).ToList());
+            UpdateSalaryPaymentList(azureDb.SalaryPayment.Include(c=>c.Employee).Where(c => c.OnDate.Year == DateTime.Today.Year
+            ).ToList());
 
             dgvPayments.DataSource = Payments.ToBindingList();
 
@@ -60,12 +60,42 @@ namespace AKS.Payroll
 
             }
             if (Payments != null && Payments.Count > 0)
-                Payments.Distinct();
+              Payments.Distinct();
         }
         private void SalaryPaymentForm_Load(object sender, EventArgs e)
         {
             DMMapper.InitializeAutomapper();
             LoadData();
+        }
+
+        private void lbEmoloyees_DoubleClick(object sender, EventArgs e)
+        {
+            var x = ((System.Windows.Forms.ListBox)sender);
+            UpdateGridView(x.SelectedValue.ToString(), DateTime.Now);
+        }
+
+        private void UpdateGridView(string empId, DateTime date)
+        {
+            if (string.IsNullOrEmpty(empId)){
+                dgvPayments.DataSource = Payments.ToBindingList();
+            }
+            else if(!Payments.Any(c => c.EmployeeId == empId))
+            {
+                UpdateSalaryPaymentList(azureDb.SalaryPayment.Where(c=>c.EmployeeId == empId).ToList());
+                dgvPayments.DataSource = Payments.Where(c => c.EmployeeId == empId).ToList();
+            }
+            else
+            dgvPayments.DataSource = Payments.Where(c => c.EmployeeId == empId).ToList();
+
+        }
+
+        private void cbAllEmployees_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (cbAllEmployees.Checked)
+                lbEmoloyees.DataSource = azureDb.Employees.Local.ToBindingList();
+            else
+                lbEmoloyees.DataSource = azureDb.Employees.Local.Where(c => c.IsWorking).ToList();
+            lbEmoloyees.Refresh();
         }
     }
 }

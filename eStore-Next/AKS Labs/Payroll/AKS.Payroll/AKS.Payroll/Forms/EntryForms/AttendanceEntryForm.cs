@@ -9,17 +9,17 @@ namespace AKS.Payroll.Forms.EntryForms
     public partial class AttendanceEntryForm : Form
     {
         private Attendance newAtt;
-        public AttendanceForm ParentForm;
-        public Attendance SavedAtt = null;
-        public string DeletedAttednance = null;
-        public string EmployeeName = null;
+        public new AttendanceForm ParentForm;
+        public Attendance SavedAtt ;
+        public string DeletedAttednance ;
+        public string EmployeeName;
         private AzurePayrollDbContext db;
-        private bool isNew { get; set; }
+        private bool IsNew { get; set; }
 
         private void LaxyInit()
         {
             db = new AzurePayrollDbContext();
-            if (isNew)
+            if (IsNew)
                 newAtt = new Attendance
                 {
                     EntryStatus = EntryStatus.Added,
@@ -40,7 +40,7 @@ namespace AKS.Payroll.Forms.EntryForms
         public AttendanceEntryForm(Attendance att)
         {
             InitializeComponent();
-            isNew = false;
+            IsNew = false;
             newAtt = att;
             newAtt.StoreId = att.StoreId;
             btnAdd.Text = "Edit";
@@ -48,7 +48,7 @@ namespace AKS.Payroll.Forms.EntryForms
         public AttendanceEntryForm()
         {
             InitializeComponent();
-            isNew = true;
+            IsNew = true;
 
         }
 
@@ -57,20 +57,20 @@ namespace AKS.Payroll.Forms.EntryForms
             if (btnAdd.Text == "Add")
             {
                 ClearFiled();
-                isNew = true;
+                IsNew = true;
                 btnAdd.Text = "Save";
             }
             else if (btnAdd.Text == "Edit")
             {
                 btnAdd.Text = "Save";
-                isNew = false;
+                IsNew = false;
             }
             else if (btnAdd.Text == "Save")
             {
                 if (SaveAttendance(ReadFormData()))
                 {
                     ClearFiled();
-                    isNew = false;
+                    IsNew = false;
                     MessageBox.Show("Attendance is saved", "Alert");
                     btnAdd.Text = "Add";
                     this.DialogResult=DialogResult.OK;
@@ -91,7 +91,7 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (att.OnDate.Date > new DateTime(2022, 3, 31))
                 {
                     att.UserId = "WinFormUI";
-                    if (isNew)
+                    if (IsNew)
                     {
                         att.EntryStatus = EntryStatus.Added;
                         att.AttendanceId = IdentityGenerator.GenerateAttendanceId(att);
@@ -149,9 +149,11 @@ namespace AKS.Payroll.Forms.EntryForms
             var empList = db.Employees.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName, c.IsTailors }).ToList();
             cbxEmployees.DataSource = empList;
 
-            var sl = new Dictionary<string, string>();
-            sl.Add("ARD", "Aprajita Retails, Dumka");
-            sl.Add("ARJ", "Aprajita Retails, Jamshedpur");
+            var sl = new Dictionary<string, string>
+            {
+                { "ARD", "Aprajita Retails, Dumka" },
+                { "ARJ", "Aprajita Retails, Jamshedpur" }
+            };
 
             cbxStatus.Items.AddRange(Enum.GetNames(typeof(AttUnit)));
 

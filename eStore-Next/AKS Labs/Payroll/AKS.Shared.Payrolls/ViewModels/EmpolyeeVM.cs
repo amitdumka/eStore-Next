@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Payrolls.ViewModels
 {
@@ -108,4 +109,61 @@ namespace AKS.Shared.Payrolls.ViewModels
         public int Sunday { get; set; }
         public int WeeklyLeave { get; set; }
     }
+
+
+
+    public class SalaryPaymentVM 
+    {
+        public string SalaryPaymentId { get; set; }
+
+        [Display(Name = "Staff Name")]
+        public string EmployeeId { get; set; }
+
+        public string StaffName { get; set; }
+
+        [Display(Name = "Salary/Year(021992)")]
+        public int SalaryMonth { get; set; }
+
+        [Display(Name = "Payment Reason")]
+        public SalaryComponet SalaryComponet { get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Payment Date")]
+        public DateTime OnDate { get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal Amount { get; set; }
+
+        [Display(Name = "Payment Mode")]
+        public PayMode PayMode { get; set; }
+
+        public string Details { get; set; }
+        public string StoreId { get; set; }
+
+    }
+    public class StaffAdvanceReceiptVM
+    {
+        [Key]
+        public string StaffAdvanceReceiptId { get; set; }
+
+        [Display(Name = "Staff Name")]
+        public string EmployeeId { get; set; }
+
+        public string StaffName{ get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Receipt Date")]
+        public DateTime ReceiptDate { get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal Amount { get; set; }
+
+        [Display(Name = "Payment Mode")]
+        public PayMode PayMode { get; set; }
+
+        public string Details { get; set; }
+        public string StoreId { get; set; }
+    }
+
+
 }

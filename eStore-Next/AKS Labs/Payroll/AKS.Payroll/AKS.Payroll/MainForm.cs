@@ -158,7 +158,7 @@ namespace AKS.Payroll
 
         private void paymentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            LoadForm(new SalaryPaymentForm());
         }
 
         private void recieptToolStripMenuItem_Click(object sender, EventArgs e)

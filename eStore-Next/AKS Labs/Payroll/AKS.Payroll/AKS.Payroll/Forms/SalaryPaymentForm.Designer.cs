@@ -79,6 +79,9 @@
             this.tcSalaryPayments.SelectedIndex = 0;
             this.tcSalaryPayments.Size = new System.Drawing.Size(900, 481);
             this.tcSalaryPayments.TabIndex = 3;
+            this.tcSalaryPayments.SelectedIndexChanged += new System.EventHandler(this.tcSalaryPayments_SelectedIndexChanged);
+            this.tcSalaryPayments.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tcSalaryPayments_Selecting);
+            this.tcSalaryPayments.Selected += new System.Windows.Forms.TabControlEventHandler(this.tcSalaryPayments_Selected);
             // 
             // tpPayment
             // 
@@ -134,6 +137,7 @@
             this.dgvReceipts.RowTemplate.Height = 29;
             this.dgvReceipts.Size = new System.Drawing.Size(886, 442);
             this.dgvReceipts.TabIndex = 0;
+            this.dgvReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReceipts_CellContentClick);
             // 
             // tpReports
             // 
@@ -235,6 +239,7 @@
             this.btnAddReciept.TabIndex = 1;
             this.btnAddReciept.Text = "Reciept";
             this.btnAddReciept.UseVisualStyleBackColor = true;
+            this.btnAddReciept.Click += new System.EventHandler(this.btnAddReciept_Click);
             // 
             // btnAddPayment
             // 

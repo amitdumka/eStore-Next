@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -104,6 +105,7 @@ namespace AKS.Payroll.Database
         public DbSet<Store> Stores { get; set; }
 
         public DbSet<Salesman> Salesmen { get; set; }
+        public DbSet<LocalUser> LocalUsers { get; set; }
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

@@ -186,5 +186,10 @@ namespace AKS.Payroll
         {
             LoadForm(new TestForm());
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new AboutBox1());
+        }
     }
 }

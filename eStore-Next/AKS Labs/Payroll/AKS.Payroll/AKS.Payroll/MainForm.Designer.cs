@@ -416,41 +416,44 @@
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(55, 24);
             this.helpMenu.Text = "&Help";
-            this.helpMenu.Visible = false;
             // 
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.contentsToolStripMenuItem.Text = "&Contents";
+            this.contentsToolStripMenuItem.Visible = false;
             // 
             // indexToolStripMenuItem
             // 
             this.indexToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indexToolStripMenuItem.Image")));
             this.indexToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.indexToolStripMenuItem.Text = "&Index";
+            this.indexToolStripMenuItem.Visible = false;
             // 
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("searchToolStripMenuItem.Image")));
             this.searchToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.searchToolStripMenuItem.Text = "&Search";
+            this.searchToolStripMenuItem.Visible = false;
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(204, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(221, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.aboutToolStripMenuItem.Text = "&About ... ...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // payrollToolStripMenuItem
             // 
@@ -561,7 +564,7 @@
             // testFormToolStripMenuItem1
             // 
             this.testFormToolStripMenuItem1.Name = "testFormToolStripMenuItem1";
-            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(152, 26);
             this.testFormToolStripMenuItem1.Text = "TestForm";
             this.testFormToolStripMenuItem1.Visible = false;
             this.testFormToolStripMenuItem1.Click += new System.EventHandler(this.testFormToolStripMenuItem1_Click);

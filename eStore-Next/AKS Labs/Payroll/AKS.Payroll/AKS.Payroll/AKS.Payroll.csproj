@@ -7,6 +7,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>0a708b45-aa74-4f5f-8d18-9ec3fdf24b5f</UserSecretsId>
+    <Description>AKS Payroll system is Payroll System Developed for Aprajita Retails, Dumka</Description>
+    <Copyright>AKS Labs(India)</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

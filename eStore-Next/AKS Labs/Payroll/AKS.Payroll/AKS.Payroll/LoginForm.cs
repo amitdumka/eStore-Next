@@ -1,3 +1,5 @@
+using AKS.Payroll.Ops;
+
 namespace AKS.Payroll
 {
     public partial class LoginForm : Form
@@ -19,8 +21,15 @@ namespace AKS.Payroll
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            new MainForm().Show();
-            this.Hide();
+            if (InternetStatus.IsConnectedToInternet())
+            {
+                new MainForm().Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Kindly check Internet Connection! before trying again!.");
+            }
         }
     }
 }

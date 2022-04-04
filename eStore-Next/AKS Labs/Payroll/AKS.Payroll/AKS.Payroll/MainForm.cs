@@ -133,6 +133,7 @@ namespace AKS.Payroll
         private void salaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //LoadForm(new )
+            LoadForm(new SalaryForm());
         }
 
         private void monthlyAttendanceToolStripMenuItem_Click(object sender, EventArgs e)

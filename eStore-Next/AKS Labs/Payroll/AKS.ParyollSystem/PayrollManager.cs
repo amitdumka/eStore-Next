@@ -1,6 +1,5 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-using System.Globalization;
 
 namespace AKS.ParyollSystem
 {
@@ -101,6 +100,7 @@ namespace AKS.ParyollSystem
                 }
             }
             int saveRecord = db.SaveChanges();
+            db.Dispose();
             if (saveRecord > 0 && (yearList.Count * 12) == saveRecord) return true; else return false;
         }
 
@@ -113,9 +113,11 @@ namespace AKS.ParyollSystem
         {
             if (db == null) db = new AzurePayrollDbContext();
             var attL = db.Attendances.Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
+      
             if (attL.Count > 0)
             {
                 var empIdList = attL.Select(c => c.EmployeeId).Distinct().ToList();
+            
                 foreach (var empId in empIdList)
                 {
                     var attdList = attL.Where(c => c.EmployeeId == empId).ToList();
@@ -143,10 +145,11 @@ namespace AKS.ParyollSystem
 
                     if (!ma.Valid)
                         ma.Remarks += $"#Error#";
-                    if (db.MonthlyAttendances.Find(ma.MonthlyAttendanceId) != null)
+                    if (db.MonthlyAttendances.Where(c => c.MonthlyAttendanceId == ma.MonthlyAttendanceId).Count() > 0)
 
                         db.MonthlyAttendances.Update(ma);
-                    else db.MonthlyAttendances.Add(ma);
+                    else
+                        db.MonthlyAttendances.Add(ma);
                 }
                 int saveRecord = db.SaveChanges();
                 if (saveRecord > 0 && empIdList.Count == saveRecord) return true; else return false;

@@ -42,10 +42,12 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbEmployees = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbAllRecord = new System.Windows.Forms.CheckBox();
             this.pnlControlReports = new System.Windows.Forms.Panel();
             this.btnVerifyAttendance = new System.Windows.Forms.Button();
             this.btnPrintMissingAttendances = new System.Windows.Forms.Button();
             this.pnlControlsAttendances = new System.Windows.Forms.Panel();
+            this.btnPrevMonth = new System.Windows.Forms.Button();
             this.btnCurrentMonth = new System.Windows.Forms.Button();
             this.btnSelectedEmployee = new System.Windows.Forms.Button();
             this.btnProcessAll = new System.Windows.Forms.Button();
@@ -213,6 +215,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbAllRecord);
             this.groupBox1.Controls.Add(this.pnlControlReports);
             this.groupBox1.Controls.Add(this.pnlControlsAttendances);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -223,6 +226,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
             // 
+            // cbAllRecord
+            // 
+            this.cbAllRecord.AutoSize = true;
+            this.cbAllRecord.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cbAllRecord.Location = new System.Drawing.Point(1016, 23);
+            this.cbAllRecord.Name = "cbAllRecord";
+            this.cbAllRecord.Size = new System.Drawing.Size(100, 53);
+            this.cbAllRecord.TabIndex = 7;
+            this.cbAllRecord.Text = "All Record";
+            this.cbAllRecord.UseVisualStyleBackColor = true;
+            // 
             // pnlControlReports
             // 
             this.pnlControlReports.AutoSize = true;
@@ -230,7 +244,7 @@
             this.pnlControlReports.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pnlControlReports.Controls.Add(this.btnVerifyAttendance);
             this.pnlControlReports.Controls.Add(this.btnPrintMissingAttendances);
-            this.pnlControlReports.Location = new System.Drawing.Point(492, 17);
+            this.pnlControlReports.Location = new System.Drawing.Point(625, 17);
             this.pnlControlReports.Name = "pnlControlReports";
             this.pnlControlReports.Size = new System.Drawing.Size(299, 37);
             this.pnlControlReports.TabIndex = 6;
@@ -259,16 +273,27 @@
             // 
             // pnlControlsAttendances
             // 
-            this.pnlControlsAttendances.AutoSize = true;
+            this.pnlControlsAttendances.AutoScroll = true;
             this.pnlControlsAttendances.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlControlsAttendances.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlControlsAttendances.Controls.Add(this.btnPrevMonth);
             this.pnlControlsAttendances.Controls.Add(this.btnCurrentMonth);
             this.pnlControlsAttendances.Controls.Add(this.btnSelectedEmployee);
             this.pnlControlsAttendances.Controls.Add(this.btnProcessAll);
-            this.pnlControlsAttendances.Location = new System.Drawing.Point(72, 18);
+            this.pnlControlsAttendances.Location = new System.Drawing.Point(60, 17);
             this.pnlControlsAttendances.Name = "pnlControlsAttendances";
-            this.pnlControlsAttendances.Size = new System.Drawing.Size(420, 36);
+            this.pnlControlsAttendances.Size = new System.Drawing.Size(559, 38);
             this.pnlControlsAttendances.TabIndex = 5;
+            // 
+            // btnPrevMonth
+            // 
+            this.btnPrevMonth.Location = new System.Drawing.Point(131, 3);
+            this.btnPrevMonth.Name = "btnPrevMonth";
+            this.btnPrevMonth.Size = new System.Drawing.Size(94, 30);
+            this.btnPrevMonth.TabIndex = 3;
+            this.btnPrevMonth.Text = "Last Month";
+            this.btnPrevMonth.UseVisualStyleBackColor = true;
+            this.btnPrevMonth.Click += new System.EventHandler(this.btnPrevMonth_Click);
             // 
             // btnCurrentMonth
             // 
@@ -284,7 +309,7 @@
             // btnSelectedEmployee
             // 
             this.btnSelectedEmployee.AutoSize = true;
-            this.btnSelectedEmployee.Location = new System.Drawing.Point(123, 3);
+            this.btnSelectedEmployee.Location = new System.Drawing.Point(239, 3);
             this.btnSelectedEmployee.Name = "btnSelectedEmployee";
             this.btnSelectedEmployee.Size = new System.Drawing.Size(146, 30);
             this.btnSelectedEmployee.TabIndex = 1;
@@ -296,7 +321,7 @@
             // 
             this.btnProcessAll.AutoSize = true;
             this.btnProcessAll.Enabled = false;
-            this.btnProcessAll.Location = new System.Drawing.Point(275, 3);
+            this.btnProcessAll.Location = new System.Drawing.Point(399, 3);
             this.btnProcessAll.Name = "btnProcessAll";
             this.btnProcessAll.Size = new System.Drawing.Size(142, 30);
             this.btnProcessAll.TabIndex = 2;
@@ -359,5 +384,7 @@
         private Panel pnlControlsAttendances;
         private Panel pnlControlReports;
         private DataGridView dataGridView1;
+        private CheckBox cbAllRecord;
+        private Button btnPrevMonth;
     }
 }

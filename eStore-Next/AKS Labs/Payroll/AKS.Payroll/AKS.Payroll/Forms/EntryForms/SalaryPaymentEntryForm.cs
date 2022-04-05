@@ -162,9 +162,9 @@ namespace AKS.Payroll.Forms.EntryForms
             cbxPaymentMode.SelectedIndex = (int)newPayment.PayMode;
             cbxStore.SelectedValue = newPayment.StoreId;
             cbxSalaryComponent.SelectedIndex = (int)SalaryComponet.NetSalary;
-            txtAmount.Text= newPayment.Amount.ToString();
+            txtAmount.Text = newPayment.Amount.ToString();
 
-           
+
         }
 
         private SalaryPayment ReadPaymentFormData()
@@ -194,8 +194,8 @@ namespace AKS.Payroll.Forms.EntryForms
                     sp.UserId = "WinFormUI";
                     if (IsNew)
                     {
-                        int count= azureDb.SalaryPayment.Where(c=>c.StoreId ==sp.StoreId
-                        && c.OnDate.Date==sp.OnDate.Date).Count();
+                        int count = azureDb.SalaryPayment.Where(c => c.StoreId == sp.StoreId
+                         && c.OnDate.Date == sp.OnDate.Date).Count();
                         sp.EntryStatus = EntryStatus.Added;
                         sp.SalaryPaymentId = IdentityGenerator.GenerateSalaryPayment(sp.OnDate, sp.StoreId, count);
                         azureDb.SalaryPayment.Add(sp);

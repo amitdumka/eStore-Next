@@ -40,7 +40,7 @@ namespace AKS.Shared.Payroll.Models
         public int Count
         { get { return Present + HalfDay + Sunday + PaidLeave + CasualLeave + Absent + WeeklyLeave + Holidays; } }
 
-        public decimal BillableDays => (decimal)((HalfDay / 2.0m)+0.0m) + ( (Present + Sunday + PaidLeave + Holidays)+0.0m);
+        public decimal BillableDays => (decimal)((HalfDay / 2.0m) + 0.0m) + ((Present + Sunday + PaidLeave + Holidays) + 0.0m);
 
         public bool Valid
         { get { return (Count == DayInMonths); } }
@@ -222,7 +222,7 @@ namespace AKS.Shared.Payroll.Models
 
         public string? SalaryId { get; set; }
         public virtual Salary CurrentSalary { get; set; }
-        
+
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal BasicSalaryRate { get; set; }
 
@@ -280,5 +280,5 @@ namespace AKS.Shared.Payroll.Models
         public bool? IsTailoring { get; set; }
     }
 
-    
+
 }

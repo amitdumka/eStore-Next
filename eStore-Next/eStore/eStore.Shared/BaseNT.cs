@@ -11,7 +11,7 @@ namespace eStore.Shared.Models
         public int StoreId { get; set; }
         public virtual Store Store { get; set; }
 
-       
+
     }
 
     public class BaseGT
@@ -33,6 +33,6 @@ namespace eStore.Shared.Models
         [Display(Name = "Store")]
         public int StoreId { get; set; }
 
-       
+
     }
 }

@@ -113,11 +113,11 @@ namespace AKS.ParyollSystem
         {
             if (db == null) db = new AzurePayrollDbContext();
             var attL = db.Attendances.Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
-      
+
             if (attL.Count > 0)
             {
                 var empIdList = attL.Select(c => c.EmployeeId).Distinct().ToList();
-            
+
                 foreach (var empId in empIdList)
                 {
                     var attdList = attL.Where(c => c.EmployeeId == empId).ToList();
@@ -174,4 +174,3 @@ namespace AKS.ParyollSystem
     }
 }
 
- 

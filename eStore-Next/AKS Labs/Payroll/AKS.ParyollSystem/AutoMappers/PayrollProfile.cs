@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AKS.Shared.Payroll.Models;
+﻿using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
 
 namespace AKS.ParyollSystem.AutoMappers
 {
-    public class PayrollProfile:Profile
+    public class PayrollProfile : Profile
     {
         public PayrollProfile()
         {
@@ -17,7 +12,7 @@ namespace AKS.ParyollSystem.AutoMappers
             CreateMap<Employee, EmployeeVM>();
             CreateMap<Attendance, AttendanceVM>();
             CreateMap<EmployeeDetailVM, EmployeeDetailVM>();
-            CreateMap<MonthlyAttendance,MonthlyAttendanceVM>();
+            CreateMap<MonthlyAttendance, MonthlyAttendanceVM>();
 
             CreateMap<MonthlyAttendanceVM, MonthlyAttendanceVM>();
             CreateMap<EmployeeDetailVM, EmployeeDetails>();

@@ -6,11 +6,6 @@ using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AKS.ParyollSystem
 {
@@ -26,7 +21,7 @@ namespace AKS.ParyollSystem
 
         public void PaySlipFinYearReport(AzurePayrollDbContext db, int empId, int SYear, int EYear)
         {
-            
+
         }
 
         /// <summary>

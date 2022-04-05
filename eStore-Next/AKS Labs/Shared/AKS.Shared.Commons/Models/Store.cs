@@ -12,10 +12,10 @@ namespace AKS.Shared.Commons.Models
         public string StoreId { get; set; }
         public string StoreCode { get; set; }
         public string StoreName { get; set; }
-       
+
         public DateTime BeginDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool IsActive { get; set; }  
+        public bool IsActive { get; set; }
 
         public string StoreManager { get; set; }
         public string StoreManagerContactNo { get; set; }
@@ -34,7 +34,7 @@ namespace AKS.Shared.Commons.Models
     }
 
     [Table("V1_Salesmen")]
-    public class Salesman:BaseST
+    public class Salesman : BaseST
     {
         [Key]
         public string SalesmanId { get; set; }

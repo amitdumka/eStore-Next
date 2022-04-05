@@ -1,15 +1,4 @@
-﻿
-using AKS.Payroll.Database;
-using AKS.Payroll.Forms;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using AKS.Payroll.Forms;
 
 namespace AKS.Payroll
 {
@@ -126,7 +115,7 @@ namespace AKS.Payroll
 
         private void LoadForm(Form frm)
         {
-            frm.MdiParent = this; 
+            frm.MdiParent = this;
             frm.Show();
         }
 
@@ -148,7 +137,7 @@ namespace AKS.Payroll
 
         private void addSalaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             
+
         }
 
         private void addPaymentToolStripMenuItem_Click(object sender, EventArgs e)

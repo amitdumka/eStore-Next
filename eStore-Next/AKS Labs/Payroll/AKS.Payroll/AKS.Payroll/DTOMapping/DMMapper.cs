@@ -1,20 +1,15 @@
 ﻿using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AKS.Payroll.DTOMapping
 {
-    public  class DMMapper
+    public class DMMapper
     {
         public static Mapper Mapper { get; set; }
         public static Mapper InitializeAutomapper()
         {
-            if(Mapper == null)
+            if (Mapper == null)
             {
                 var config = new MapperConfiguration(cfg =>
                 {
@@ -57,7 +52,7 @@ namespace AKS.Payroll.DTOMapping
                 });
                 Mapper = new Mapper(config);
             }
-           
+
             return Mapper;
         }
     }

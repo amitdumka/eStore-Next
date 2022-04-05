@@ -101,8 +101,8 @@ namespace AKS.Payroll
         private void lbEmoloyees_DoubleClick(object sender, EventArgs e)
         {
             var x = ((System.Windows.Forms.ListBox)sender);
-            if(tcSalaryPayments.SelectedIndex==0)
-            UpdateGridView(x.SelectedValue.ToString(), DateTime.Now);
+            if (tcSalaryPayments.SelectedIndex == 0)
+                UpdateGridView(x.SelectedValue.ToString(), DateTime.Now);
             else if (tcSalaryPayments.SelectedIndex == 1)
             {
                 UpdateReceiptsGridView(x.SelectedValue.ToString(), DateTime.Now);
@@ -215,7 +215,7 @@ namespace AKS.Payroll
         {
             StaffAdvanceRecieptEntryForm x = new();
             x.ParentForm = this;
-          
+
             if (x.ShowDialog() == DialogResult.OK)
             {
                 if (x.SaveReciept != null)
@@ -239,7 +239,7 @@ namespace AKS.Payroll
             }
             else
             {
-                
+
             }
         }
 

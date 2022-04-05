@@ -21,23 +21,23 @@ namespace AKS.Shared.Commons.Models.Base
 
 
 
-    public class Contact:Person
+    public class Contact : Person
     {
-        public int ContactId { get; set; }  
+        public int ContactId { get; set; }
         [Phone]
         public string PhoneNumber { get; set; }
         [Phone]
         public string MobileNumber { get; set; }
-         [EmailAddress]
+        [EmailAddress]
         public string EMail { get; set; }
     }
 
 
-    public class Person:Address
+    public class Person : Address
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string FullName { get { return FirstName+" "+LastName; } }
+        public string FullName { get { return FirstName + " " + LastName; } }
         public string Title { get; set; }
         public Gender Gender { get; set; } // Enum Gender
         public DateTime DOB { get; set; }
@@ -46,7 +46,7 @@ namespace AKS.Shared.Commons.Models.Base
     public class Address
     {
         public string City { get; set; }
-        public string State { get;set; }
+        public string State { get; set; }
         public string Country { get; set; }
         public string StreetName { get; set; }
         public string ZipCode { get; set; }
@@ -56,7 +56,7 @@ namespace AKS.Shared.Commons.Models.Base
     public class City
     {
         public int CityId { get; set; }
-        public string CityName { get; set; }   
+        public string CityName { get; set; }
         public int StateId { get; set; }
         public int CountryId { get; set; }
     }
@@ -72,5 +72,5 @@ namespace AKS.Shared.Commons.Models.Base
         [Key]
         public string CountryName { get; set; }
     }
-   // public enum Gender { Male, Female, Transgender}
+    // public enum Gender { Male, Female, Transgender}
 }

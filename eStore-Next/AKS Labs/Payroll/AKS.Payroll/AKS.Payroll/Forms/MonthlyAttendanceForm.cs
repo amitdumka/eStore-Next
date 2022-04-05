@@ -11,8 +11,8 @@ namespace AKS.Payroll.Forms
     public partial class MonthlyAttendanceForm : Form
     {
         private readonly IMapper _mapper;
-        private   AzurePayrollDbContext azureDb;
-        private   LocalPayrollDbContext localDb;
+        private AzurePayrollDbContext azureDb;
+        private LocalPayrollDbContext localDb;
         private bool _allEmployees = true;
         private bool _allRecord = true;
         private ObservableListSource<MonthlyAttendanceVM> Attendances;
@@ -69,7 +69,7 @@ namespace AKS.Payroll.Forms
             {
                 PayrollManager pm = new();
 
-               if(pm.CalculateMonthlyAttendance(null, DateTime.Today))
+                if (pm.CalculateMonthlyAttendance(null, DateTime.Today))
                 {
                     MessageBox.Show("It has been generated!");
                     RefreshData();
@@ -154,7 +154,7 @@ namespace AKS.Payroll.Forms
             else
                 lbEmployees.DataSource = azureDb.Employees.Local.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName }).ToList(); ;
 
-            
+
 
             lbEmployees.SelectedItems.Clear();
             UpdateAttendanceList(azureDb.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year
@@ -170,8 +170,8 @@ namespace AKS.Payroll.Forms
             Attendances.Clear();
             var maList = azureDb.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year
             && c.OnDate.Month >= DateTime.Today.AddMonths(-1).Month).OrderByDescending(c => c.OnDate).ToList();
-            
-            
+
+
             UpdateAttendanceList(maList);
             dgvAttendances.DataBindings.Clear();
             dgvAttendances.DataSource = Attendances.ToList();
@@ -215,11 +215,12 @@ namespace AKS.Payroll.Forms
                 {
                     Attendances.Remove(attvm);
                 }
-                catch (Exception ex) { 
-                
+                catch (Exception ex)
+                {
+
                 }
                 Attendances.Add(attvm);
-                
+
             }
             //Attendances= (ObservableListSource<MonthlyAttendanceVM>)Attendances.Distinct().ToList();
         }
@@ -233,7 +234,7 @@ namespace AKS.Payroll.Forms
                 if (ctr2 != ctr)
                 {
                     bool x = RemoveEmployee(empId);
-                    var atx = azureDb.MonthlyAttendances.Where(c => c.EmployeeId == empId).OrderByDescending(c=>c.OnDate).ToList();
+                    var atx = azureDb.MonthlyAttendances.Where(c => c.EmployeeId == empId).OrderByDescending(c => c.OnDate).ToList();
                     UpdateAttendanceList(atx);
                 }
             }

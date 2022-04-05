@@ -22,10 +22,10 @@ namespace AKS.DatabaseMigrator
             // MigrateStore();
             // MigrateEmployee();
             //this.MigrateSalaryPayment();
-             this.MigrateSalesman();
+            this.MigrateSalesman();
             // MigrateAttendance();
             //var s = db.Salesmen.Distinct();
-           // Console.WriteLine(s);
+            // Console.WriteLine(s);
         }
 
         private void MigrateSalesman()
@@ -247,7 +247,7 @@ namespace AKS.DatabaseMigrator
                         {
                             AKS.Attendances.Add(Attendance);
                         }
-                        catch (Exception  )
+                        catch (Exception)
                         {
                             errorid += Attendance.OnDate.ToString() + "\n";
                             AKS.Attendances.Remove(Attendance);

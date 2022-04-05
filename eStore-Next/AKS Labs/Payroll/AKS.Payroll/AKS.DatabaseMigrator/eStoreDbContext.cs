@@ -38,9 +38,9 @@ namespace AKS.DatabaseMigrator
         ////Payrolls
         public DbSet<eStore.Shared.Models.Payroll.Employee> Employees { get; set; } //ok//UI //API
 
-       // public DbSet<EmployeeUser> EmployeeUsers { get; set; }
+        // public DbSet<EmployeeUser> EmployeeUsers { get; set; }
         public DbSet<eStore.Shared.Models.Payroll.Attendance> Attendances { get; set; } //ok//UI//API
-         public DbSet<eStore.Shared.Models.Salesman> Salesmen { get; set; } //ok//API
+        public DbSet<eStore.Shared.Models.Salesman> Salesmen { get; set; } //ok//API
 
         //public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
         //public DbSet<SaleTaxType> SaleTaxTypes { get; set; } //ok//UI //API
@@ -190,7 +190,7 @@ namespace AKS.DatabaseMigrator
 
         public DbSet<eStore.Shared.Models.Payroll.MonthlyAttendance> MonthlyAttendances { get; set; }
         // public DbSet<YearlyAttendance> YearlyAttendances { get; set; }
-         
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

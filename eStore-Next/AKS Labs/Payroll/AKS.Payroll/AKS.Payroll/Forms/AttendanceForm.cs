@@ -13,7 +13,7 @@ namespace AKS.Payroll.Forms
         private readonly IMapper _mapper;
         private AzurePayrollDbContext context;
         private ObservableListSource<AttendanceVM> Attendances;
-       // public readonly ObservableListSource<string> EmpIDs;
+        // public readonly ObservableListSource<string> EmpIDs;
         private DateTime OnDate;
 
         private static Mapper InitializeAutomapper()
@@ -66,12 +66,12 @@ namespace AKS.Payroll.Forms
             context = new AzurePayrollDbContext();
 
             context.Employees.Load();
-            
+
             if (cbAllEmployee.Checked)
                 lbEmployees.DataSource = context.Employees.Local.OrderBy(c => c.EmployeeId).ToList();
             else
                 lbEmployees.DataSource = context.Employees.Local.Where(c => c.IsWorking).OrderBy(c => c.EmployeeId).ToList();
-            
+
             //.ToBindingList();
             lbEmployees.SelectedItems.Clear();
             Attendances = new ObservableListSource<AttendanceVM>();
@@ -119,7 +119,7 @@ namespace AKS.Payroll.Forms
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-               
+
                 var newAttend = _mapper.Map<AttendanceVM>(form.SavedAtt);
                 newAttend.StaffName = form.EmployeeName;
 

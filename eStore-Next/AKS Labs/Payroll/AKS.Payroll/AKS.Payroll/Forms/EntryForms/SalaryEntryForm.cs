@@ -81,7 +81,7 @@ namespace AKS.Payroll.Forms.EntryForms
             {
                 BasicSalary = decimal.Parse(txtBasicSalary.Text.Trim()),
                 EffectiveDate = dtpStartDate.Value,
-                CloseDate = cbIsEffective.Checked ? null:dtpEndDate.Value,
+                CloseDate = cbIsEffective.Checked ? null : dtpEndDate.Value,
                 EmployeeId = (string)cbxEmployees.SelectedValue,
                 EntryStatus = EntryStatus.Added,// newSalary.EntryStatus,
                 MarkedDeleted = false,
@@ -98,7 +98,7 @@ namespace AKS.Payroll.Forms.EntryForms
 
                 StoreId = "ARD",// newSalary.StoreId,
                 IsReadOnly = false,
-                SalaryId= newSalary.SalaryId
+                SalaryId = newSalary.SalaryId
 
                 //WOW Bill
                 //Last Pc Incentive
@@ -126,8 +126,8 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (SaveRecord(sal))
                 {
                     btnAdd.Text = "Add";
-                    if(IsNew)
-                    MessageBox.Show("New Salary Head is saved.");
+                    if (IsNew)
+                        MessageBox.Show("New Salary Head is saved.");
                     else MessageBox.Show("Salary Head is updated!");
                     SavedSalary = sal;
                     this.DialogResult = DialogResult.OK;
@@ -159,7 +159,7 @@ namespace AKS.Payroll.Forms.EntryForms
 
         private void SalaryEntryForm_Load(object sender, EventArgs e)
         {
-            
+
             LoadData();
             UpdateUI();
         }
@@ -177,7 +177,7 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (azureDb.SaveChanges() > 0)
                 {
                     MessageBox.Show("Salary Head is deleted!", "Delete");
-                     DeletedSalaryId = newSalary.SalaryId;
+                    DeletedSalaryId = newSalary.SalaryId;
                     this.DialogResult = DialogResult.Yes;
                     this.Close();
                 }

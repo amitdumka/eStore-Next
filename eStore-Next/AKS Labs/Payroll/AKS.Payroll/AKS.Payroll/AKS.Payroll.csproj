@@ -9,7 +9,19 @@
     <UserSecretsId>0a708b45-aa74-4f5f-8d18-9ec3fdf24b5f</UserSecretsId>
     <Description>AKS Payroll system is Payroll System Developed for Aprajita Retails, Dumka</Description>
     <Copyright>AKS Labs(India)</Copyright>
+	  <Version>5.0.0</Version>
+	  <VersionPrefix>_alpha</VersionPrefix>
+	  <VersionSuffix>Core</VersionSuffix>
+	  <Authors>Amit Kumar Sah</Authors>
+    <AssemblyVersion>5.1.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="AprajitaRetails03.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
@@ -40,6 +52,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +64,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

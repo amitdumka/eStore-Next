@@ -32,10 +32,10 @@ namespace AKS.Payroll.Forms
         {
             azureDb.Employees.Load();
 
-            lbEmployees.DataSource = azureDb.Employees.Local.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId, c.Category }).OrderBy(c=>c.StaffName).ToList();
+            lbEmployees.DataSource = azureDb.Employees.Local.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId, c.Category }).OrderBy(c => c.StaffName).ToList();
             lbEmployees.DisplayMember = "StaffName";
             lbEmployees.ValueMember = "EmployeeId";
-            UpdateSalariesList(azureDb.Salaries.Include(c=>c.Employee).ToList());
+            UpdateSalariesList(azureDb.Salaries.Include(c => c.Employee).ToList());
             UpdateGridView("");
         }
 
@@ -95,7 +95,7 @@ namespace AKS.Payroll.Forms
 
         private void dgvSalaries_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var sal = DMMapper.Mapper.Map<Salary> ( dgvSalaries.CurrentRow.DataBoundItem);
+            var sal = DMMapper.Mapper.Map<Salary>(dgvSalaries.CurrentRow.DataBoundItem);
             sal.Employee = null;
             SalaryEntryForm form = new SalaryEntryForm(sal);
             form.SalaryForm = this;
@@ -104,9 +104,9 @@ namespace AKS.Payroll.Forms
                 //Save/Update
                 if (!form.IsNew)
                 {
-                    Salaries.Remove(Salaries.Where(c=>c.SalaryId==form.newSalary.SalaryId).First());
+                    Salaries.Remove(Salaries.Where(c => c.SalaryId == form.newSalary.SalaryId).First());
                 }
-                Salaries.Add(DMMapper.Mapper.Map<SalaryVM>( form.SavedSalary));
+                Salaries.Add(DMMapper.Mapper.Map<SalaryVM>(form.SavedSalary));
                 dgvSalaries.DataSource = Salaries.ToBindingList();
 
             }
@@ -116,7 +116,7 @@ namespace AKS.Payroll.Forms
                 Salaries.Remove(Salaries.Where(c => c.SalaryId == form.DeletedSalaryId).First());
                 dgvSalaries.DataSource = Salaries.ToBindingList();
             }
-             
+
         }
     }
 }

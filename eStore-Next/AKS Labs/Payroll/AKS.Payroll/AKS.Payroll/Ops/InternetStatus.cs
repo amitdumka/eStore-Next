@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using System.Runtime;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace AKS.Payroll.Ops
 {
-   
+
     public class InternetStatus
     {
         //Creating the extern function...  

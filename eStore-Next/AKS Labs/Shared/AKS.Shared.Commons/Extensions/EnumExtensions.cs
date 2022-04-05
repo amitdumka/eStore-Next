@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AKS.Shared.Commons.Extensions
+﻿namespace AKS.Shared.Commons.Extensions
 {
     public static class EnumExtensions
     {

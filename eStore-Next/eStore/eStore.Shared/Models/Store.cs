@@ -50,7 +50,7 @@ namespace eStore.Shared.Models
         [Display(Name = "Operative")]
         public bool Status { get; set; }
 
-        
+
 
         public int? CompanyId { get; set; }
         ///public virtual Company Company { get; set; }
@@ -59,7 +59,7 @@ namespace eStore.Shared.Models
     /// <summary>
     /// @Version: 5.0
     /// </summary>
-    
+
     [Table("Salesmen")]
     public class Salesman : BaseST
     {

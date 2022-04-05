@@ -17,7 +17,7 @@ public class PayslipManager
         }
         else if (nDays == 29)
         {
-            if (absent == 0) basicSalary = rate * (days +(decimal) 1.0);
+            if (absent == 0) basicSalary = rate * (days + (decimal)1.0);
             else basicSalary = rate * days;
         }
         else if (nDays == 28)
@@ -35,37 +35,38 @@ public class PayslipManager
 
     public static Salary GetSalary(AzurePayrollDbContext db, string empId, DateTime onDate)
     {
-         
-        var sal =  db.Salaries.Where(c => c.EmployeeId == empId && onDate.Date>= c.EffectiveDate.Date )
-            .OrderByDescending (c=>c.EffectiveDate)
+
+        var sal = db.Salaries.Where(c => c.EmployeeId == empId && onDate.Date >= c.EffectiveDate.Date)
+            .OrderByDescending(c => c.EffectiveDate)
             .ToList();
 
         if (sal != null && sal.Count > 0)
         {
-            if(sal.Count > 1) {
-            
-                var s= sal.Where(c=>c.CloseDate.HasValue  && onDate.Date<=c.CloseDate.Value.Date)
-                   .OrderByDescending(c=>c.CloseDate.Value) .FirstOrDefault();
-                if(s != null) return s;
+            if (sal.Count > 1)
+            {
+
+                var s = sal.Where(c => c.CloseDate.HasValue && onDate.Date <= c.CloseDate.Value.Date)
+                   .OrderByDescending(c => c.CloseDate.Value).FirstOrDefault();
+                if (s != null) return s;
                 else
                 {
-                    return sal.Where(c=>c.CloseDate==null).FirstOrDefault();
+                    return sal.Where(c => c.CloseDate == null).FirstOrDefault();
                 }
-                 
+
             }
             else
-            return sal[0]; 
+                return sal[0];
         }
         else return null;
     }
     [Obsolete]
-    public static  decimal GetSalaryRate(AzurePayrollDbContext db, string empId, DateTime onDate)
+    public static decimal GetSalaryRate(AzurePayrollDbContext db, string empId, DateTime onDate)
     {
         //TODO: make this function to handle 26/30 days working days concept
-        var sal =   db.Salaries.Where(c => c.EmployeeId == empId &&
-        c.EffectiveDate.Date <= onDate.Date && c.CloseDate.Value.Date >= onDate.Date)
+        var sal = db.Salaries.Where(c => c.EmployeeId == empId &&
+      c.EffectiveDate.Date <= onDate.Date && c.CloseDate.Value.Date >= onDate.Date)
             .OrderByDescending(c => c.EffectiveDate)
-            .ToList ();
+            .ToList();
         if (sal != null && sal.Count > 0)
             return sal[0].BasicSalary;
         else return 0;
@@ -87,7 +88,7 @@ public class PayslipManager
 
         if (ma != null && ma.BillableDays > 0)
         {
-            var salary =  GetSalary(db, empId, onDate);
+            var salary = GetSalary(db, empId, onDate);
             if (salary == null)
             {
                 if (dbDispose) db.Dispose();
@@ -141,7 +142,7 @@ public class PayslipManager
             }
             else
             {
-               
+
                 db.PaySlips.Add(paySlip);
             }
             db.SaveChanges();

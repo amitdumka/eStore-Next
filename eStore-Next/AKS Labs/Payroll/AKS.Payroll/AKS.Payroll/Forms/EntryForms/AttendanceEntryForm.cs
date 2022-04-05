@@ -1,7 +1,6 @@
 ﻿using AKS.ParyollSystem;
 using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-using AKS.Shared.Payrolls.ViewModels;
 using System.Data;
 
 namespace AKS.Payroll.Forms.EntryForms
@@ -10,8 +9,8 @@ namespace AKS.Payroll.Forms.EntryForms
     {
         private Attendance newAtt;
         public new AttendanceForm ParentForm;
-        public Attendance SavedAtt ;
-        public string DeletedAttednance ;
+        public Attendance SavedAtt;
+        public string DeletedAttednance;
         public string EmployeeName;
         private AzurePayrollDbContext db;
         private bool IsNew { get; set; }
@@ -73,7 +72,7 @@ namespace AKS.Payroll.Forms.EntryForms
                     IsNew = false;
                     MessageBox.Show("Attendance is saved", "Alert");
                     btnAdd.Text = "Add";
-                    this.DialogResult=DialogResult.OK;
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
 
                 }
@@ -122,8 +121,8 @@ namespace AKS.Payroll.Forms.EntryForms
                     MessageBox.Show("You cannot change/add attendance before 1st April 2022", "Accessed denied");
                     return false;
                 }
-                
-                
+
+
             }
             catch (Exception ex)
             {
@@ -173,7 +172,7 @@ namespace AKS.Payroll.Forms.EntryForms
             cbxStatus.SelectedIndex = (int)newAtt.Status;
             cbxStores.SelectedValue = newAtt.StoreId;
             cbIsTailors.Checked = newAtt.IsTailoring;
-            
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -184,7 +183,7 @@ namespace AKS.Payroll.Forms.EntryForms
                                       MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
-                 if(newAtt.OnDate.Date>new DateTime(2022, 3, 31))
+                if (newAtt.OnDate.Date > new DateTime(2022, 3, 31))
                 {
                     db.Attendances.Remove(newAtt);
                     if (db.SaveChanges() > 0)
@@ -198,11 +197,11 @@ namespace AKS.Payroll.Forms.EntryForms
                 }
                 else
                 {
-                    MessageBox.Show("Attendace before 1st April 2022 cannot be deleted. You don't have accessed","Access Denied");
+                    MessageBox.Show("Attendace before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
                 }
-               
+
             }
-            
+
 
 
         }

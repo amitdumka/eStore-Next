@@ -206,7 +206,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public int Year { get; set; }
 
         public string EmployeeId { get; set; }
-        public string StaffName{ get; set; }
+        public string StaffName { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal BasicSalaryRate { get; set; }

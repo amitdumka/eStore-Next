@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.ParyollSystem.Dtos;
+using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +13,16 @@ public class PayslipManager
         if (nDays == 31)
         {
             if (absent == 0) basicSalary = rate * (days - (decimal)0.75);
-            else basicSalary = rate * (days - 1);
+            else basicSalary = rate * (days - (decimal)1.0);
         }
         else if (nDays == 29)
         {
-            if (absent == 0) basicSalary = rate * (days + 1);
+            if (absent == 0) basicSalary = rate * (days +(decimal) 1.0);
             else basicSalary = rate * days;
         }
         else if (nDays == 28)
         {
-            if (absent == 0) basicSalary = rate * (days + 2);
+            if (absent == 0) basicSalary = rate * (days + (decimal)2.0);
             else if (absent == 1) basicSalary = rate * (days * (decimal)0.75);
             else basicSalary = rate * days;
         }
@@ -32,25 +33,39 @@ public class PayslipManager
         return basicSalary;
     }
 
-    public static async Task<Salary> GetSalary(AzurePayrollDbContext db, string empId, DateTime onDate)
+    public static Salary GetSalary(AzurePayrollDbContext db, string empId, DateTime onDate)
     {
-        //TODO: make this function to handle 26/30 days working days concept
-        var sal = await db.Salaries.Where(c => c.EmployeeId == empId &&
-        c.EffectiveDate.Date <= onDate.Date && c.CloseDate.Value.Date >= onDate.Date)
-            .OrderByDescending(c => c.EffectiveDate)
-            .ToListAsync();
+         
+        var sal =  db.Salaries.Where(c => c.EmployeeId == empId && onDate.Date>= c.EffectiveDate.Date )
+            .OrderByDescending (c=>c.EffectiveDate)
+            .ToList();
+
         if (sal != null && sal.Count > 0)
-            return sal[0];
+        {
+            if(sal.Count > 1) {
+            
+                var s= sal.Where(c=>c.CloseDate.HasValue  && onDate.Date<=c.CloseDate.Value.Date)
+                   .OrderByDescending(c=>c.CloseDate.Value) .FirstOrDefault();
+                if(s != null) return s;
+                else
+                {
+                    return sal.Where(c=>c.CloseDate==null).FirstOrDefault();
+                }
+                 
+            }
+            else
+            return sal[0]; 
+        }
         else return null;
     }
-
-    public static async Task<decimal> GetSalaryRate(AzurePayrollDbContext db, string empId, DateTime onDate)
+    [Obsolete]
+    public static  decimal GetSalaryRate(AzurePayrollDbContext db, string empId, DateTime onDate)
     {
         //TODO: make this function to handle 26/30 days working days concept
-        var sal = await db.Salaries.Where(c => c.EmployeeId == empId &&
+        var sal =   db.Salaries.Where(c => c.EmployeeId == empId &&
         c.EffectiveDate.Date <= onDate.Date && c.CloseDate.Value.Date >= onDate.Date)
             .OrderByDescending(c => c.EffectiveDate)
-            .ToListAsync();
+            .ToList ();
         if (sal != null && sal.Count > 0)
             return sal[0].BasicSalary;
         else return 0;
@@ -72,7 +87,7 @@ public class PayslipManager
 
         if (ma != null && ma.BillableDays > 0)
         {
-            var salary = await GetSalary(db, empId, onDate);
+            var salary =  GetSalary(db, empId, onDate);
             if (salary == null)
             {
                 if (dbDispose) db.Dispose();
@@ -126,9 +141,12 @@ public class PayslipManager
             }
             else
             {
-                if (dbDispose) db.Dispose();
+               
                 db.PaySlips.Add(paySlip);
             }
+            db.SaveChanges();
+            paySlip.Employee = ma.Employee;
+            if (dbDispose) db.Dispose();
             return paySlip;
         }
         else
@@ -151,6 +169,49 @@ public class PayslipManager
         {
             var slip = await GeneratePayslipForEmployee(db, emp.EmployeeId, onDate);
             if (slip != null) paySlips.Add(emp.StaffName, slip);
+        }
+        if (dbDispose) _ = db.DisposeAsync();
+        return paySlips;
+    }
+
+    public async Task<SortedDictionary<string, PaySlipDTO>> GetPaySlips(AzurePayrollDbContext db, DateTime onDate)
+    {
+        SortedDictionary<string, PaySlipDTO> paySlips = new SortedDictionary<string, PaySlipDTO>();
+        bool dbDispose = true;
+
+        if (db == null) db = new AzurePayrollDbContext();
+        else dbDispose = false;
+
+        var ma = db.MonthlyAttendances.Include(c => c.Employee).Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
+        var pSlip = db.PaySlips.Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
+        if (ma.Any() && pSlip.Any())
+        {
+            var empList = ma.Select(c => new { c.EmployeeId, c.Employee.StaffName }).Distinct().ToList();
+            foreach (var emp in empList)
+            {
+                var a = ma.Where(c => c.EmployeeId == emp.EmployeeId).FirstOrDefault();
+                var p = pSlip.Where(c => c.EmployeeId == emp.EmployeeId).FirstOrDefault();
+
+                PaySlipDTO pDTO = new PaySlipDTO
+                {
+                    Absent = a.Absent,
+                    BillableDays = a.BillableDays,
+                    EmployeeId = emp.EmployeeId,
+                    GenerationDate = p.OnDate,
+                    HalfDay = a.HalfDay,
+                    NoOfWorkingDays = a.NoOfWorkingDays,
+                    OnDate = p.OnDate,
+                    Present = a.Present,
+                    SalaryPerDay = p.BasicSalaryRate,
+                    NetSalary = p.BasicSalary,
+                    GrossSalary = p.TotalPayableSalary,
+                    PaidLeave = a.PaidLeave,
+                    Remarks = a.Remarks,
+                    Sunday = a.Sunday,
+                    WeeklyLeave = a.WeeklyLeave
+                };
+                paySlips.Add(emp.StaffName, pDTO);
+            }
         }
         return paySlips;
     }

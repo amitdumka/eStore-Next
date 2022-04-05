@@ -2,7 +2,7 @@
 
 public class PaySlipDTO
 {
-    public string EmpId { get; set; }
+    public string EmployeeId { get; set; }
 
     public DateTime OnDate { get; set; }
     public DateTime GenerationDate { get; set; }
@@ -29,7 +29,7 @@ public class PaySlipDTO
 
 public class PaySlipsDTO
 {
-    public string EmpId { get; set; }
+    public string EmployeeId { get; set; }
 
     public int SYear { get; set; }
     public int EYear { get; set; }

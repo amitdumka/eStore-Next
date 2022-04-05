@@ -119,7 +119,10 @@ namespace AKS.Payroll.Database
 
         IList IListSource.GetList()
         {
+          
             return _bindingList ?? (_bindingList = this.ToBindingList());
+        
         }
+        
     }
 }

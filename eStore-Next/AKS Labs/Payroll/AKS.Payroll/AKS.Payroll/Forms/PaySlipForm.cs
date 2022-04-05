@@ -37,10 +37,14 @@ namespace AKS.Payroll.Forms
             {
                 foreach (var paySlip in paySlips)
                 {
-                    PaySlips.Add(DMMapper.Mapper.Map<PaySlipVM>(paySlip));
+                    PaySlips.Add(DMMapper.Mapper.Map<PaySlipVM>(paySlip.Value));
                 }
-                dgvPayslips.DataSource = PaySlips.Where(c => c.OnDate == paySlips.First().Value.OnDate).ToList();
+                PaySlips.Distinct();
+
+                //dgvPayslips.DataSource = PaySlips.Where(c => c.OnDate.Date == date.Date).ToList();
                 tsslCountValue.Text = $" {paySlips.Count}/{PaySlips.Count}";
+                var date = paySlips.First().Value.OnDate.Date;
+                dgvPayslips.DataSource = PaySlips.Where(c => c.OnDate.Date == date.Date).ToList();
             }
         }
 

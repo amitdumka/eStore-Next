@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+    <ProjectReference Include="..\AKS.Payroll\AKS.Libs\AKS.Libs.csproj" />
   </ItemGroup>
 
 </Project>

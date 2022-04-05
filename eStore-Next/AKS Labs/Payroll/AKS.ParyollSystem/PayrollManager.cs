@@ -173,20 +173,4 @@ namespace AKS.ParyollSystem
     }
 }
 
-//// Initialize diff
-//int diffD = days[0] - 0;
-//for (int i = 0; i < noOyDays; i++)
-//{
-//    // Check if diff and days[i]-i
-//    // both are equal or not
-//    if (days[i] - i != diffD)
-//    {
-//        // Loop for consecutive
-//        // missing elements
-//        while (diffD < days[i] - i)
-//        {
-//            missing.MissingDates.Add(new DateTime(month.Year, month.Month, i + diffD));
-//            diffD++;
-//        }
-//    }
-//}
+ 

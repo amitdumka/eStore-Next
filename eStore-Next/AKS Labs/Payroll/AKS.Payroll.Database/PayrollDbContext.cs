@@ -101,6 +101,8 @@ namespace AKS.Payroll.Database
         public DbSet<EmployeeDetails> EmployeeDetails { get; set; }
         public DbSet<StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
 
+        public DbSet<PaySlip> PaySlips { get; set; }
+
         //Common Table which will be shared accross Databases.
         public DbSet<Store> Stores { get; set; }
 

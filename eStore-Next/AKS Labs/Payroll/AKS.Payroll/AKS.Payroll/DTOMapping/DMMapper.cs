@@ -51,6 +51,9 @@ namespace AKS.Payroll.DTOMapping
                     cfg.CreateMap<Salary, SalaryVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
                     cfg.CreateMap<SalaryVM, Salary>();
 
+                    cfg.CreateMap<PaySlip, PaySlipVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
+                    cfg.CreateMap<PaySlipVM, PaySlip>();
+
                 });
                 Mapper = new Mapper(config);
             }

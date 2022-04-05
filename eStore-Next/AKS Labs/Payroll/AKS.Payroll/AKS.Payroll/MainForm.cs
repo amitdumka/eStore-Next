@@ -192,5 +192,17 @@ namespace AKS.Payroll
         {
             LoadForm(new AboutBox1());
         }
+
+        private void paToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new PaySlipForm());
+        }
+
+        private void printCurrentPaySlipToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Call From Ops then print.
+            var form = new PdfForm();
+            LoadForm(form);
+        }
     }
 }

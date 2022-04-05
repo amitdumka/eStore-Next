@@ -85,6 +85,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Leaving Date")]
         public DateTime? LeavingDate { get; set; }
+
         public string StoreId { get; set; }
     }
 
@@ -100,7 +101,7 @@ namespace AKS.Shared.Payrolls.ViewModels
 
         public int HalfDay { get; set; }
         public int Holidays { get; set; }
-       
+
         public int NoOfWorkingDays { get; set; }
         public DateTime OnDate { get; set; }
         public int PaidLeave { get; set; }
@@ -110,9 +111,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public int WeeklyLeave { get; set; }
     }
 
-
-
-    public class SalaryPaymentVM 
+    public class SalaryPaymentVM
     {
         public string SalaryPaymentId { get; set; }
 
@@ -139,8 +138,8 @@ namespace AKS.Shared.Payrolls.ViewModels
 
         public string Details { get; set; }
         public string StoreId { get; set; }
-
     }
+
     public class StaffAdvanceReceiptVM
     {
         [Key]
@@ -149,7 +148,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         [Display(Name = "Staff Name")]
         public string EmployeeId { get; set; }
 
-        public string StaffName{ get; set; }
+        public string StaffName { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Receipt Date")]
@@ -192,7 +191,77 @@ namespace AKS.Shared.Payrolls.ViewModels
 
         [DefaultValue(false)]
         public bool IsTailoring { get; set; }
+
         public string StoreId { get; set; }
     }
 
+    public class PaySlipVM
+    {
+        public string PaySlipId { get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime OnDate { get; set; }
+
+        public int Month { get; set; }
+        public int Year { get; set; }
+
+        public string EmployeeId { get; set; }
+        public string StaffName{ get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal BasicSalaryRate { get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal BasicSalary { get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal TotalPayableSalary { get; set; }
+
+        public decimal NoOfDaysPresent { get; set; }
+        public int WorkingDays { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal TotalSale { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal SaleIncentive { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal WOWBillAmount { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal WOWBillIncentive { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal LastPcsAmount { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal LastPCsIncentive { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal OthersIncentive { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal GrossSalary { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal StandardDeductions { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal TDSDeductions { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal PFDeductions { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal AdvanceDeducations { get; set; }
+
+        //[DataType(DataType.Currency), Column(TypeName = "money")]
+        //public decimal OtherDeductions { get; set; }
+
+        //public string Remarks { get; set; }
+
+        //public bool? IsTailoring { get; set; }
+        public string StoreId { get; set; }
+    }
 }

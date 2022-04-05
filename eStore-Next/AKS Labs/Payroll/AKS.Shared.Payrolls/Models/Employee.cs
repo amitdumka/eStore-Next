@@ -221,13 +221,21 @@ namespace AKS.Shared.Payroll.Models
         public string EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
 
-        public int? SalaryId { get; set; }
+        public string? SalaryId { get; set; }
         public virtual Salary CurrentSalary { get; set; }
+        
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal BasicSalaryRate { get; set; }
+
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal BasicSalary { get; set; }
 
-        public int NoOfDaysPresent { get; set; }
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal TotalPayableSalary { get; set; }
+
+        public decimal NoOfDaysPresent { get; set; }
+        public int WorkingDays { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal TotalSale { get; set; }
@@ -272,4 +280,6 @@ namespace AKS.Shared.Payroll.Models
 
         public bool? IsTailoring { get; set; }
     }
+
+    
 }

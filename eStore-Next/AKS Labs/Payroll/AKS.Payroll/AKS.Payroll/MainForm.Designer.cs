@@ -97,6 +97,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.paToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printCurrentPaySlipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -421,7 +423,7 @@
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F1)));
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.contentsToolStripMenuItem.Text = "&Contents";
             this.contentsToolStripMenuItem.Visible = false;
             // 
@@ -430,7 +432,7 @@
             this.indexToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("indexToolStripMenuItem.Image")));
             this.indexToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.indexToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.indexToolStripMenuItem.Text = "&Index";
             this.indexToolStripMenuItem.Visible = false;
             // 
@@ -439,19 +441,19 @@
             this.searchToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("searchToolStripMenuItem.Image")));
             this.searchToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Black;
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.searchToolStripMenuItem.Text = "&Search";
             this.searchToolStripMenuItem.Visible = false;
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(204, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.aboutToolStripMenuItem.Text = "&About ... ...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -556,7 +558,9 @@
             // testFormToolStripMenuItem
             // 
             this.testFormToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testFormToolStripMenuItem1});
+            this.testFormToolStripMenuItem1,
+            this.paToolStripMenuItem,
+            this.printCurrentPaySlipToolStripMenuItem});
             this.testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
             this.testFormToolStripMenuItem.Size = new System.Drawing.Size(96, 24);
             this.testFormToolStripMenuItem.Text = "Operations";
@@ -564,7 +568,7 @@
             // testFormToolStripMenuItem1
             // 
             this.testFormToolStripMenuItem1.Name = "testFormToolStripMenuItem1";
-            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(152, 26);
+            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.testFormToolStripMenuItem1.Text = "TestForm";
             this.testFormToolStripMenuItem1.Visible = false;
             this.testFormToolStripMenuItem1.Click += new System.EventHandler(this.testFormToolStripMenuItem1_Click);
@@ -679,6 +683,20 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // paToolStripMenuItem
+            // 
+            this.paToolStripMenuItem.Name = "paToolStripMenuItem";
+            this.paToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.paToolStripMenuItem.Text = "PaySlip";
+            this.paToolStripMenuItem.Click += new System.EventHandler(this.paToolStripMenuItem_Click);
+            // 
+            // printCurrentPaySlipToolStripMenuItem
+            // 
+            this.printCurrentPaySlipToolStripMenuItem.Name = "printCurrentPaySlipToolStripMenuItem";
+            this.printCurrentPaySlipToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.printCurrentPaySlipToolStripMenuItem.Text = "Print Current PaySlip";
+            this.printCurrentPaySlipToolStripMenuItem.Click += new System.EventHandler(this.printCurrentPaySlipToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -775,6 +793,8 @@
         private ToolStripMenuItem exitToolStripMenuItem1;
         private ToolStripMenuItem testFormToolStripMenuItem;
         private ToolStripMenuItem testFormToolStripMenuItem1;
+        private ToolStripMenuItem paToolStripMenuItem;
+        private ToolStripMenuItem printCurrentPaySlipToolStripMenuItem;
     }
 }
 

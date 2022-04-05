@@ -40,8 +40,7 @@ namespace AKS.Shared.Payroll.Models
         public int Count
         { get { return Present + HalfDay + Sunday + PaidLeave + CasualLeave + Absent + WeeklyLeave + Holidays; } }
 
-        public decimal BillableDays
-        { get { return ((decimal)((decimal)(HalfDay / 2) + (decimal) (Present + Sunday + PaidLeave + Holidays))); } }
+        public decimal BillableDays => (decimal)((HalfDay / 2.0m)+0.0m) + ( (Present + Sunday + PaidLeave + Holidays)+0.0m);
 
         public bool Valid
         { get { return (Count == DayInMonths); } }

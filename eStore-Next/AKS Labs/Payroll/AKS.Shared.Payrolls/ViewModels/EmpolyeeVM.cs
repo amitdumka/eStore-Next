@@ -165,5 +165,34 @@ namespace AKS.Shared.Payrolls.ViewModels
         public string StoreId { get; set; }
     }
 
+    public class SalaryVM
+    {
+        [Key]
+        public string SalaryId { get; set; }
+
+        public string EmployeeId { get; set; }
+        public string StaffName { get; set; }
+
+        [DataType(DataType.Currency), Column(TypeName = "money")]
+        public decimal BasicSalary { get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime EffectiveDate { get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? CloseDate { get; set; }
+
+        public bool IsEffective { get; set; }
+
+        public bool WowBill { get; set; }
+        public bool Incentive { get; set; }
+        public bool LastPcs { get; set; }
+        public bool SundayBillable { get; set; }
+        public bool FullMonth { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsTailoring { get; set; }
+        public string StoreId { get; set; }
+    }
 
 }

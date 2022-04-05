@@ -1,14 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AKS.Payroll.Forms.EntryForms
 {
@@ -20,20 +12,47 @@ namespace AKS.Payroll.Forms.EntryForms
         public bool IsNew;
         public bool IsDeleted;
 
-        public AzurePayrollDbContext azureDb;
-        public LocalPayrollDbContext localDB;
+        private readonly AzurePayrollDbContext azureDb;
+        private readonly LocalPayrollDbContext localDB;
 
         public SalaryEntryForm()
         {
             InitializeComponent();
             IsNew = true;
+            azureDb = new AzurePayrollDbContext();
+            localDB = new LocalPayrollDbContext();
+            newSalary = new Salary
+            {
+                LastPcs = false,
+                SundayBillable = false,
+                FullMonth = false,
+                IsTailoring = false,
+                EmployeeId = "",
+                Incentive = false,
+                BasicSalary = 0,
+                CloseDate = null,
+                EffectiveDate = DateTime.Today,
+                EntryStatus = EntryStatus.Added,
+                IsEffective = false,
+                IsReadOnly = false,
+                MarkedDeleted = false,
+                SalaryId = "",
+                StoreId = "ARD",
+                UserId = "WinUI",
+                WowBill = false
+            };
         }
+
         public SalaryEntryForm(Salary sal)
         {
             InitializeComponent();
             IsNew = false;
             newSalary = sal;
+            btnAdd.Text = "Edit";
+            azureDb = new AzurePayrollDbContext();
+            localDB = new LocalPayrollDbContext();
         }
+
         private bool SaveRecord(Salary sal)
         {
             if (sal != null)
@@ -41,26 +60,30 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (!IsNew)
                 {
                     sal.EntryStatus = EntryStatus.Updated;
-                    azureDb.Salarys.Update(sal);
+
+                    azureDb.Salaries.Update(sal);
                 }
-                else { azureDb.Salarys.Add(sal); }
+                else
+                {
+                    sal.SalaryId = $"{sal.EmployeeId}/{1 + azureDb.Salaries.Where(c => c.EmployeeId == sal.EmployeeId).Count()}";
+                    azureDb.Salaries.Add(sal);
+                }
 
                 return azureDb.SaveChanges() > 0;
-
             }
-            else 
+            else
                 return false;
-
         }
+
         private Salary ReadFormData()
         {
             return new Salary
             {
                 BasicSalary = decimal.Parse(txtBasicSalary.Text.Trim()),
                 EffectiveDate = dtpStartDate.Value,
-                CloseDate = cbIsEffective.Checked?dtpEndDate.Value:null,
+                CloseDate = cbIsEffective.Checked ? null:dtpEndDate.Value,
                 EmployeeId = (string)cbxEmployees.SelectedValue,
-                EntryStatus = newSalary.EntryStatus,
+                EntryStatus = EntryStatus.Added,// newSalary.EntryStatus,
                 MarkedDeleted = false,
                 UserId = "WinUI",
                 IsEffective = cbIsEffective.Checked,
@@ -73,18 +96,19 @@ namespace AKS.Payroll.Forms.EntryForms
                 SundayBillable = this.clbOptions.GetItemChecked(5),
                 WowBill = this.clbOptions.GetItemChecked(0),
 
-                StoreId = newSalary.StoreId,
+                StoreId = "ARD",// newSalary.StoreId,
                 IsReadOnly = false,
-                
+                SalaryId= newSalary.SalaryId
+
                 //WOW Bill
                 //Last Pc Incentive
                 //Sale Incentive
                 //Tailor
                 //Full Month Billable
                 //Sunday Billable
-
             };
         }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (btnAdd.Text == "Add")
@@ -93,7 +117,6 @@ namespace AKS.Payroll.Forms.EntryForms
             }
             else if (btnAdd.Text == "Edit")
             {
-
                 btnAdd.Text = "Save";
             }
             else if (btnAdd.Text == "Save")
@@ -103,8 +126,11 @@ namespace AKS.Payroll.Forms.EntryForms
                 if (SaveRecord(sal))
                 {
                     btnAdd.Text = "Add";
+                    if(IsNew)
                     MessageBox.Show("New Salary Head is saved.");
+                    else MessageBox.Show("Salary Head is updated!");
                     SavedSalary = sal;
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
@@ -114,17 +140,57 @@ namespace AKS.Payroll.Forms.EntryForms
             }
         }
 
+        private void UpdateUI()
+        {
+            cbxEmployees.SelectedValue = newSalary.EmployeeId;
+            cbxStores.SelectedValue = newSalary.StoreId;
+            this.txtBasicSalary.Text = newSalary.BasicSalary.ToString();
+            this.cbIsEffective.Checked = newSalary.IsEffective;
+            dtpStartDate.Value = newSalary.EffectiveDate;
+            dtpEndDate.Value = newSalary.CloseDate.HasValue ? newSalary.CloseDate.Value : DateTime.Today;
+            //newSalary.CloseDate.HasValue?dtpEndDate.Value= newSalary.CloseDate.Value:dtp
+            clbOptions.SetItemChecked(0, newSalary.WowBill);
+            clbOptions.SetItemChecked(1, newSalary.LastPcs);
+            clbOptions.SetItemChecked(2, newSalary.Incentive);
+            clbOptions.SetItemChecked(3, newSalary.IsTailoring);
+            clbOptions.SetItemChecked(4, newSalary.FullMonth);
+            clbOptions.SetItemChecked(5, newSalary.SundayBillable);
+        }
+
         private void SalaryEntryForm_Load(object sender, EventArgs e)
         {
-            azureDb = new AzurePayrollDbContext(); 
-            localDB = new LocalPayrollDbContext();
+            
             LoadData();
+            UpdateUI();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            //TODO: ask for confirmation for delete.
+            var confirmResult = MessageBox.Show("Are you sure to delete this Salary Head ??",
+                                      "Confirm Delete!!",
+                                      MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                newSalary.Employee = null;
+                azureDb.Salaries.Remove(newSalary);
+                if (azureDb.SaveChanges() > 0)
+                {
+                    MessageBox.Show("Salary Head is deleted!", "Delete");
+                     DeletedSalaryId = newSalary.SalaryId;
+                    this.DialogResult = DialogResult.Yes;
+                    this.Close();
+                }
+                else MessageBox.Show("Faild to delete, please try again!", "Delete");
+            }
         }
 
         private void LoadData()
         {
             var empList = azureDb.Employees.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName, c.IsTailors }).ToList();
             cbxEmployees.DataSource = empList;
+            cbxEmployees.ValueMember = "EmployeeId";
+            cbxEmployees.DisplayMember = "StaffName";
 
             var sl = new Dictionary<string, string>
             {

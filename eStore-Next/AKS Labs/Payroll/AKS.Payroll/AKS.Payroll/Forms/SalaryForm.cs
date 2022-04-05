@@ -1,6 +1,8 @@
 ﻿using AKS.Payroll.Database;
+using AKS.Payroll.DTOMapping;
 using AKS.Payroll.Forms.EntryForms;
 using AKS.Shared.Payroll.Models;
+using AKS.Shared.Payrolls.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -10,7 +12,7 @@ namespace AKS.Payroll.Forms
     {
         private readonly AzurePayrollDbContext azureDb;
         private readonly LocalPayrollDbContext locaDb;
-        private ObservableListSource<Salary> Salaries;
+        private ObservableListSource<SalaryVM> Salaries;
         private string StoreCode = "ARD";
 
         public SalaryForm()
@@ -21,7 +23,8 @@ namespace AKS.Payroll.Forms
 
         private void SalaryForm_Load(object sender, EventArgs e)
         {
-            Salaries = new ObservableListSource<Salary>();
+            Salaries = new ObservableListSource<SalaryVM>();
+            DMMapper.InitializeAutomapper();
             LoadData();
         }
 
@@ -29,8 +32,10 @@ namespace AKS.Payroll.Forms
         {
             azureDb.Employees.Load();
 
-            lbEmployees.DataSource = azureDb.Employees.Local.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId, c.Category }).ToList();
-            UpdateSalariesList(azureDb.Salarys.ToList());
+            lbEmployees.DataSource = azureDb.Employees.Local.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId, c.Category }).OrderBy(c=>c.StaffName).ToList();
+            lbEmployees.DisplayMember = "StaffName";
+            lbEmployees.ValueMember = "EmployeeId";
+            UpdateSalariesList(azureDb.Salaries.Include(c=>c.Employee).ToList());
             UpdateGridView("");
         }
 
@@ -38,14 +43,14 @@ namespace AKS.Payroll.Forms
         {
             foreach (var s in sal)
             {
-                Salaries.Add(s);
+                Salaries.Add(DMMapper.Mapper.Map<SalaryVM>(s));
             }
             if (Salaries.Count > 0) Salaries.Distinct();
         }
 
         private void UpdateGridView(string empId)
         {
-            if (string.IsNullOrEmpty(empId))
+            if (!string.IsNullOrEmpty(empId))
                 dgvSalaries.DataSource = Salaries.Where(s => s.EmployeeId == empId).ToList();
             else dgvSalaries.DataSource = Salaries.ToBindingList();
         }
@@ -57,17 +62,11 @@ namespace AKS.Payroll.Forms
             if (form.ShowDialog() == DialogResult.OK)
             {
                 //Save/Update
-                if (form.IsNew)
+                if (!form.IsNew)
                 {
-                    //add
-                    Salaries.Add(form.SavedSalary);
+                    Salaries.Remove(Salaries.Where(c => c.SalaryId == form.newSalary.SalaryId).First());
                 }
-                else
-                {
-                    //Update
-
-                    Salaries.Add(form.SavedSalary);
-                }
+                Salaries.Add(DMMapper.Mapper.Map<SalaryVM>(form.SavedSalary));
                 dgvSalaries.DataSource = Salaries.ToBindingList();
             }
             else if (DialogResult == DialogResult.Yes)
@@ -96,23 +95,20 @@ namespace AKS.Payroll.Forms
 
         private void dgvSalaries_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            SalaryEntryForm form = new SalaryEntryForm((Salary)dgvSalaries.CurrentRow.DataBoundItem);
+            var sal = DMMapper.Mapper.Map<Salary> ( dgvSalaries.CurrentRow.DataBoundItem);
+            sal.Employee = null;
+            SalaryEntryForm form = new SalaryEntryForm(sal);
             form.SalaryForm = this;
             if (form.ShowDialog() == DialogResult.OK)
             {
                 //Save/Update
-                if (form.IsNew)
+                if (!form.IsNew)
                 {
-                    //add
-                    Salaries.Add(form.SavedSalary);
+                    Salaries.Remove(Salaries.Where(c=>c.SalaryId==form.newSalary.SalaryId).First());
                 }
-                else
-                {
-                    //Update
-
-                    Salaries.Add(form.SavedSalary);
-                }
+                Salaries.Add(DMMapper.Mapper.Map<SalaryVM>( form.SavedSalary));
                 dgvSalaries.DataSource = Salaries.ToBindingList();
+
             }
             else if (DialogResult == DialogResult.Yes)
             {
@@ -120,6 +116,7 @@ namespace AKS.Payroll.Forms
                 Salaries.Remove(Salaries.Where(c => c.SalaryId == form.DeletedSalaryId).First());
                 dgvSalaries.DataSource = Salaries.ToBindingList();
             }
+             
         }
     }
 }

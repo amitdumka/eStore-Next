@@ -168,7 +168,6 @@
             this.lbEmployees.Location = new System.Drawing.Point(3, 23);
             this.lbEmployees.Name = "lbEmployees";
             this.lbEmployees.Size = new System.Drawing.Size(141, 476);
-            this.lbEmployees.Sorted = true;
             this.lbEmployees.TabIndex = 0;
             this.lbEmployees.ValueMember = "EmployeeId";
             this.lbEmployees.SelectedIndexChanged += new System.EventHandler(this.lbEmployees_SelectedIndexChanged);

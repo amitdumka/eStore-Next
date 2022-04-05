@@ -96,7 +96,7 @@ namespace AKS.Payroll.Database
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<MonthlyAttendance> MonthlyAttendances { get; set; }
-        public DbSet<Salary> Salarys { get; set; }
+        public DbSet<Salary> Salaries { get; set; }
         public DbSet<SalaryPayment> SalaryPayment { get; set; }
         public DbSet<EmployeeDetails> EmployeeDetails { get; set; }
         public DbSet<StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }

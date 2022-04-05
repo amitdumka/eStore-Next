@@ -36,11 +36,15 @@ namespace AKS.Shared.Payroll.Models
 
         public int DayInMonths
         { get { return (DateTime.DaysInMonth(OnDate.Year, OnDate.Month)); } }
+
         public int Count
         { get { return Present + HalfDay + Sunday + PaidLeave + CasualLeave + Absent + WeeklyLeave + Holidays; } }
+
         public decimal BillableDays
         { get { return ((HalfDay / 2) + Present + Sunday + PaidLeave + Holidays); } }
-        public bool Valid { get { return (Count == DayInMonths); } }
+
+        public bool Valid
+        { get { return (Count == DayInMonths); } }
     }
 
     [Table("V1_Attendances")]
@@ -122,8 +126,6 @@ namespace AKS.Shared.Payroll.Models
     [Table("V1_Salaries")]
     public class Salary : BaseST
     {
-        public int Id { get; set; }
-
         [Key]
         public string SalaryId { get; set; }
 

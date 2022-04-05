@@ -454,9 +454,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<bool>("FullMonth")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Incentive")
                         .HasColumnType("bit");
 

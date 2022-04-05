@@ -48,6 +48,9 @@ namespace AKS.Payroll.DTOMapping
                     cfg.CreateMap<SalaryPaymentVM, SalaryPayment>();
                     cfg.CreateMap<StaffAdvanceReceipt, StaffAdvanceReceiptVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
                     cfg.CreateMap<StaffAdvanceReceiptVM, StaffAdvanceReceipt>();
+                    cfg.CreateMap<Salary, SalaryVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
+                    cfg.CreateMap<SalaryVM, Salary>();
+
                 });
                 Mapper = new Mapper(config);
             }

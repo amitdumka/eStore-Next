@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AKS.Payroll": {
+      "commandName": "Project",
+      "sqlDebugging": true
+    }
+  }
+}

@@ -60,7 +60,42 @@ namespace AKS.Libs.Docs.Pdfs
                     File.Delete(item);
             return true;
         }
+        /// <summary>
+        /// Add Page Number to Generate PDF File. 
+        /// </summary>
+        /// <param name="sourceFilename">Pass the source file path</param>
+        /// <param name="outputFileName">Pass new Destination file path</param>
+        /// <returns>Return newly create pdf file path</returns>
+        public string AddPageNumber(string sourceFilename, string outputFileName,string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                Directory.CreateDirectory(path);
 
+                outputFileName = System.IO.Path.Combine(path, outputFileName);
+                sourceFilename = System.IO.Path.Combine(path, sourceFilename);
+            }
+
+            using PdfDocument pdfDoc = new PdfDocument(new PdfReader(sourceFilename), new PdfWriter(outputFileName));
+            using Document doc = new Document(pdfDoc);
+
+            int numberOfPages = pdfDoc.GetNumberOfPages();
+
+            for (int i = 1; i <= numberOfPages; i++)
+            {
+                // Write aligned text to the specified by parameters point
+                //doc.ShowTextAligned (new Paragraph ("Page " + i + " of " + numberOfPages),
+                //        559, 806, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0);
+                doc.ShowTextAligned(new Paragraph("Page " + i + " of " + numberOfPages).SetFontColor(ColorConstants.DARK_GRAY),
+                       1, 1, i, TextAlignment.RIGHT, VerticalAlignment.BOTTOM, 0);
+            }
+
+            doc.Close();
+            pdfDoc.Close();
+            
+            FileCleanUp(outputFileName);
+            return outputFileName;
+        }
 
         /// <summary>
         /// Add Page Number to Generate PDF File. 
@@ -70,6 +105,7 @@ namespace AKS.Libs.Docs.Pdfs
         /// <returns>Return newly create pdf file path</returns>
         public string AddPageNumber(string sourceFilename, string outputFileName)
         {
+            Directory.CreateDirectory(outputFileName);
             using PdfDocument pdfDoc = new PdfDocument(new PdfReader(sourceFilename), new PdfWriter(outputFileName));
             using Document doc = new Document(pdfDoc);
 
@@ -138,13 +174,14 @@ namespace AKS.Libs.Docs.Pdfs
             string FileName = reportName + "_Report.pdf";
 
             string path = System.IO.Path.Combine(ConData.WWWroot, FileName);
+            Directory.CreateDirectory(ConData.WWWroot);
 
             //Setting Page size and orientation. 
             var PageType = PageSize.A4;
             if (IsLandscape)
                 PageType = PageSize.A4.Rotate();
 
-            using PdfWriter pdfWriter = new PdfWriter(FileName);
+            using PdfWriter pdfWriter = new PdfWriter(path);
             using PdfDocument pdfDoc = new PdfDocument(pdfWriter);
             using Document doc = new Document(pdfDoc, PageType);
 
@@ -182,12 +219,14 @@ namespace AKS.Libs.Docs.Pdfs
             {
                 doc.Add((IBlockElement)para);
             }
-
+           
             doc.Close();
             pdfDoc.Close();
             pdfWriter.Close();
+            pdfDoc.IsClosed();
+            pdfWriter.Dispose();
             //Returning PDF File path with name after adding Page Number
-            return AddPageNumber(FileName, "Final_" + FileName);
+            return AddPageNumber(FileName, "Final_" + FileName, ConData.WWWroot);
         }
 
         /// <summary>

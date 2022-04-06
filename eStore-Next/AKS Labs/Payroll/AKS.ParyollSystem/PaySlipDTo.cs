@@ -14,9 +14,9 @@ public class PaySlipDTO
     public decimal HalfDay { get; set; }
     public decimal PaidLeave { get; set; }
     public decimal WeeklyLeave { get; set; }
-
-    public int NoOfAttendance
-    { get { return (int)(Absent + PaidLeave + Present + Sunday + HalfDay); } }
+    public int NoOfAttendance { get; set; }
+    //public int NoOfAttendance
+    //{ get { return (int)(Absent + PaidLeave + Present + Sunday + HalfDay); } }
 
     public decimal BillableDays { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Forms;
+using AKS.Payroll.Ops;
 
 namespace AKS.Payroll
 {
@@ -190,8 +191,9 @@ namespace AKS.Payroll
         private void printCurrentPaySlipToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Call From Ops then print.
-            var form = new PdfForm();
-            LoadForm(form);
+            //var form = new PdfForm();
+            //LoadForm(form);
+            new BasicOperations().PayrollReport();
         }
     }
 }

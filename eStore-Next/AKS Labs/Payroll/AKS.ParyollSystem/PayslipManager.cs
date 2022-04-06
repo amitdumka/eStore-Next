@@ -184,7 +184,7 @@ public class PayslipManager
         else dbDispose = false;
 
         var ma = db.MonthlyAttendances.Include(c => c.Employee).Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
-        var pSlip = db.PaySlips.Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList();
+        var pSlip = db.PaySlips.Where(c => c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month+1).ToList();
         if (ma.Any() && pSlip.Any())
         {
             var empList = ma.Select(c => new { c.EmployeeId, c.Employee.StaffName }).Distinct().ToList();
@@ -195,6 +195,7 @@ public class PayslipManager
 
                 PaySlipDTO pDTO = new PaySlipDTO
                 {
+                    NoOfAttendance=a.Count,
                     Absent = a.Absent,
                     BillableDays = a.BillableDays,
                     EmployeeId = emp.EmployeeId,
@@ -209,7 +210,7 @@ public class PayslipManager
                     PaidLeave = a.PaidLeave,
                     Remarks = a.Remarks,
                     Sunday = a.Sunday,
-                    WeeklyLeave = a.WeeklyLeave
+                    WeeklyLeave = a.WeeklyLeave, 
                 };
                 paySlips.Add(emp.StaffName, pDTO);
             }

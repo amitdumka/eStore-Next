@@ -71,7 +71,7 @@ namespace AKS.ParyollSystem
                     //var StaffName = item.Key;
                     /// Calculating Total Advance paid in last month
                     var sa = db.SalaryPayment.Where(c => c.EmployeeId == item.Value.EmployeeId && c.SalaryComponet == SalaryComponet.Advance
-                        && c.OnDate.Month == item.Value.OnDate.Month && c.OnDate.Year == item.Value.OnDate.Year)
+                        && c.OnDate.Month == onDate.Month && c.OnDate.Year == onDate.Year)
                         .Select(c => c.Amount).Sum();
 
                     // Calculatig no of Attendance recorded in record.

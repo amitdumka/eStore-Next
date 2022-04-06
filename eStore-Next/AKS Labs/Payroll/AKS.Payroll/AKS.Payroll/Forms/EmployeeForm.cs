@@ -1,5 +1,6 @@
 ﻿
 using AKS.Payroll.Database;
+using AKS.Payroll.Forms.EntryForms;
 using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
@@ -106,6 +107,23 @@ namespace AKS.Payroll.Forms
         private void tabPage2_Enter(object sender, EventArgs e)
         {
             LoadEmpDetails();
+        }
+
+        private void btnAddEmployee_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddBankDetails_Click(object sender, EventArgs e)
+        {
+            EmployeeBankDetailsForm form = new EmployeeBankDetailsForm();
+            if(form.ShowDialog() == DialogResult.OK)
+            {
+
+            }else if(DialogResult== DialogResult.Yes)
+            {
+
+            }
         }
     }
 }

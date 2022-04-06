@@ -310,6 +310,14 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BankAccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankNameWithBranch")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -321,6 +329,10 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HighestQualification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IFSCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

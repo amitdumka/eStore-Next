@@ -34,6 +34,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvEmployee = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnAddEmployee = new System.Windows.Forms.Button();
+            this.btnDetails = new System.Windows.Forms.Button();
+            this.btnAddBankDetails = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dgvEmployeeDetails = new System.Windows.Forms.DataGridView();
@@ -47,6 +50,7 @@
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployee)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployeeDetails)).BeginInit();
@@ -92,9 +96,9 @@
             // 
             this.groupBox2.Controls.Add(this.dgvEmployee);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 105);
+            this.groupBox2.Location = new System.Drawing.Point(0, 82);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(996, 434);
+            this.groupBox2.Size = new System.Drawing.Size(996, 457);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "List";
@@ -116,18 +120,53 @@
             this.dgvEmployee.ReadOnly = true;
             this.dgvEmployee.RowHeadersWidth = 51;
             this.dgvEmployee.RowTemplate.Height = 29;
-            this.dgvEmployee.Size = new System.Drawing.Size(990, 408);
+            this.dgvEmployee.Size = new System.Drawing.Size(990, 431);
             this.dgvEmployee.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnAddEmployee);
+            this.groupBox1.Controls.Add(this.btnDetails);
+            this.groupBox1.Controls.Add(this.btnAddBankDetails);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(996, 105);
+            this.groupBox1.Size = new System.Drawing.Size(996, 82);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
+            // 
+            // btnAddEmployee
+            // 
+            this.btnAddEmployee.AutoSize = true;
+            this.btnAddEmployee.Location = new System.Drawing.Point(263, 26);
+            this.btnAddEmployee.Name = "btnAddEmployee";
+            this.btnAddEmployee.Size = new System.Drawing.Size(117, 30);
+            this.btnAddEmployee.TabIndex = 2;
+            this.btnAddEmployee.Text = "Add Employee";
+            this.btnAddEmployee.UseVisualStyleBackColor = true;
+            this.btnAddEmployee.Click += new System.EventHandler(this.btnAddEmployee_Click);
+            // 
+            // btnDetails
+            // 
+            this.btnDetails.AutoSize = true;
+            this.btnDetails.Location = new System.Drawing.Point(380, 26);
+            this.btnDetails.Name = "btnDetails";
+            this.btnDetails.Size = new System.Drawing.Size(97, 30);
+            this.btnDetails.TabIndex = 1;
+            this.btnDetails.Text = "Add Details";
+            this.btnDetails.UseVisualStyleBackColor = true;
+            // 
+            // btnAddBankDetails
+            // 
+            this.btnAddBankDetails.AutoSize = true;
+            this.btnAddBankDetails.Location = new System.Drawing.Point(477, 26);
+            this.btnAddBankDetails.Name = "btnAddBankDetails";
+            this.btnAddBankDetails.Size = new System.Drawing.Size(133, 30);
+            this.btnAddBankDetails.TabIndex = 0;
+            this.btnAddBankDetails.Text = "Add Bank Details";
+            this.btnAddBankDetails.UseVisualStyleBackColor = true;
+            this.btnAddBankDetails.Click += new System.EventHandler(this.btnAddBankDetails_Click);
             // 
             // tabPage2
             // 
@@ -233,6 +272,8 @@
             this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployee)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployeeDetails)).EndInit();
@@ -258,5 +299,8 @@
         private GroupBox groupBox5;
         private GroupBox groupBox6;
         private ListView listView1;
+        private Button btnAddBankDetails;
+        private Button btnDetails;
+        private Button btnAddEmployee;
     }
 }

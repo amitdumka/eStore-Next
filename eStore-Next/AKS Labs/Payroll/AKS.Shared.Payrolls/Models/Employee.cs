@@ -82,6 +82,11 @@ namespace AKS.Shared.Payroll.Models
         public string MaritalStatus { get; set; }
         public string SpouseName { get; set; }
         public string HighestQualification { get; set; }
+        
+        public string BankAccountNumber { get; set; }
+        public string BankNameWithBranch { get; set; }
+        public string IFSCode { get; set; }
+
     }
 
     [Table("V1_Employees")]

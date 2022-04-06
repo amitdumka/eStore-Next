@@ -17,5 +17,16 @@ namespace AKS.Payroll.Ops
                 form.Show(); ;
             }
         }
+        public async void PrintBankLetterForSalary()
+        {
+            using (var db = new AzurePayrollDbContext())
+            {
+                PayrollReports pr = new PayrollReports();
+                var filename = await pr.PaySlipReportForAllEmpoyeeAsync(db, DateTime.Today.AddMonths(-1));
+
+                PdfForm form = new PdfForm(filename);
+                form.Show(); ;
+            }
+        }
     }
 }

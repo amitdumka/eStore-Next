@@ -4,6 +4,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Payrolls.ViewModels
 {
+
+    public class EmployeeBasicVM
+    {
+        [Key]
+        public string EmployeeId { get; set; }
+        public string StaffName { get; set; }
+        public DateTime JoiningDate { get; set; }
+        public bool Working { get; set; }
+        public EmpType Category { get; set; }
+
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Date Of Birth")]
+        public DateTime DateOfBirth { get; set; }
+
+        public string PanNo { get; set; }
+        public string AdharNumber { get; set; }
+
+        public string BankAccountNumber { get; set; }
+        public string BankNameWithBranch { get; set; }
+        public string IFSCode { get; set; }
+
+        public string StoreId { get; set; }
+
+    }
+
     public class AttendanceVM
     {
         public string AttendanceId { get; set; }
@@ -27,6 +52,10 @@ namespace AKS.Shared.Payrolls.ViewModels
         public string EmployeeId { get; set; }
 
         public string AdharNumber { get; set; }
+        
+        public string BankAccountNumber { get; set; }
+        public string BankNameWithBranch { get; set; }
+        public string IFSCode { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date Of Birth")]
@@ -39,6 +68,7 @@ namespace AKS.Shared.Payrolls.ViewModels
         public string OtherIdDetails { get; set; }
         public string PanNo { get; set; }
         public string SpouseName { get; set; }
+
     }
 
     public class PersonVM : AddressVM

@@ -1,5 +1,6 @@
 ﻿using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Auth;
+using AKS.Shared.Commons.Models.Banking;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -9,42 +10,6 @@ using System.ComponentModel;
 //https://docs.microsoft.com/en-gb/ef/ef6/fundamentals/databinding/winforms
 namespace AKS.Payroll.Database
 {
-    public class LocalPayrollDbContext : PayrollDbContext
-    {
-        private static readonly string _connectionString = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = eStoreDb_Local_Ver1_0; Integrated Security = True; Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-
-        //"Server=(localdb)\\mssqllocaldb;Database=eStoreDb_Local_Ver1_0;Trusted_Connection=True;MultipleActiveResultSets=true";
-
-        public LocalPayrollDbContext() : base(_connectionString, false)
-        {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(_connectionString);
-            }
-        }
-    }
-
-    public class AzurePayrollDbContext : PayrollDbContext
-    {
-        private static readonly string _connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
-
-        public AzurePayrollDbContext() : base(_connectionString, true)
-        {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(_connectionString);
-            }
-        }
-    }
 
     public class PayrollDbContext : DbContext
     {
@@ -108,6 +73,18 @@ namespace AKS.Payroll.Database
 
         public DbSet<Salesman> Salesmen { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
+        // Banking  Note: Some of Table will move to other part. 
+
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }
+        public  DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<BankAccountList> AccountLists { get; set; }
+        public DbSet<ChequeBook> ChequeBooks { get; set; }
+        public DbSet<ChequeIssued> ChequeIssued { get; set; }
+        public DbSet<ChequeLog>ChequeLogs { get; set; }
+
+
+
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

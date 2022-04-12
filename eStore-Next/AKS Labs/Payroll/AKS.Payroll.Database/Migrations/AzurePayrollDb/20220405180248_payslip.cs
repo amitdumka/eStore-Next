@@ -63,7 +63,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         column: x => x.StoreId,
                         principalTable: "V1_Stores",
                         principalColumn: "StoreId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

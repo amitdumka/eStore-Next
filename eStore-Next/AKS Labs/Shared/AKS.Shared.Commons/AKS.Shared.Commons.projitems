@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DateTimeExtensions\DateHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Auth\LocalUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Banking\Bank.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Base\BaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
   </ItemGroup>

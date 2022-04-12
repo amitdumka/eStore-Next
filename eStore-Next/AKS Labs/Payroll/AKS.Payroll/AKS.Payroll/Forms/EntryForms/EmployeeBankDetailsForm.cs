@@ -28,6 +28,7 @@ namespace AKS.Payroll.Forms.EntryForms
             if (btnAdd.Text == "Add")
             {
                 gbForm.Enabled = true;
+                btnAdd.Text = "Save";
             }
             else if (btnAdd.Text == "Edit")
             {
@@ -48,7 +49,7 @@ namespace AKS.Payroll.Forms.EntryForms
 
         private void LoadData()
         {
-            cbEmployee.DataSource = azureDb.Employees.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId }).OrderBy(c => c.StaffName).ToList();
+            cbEmployee.DataSource = azureDb.Employees.Select(c => new { c.EmployeeId, c.StaffName, c.StoreId }).OrderBy(c => c.EmployeeId).ToList();
             cbEmployee.ValueMember = "EmployeeId";
             cbEmployee.DisplayMember = "StaffName";
 

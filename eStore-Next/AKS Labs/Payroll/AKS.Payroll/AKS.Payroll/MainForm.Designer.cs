@@ -84,6 +84,8 @@
             this.addReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testFormToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.paToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printCurrentPaySlipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -97,8 +99,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.paToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printCurrentPaySlipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -568,10 +568,24 @@
             // testFormToolStripMenuItem1
             // 
             this.testFormToolStripMenuItem1.Name = "testFormToolStripMenuItem1";
-            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.testFormToolStripMenuItem1.Size = new System.Drawing.Size(225, 26);
             this.testFormToolStripMenuItem1.Text = "TestForm";
             this.testFormToolStripMenuItem1.Visible = false;
             this.testFormToolStripMenuItem1.Click += new System.EventHandler(this.testFormToolStripMenuItem1_Click);
+            // 
+            // paToolStripMenuItem
+            // 
+            this.paToolStripMenuItem.Name = "paToolStripMenuItem";
+            this.paToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.paToolStripMenuItem.Text = "PaySlip";
+            this.paToolStripMenuItem.Click += new System.EventHandler(this.paToolStripMenuItem_Click);
+            // 
+            // printCurrentPaySlipToolStripMenuItem
+            // 
+            this.printCurrentPaySlipToolStripMenuItem.Name = "printCurrentPaySlipToolStripMenuItem";
+            this.printCurrentPaySlipToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.printCurrentPaySlipToolStripMenuItem.Text = "Print Current PaySlip";
+            this.printCurrentPaySlipToolStripMenuItem.Click += new System.EventHandler(this.printCurrentPaySlipToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem1
             // 
@@ -683,20 +697,6 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // paToolStripMenuItem
-            // 
-            this.paToolStripMenuItem.Name = "paToolStripMenuItem";
-            this.paToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.paToolStripMenuItem.Text = "PaySlip";
-            this.paToolStripMenuItem.Click += new System.EventHandler(this.paToolStripMenuItem_Click);
-            // 
-            // printCurrentPaySlipToolStripMenuItem
-            // 
-            this.printCurrentPaySlipToolStripMenuItem.Name = "printCurrentPaySlipToolStripMenuItem";
-            this.printCurrentPaySlipToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.printCurrentPaySlipToolStripMenuItem.Text = "Print Current PaySlip";
-            this.printCurrentPaySlipToolStripMenuItem.Click += new System.EventHandler(this.printCurrentPaySlipToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -706,6 +706,7 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);

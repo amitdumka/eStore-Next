@@ -37,7 +37,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -50,10 +49,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.nudYear = new System.Windows.Forms.NumericUpDown();
             this.nudMonth = new System.Windows.Forms.NumericUpDown();
-            this.cbxBanks = new System.Windows.Forms.ComboBox();
+            this.cbxIssuedBanks = new System.Windows.Forms.ComboBox();
             this.txtBankName = new System.Windows.Forms.TextBox();
-            this.cbxChequeBankName = new System.Windows.Forms.ComboBox();
-            this.cbxChequeNumber = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpChequeDate = new System.Windows.Forms.DateTimePicker();
@@ -62,6 +59,7 @@
             this.cbxOperationMode = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.cbxApprovedBy = new System.Windows.Forms.ComboBox();
+            this.txtChequeNumber = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -154,29 +152,27 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.label5, 2, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label8, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label9, 4, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label10, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label11, 2, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbxStores, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.dtpOnDate, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbxBanks, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbxIssuedBanks, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtBankName, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cbxChequeBankName, 5, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cbxChequeNumber, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label7, 4, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label6, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.dtpChequeDate, 3, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cbxGeneratedBy, 5, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtStatus, 3, 3);
-            this.tableLayoutPanel1.Controls.Add(this.cbxOperationMode, 5, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label12, 4, 3);
-            this.tableLayoutPanel1.Controls.Add(this.cbxApprovedBy, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label6, 4, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.dtpChequeDate, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label9, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cbxGeneratedBy, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label10, 4, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cbxApprovedBy, 5, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label12, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbxOperationMode, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.txtChequeNumber, 5, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 23);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -197,19 +193,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Store";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 39);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Bank Name";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(261, 0);
+            this.label3.Location = new System.Drawing.Point(388, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 20);
             this.label3.TabIndex = 2;
@@ -218,7 +205,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(663, 0);
+            this.label4.Location = new System.Drawing.Point(790, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(51, 20);
             this.label4.TabIndex = 3;
@@ -227,7 +214,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(261, 39);
+            this.label5.Location = new System.Drawing.Point(388, 39);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(140, 20);
             this.label5.TabIndex = 4;
@@ -236,7 +223,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(261, 73);
+            this.label8.Location = new System.Drawing.Point(3, 73);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 20);
             this.label8.TabIndex = 7;
@@ -245,7 +232,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(663, 73);
+            this.label9.Location = new System.Drawing.Point(388, 73);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(98, 20);
             this.label9.TabIndex = 8;
@@ -254,7 +241,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 107);
+            this.label10.Location = new System.Drawing.Point(790, 73);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(95, 20);
             this.label10.TabIndex = 9;
@@ -263,7 +250,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(261, 107);
+            this.label11.Location = new System.Drawing.Point(388, 107);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(49, 20);
             this.label11.TabIndex = 10;
@@ -272,14 +259,14 @@
             // cbxStores
             // 
             this.cbxStores.FormattingEnabled = true;
-            this.cbxStores.Location = new System.Drawing.Point(104, 3);
+            this.cbxStores.Location = new System.Drawing.Point(132, 3);
             this.cbxStores.Name = "cbxStores";
-            this.cbxStores.Size = new System.Drawing.Size(151, 28);
+            this.cbxStores.Size = new System.Drawing.Size(250, 28);
             this.cbxStores.TabIndex = 11;
             // 
             // dtpOnDate
             // 
-            this.dtpOnDate.Location = new System.Drawing.Point(407, 3);
+            this.dtpOnDate.Location = new System.Drawing.Point(534, 3);
             this.dtpOnDate.Name = "dtpOnDate";
             this.dtpOnDate.Size = new System.Drawing.Size(250, 27);
             this.dtpOnDate.TabIndex = 12;
@@ -291,9 +278,9 @@
             this.panel2.Controls.Add(this.nudYear);
             this.panel2.Controls.Add(this.nudMonth);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(792, 3);
+            this.panel2.Location = new System.Drawing.Point(891, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(407, 33);
+            this.panel2.Size = new System.Drawing.Size(339, 33);
             this.panel2.TabIndex = 13;
             // 
             // nudYear
@@ -310,41 +297,25 @@
             this.nudMonth.Size = new System.Drawing.Size(150, 27);
             this.nudMonth.TabIndex = 0;
             // 
-            // cbxBanks
+            // cbxIssuedBanks
             // 
-            this.cbxBanks.FormattingEnabled = true;
-            this.cbxBanks.Location = new System.Drawing.Point(104, 42);
-            this.cbxBanks.Name = "cbxBanks";
-            this.cbxBanks.Size = new System.Drawing.Size(151, 28);
-            this.cbxBanks.TabIndex = 14;
+            this.cbxIssuedBanks.FormattingEnabled = true;
+            this.cbxIssuedBanks.Location = new System.Drawing.Point(132, 42);
+            this.cbxIssuedBanks.Name = "cbxIssuedBanks";
+            this.cbxIssuedBanks.Size = new System.Drawing.Size(250, 28);
+            this.cbxIssuedBanks.TabIndex = 14;
             // 
             // txtBankName
             // 
-            this.txtBankName.Location = new System.Drawing.Point(407, 42);
+            this.txtBankName.Location = new System.Drawing.Point(534, 42);
             this.txtBankName.Name = "txtBankName";
             this.txtBankName.Size = new System.Drawing.Size(250, 27);
             this.txtBankName.TabIndex = 15;
             // 
-            // cbxChequeBankName
-            // 
-            this.cbxChequeBankName.FormattingEnabled = true;
-            this.cbxChequeBankName.Location = new System.Drawing.Point(792, 42);
-            this.cbxChequeBankName.Name = "cbxChequeBankName";
-            this.cbxChequeBankName.Size = new System.Drawing.Size(151, 28);
-            this.cbxChequeBankName.TabIndex = 16;
-            // 
-            // cbxChequeNumber
-            // 
-            this.cbxChequeNumber.FormattingEnabled = true;
-            this.cbxChequeNumber.Location = new System.Drawing.Point(104, 76);
-            this.cbxChequeNumber.Name = "cbxChequeNumber";
-            this.cbxChequeNumber.Size = new System.Drawing.Size(151, 28);
-            this.cbxChequeNumber.TabIndex = 17;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(663, 39);
+            this.label7.Location = new System.Drawing.Point(3, 39);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(123, 20);
             this.label7.TabIndex = 6;
@@ -353,7 +324,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 73);
+            this.label6.Location = new System.Drawing.Point(790, 39);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(83, 20);
             this.label6.TabIndex = 5;
@@ -361,7 +332,7 @@
             // 
             // dtpChequeDate
             // 
-            this.dtpChequeDate.Location = new System.Drawing.Point(407, 76);
+            this.dtpChequeDate.Location = new System.Drawing.Point(132, 76);
             this.dtpChequeDate.Name = "dtpChequeDate";
             this.dtpChequeDate.Size = new System.Drawing.Size(250, 27);
             this.dtpChequeDate.TabIndex = 18;
@@ -369,22 +340,22 @@
             // cbxGeneratedBy
             // 
             this.cbxGeneratedBy.FormattingEnabled = true;
-            this.cbxGeneratedBy.Location = new System.Drawing.Point(792, 76);
+            this.cbxGeneratedBy.Location = new System.Drawing.Point(534, 76);
             this.cbxGeneratedBy.Name = "cbxGeneratedBy";
-            this.cbxGeneratedBy.Size = new System.Drawing.Size(151, 28);
+            this.cbxGeneratedBy.Size = new System.Drawing.Size(250, 28);
             this.cbxGeneratedBy.TabIndex = 19;
             // 
             // txtStatus
             // 
-            this.txtStatus.Location = new System.Drawing.Point(407, 110);
+            this.txtStatus.Location = new System.Drawing.Point(534, 110);
             this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Size = new System.Drawing.Size(125, 27);
+            this.txtStatus.Size = new System.Drawing.Size(250, 27);
             this.txtStatus.TabIndex = 21;
             // 
             // cbxOperationMode
             // 
             this.cbxOperationMode.FormattingEnabled = true;
-            this.cbxOperationMode.Location = new System.Drawing.Point(792, 110);
+            this.cbxOperationMode.Location = new System.Drawing.Point(132, 110);
             this.cbxOperationMode.Name = "cbxOperationMode";
             this.cbxOperationMode.Size = new System.Drawing.Size(151, 28);
             this.cbxOperationMode.TabIndex = 22;
@@ -392,7 +363,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(663, 107);
+            this.label12.Location = new System.Drawing.Point(3, 107);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(119, 20);
             this.label12.TabIndex = 23;
@@ -401,10 +372,17 @@
             // cbxApprovedBy
             // 
             this.cbxApprovedBy.FormattingEnabled = true;
-            this.cbxApprovedBy.Location = new System.Drawing.Point(104, 110);
+            this.cbxApprovedBy.Location = new System.Drawing.Point(891, 76);
             this.cbxApprovedBy.Name = "cbxApprovedBy";
             this.cbxApprovedBy.Size = new System.Drawing.Size(151, 28);
             this.cbxApprovedBy.TabIndex = 24;
+            // 
+            // txtChequeNumber
+            // 
+            this.txtChequeNumber.Location = new System.Drawing.Point(891, 42);
+            this.txtChequeNumber.Name = "txtChequeNumber";
+            this.txtChequeNumber.Size = new System.Drawing.Size(223, 27);
+            this.txtChequeNumber.TabIndex = 25;
             // 
             // PayslipBankLetterForm
             // 
@@ -437,7 +415,6 @@
         private GroupBox groupBox2;
         private TableLayoutPanel tableLayoutPanel1;
         private Label label1;
-        private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
@@ -452,10 +429,8 @@
         private Panel panel2;
         private NumericUpDown nudMonth;
         private NumericUpDown nudYear;
-        private ComboBox cbxBanks;
+        private ComboBox cbxIssuedBanks;
         private TextBox txtBankName;
-        private ComboBox cbxChequeBankName;
-        private ComboBox cbxChequeNumber;
         private DateTimePicker dtpChequeDate;
         private ComboBox cbxGeneratedBy;
         private TextBox txtStatus;
@@ -466,5 +441,6 @@
         private Label label12;
         private ComboBox cbxApprovedBy;
         private Button btnPreview;
+        private TextBox txtChequeNumber;
     }
 }

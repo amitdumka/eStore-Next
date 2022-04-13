@@ -99,6 +99,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.bankLetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -560,7 +561,8 @@
             this.testFormToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testFormToolStripMenuItem1,
             this.paToolStripMenuItem,
-            this.printCurrentPaySlipToolStripMenuItem});
+            this.printCurrentPaySlipToolStripMenuItem,
+            this.bankLetterToolStripMenuItem});
             this.testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
             this.testFormToolStripMenuItem.Size = new System.Drawing.Size(96, 24);
             this.testFormToolStripMenuItem.Text = "Operations";
@@ -697,6 +699,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // bankLetterToolStripMenuItem
+            // 
+            this.bankLetterToolStripMenuItem.Name = "bankLetterToolStripMenuItem";
+            this.bankLetterToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.bankLetterToolStripMenuItem.Text = "Bank Letter";
+            this.bankLetterToolStripMenuItem.Click += new System.EventHandler(this.bankLetterToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -796,6 +805,8 @@
         private ToolStripMenuItem testFormToolStripMenuItem1;
         private ToolStripMenuItem paToolStripMenuItem;
         private ToolStripMenuItem printCurrentPaySlipToolStripMenuItem;
+        private ToolStripMenuItem salaryBankLetterToolStripMenuItem;
+        private ToolStripMenuItem bankLetterToolStripMenuItem;
     }
 }
 

@@ -11,6 +11,8 @@ namespace AKS.Payroll.Forms
         {
             InitializeComponent();
             bankLetterDto = new BankLetterDto();
+            azureDb= new AzurePayrollDbContext();
+            localDb= new LocalPayrollDbContext();
         }
 
         private void LoadData()
@@ -20,20 +22,20 @@ namespace AKS.Payroll.Forms
             
             cbxApprovedBy.DataSource = employeesList;
             cbxApprovedBy.DisplayMember = "StaffName";
-            cbxApprovedBy.ValueMember = "EmployeId";
+            cbxApprovedBy.ValueMember = "EmployeeId";
 
             cbxGeneratedBy.DataSource = employeesList;
             cbxGeneratedBy.DisplayMember = "StaffName";
-            cbxGeneratedBy.ValueMember = "EmployeId";
+            cbxGeneratedBy.ValueMember = "EmployeeId";
 
 
             cbxStores.DataSource = azureDb.Stores.ToList();
             cbxStores.DisplayMember = "StoreName";
             cbxStores.ValueMember = "StoreId";
 
-
-
             cbxIssuedBanks.DataSource = azureDb.BankAccounts.Where(c => c.IsActive).ToList();
+            nudMonth.Value=DateTime.Now.Month;
+            nudYear.Value=DateTime.Now.Year;    
 
 
         }
@@ -73,9 +75,14 @@ namespace AKS.Payroll.Forms
 
             };
         }
+
+        private void PayslipBankLetterForm_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
     }
 
-    internal class BankLetterDto
+    public class BankLetterDto
     {
         public DateTime OnDate { get; set; }
         public string StoreId { get; set; }

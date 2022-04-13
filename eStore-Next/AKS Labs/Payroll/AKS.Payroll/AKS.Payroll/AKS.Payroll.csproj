@@ -44,18 +44,18 @@
     <PackageReference Include="Syncfusion.Shared.Base" Version="19.4.0.56" />
     <PackageReference Include="Syncfusion.Tools.Windows" Version="19.4.0.56" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-      <PackageReference Include="Syncfusion.GridHelperClasses.Windows" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Grid.Windows" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.SfDataGrid.Winforms" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Spreadsheet.Windows" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Shared.Windows" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Compression.Base" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.OfficeChart.Base" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.DocIO.WinForms" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Pdf.WinForms" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.PdfViewer.Windows" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56"/>
-    <PackageReference Include="Syncfusion.Gauge.Windows" Version="19.4.0.56"/>
+      <PackageReference Include="Syncfusion.GridHelperClasses.Windows" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Grid.Windows" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.SfDataGrid.Winforms" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Spreadsheet.Windows" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Shared.Windows" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Compression.Base" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.OfficeChart.Base" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.DocIO.WinForms" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Pdf.WinForms" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.PdfViewer.Windows" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56" />
+    <PackageReference Include="Syncfusion.Gauge.Windows" Version="19.4.0.56" />
 </ItemGroup>
 
   <ItemGroup>

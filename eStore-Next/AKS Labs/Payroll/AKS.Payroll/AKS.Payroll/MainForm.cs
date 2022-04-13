@@ -195,5 +195,10 @@ namespace AKS.Payroll
             //LoadForm(form);
             new BasicOperations().PayrollReport();
         }
+
+        private void bankLetterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new PayslipBankLetterForm());
+        }
     }
 }

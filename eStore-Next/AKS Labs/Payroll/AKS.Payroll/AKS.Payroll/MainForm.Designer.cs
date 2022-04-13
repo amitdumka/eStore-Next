@@ -86,6 +86,7 @@
             this.testFormToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.paToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printCurrentPaySlipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bankLetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -99,7 +100,11 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.bankLetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bankingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bankAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vendorAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.accountListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -117,6 +122,7 @@
             this.helpMenu,
             this.payrollToolStripMenuItem,
             this.testFormToolStripMenuItem,
+            this.bankingToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.MdiWindowListItem = this.windowsMenu;
@@ -589,6 +595,13 @@
             this.printCurrentPaySlipToolStripMenuItem.Text = "Print Current PaySlip";
             this.printCurrentPaySlipToolStripMenuItem.Click += new System.EventHandler(this.printCurrentPaySlipToolStripMenuItem_Click);
             // 
+            // bankLetterToolStripMenuItem
+            // 
+            this.bankLetterToolStripMenuItem.Name = "bankLetterToolStripMenuItem";
+            this.bankLetterToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.bankLetterToolStripMenuItem.Text = "Bank Letter";
+            this.bankLetterToolStripMenuItem.Click += new System.EventHandler(this.bankLetterToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
@@ -699,12 +712,41 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // bankLetterToolStripMenuItem
+            // bankingToolStripMenuItem
             // 
-            this.bankLetterToolStripMenuItem.Name = "bankLetterToolStripMenuItem";
-            this.bankLetterToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.bankLetterToolStripMenuItem.Text = "Bank Letter";
-            this.bankLetterToolStripMenuItem.Click += new System.EventHandler(this.bankLetterToolStripMenuItem_Click);
+            this.bankingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bankToolStripMenuItem,
+            this.bankAccountToolStripMenuItem,
+            this.vendorAccountToolStripMenuItem,
+            this.accountListToolStripMenuItem});
+            this.bankingToolStripMenuItem.Name = "bankingToolStripMenuItem";
+            this.bankingToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
+            this.bankingToolStripMenuItem.Text = "Banking";
+            // 
+            // bankToolStripMenuItem
+            // 
+            this.bankToolStripMenuItem.Name = "bankToolStripMenuItem";
+            this.bankToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.bankToolStripMenuItem.Text = "Bank";
+            this.bankToolStripMenuItem.Click += new System.EventHandler(this.bankToolStripMenuItem_Click);
+            // 
+            // bankAccountToolStripMenuItem
+            // 
+            this.bankAccountToolStripMenuItem.Name = "bankAccountToolStripMenuItem";
+            this.bankAccountToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.bankAccountToolStripMenuItem.Text = "Bank Account";
+            // 
+            // vendorAccountToolStripMenuItem
+            // 
+            this.vendorAccountToolStripMenuItem.Name = "vendorAccountToolStripMenuItem";
+            this.vendorAccountToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.vendorAccountToolStripMenuItem.Text = "Vendor Account";
+            // 
+            // accountListToolStripMenuItem
+            // 
+            this.accountListToolStripMenuItem.Name = "accountListToolStripMenuItem";
+            this.accountListToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.accountListToolStripMenuItem.Text = "Account List";
             // 
             // MainForm
             // 
@@ -807,6 +849,11 @@
         private ToolStripMenuItem printCurrentPaySlipToolStripMenuItem;
         private ToolStripMenuItem salaryBankLetterToolStripMenuItem;
         private ToolStripMenuItem bankLetterToolStripMenuItem;
+        private ToolStripMenuItem bankingToolStripMenuItem;
+        private ToolStripMenuItem bankToolStripMenuItem;
+        private ToolStripMenuItem bankAccountToolStripMenuItem;
+        private ToolStripMenuItem vendorAccountToolStripMenuItem;
+        private ToolStripMenuItem accountListToolStripMenuItem;
     }
 }
 

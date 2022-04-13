@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Forms;
+using AKS.Payroll.Forms.Banking;
 using AKS.Payroll.Ops;
 
 namespace AKS.Payroll
@@ -199,6 +200,11 @@ namespace AKS.Payroll
         private void bankLetterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new PayslipBankLetterForm());
+        }
+
+        private void bankToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new BankForm());
         }
     }
 }

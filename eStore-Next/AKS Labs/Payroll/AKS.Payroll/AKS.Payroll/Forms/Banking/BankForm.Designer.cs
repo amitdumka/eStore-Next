@@ -47,13 +47,13 @@
             this.txtBankName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbBankList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.btnAddVendorAccounts = new System.Windows.Forms.Button();
             this.btnAddThirdPartyAccounts = new System.Windows.Forms.Button();
             this.btnAddBankAccount = new System.Windows.Forms.Button();
-            this.lbBankList = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -280,6 +280,18 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " ";
             // 
+            // lbBankList
+            // 
+            this.lbBankList.DisplayMember = "Name";
+            this.lbBankList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbBankList.FormattingEnabled = true;
+            this.lbBankList.ItemHeight = 20;
+            this.lbBankList.Location = new System.Drawing.Point(3, 23);
+            this.lbBankList.Name = "lbBankList";
+            this.lbBankList.Size = new System.Drawing.Size(170, 384);
+            this.lbBankList.TabIndex = 2;
+            this.lbBankList.ValueMember = "BankId";
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel2);
@@ -320,6 +332,7 @@
             this.btnAddVendorAccounts.TabIndex = 2;
             this.btnAddVendorAccounts.Text = "+ Vendors";
             this.btnAddVendorAccounts.UseVisualStyleBackColor = true;
+            this.btnAddVendorAccounts.Click += new System.EventHandler(this.btnAddVendorAccounts_Click);
             // 
             // btnAddThirdPartyAccounts
             // 
@@ -329,6 +342,7 @@
             this.btnAddThirdPartyAccounts.TabIndex = 1;
             this.btnAddThirdPartyAccounts.Text = "+Third Party";
             this.btnAddThirdPartyAccounts.UseVisualStyleBackColor = true;
+            this.btnAddThirdPartyAccounts.Click += new System.EventHandler(this.btnAddThirdPartyAccounts_Click);
             // 
             // btnAddBankAccount
             // 
@@ -339,18 +353,6 @@
             this.btnAddBankAccount.Text = "+ Accounts";
             this.btnAddBankAccount.UseVisualStyleBackColor = true;
             this.btnAddBankAccount.Click += new System.EventHandler(this.btnAddBankAccount_Click);
-            // 
-            // lbBankList
-            // 
-            this.lbBankList.DisplayMember = "Name";
-            this.lbBankList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbBankList.FormattingEnabled = true;
-            this.lbBankList.ItemHeight = 20;
-            this.lbBankList.Location = new System.Drawing.Point(3, 23);
-            this.lbBankList.Name = "lbBankList";
-            this.lbBankList.Size = new System.Drawing.Size(170, 384);
-            this.lbBankList.TabIndex = 2;
-            this.lbBankList.ValueMember = "BankId";
             // 
             // BankForm
             // 

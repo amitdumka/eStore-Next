@@ -94,8 +94,9 @@ namespace AKS.Payroll.Forms.Banking
 
         private void btnAddBankAccount_Click(object sender, EventArgs e)
         {
-            BankAccountEntryForm form = new BankAccountEntryForm();
-           if( form.ShowDialog()==DialogResult.OK)
+            BankAccountEntryForm form = new BankAccountEntryForm(1);
+          
+            if( form.ShowDialog()==DialogResult.OK)
             {
 
             }else if(DialogResult== DialogResult.Yes)
@@ -107,6 +108,42 @@ namespace AKS.Payroll.Forms.Banking
 
             }
             
+        }
+
+        private void btnAddThirdPartyAccounts_Click(object sender, EventArgs e)
+        {
+            BankAccountEntryForm form = new BankAccountEntryForm(2);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+            else if (DialogResult == DialogResult.Yes)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void btnAddVendorAccounts_Click(object sender, EventArgs e)
+        {
+            BankAccountEntryForm form = new BankAccountEntryForm(3);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+            else if (DialogResult == DialogResult.Yes)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 }

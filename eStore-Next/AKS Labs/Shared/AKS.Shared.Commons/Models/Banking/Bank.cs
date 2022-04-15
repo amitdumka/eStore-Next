@@ -15,11 +15,15 @@ namespace AKS.Shared.Commons.Models.Banking
     {
         [Key]
         public string AccountNumber { get; set; }
+        public string AccountHolderName { get; set; }
+
         public string BankId { get; set; }
         public virtual Bank Bank { get; set; }
+        
         public string IFSCCode { get; set; }
         public string BranchName { get; set; }
         public AccountType AccountType { get; set; }
+        
         public bool IsActive { get; set; }
     }
 
@@ -29,6 +33,7 @@ namespace AKS.Shared.Commons.Models.Banking
         public bool DefaultBank { get; set; }
         public bool SharedAccount { get; set; }
         public decimal OpenningBalance { get; set; }
+        public decimal CurrentBalance { get; set; }
         public DateTime OpenningDate { get; set; }
         public DateTime? ClosingDate { get; set; }
 
@@ -59,6 +64,7 @@ namespace AKS.Shared.Commons.Models.Banking
     {
         public string ChequeBookId { get; set; }
         public string AccountId { get; set; }
+        public virtual BankAccount BankAccount { get; set; }
         public DateTime IssuedDate { get; set; }
         public long StartingNumber { get; set; }
         public long EndingNumber { get; set; }
@@ -75,7 +81,9 @@ namespace AKS.Shared.Commons.Models.Banking
         public string InFavourOf { get; set; }
         public decimal Amount { get; set; }
         public string AccountId { get; set; }
+        public virtual BankAccount BankAccount { get; set; }
         public string ChequeBookId { get; set; }
+        public virtual ChequeBook ChequeBook { get; set; }
         public long ChequeNumber { get; set; }
     }
     [Table("V1_ChequeeLogs")]

@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.ParyollSystem;
+using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Payroll.Forms.EntryForms;
 using AKS.Shared.Payroll.Models;
@@ -15,6 +16,7 @@ namespace AKS.Payroll
         private readonly LocalPayrollDbContext localDb;
         private ObservableListSource<SalaryPaymentVM> Payments { get; set; }
         private ObservableListSource<StaffAdvanceReceiptVM> Reciepts { get; set; }
+        
         private bool isPayment, isReciepts;
 
         public SalaryPaymentForm()
@@ -42,7 +44,7 @@ namespace AKS.Payroll
         {
             Reciepts = new ObservableListSource<StaffAdvanceReceiptVM>();
             isReciepts = true;
-            UpdateRecieptList(azureDb.StaffAdvanceReceipt.Include(c => c.Employee).Where(c => c.ReceiptDate.Year == DateTime.Today.Year).ToList());
+            UpdateRecieptList(azureDb.StaffAdvanceReceipt.Include(c => c.Employee).Where(c => c.OnDate.Year == DateTime.Today.Year).ToList());
 
             dgvReceipts.DataSource = Reciepts.ToBindingList();
             dgvReceipts.Columns["EmployeeId"].Visible = false;
@@ -70,7 +72,16 @@ namespace AKS.Payroll
             lbEmoloyees.ValueMember = "EmployeeId";
             lbEmoloyees.DisplayMember = "StaffName";
         }
+        private void LoadLedgerData(string empId)
+        {
+            var sl=new PayrollManager().GetSalaryLedger(azureDb, empId);
+           if(sl.Details!=null && sl.Details.Any())dgvSalaryLedger.DataSource = sl.Details;
+            else
+            {
+                MessageBox.Show("No Record Found!!");
+            }
 
+        }
         private void UpdateRecieptList(List<StaffAdvanceReceipt> receipts)
         {
             foreach (var rec in receipts)
@@ -107,6 +118,10 @@ namespace AKS.Payroll
             else if (tcSalaryPayments.SelectedIndex == 1)
             {
                 UpdateReceiptsGridView(x.SelectedValue.ToString(), DateTime.Now);
+            }
+            else if(tcSalaryPayments.SelectedIndex == 2)
+            {
+                LoadLedgerData(x.SelectedValue.ToString());
             }
             else
             {
@@ -287,6 +302,28 @@ namespace AKS.Payroll
             {
                 MessageBox.Show(DialogResult.ToString());
             }
+        }
+
+        private void lbEmoloyees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnProcessLedger_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty( lbEmoloyees.SelectedValue.ToString()))
+            {
+
+                string empod = lbEmoloyees.SelectedValue.ToString();
+                if (PayrollBulkProcessor.ProcessSalaryLedger(azureDb, empod)) MessageBox.Show("Success");
+                else MessageBox.Show("Error occured while processing");
+            }
+            else
+            {
+                MessageBox.Show("Select an employee to process!");
+            }
+            
+
         }
 
         private void dgvPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)

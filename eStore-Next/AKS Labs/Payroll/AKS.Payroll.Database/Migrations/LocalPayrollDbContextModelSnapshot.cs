@@ -934,6 +934,46 @@ namespace AKS.Payroll.Database.Migrations
                     b.ToTable("V1_Salaries");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryLedger", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("InAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OutAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalaryLedgers");
+                });
+
             modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryPayment", b =>
                 {
                     b.Property<string>("SalaryPaymentId")
@@ -1013,11 +1053,11 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("MarkedDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PayMode")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("ReceiptDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("StoreId")
                         .IsRequired()

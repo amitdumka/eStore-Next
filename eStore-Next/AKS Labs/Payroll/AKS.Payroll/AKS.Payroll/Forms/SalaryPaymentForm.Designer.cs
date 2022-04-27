@@ -35,6 +35,7 @@
             this.tpReciepts = new System.Windows.Forms.TabPage();
             this.dgvReceipts = new System.Windows.Forms.DataGridView();
             this.tpReports = new System.Windows.Forms.TabPage();
+            this.dgvSalaryLedger = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -45,7 +46,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnAddReciept = new System.Windows.Forms.Button();
             this.btnAddPayment = new System.Windows.Forms.Button();
-            this.dgvSalaryLedger = new System.Windows.Forms.DataGridView();
+            this.btnProcessLedger = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tcSalaryPayments.SuspendLayout();
             this.tpPayment.SuspendLayout();
@@ -53,10 +54,10 @@
             this.tpReciepts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceipts)).BeginInit();
             this.tpReports.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -159,6 +160,20 @@
             this.tpReports.Text = "Reports";
             this.tpReports.UseVisualStyleBackColor = true;
             // 
+            // dgvSalaryLedger
+            // 
+            this.dgvSalaryLedger.AllowUserToAddRows = false;
+            this.dgvSalaryLedger.AllowUserToDeleteRows = false;
+            this.dgvSalaryLedger.AllowUserToOrderColumns = true;
+            this.dgvSalaryLedger.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSalaryLedger.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSalaryLedger.Location = new System.Drawing.Point(0, 0);
+            this.dgvSalaryLedger.Name = "dgvSalaryLedger";
+            this.dgvSalaryLedger.ReadOnly = true;
+            this.dgvSalaryLedger.RowTemplate.Height = 25;
+            this.dgvSalaryLedger.Size = new System.Drawing.Size(780, 330);
+            this.dgvSalaryLedger.TabIndex = 0;
+            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -207,10 +222,12 @@
             this.lbEmoloyees.Name = "lbEmoloyees";
             this.lbEmoloyees.Size = new System.Drawing.Size(173, 360);
             this.lbEmoloyees.TabIndex = 0;
+            this.lbEmoloyees.SelectedIndexChanged += new System.EventHandler(this.lbEmoloyees_SelectedIndexChanged);
             this.lbEmoloyees.DoubleClick += new System.EventHandler(this.lbEmoloyees_DoubleClick);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnProcessLedger);
             this.groupBox1.Controls.Add(this.cbAllEmployees);
             this.groupBox1.Controls.Add(this.btnRefresh);
             this.groupBox1.Controls.Add(this.btnAddReciept);
@@ -241,7 +258,7 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(257, 22);
+            this.btnRefresh.Location = new System.Drawing.Point(234, 22);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(82, 22);
@@ -252,7 +269,7 @@
             // 
             // btnAddReciept
             // 
-            this.btnAddReciept.Location = new System.Drawing.Point(158, 22);
+            this.btnAddReciept.Location = new System.Drawing.Point(146, 22);
             this.btnAddReciept.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddReciept.Name = "btnAddReciept";
             this.btnAddReciept.Size = new System.Drawing.Size(82, 22);
@@ -272,19 +289,17 @@
             this.btnAddPayment.UseVisualStyleBackColor = true;
             this.btnAddPayment.Click += new System.EventHandler(this.btnAddPayment_Click);
             // 
-            // dgvSalaryLedger
+            // btnProcessLedger
             // 
-            this.dgvSalaryLedger.AllowUserToAddRows = false;
-            this.dgvSalaryLedger.AllowUserToDeleteRows = false;
-            this.dgvSalaryLedger.AllowUserToOrderColumns = true;
-            this.dgvSalaryLedger.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSalaryLedger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSalaryLedger.Location = new System.Drawing.Point(0, 0);
-            this.dgvSalaryLedger.Name = "dgvSalaryLedger";
-            this.dgvSalaryLedger.ReadOnly = true;
-            this.dgvSalaryLedger.RowTemplate.Height = 25;
-            this.dgvSalaryLedger.Size = new System.Drawing.Size(780, 330);
-            this.dgvSalaryLedger.TabIndex = 0;
+            this.btnProcessLedger.AutoSize = true;
+            this.btnProcessLedger.Location = new System.Drawing.Point(322, 22);
+            this.btnProcessLedger.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnProcessLedger.Name = "btnProcessLedger";
+            this.btnProcessLedger.Size = new System.Drawing.Size(96, 25);
+            this.btnProcessLedger.TabIndex = 4;
+            this.btnProcessLedger.Text = "Process Ledger";
+            this.btnProcessLedger.UseVisualStyleBackColor = true;
+            this.btnProcessLedger.Click += new System.EventHandler(this.btnProcessLedger_Click);
             // 
             // SalaryPaymentForm
             // 
@@ -304,12 +319,12 @@
             this.tpReciepts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceipts)).EndInit();
             this.tpReports.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -334,5 +349,6 @@
         private Button btnRefresh;
         private CheckBox cbAllEmployees;
         private DataGridView dgvSalaryLedger;
+        private Button btnProcessLedger;
     }
 }

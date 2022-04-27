@@ -199,7 +199,7 @@ namespace AKS.Shared.Payroll.Models
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Receipt Date")]
-        public DateTime ReceiptDate { get; set; }
+        public DateTime OnDate { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal Amount { get; set; }

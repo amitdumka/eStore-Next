@@ -70,7 +70,7 @@ namespace AKS.Payroll.Forms.Banking
 
             }
         }
-        
+
         private void LoadData()
         {
             UpdateBankList(azureDb.Banks.ToList());
@@ -95,10 +95,11 @@ namespace AKS.Payroll.Forms.Banking
         private void btnAddBankAccount_Click(object sender, EventArgs e)
         {
             BankAccountEntryForm form = new BankAccountEntryForm();
-           if( form.ShowDialog()==DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
 
-            }else if(DialogResult== DialogResult.Yes)
+            }
+            else if (DialogResult == DialogResult.Yes)
             {
 
             }
@@ -106,7 +107,7 @@ namespace AKS.Payroll.Forms.Banking
             {
 
             }
-            
+
         }
     }
 }

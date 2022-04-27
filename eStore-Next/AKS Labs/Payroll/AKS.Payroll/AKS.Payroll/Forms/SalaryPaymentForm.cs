@@ -16,7 +16,7 @@ namespace AKS.Payroll
         private readonly LocalPayrollDbContext localDb;
         private ObservableListSource<SalaryPaymentVM> Payments { get; set; }
         private ObservableListSource<StaffAdvanceReceiptVM> Reciepts { get; set; }
-        
+
         private bool isPayment, isReciepts;
 
         public SalaryPaymentForm()
@@ -74,8 +74,8 @@ namespace AKS.Payroll
         }
         private void LoadLedgerData(string empId)
         {
-            var sl=new PayrollManager().GetSalaryLedger(azureDb, empId);
-           if(sl.Details!=null && sl.Details.Any())dgvSalaryLedger.DataSource = sl.Details;
+            var sl = new PayrollManager().GetSalaryLedger(azureDb, empId);
+            if (sl.Details != null && sl.Details.Any()) dgvSalaryLedger.DataSource = sl.Details;
             else
             {
                 MessageBox.Show("No Record Found!!");
@@ -119,7 +119,7 @@ namespace AKS.Payroll
             {
                 UpdateReceiptsGridView(x.SelectedValue.ToString(), DateTime.Now);
             }
-            else if(tcSalaryPayments.SelectedIndex == 2)
+            else if (tcSalaryPayments.SelectedIndex == 2)
             {
                 LoadLedgerData(x.SelectedValue.ToString());
             }
@@ -311,18 +311,18 @@ namespace AKS.Payroll
 
         private void btnProcessLedger_Click(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty( lbEmoloyees.SelectedValue.ToString()))
+            if (!string.IsNullOrEmpty(lbEmoloyees.SelectedValue.ToString()))
             {
 
-                string empod = lbEmoloyees.SelectedValue.ToString();
-                if (PayrollBulkProcessor.ProcessSalaryLedger(azureDb, empod)) MessageBox.Show("Success");
+
+                if (PayrollBulkProcessor.ProcessSalaryLedger(azureDb, lbEmoloyees.SelectedValue.ToString())) MessageBox.Show("Success");
                 else MessageBox.Show("Error occured while processing");
             }
             else
             {
                 MessageBox.Show("Select an employee to process!");
             }
-            
+
 
         }
 

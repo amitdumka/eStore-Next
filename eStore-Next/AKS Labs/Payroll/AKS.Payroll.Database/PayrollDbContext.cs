@@ -79,11 +79,11 @@ namespace AKS.Payroll.Database
 
         public DbSet<Bank> Banks { get; set; }
         public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }
-        public  DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BankAccountList> AccountLists { get; set; }
         public DbSet<ChequeBook> ChequeBooks { get; set; }
         public DbSet<ChequeIssued> ChequeIssued { get; set; }
-        public DbSet<ChequeLog>ChequeLogs { get; set; }
+        public DbSet<ChequeLog> ChequeLogs { get; set; }
 
 
 

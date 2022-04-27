@@ -117,10 +117,11 @@ namespace AKS.Payroll.Forms
         private void btnAddBankDetails_Click(object sender, EventArgs e)
         {
             EmployeeBankDetailsForm form = new EmployeeBankDetailsForm();
-            if(form.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
 
-            }else if(DialogResult== DialogResult.Yes)
+            }
+            else if (DialogResult == DialogResult.Yes)
             {
 
             }

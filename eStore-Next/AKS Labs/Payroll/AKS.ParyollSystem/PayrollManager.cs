@@ -8,14 +8,14 @@ namespace AKS.ParyollSystem
         public SalaryLedgerVM GetSalaryLedger(AzurePayrollDbContext db, string empId)
         {
             var sl = db.SalaryLedgers.Where(c => c.EmployeeId == empId).OrderBy(c => c.OnDate)
-                .Select(c=> new SalaryLedgerDetailVM {OnDate= c.OnDate,Particulars= c.Particulars,InAmount= c.InAmount,OutAmount= c.OutAmount })
+                .Select(c => new SalaryLedgerDetailVM { OnDate = c.OnDate, Particulars = c.Particulars, InAmount = c.InAmount, OutAmount = c.OutAmount })
                 .ToList();
             SalaryLedgerVM vm = new SalaryLedgerVM { EmployeeId = empId, StaffName = "", Details = sl };
             return vm;
         }
 
         //Salary Ledger
-        public bool UpdateSalaryLedgerForSalary(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount,string salaryMonth)
+        public bool UpdateSalaryLedgerForSalary(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string salaryMonth)
         {
             return UpdateSalaryLedger(db, empId, onDate, amount, salaryMonth, false);
         }
@@ -27,13 +27,19 @@ namespace AKS.ParyollSystem
 
         public bool UpdateSalaryLedger(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string reson, bool isOut)
         {
-            SalaryLedger salary = new() {
-            EmployeeId = empId,   IsReadOnly=false, OnDate = onDate,Particulars=reson,
-            MarkedDeleted=false, UserId="AutoAdded", 
-             InAmount=0, OutAmount=0
-            
+            SalaryLedger salary = new()
+            {
+                EmployeeId = empId,
+                IsReadOnly = false,
+                OnDate = onDate,
+                Particulars = reson,
+                MarkedDeleted = false,
+                UserId = "AutoAdded",
+                InAmount = 0,
+                OutAmount = 0
+
             };
-            if(isOut) salary.OutAmount = amount; else salary.InAmount = amount;
+            if (isOut) salary.OutAmount = amount; else salary.InAmount = amount;
             db.SalaryLedgers.Add(salary);
             return db.SaveChanges() > 0;
         }

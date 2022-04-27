@@ -15,7 +15,7 @@ public enum CardType { Visa, MasterCard, Mastro, Amex, Dinners, Rupay, }
 public enum LedgerCategory { Credit, Debit, Income, Expenses, Assests, Bank, Loan, Purchase, Sale, Vendor, Customer }
 public enum WalletType { PayTm, GooglePay, PhonePay, AirtelPay, BhimPay, Others }
 public enum AttUnit { Present, Absent, HalfDay, Sunday, Holiday, StoreClosed, SundayHoliday, SickLeave, PaidLeave, CasualLeave, OnLeave };
-public enum SalaryComponet { NetSalary, LastPcs, WOWBill, SundaySalary, Incentive, Others, Advance, PaidLeave, SickLeave,SalaryAdvance }
+public enum SalaryComponet { NetSalary, LastPcs, WOWBill, SundaySalary, Incentive, Others, Advance, PaidLeave, SickLeave, SalaryAdvance }
 public enum EmpType { Salesman, StoreManager, HouseKeeping, Owner, Accounts, TailorMaster, Tailors, TailoringAssistance, Others }
 public enum TaxType { GST, SGST, CGST, IGST, VAT, CST }
 public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccountant, Member, PowerUser };

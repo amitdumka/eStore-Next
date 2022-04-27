@@ -66,7 +66,7 @@ namespace AKS.Libs.Docs.Pdfs
         /// <param name="sourceFilename">Pass the source file path</param>
         /// <param name="outputFileName">Pass new Destination file path</param>
         /// <returns>Return newly create pdf file path</returns>
-        public string AddPageNumber(string sourceFilename, string outputFileName,string path)
+        public string AddPageNumber(string sourceFilename, string outputFileName, string path)
         {
             if (!string.IsNullOrEmpty(path))
             {
@@ -92,7 +92,7 @@ namespace AKS.Libs.Docs.Pdfs
 
             doc.Close();
             pdfDoc.Close();
-            
+
             FileCleanUp(outputFileName);
             return outputFileName;
         }
@@ -219,7 +219,7 @@ namespace AKS.Libs.Docs.Pdfs
             {
                 doc.Add((IBlockElement)para);
             }
-           
+
             doc.Close();
             pdfDoc.Close();
             pdfWriter.Close();

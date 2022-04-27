@@ -1,5 +1,4 @@
-﻿using Syncfusion.Windows.Forms.PdfViewer;
-namespace AKS.Payroll.Forms
+﻿namespace AKS.Payroll.Forms
 {
     public partial class PdfForm : Form
     {
@@ -22,10 +21,10 @@ namespace AKS.Payroll.Forms
         private void btnPrint_Click(object sender, EventArgs e)
         {
             printDialog1 = new PrintDialog();
-            if(printDialog1.ShowDialog() == DialogResult.OK)
+            if (printDialog1.ShowDialog() == DialogResult.OK)
             {
-                printDialog1.AllowPrintToFile=true;
-               
+                printDialog1.AllowPrintToFile = true;
+
                 pdfDocumentView1.Print(printDialog1.PrinterSettings.PrinterName);
             }
         }
@@ -33,10 +32,10 @@ namespace AKS.Payroll.Forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             saveFileDialog1 = new SaveFileDialog();
-            if(saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                var fName=saveFileDialog1.FileName;
-                File.Move(FileName,fName);
+                var fName = saveFileDialog1.FileName;
+                File.Move(FileName, fName);
                 FileName = fName;
             }
         }
@@ -57,7 +56,7 @@ namespace AKS.Payroll.Forms
 
         private void recordNavigationControl1_Click(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

@@ -1,10 +1,5 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AKS.ParyollSystem
 {
@@ -13,10 +8,10 @@ namespace AKS.ParyollSystem
         public static List<int> DuplicateSalaryLedger(AzurePayrollDbContext db, string empId)
         {
             List<int> salaryLedgerIds = new List<int>();
-            var list= db.SalaryLedgers.Where(l => l.EmployeeId == empId).OrderBy(c=>c.OnDate).ToList();
+            var list = db.SalaryLedgers.Where(l => l.EmployeeId == empId).OrderBy(c => c.OnDate).ToList();
             foreach (var ls in list)
             {
-                if(list.Any(l => l.OnDate==ls.OnDate && l.InAmount==ls.InAmount && l.OutAmount == ls.OutAmount))
+                if (list.Any(l => l.OnDate == ls.OnDate && l.InAmount == ls.InAmount && l.OutAmount == ls.OutAmount))
                 {
                     ls.IsReadOnly = false; ls.MarkedDeleted = true;
                     ls.Particulars = ls.Particulars + "#MarkedDuplicate";
@@ -55,13 +50,13 @@ namespace AKS.ParyollSystem
                 SalaryLedger sl = new SalaryLedger
                 {
                     EmployeeId = empId,
-                    OutAmount=0,
+                    OutAmount = 0,
                     IsReadOnly = true,
                     MarkedDeleted = false,
                     OnDate = rec.OnDate,
                     UserId = "AutoAdmin",
                     InAmount = rec.Amount,
-                    Particulars =""+rec.Details
+                    Particulars = "" + rec.Details
                 };
                 ledgers.Add(sl);
             }
@@ -77,16 +72,14 @@ namespace AKS.ParyollSystem
                     OnDate = sal.OnDate,
                     UserId = "AutoAdmin",
                     OutAmount = 0,
-                    Particulars = "Salary for Month " +sal.Month+"/"+sal.Year 
+                    Particulars = "Salary for Month " + sal.Month + "/" + sal.Year
                 };
                 ledgers.Add(sl);
 
             }
 
-            ledgers.Sort();
-            
 
-            db.SalaryLedgers.AddRange(ledgers);
+            db.SalaryLedgers.AddRange(ledgers.OrderBy(c => c.OnDate).ThenByDescending(c => c.InAmount).ToList());
             return db.SaveChanges() > 0;
 
         }

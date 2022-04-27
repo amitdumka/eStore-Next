@@ -82,7 +82,7 @@ namespace AKS.Shared.Payroll.Models
         public string MaritalStatus { get; set; }
         public string SpouseName { get; set; }
         public string HighestQualification { get; set; }
-        
+
         public string BankAccountNumber { get; set; }
         public string BankNameWithBranch { get; set; }
         public string IFSCode { get; set; }
@@ -285,7 +285,7 @@ namespace AKS.Shared.Payroll.Models
         public bool? IsTailoring { get; set; }
     }
 
-    public class SalaryLedger:Base
+    public class SalaryLedger : Base
     {
         public int Id { get; set; }
         public string EmployeeId { get; set; }

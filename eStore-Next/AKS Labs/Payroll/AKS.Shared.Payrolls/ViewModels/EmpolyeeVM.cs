@@ -4,6 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Payrolls.ViewModels
 {
+    public class SalaryLedgerDetailVM {
+        public DateTime OnDate { get; set; }
+        public string Particulars { get; set; }
+        public decimal InAmount { get; set; }
+        public decimal OutAmount { get; set; }
+
+
+
+    }
+    public class SalaryLedgerVM
+    {
+        public string EmployeeId { get; set; }
+        public string StaffName { get; set; }
+
+        public List<SalaryLedgerDetailVM> Details{get;set;}
+}
 
     public class EmployeeBasicVM
     {

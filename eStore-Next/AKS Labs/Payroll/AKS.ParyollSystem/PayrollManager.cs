@@ -1,17 +1,27 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-
+using AKS.Shared.Payrolls.ViewModels;
 namespace AKS.ParyollSystem
 {
     public class PayrollManager
     {
+        public SalaryLedgerVM GetSalaryLedger(AzurePayrollDbContext db, string empId)
+        {
+            var sl = db.SalaryLedgers.Where(c => c.EmployeeId == empId).OrderBy(c => c.OnDate)
+                .Select(c=> new SalaryLedgerDetailVM {OnDate= c.OnDate,Particulars= c.Particulars,InAmount= c.InAmount,OutAmount= c.OutAmount })
+                .ToList();
+            SalaryLedgerVM vm = new SalaryLedgerVM { EmployeeId = empId, StaffName = "", Details = sl };
+            return vm;
+        }
+
+        //Salary Ledger
         public bool UpdateSalaryLedgerForSalary(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount,string salaryMonth)
         {
-            return true;
+            return UpdateSalaryLedger(db, empId, onDate, amount, salaryMonth, false);
         }
         public bool UpdateSalaryLedgerForPayment(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string salaryMonth)
         {
-            return true;
+            return UpdateSalaryLedger(db, empId, onDate, amount, salaryMonth, true);
         }
 
 

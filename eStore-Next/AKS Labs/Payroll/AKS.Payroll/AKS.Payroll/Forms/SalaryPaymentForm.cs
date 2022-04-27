@@ -8,6 +8,7 @@ using System.Data;
 
 namespace AKS.Payroll
 {
+    //TODO: add salary /payment ledger so advance and payment or anyother thing
     public partial class SalaryPaymentForm : Form
     {
         private readonly AzurePayrollDbContext azureDb;

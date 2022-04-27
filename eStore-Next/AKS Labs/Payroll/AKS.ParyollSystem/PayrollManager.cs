@@ -5,6 +5,35 @@ namespace AKS.ParyollSystem
 {
     public class PayrollManager
     {
+        public bool UpdateSalaryLedgerForSalary(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount,string salaryMonth)
+        {
+            return true;
+        }
+        public bool UpdateSalaryLedgerForPayment(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string salaryMonth)
+        {
+            return true;
+        }
+
+
+        public bool UpdateSalaryLedger(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string reson, bool isOut)
+        {
+            SalaryLedger salary = new() {
+            EmployeeId = empId,   IsReadOnly=false, OnDate = onDate,Particulars=reson,
+            MarkedDeleted=false, UserId="AutoAdded", 
+             InAmount=0, OutAmount=0
+            
+            };
+            if(isOut) salary.OutAmount = amount; else salary.InAmount = amount;
+            db.SalaryLedgers.Add(salary);
+            return db.SaveChanges() > 0;
+        }
+
+        public bool UpdateSalaryLedger(AzurePayrollDbContext db, SalaryLedger salary)
+        {
+            db.SalaryLedgers.Add(salary);
+            return db.SaveChanges() > 0;
+        }
+
         /// <summary>
         /// Calculate for a month for a particular employee
         /// </summary>

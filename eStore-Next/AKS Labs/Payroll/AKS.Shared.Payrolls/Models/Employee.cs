@@ -285,5 +285,15 @@ namespace AKS.Shared.Payroll.Models
         public bool? IsTailoring { get; set; }
     }
 
+    public class SalaryLedger:Base
+    {
+        public int Id { get; set; }
+        public string EmployeeId { get; set; }
+        public DateTime OnDate { get; set; }
+        public string Particulars { get; set; }
+        public decimal InAmount { get; set; }
+        public decimal OutAmount { get; set; }
+
+    }
 
 }

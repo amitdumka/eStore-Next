@@ -45,15 +45,18 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnAddReciept = new System.Windows.Forms.Button();
             this.btnAddPayment = new System.Windows.Forms.Button();
+            this.dgvSalaryLedger = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.tcSalaryPayments.SuspendLayout();
             this.tpPayment.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).BeginInit();
             this.tpReciepts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceipts)).BeginInit();
+            this.tpReports.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -64,8 +67,9 @@
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1105, 584);
+            this.panel1.Size = new System.Drawing.Size(967, 438);
             this.panel1.TabIndex = 0;
             // 
             // tcSalaryPayments
@@ -74,10 +78,11 @@
             this.tcSalaryPayments.Controls.Add(this.tpReciepts);
             this.tcSalaryPayments.Controls.Add(this.tpReports);
             this.tcSalaryPayments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcSalaryPayments.Location = new System.Drawing.Point(205, 77);
+            this.tcSalaryPayments.Location = new System.Drawing.Point(179, 58);
+            this.tcSalaryPayments.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tcSalaryPayments.Name = "tcSalaryPayments";
             this.tcSalaryPayments.SelectedIndex = 0;
-            this.tcSalaryPayments.Size = new System.Drawing.Size(900, 481);
+            this.tcSalaryPayments.Size = new System.Drawing.Size(788, 358);
             this.tcSalaryPayments.TabIndex = 3;
             this.tcSalaryPayments.SelectedIndexChanged += new System.EventHandler(this.tcSalaryPayments_SelectedIndexChanged);
             this.tcSalaryPayments.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tcSalaryPayments_Selecting);
@@ -86,10 +91,11 @@
             // tpPayment
             // 
             this.tpPayment.Controls.Add(this.dgvPayments);
-            this.tpPayment.Location = new System.Drawing.Point(4, 29);
+            this.tpPayment.Location = new System.Drawing.Point(4, 24);
+            this.tpPayment.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpPayment.Name = "tpPayment";
-            this.tpPayment.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPayment.Size = new System.Drawing.Size(892, 448);
+            this.tpPayment.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpPayment.Size = new System.Drawing.Size(780, 330);
             this.tpPayment.TabIndex = 0;
             this.tpPayment.Text = "Payment";
             this.tpPayment.UseVisualStyleBackColor = true;
@@ -103,22 +109,24 @@
             this.dgvPayments.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvPayments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPayments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvPayments.Location = new System.Drawing.Point(3, 3);
+            this.dgvPayments.Location = new System.Drawing.Point(3, 2);
+            this.dgvPayments.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvPayments.Name = "dgvPayments";
             this.dgvPayments.ReadOnly = true;
             this.dgvPayments.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dgvPayments.RowTemplate.Height = 29;
-            this.dgvPayments.Size = new System.Drawing.Size(886, 442);
+            this.dgvPayments.Size = new System.Drawing.Size(774, 326);
             this.dgvPayments.TabIndex = 0;
             this.dgvPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPayments_CellContentClick);
             // 
             // tpReciepts
             // 
             this.tpReciepts.Controls.Add(this.dgvReceipts);
-            this.tpReciepts.Location = new System.Drawing.Point(4, 29);
+            this.tpReciepts.Location = new System.Drawing.Point(4, 24);
+            this.tpReciepts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpReciepts.Name = "tpReciepts";
-            this.tpReciepts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpReciepts.Size = new System.Drawing.Size(892, 448);
+            this.tpReciepts.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tpReciepts.Size = new System.Drawing.Size(780, 330);
             this.tpReciepts.TabIndex = 1;
             this.tpReciepts.Text = "Reciepts";
             this.tpReciepts.UseVisualStyleBackColor = true;
@@ -130,20 +138,23 @@
             this.dgvReceipts.AllowUserToOrderColumns = true;
             this.dgvReceipts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvReceipts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvReceipts.Location = new System.Drawing.Point(3, 3);
+            this.dgvReceipts.Location = new System.Drawing.Point(3, 2);
+            this.dgvReceipts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvReceipts.Name = "dgvReceipts";
             this.dgvReceipts.ReadOnly = true;
             this.dgvReceipts.RowHeadersWidth = 51;
             this.dgvReceipts.RowTemplate.Height = 29;
-            this.dgvReceipts.Size = new System.Drawing.Size(886, 442);
+            this.dgvReceipts.Size = new System.Drawing.Size(774, 326);
             this.dgvReceipts.TabIndex = 0;
             this.dgvReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReceipts_CellContentClick);
             // 
             // tpReports
             // 
-            this.tpReports.Location = new System.Drawing.Point(4, 29);
+            this.tpReports.Controls.Add(this.dgvSalaryLedger);
+            this.tpReports.Location = new System.Drawing.Point(4, 24);
+            this.tpReports.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tpReports.Name = "tpReports";
-            this.tpReports.Size = new System.Drawing.Size(892, 448);
+            this.tpReports.Size = new System.Drawing.Size(780, 330);
             this.tpReports.TabIndex = 2;
             this.tpReports.Text = "Reports";
             this.tpReports.UseVisualStyleBackColor = true;
@@ -154,31 +165,34 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(205, 558);
+            this.statusStrip1.Location = new System.Drawing.Point(179, 416);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(900, 26);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(788, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(48, 20);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(40, 17);
             this.toolStripStatusLabel1.Text = "Count";
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(17, 20);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(13, 17);
             this.toolStripStatusLabel2.Text = "0";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbEmoloyees);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBox2.Location = new System.Drawing.Point(0, 77);
+            this.groupBox2.Location = new System.Drawing.Point(0, 58);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(205, 507);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(179, 380);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employee List";
@@ -187,10 +201,11 @@
             // 
             this.lbEmoloyees.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbEmoloyees.FormattingEnabled = true;
-            this.lbEmoloyees.ItemHeight = 20;
-            this.lbEmoloyees.Location = new System.Drawing.Point(3, 23);
+            this.lbEmoloyees.ItemHeight = 15;
+            this.lbEmoloyees.Location = new System.Drawing.Point(3, 18);
+            this.lbEmoloyees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbEmoloyees.Name = "lbEmoloyees";
-            this.lbEmoloyees.Size = new System.Drawing.Size(199, 481);
+            this.lbEmoloyees.Size = new System.Drawing.Size(173, 360);
             this.lbEmoloyees.TabIndex = 0;
             this.lbEmoloyees.DoubleClick += new System.EventHandler(this.lbEmoloyees_DoubleClick);
             // 
@@ -202,8 +217,10 @@
             this.groupBox1.Controls.Add(this.btnAddPayment);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1105, 77);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(967, 58);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
@@ -213,9 +230,10 @@
             this.cbAllEmployees.AutoSize = true;
             this.cbAllEmployees.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.cbAllEmployees.Dock = System.Windows.Forms.DockStyle.Right;
-            this.cbAllEmployees.Location = new System.Drawing.Point(977, 23);
+            this.cbAllEmployees.Location = new System.Drawing.Point(864, 18);
+            this.cbAllEmployees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbAllEmployees.Name = "cbAllEmployees";
-            this.cbAllEmployees.Size = new System.Drawing.Size(125, 51);
+            this.cbAllEmployees.Size = new System.Drawing.Size(100, 38);
             this.cbAllEmployees.TabIndex = 3;
             this.cbAllEmployees.Text = "All Empolyees";
             this.cbAllEmployees.UseVisualStyleBackColor = true;
@@ -223,9 +241,10 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(294, 29);
+            this.btnRefresh.Location = new System.Drawing.Point(257, 22);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(94, 29);
+            this.btnRefresh.Size = new System.Drawing.Size(82, 22);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -233,9 +252,10 @@
             // 
             // btnAddReciept
             // 
-            this.btnAddReciept.Location = new System.Drawing.Point(180, 29);
+            this.btnAddReciept.Location = new System.Drawing.Point(158, 22);
+            this.btnAddReciept.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddReciept.Name = "btnAddReciept";
-            this.btnAddReciept.Size = new System.Drawing.Size(94, 29);
+            this.btnAddReciept.Size = new System.Drawing.Size(82, 22);
             this.btnAddReciept.TabIndex = 1;
             this.btnAddReciept.Text = "Reciept";
             this.btnAddReciept.UseVisualStyleBackColor = true;
@@ -243,20 +263,36 @@
             // 
             // btnAddPayment
             // 
-            this.btnAddPayment.Location = new System.Drawing.Point(66, 29);
+            this.btnAddPayment.Location = new System.Drawing.Point(58, 22);
+            this.btnAddPayment.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddPayment.Name = "btnAddPayment";
-            this.btnAddPayment.Size = new System.Drawing.Size(94, 29);
+            this.btnAddPayment.Size = new System.Drawing.Size(82, 22);
             this.btnAddPayment.TabIndex = 0;
             this.btnAddPayment.Text = "Payment";
             this.btnAddPayment.UseVisualStyleBackColor = true;
             this.btnAddPayment.Click += new System.EventHandler(this.btnAddPayment_Click);
             // 
+            // dgvSalaryLedger
+            // 
+            this.dgvSalaryLedger.AllowUserToAddRows = false;
+            this.dgvSalaryLedger.AllowUserToDeleteRows = false;
+            this.dgvSalaryLedger.AllowUserToOrderColumns = true;
+            this.dgvSalaryLedger.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSalaryLedger.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSalaryLedger.Location = new System.Drawing.Point(0, 0);
+            this.dgvSalaryLedger.Name = "dgvSalaryLedger";
+            this.dgvSalaryLedger.ReadOnly = true;
+            this.dgvSalaryLedger.RowTemplate.Height = 25;
+            this.dgvSalaryLedger.Size = new System.Drawing.Size(780, 330);
+            this.dgvSalaryLedger.TabIndex = 0;
+            // 
             // SalaryPaymentForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1105, 584);
+            this.ClientSize = new System.Drawing.Size(967, 438);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "SalaryPaymentForm";
             this.Text = "Salary Payment/Receipts";
             this.Load += new System.EventHandler(this.SalaryPaymentForm_Load);
@@ -267,11 +303,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).EndInit();
             this.tpReciepts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceipts)).EndInit();
+            this.tpReports.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSalaryLedger)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,5 +333,6 @@
         private Button btnAddReciept;
         private Button btnRefresh;
         private CheckBox cbAllEmployees;
+        private DataGridView dgvSalaryLedger;
     }
 }

@@ -68,6 +68,8 @@ namespace AKS.Payroll.Database
 
         public DbSet<PaySlip> PaySlips { get; set; }
 
+        public DbSet<SalaryLedger> SalaryLedgers { get; set; }
+
         //Common Table which will be shared accross Databases.
         public DbSet<Store> Stores { get; set; }
 

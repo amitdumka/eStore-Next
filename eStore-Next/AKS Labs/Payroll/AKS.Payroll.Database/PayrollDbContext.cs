@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
 using AKS.Shared.Payroll.Models;
@@ -85,6 +86,11 @@ namespace AKS.Payroll.Database
         public DbSet<ChequeIssued> ChequeIssued { get; set; }
         public DbSet<ChequeLog> ChequeLogs { get; set; }
 
+
+        // Vouchers and Notes  Note: Some of the table will move to other parts
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<CashVoucher> CashVouchers { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
 
     }

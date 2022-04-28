@@ -82,7 +82,7 @@ public enum LedgerEntryType { Expenses, Payment, Reciept, Salary, AdvacePayment,
 
 //public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 
-public enum VoucherType { Payment, Reciept, Contra, DebitNote, CreditNote, JV }
+public enum VoucherType { Payment, Receipt, Contra, DebitNote, CreditNote, JV ,Expense,CashReceipt,CashPayment}
 
 public enum LedgerTo { CashSales, POSSale, Cash, TailorBook, Suspense }
 

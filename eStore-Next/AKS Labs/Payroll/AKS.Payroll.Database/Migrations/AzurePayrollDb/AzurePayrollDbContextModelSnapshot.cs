@@ -25,7 +25,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
                 {
-                    b.Property<string>("VoucherId")
+                    b.Property<string>("VoucherNumber")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
@@ -35,8 +35,21 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("OnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PartyName")
                         .IsRequired()
@@ -50,24 +63,49 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("VoucherType")
                         .HasColumnType("int");
 
-                    b.HasKey("VoucherId");
+                    b.HasKey("VoucherNumber");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("CashVouchers");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>
                 {
-                    b.Property<string>("NoteId")
+                    b.Property<string>("NoteNumber")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("NotesType")
                         .HasColumnType("int");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PartyName")
                         .IsRequired()
@@ -81,8 +119,16 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("TaxRate")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("WithGST")
                         .HasColumnType("bit");
@@ -90,14 +136,66 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<DateTime>("dateTime")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("NoteId");
+                    b.HasKey("NoteNumber");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Notes");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Party", b =>
+                {
+                    b.Property<string>("PartyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ClosingBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ClosingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("OpeningBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("OpeningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartyId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Party");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Voucher", b =>
                 {
-                    b.Property<string>("VoucherId")
+                    b.Property<string>("VoucherNumber")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AccountId")
@@ -111,8 +209,21 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("OnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PartyName")
                         .IsRequired()
@@ -133,10 +244,22 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("VoucherType")
                         .HasColumnType("int");
 
-                    b.HasKey("VoucherId");
+                    b.HasKey("VoucherNumber");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Vouchers");
                 });
@@ -1193,6 +1316,74 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.HasIndex("StoreId");
 
                     b.ToTable("V1_StaffAdvanceReceipts");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Party")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Party")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Party", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Voucher", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Party")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Banking.BankAccount", b =>

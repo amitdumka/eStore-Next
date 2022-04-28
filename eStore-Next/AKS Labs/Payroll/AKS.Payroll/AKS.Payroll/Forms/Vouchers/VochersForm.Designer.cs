@@ -86,6 +86,7 @@
             this.button4.TabIndex = 3;
             this.button4.Text = "Process Data";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // btnRefresh
             // 
@@ -95,6 +96,7 @@
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnDelete
             // 
@@ -104,6 +106,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAdd
             // 
@@ -162,6 +165,8 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(683, 372);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
             // 
             // tpExpenses
@@ -188,6 +193,7 @@
             this.dgvExpenses.RowTemplate.Height = 25;
             this.dgvExpenses.Size = new System.Drawing.Size(669, 338);
             this.dgvExpenses.TabIndex = 0;
+            this.dgvExpenses.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExpenses_CellContentClick);
             // 
             // tpPayments
             // 
@@ -213,6 +219,7 @@
             this.dgvPayments.RowTemplate.Height = 25;
             this.dgvPayments.Size = new System.Drawing.Size(669, 338);
             this.dgvPayments.TabIndex = 0;
+            this.dgvPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPayments_CellContentClick);
             // 
             // tpReceipts
             // 
@@ -238,6 +245,7 @@
             this.dgvReceipts.RowTemplate.Height = 25;
             this.dgvReceipts.Size = new System.Drawing.Size(669, 338);
             this.dgvReceipts.TabIndex = 0;
+            this.dgvReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReceipts_CellContentClick);
             // 
             // tpCashReceipts
             // 
@@ -263,6 +271,7 @@
             this.dgvCashReceipts.RowTemplate.Height = 25;
             this.dgvCashReceipts.Size = new System.Drawing.Size(669, 338);
             this.dgvCashReceipts.TabIndex = 0;
+            this.dgvCashReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCashReceipts_CellContentClick);
             // 
             // tpCashPayments
             // 
@@ -288,6 +297,7 @@
             this.dgvCashPayments.RowTemplate.Height = 25;
             this.dgvCashPayments.Size = new System.Drawing.Size(669, 338);
             this.dgvCashPayments.TabIndex = 0;
+            this.dgvCashPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCashPayments_CellContentClick);
             // 
             // statusStrip1
             // 

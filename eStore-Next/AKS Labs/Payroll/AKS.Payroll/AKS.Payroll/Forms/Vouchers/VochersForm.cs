@@ -1,13 +1,5 @@
 ﻿using AKS.Payroll.Database;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AKS.Payroll.Forms.Vouchers
 {
@@ -17,6 +9,7 @@ namespace AKS.Payroll.Forms.Vouchers
         private readonly VoucherType voucherType;
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+        private List<int> DataList;
 
         public VochersForm()
         {
@@ -34,6 +27,7 @@ namespace AKS.Payroll.Forms.Vouchers
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
             LoadYearList();
+            DataList = new List<int>();
 
             switch (voucherType)
             {
@@ -68,37 +62,61 @@ namespace AKS.Payroll.Forms.Vouchers
         private void LoadExpensesData(int year)
         {
 
-            var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-            dgvExpenses.DataSource = listData;
-            tabControl1.SelectedTab = tpExpenses;
+            if (!DataList.Contains(1))
+            {
+                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                dgvExpenses.DataSource = listData;
+                tabControl1.SelectedTab = tpExpenses;
+                DataList.Add(1);
+            }
+
 
         }
 
         private void LoadPaymentData(int year)
         {
-            var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Payment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-            dgvExpenses.DataSource = listData;
-            tabControl1.SelectedTab = tpPayments;
+            if (!DataList.Contains(2))
+            {
+                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Payment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                dgvPayments.DataSource = listData;
+                DataList.Add(2);
+                tabControl1.SelectedTab = tpPayments;
 
-        }
-        private void LoadCashPaymentData(int year)
-        {
-            var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashPayment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-            dgvExpenses.DataSource = listData;
-            tabControl1.SelectedTab = tpCashPayments;
-        }
-        private void LoadCashReceiptData(int year)
-        {
-            var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-            dgvExpenses.DataSource = listData;
-            tabControl1.SelectedTab = tpCashReceipts;
+            }
+
         }
         private void LoadReceiptData(int year)
         {
-            var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Receipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-            dgvExpenses.DataSource = listData;
-            tabControl1.SelectedTab = tpReceipts;
+            if (!DataList.Contains(3))
+            {
+                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Receipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                dgvReceipts.DataSource = listData;
+                tabControl1.SelectedTab = tpReceipts;
+                DataList.Add(3);
+            }
         }
+        private void LoadCashReceiptData(int year)
+        {
+            if (!DataList.Contains(4))
+            {
+                var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                dgvCashReceipts.DataSource = listData;
+                tabControl1.SelectedTab = tpCashReceipts;
+                DataList.Add(4);
+            }
+        }
+
+        private void LoadCashPaymentData(int year)
+        {
+            if (!DataList.Contains(5))
+            {
+                var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashPayment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                dgvCashPayments.DataSource = listData;
+                tabControl1.SelectedTab = tpCashPayments;
+                DataList.Add(5);
+            }
+        }
+
 
         private void LoadYearList()
         {
@@ -108,13 +126,39 @@ namespace AKS.Payroll.Forms.Vouchers
             lbYearList.DataSource = years;
         }
 
-        
 
-
-
-
-
-
+        private void OnSelectedTab(int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    LoadPaymentData(DateTime.Today.Year);
+                    break;
+                case 2:
+                    LoadReceiptData(DateTime.Today.Year);
+                    break;
+                //case VoucherType.Contra:
+                //    break;
+                //case VoucherType.DebitNote:
+                //    break;
+                //case VoucherType.CreditNote:
+                //    break;
+                //case VoucherType.JV:
+                //    break;
+                case 0:
+                    LoadExpensesData(DateTime.Today.Year);
+                    break;
+                case 3:
+                    LoadCashReceiptData(DateTime.Today.Year);
+                    break;
+                case 4:
+                    LoadCashPaymentData(DateTime.Today.Year);
+                    break;
+                default:
+                    LoadExpensesData(DateTime.Today.Year);
+                    break;
+            }
+        }
 
 
 
@@ -125,13 +169,62 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void tabControl1_TabIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show(sender.ToString()+"\n"+e.ToString());
+            var tc = (TabControl)sender;
+            OnSelectedTab(tc.SelectedIndex);
         }
 
         private void VochersForm_Load(object sender, EventArgs e)
         {
             LoadData();
 
+        }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+
+
+        }
+
+        //On Item Selected on DataGridView
+
+        private void dgvExpenses_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvCashReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvCashPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //TODO: Process Data
         }
     }
 }

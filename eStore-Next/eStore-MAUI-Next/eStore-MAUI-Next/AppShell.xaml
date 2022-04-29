@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
-        Title="Hello, World!"
+        Title="eStore-Mobile_NXT!"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

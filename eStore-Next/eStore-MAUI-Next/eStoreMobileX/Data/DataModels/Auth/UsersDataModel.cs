@@ -1,0 +1,77 @@
+﻿using AKS.Shared.Commons.Models.Auth;
+using eStoreMobileX.Core.Database;
+using eStoreMobileX.Data.DataModels.Base;
+using eStoreMobileX.Data.RemoteServer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eStoreMobileX.Data.DataModels.Auth
+{
+    public class UsersDataModel : LocalDataModel<User>
+    {
+        public override Task<List<User>> FindAsync(QueryParam query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override async Task<List<User>> GetItems(int storeid)
+        {
+            using (_context = new AppDBContext()) return await _context.Users.ToListAsync();
+        }
+
+        public bool DoLogin(string UserName, string password)
+        {
+            using (_context = new AppDBContext())
+            {
+                var user = _context.Users.Where(c => c.UserName == UserName && c.Password == password).FirstOrDefault();
+                // TODO: Set Logged In User Info so it can be used across the app. 
+
+                if (user != null) return true; else return false;
+            }
+        }
+
+        internal Task<List<User>> GetItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool PasswordChange(string userName, string oldPassword, string newPassword)
+        {
+            var user = _context.Users.Where(c => c.UserName == userName && c.Password == oldPassword).FirstOrDefault();
+            if (user != null)
+            {
+                // TODO: Send info that old password is not matched or user not found!.
+                user.Password = newPassword;
+                _context.Update(user);
+                return _context.SaveChanges() > 0;
+            }
+            else return false;
+
+        }
+        public bool SignUp(User user)
+        {
+            return Save(user, true).Result;
+        }
+
+
+        public async Task<bool> SyncWithServer()
+        {
+            RemoteSingleServer server = new RemoteSingleServer("", "User");
+            var users = await server.GetByUrl<List<User>>(WebAPI.APIBase + WebAPI.Users);
+            foreach (var user in users)
+            {
+                user.UserId = 0; //TODO: remove is leagace.
+
+            }
+            _context.Users.AddRange(users);
+            return _context.SaveChanges() > 0;
+
+        }
+
+
+    }
+
+}

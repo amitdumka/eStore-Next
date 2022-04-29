@@ -1,0 +1,35 @@
+﻿List of Class which has to be Local and need Synced with servers Both Way.
+
+1)  Users
+2)  Employees
+3)  Stores
+4)  ProductItems
+5)  ProductStockView
+6)  Stock [ Incase of Billing is enabled]
+7)  TranscationTypes
+8)  Taxes
+9)  Ledgers [ Incase of Accounting features is activated]
+10) Parties [ Incase of Accounting features is activated]
+11) CurrentSalary
+12) RentedLocations
+13) Eletric Connections
+14) EletricBills
+15) Banks
+16) BankAccounts
+17) DuesList
+18) Customers
+19) Contacts
+20) 
+
+
+List of class Which has to be stricly on remote server and Need to fetch or update every time.
+1) Payments
+2) Receipts
+3) Expenses
+4) Attendances
+5) SalaryPayments
+6) DebitNotes and CreditNotes.
+7) Vendor's DebitNotes and CreditNotes
+8) 
+
+

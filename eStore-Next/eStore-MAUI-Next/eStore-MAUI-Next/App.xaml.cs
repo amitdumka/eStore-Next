@@ -6,14 +6,14 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
+	//	MainPage = new AppShell();
 	}
 
 	//TODO: Added from Old prj
 	//protected override Window CreateWindow(IActivationState activationState) =>
 	//  new Window(new NavigationPage(new MainPage())) { Title = "Weather TwentyOne" };
-	//protected override Window CreateWindow(IActivationState activationState)
-	//{
-	//	return new Window(new LoginPage());
-	//}
+	protected override Window CreateWindow(IActivationState activationState)
+	{
+		return new Window(new LoginPage());
+	}
 }

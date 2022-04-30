@@ -67,10 +67,10 @@ namespace eStore.Shared.Models
         public int ReceiptId { get; set; }
 
         [Display(Name = "Receipt From ")]
-        public new string PartyName { get; set; }
+        public new string? PartyName { get; set; }
 
         [Display(Name = "Receipt Slip No ")]
-        public string ReceiptSlipNo { get; set; }
+        public string? ReceiptSlipNo { get; set; }
     }
     /// <summary>
     /// @Version: 5.0
@@ -90,15 +90,15 @@ namespace eStore.Shared.Models
         public TranscationMode Mode { get; set; }
 
         [Display(Name = "Paid To"), Required]
-        public string PaidTo { get; set; }
+        public string? PaidTo { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal Amount { get; set; }
 
         [Display(Name = "Receipt No")]
-        public string SlipNo { get; set; }
+        public string? SlipNo { get; set; }
 
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
     }
     /// <summary>
     /// @Version: 5.0
@@ -117,25 +117,25 @@ namespace eStore.Shared.Models
         public virtual TranscationMode Mode { get; set; }
 
         [Display(Name = "Receipt From"), Required]
-        public string ReceiptFrom { get; set; }
+        public string? ReceiptFrom { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal Amount { get; set; }
 
         [Display(Name = "Receipt No")]
-        public string SlipNo { get; set; }
+        public string? SlipNo { get; set; }
 
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
     }
     public class Payment : BasicVoucher
     {
         public int PaymentId { get; set; }
 
         [Display(Name = "Paid To")]
-        public new string PartyName { get; set; }
+        public new string? PartyName { get; set; }
 
         [Display(Name = "Payment Slip No")]
-        public string PaymentSlipNo { get; set; }
+        public string? PaymentSlipNo { get; set; }
     }
     public class TranscationMode
     {

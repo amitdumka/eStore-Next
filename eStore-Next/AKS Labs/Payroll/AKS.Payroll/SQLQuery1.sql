@@ -1,1 +1,1 @@
-﻿select * from V1_Parties
+﻿select * from Vouchers;

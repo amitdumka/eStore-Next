@@ -94,44 +94,44 @@ namespace AKS.DatabaseMigrator
             {
                 using AKSDbContext aKSDb = new AKSDbContext();
                 using eStoreDbContext eStoreDb = new eStoreDbContext();
-                var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
+                // var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
                 int count = 0;
                 List<bool> Flag = new List<bool>();
-                foreach (var exp in datalist)
-                {
-                    Voucher v = new Voucher
-                    {
-                        VoucherType = VoucherType.Expense,
-                        OnDate = exp.OnDate,
-                        Amount = exp.Amount,
-                        EmployeeId = exp.EmployeeId.ToString(),
-                        EntryStatus = EntryStatus.Approved,
-                        IsReadOnly = true,
-                        MarkedDeleted = false,
-                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "",
+                //foreach (var exp in datalist)
+                //{
+                //    Voucher v = new Voucher
+                //    {
+                //        VoucherType = VoucherType.Expense,
+                //        OnDate = exp.OnDate,
+                //        Amount = exp.Amount,
+                //        EmployeeId = exp.EmployeeId.ToString(),
+                //        EntryStatus = EntryStatus.Approved,
+                //        IsReadOnly = true,
+                //        MarkedDeleted = false,
+                //        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "ARD/PTY/43",
 
-                        PartyName = exp.PartyName,
-                        PaymentDetails = exp.PaymentDetails,
-                        PaymentMode = exp.PayMode,
-                        Remarks = exp.Remarks,
-                        AccountId = exp.BankAccountId.ToString(),
-                        UserId = exp.UserId,
-                        StoreId = "ARD",
-                        VoucherNumber = $"ARD/EXP/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.ExpenseId}",
-                        SlipNumber = "NA",
-                        Particulars = exp.Particulars
-                    };
-                    count++;
-                    aKSDb.Vouchers.Add(v);
-                }
-                int saved = aKSDb.SaveChanges();
+                //        PartyName = String.IsNullOrEmpty(exp.PartyName)?"#NA#":exp.PartyName,
+                //        PaymentDetails = exp.PaymentDetails,
+                //        PaymentMode = exp.PayMode,
+                //        Remarks = exp.Remarks,
+                //        AccountId = exp.BankAccountId.ToString(),
+                //        UserId = exp.UserId,
+                //        StoreId = "ARD",
+                //        VoucherNumber = $"ARD/EXP/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.ExpenseId}",
+                //        SlipNumber = "NA",
+                //        Particulars = exp.Particulars
+                //    };
+                //    count++;
+                //    aKSDb.Vouchers.Add(v);
+                //}
+                //int saved = aKSDb.SaveChanges();
 
-                if (saved != count)
-                {
-                    Flag.Add(false);
-                }
-                else { Flag.Add(true); }
-                datalist.Clear();
+                //if (saved != count)
+                //{
+                //    Flag.Add(false);
+                //}
+                //else { Flag.Add(true); }
+                //datalist.Clear();
                 // Payment
                 var payments = eStoreDb.Payments.OrderBy(c => c.OnDate).ToList();
                 count = 0;
@@ -145,8 +145,8 @@ namespace AKS.DatabaseMigrator
                         EntryStatus = EntryStatus.Approved,
                         IsReadOnly = true,
                         MarkedDeleted = false,
-                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "",
-                        PartyName = exp.PartyName,
+                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "ARD/PTY/43",
+                        PartyName = String.IsNullOrEmpty(exp.PartyName) ? "#NA#" : exp.PartyName,
                         PaymentDetails = exp.PaymentDetails,
                         PaymentMode = exp.PayMode,
                         Remarks = exp.Remarks,
@@ -154,7 +154,7 @@ namespace AKS.DatabaseMigrator
                         UserId = exp.UserId,
                         StoreId = "ARD",
                         VoucherNumber = $"ARD/PYM/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.PaymentId}",
-                        SlipNumber = exp.PaymentSlipNo,
+                        SlipNumber = String.IsNullOrEmpty(exp.PaymentSlipNo)?"#NA#": exp.PaymentSlipNo,
                         Particulars = "NA",
                         EmployeeId = ""
 
@@ -162,7 +162,7 @@ namespace AKS.DatabaseMigrator
                     count++;
                     aKSDb.Vouchers.Add(v);
                 }
-                saved = aKSDb.SaveChanges();
+                int saved = aKSDb.SaveChanges();
 
                 if (saved != count)
                 {
@@ -185,8 +185,8 @@ namespace AKS.DatabaseMigrator
                         EntryStatus = EntryStatus.Approved,
                         IsReadOnly = true,
                         MarkedDeleted = false,
-                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "",
-                        PartyName = exp.PartyName,
+                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "ARD/PTY/43",
+                        PartyName = String.IsNullOrEmpty(exp.PartyName) ? "#NA#" : exp.PartyName,
                         PaymentDetails = exp.PaymentDetails,
                         PaymentMode = exp.PayMode,
                         Remarks = exp.Remarks,
@@ -194,7 +194,8 @@ namespace AKS.DatabaseMigrator
                         UserId = exp.UserId,
                         StoreId = "ARD",
                         VoucherNumber = $"ARD/RCT/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.ReceiptId}",
-                        SlipNumber = exp.ReceiptSlipNo,
+                        SlipNumber = String.IsNullOrEmpty(exp.ReceiptSlipNo) ? "#NA#" :
+                        exp.ReceiptSlipNo,
                         Particulars = exp.PartyName + "\t #" + exp.Remarks,
                         EmployeeId = ""
 
@@ -253,7 +254,7 @@ namespace AKS.DatabaseMigrator
                     IsReadOnly = true,
                     MarkedDeleted = false,
                     OnDate = cash.PaymentDate,
-                    PartyName = cash.PaidTo,
+                    PartyName = String.IsNullOrEmpty(cash.PaidTo) ? "#NA#" : cash.PaidTo,
                     Remarks = cash.Remarks,
                     SlipNumber = cash.SlipNo,
                     StoreId = "ARD",

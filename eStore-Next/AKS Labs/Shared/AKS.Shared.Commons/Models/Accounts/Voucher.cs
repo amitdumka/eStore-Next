@@ -63,7 +63,10 @@ namespace AKS.Shared.Commons.Models.Accounts
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
         
+        
         public string TranscationId{get;set;}
+
+        [ForeignKey("TranscationId")]
         public virtual TranscationMode TranscationMode { get;set;}
         
         public string SlipNumber { get; set; }

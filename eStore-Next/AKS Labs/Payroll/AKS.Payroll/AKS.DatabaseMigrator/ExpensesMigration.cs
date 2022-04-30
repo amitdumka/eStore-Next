@@ -94,44 +94,44 @@ namespace AKS.DatabaseMigrator
             {
                 using AKSDbContext aKSDb = new AKSDbContext();
                 using eStoreDbContext eStoreDb = new eStoreDbContext();
-                // var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
+                 var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
                 int count = 0;
                 List<bool> Flag = new List<bool>();
-                //foreach (var exp in datalist)
-                //{
-                //    Voucher v = new Voucher
-                //    {
-                //        VoucherType = VoucherType.Expense,
-                //        OnDate = exp.OnDate,
-                //        Amount = exp.Amount,
-                //        EmployeeId = exp.EmployeeId.ToString(),
-                //        EntryStatus = EntryStatus.Approved,
-                //        IsReadOnly = true,
-                //        MarkedDeleted = false,
-                //        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "ARD/PTY/43",
+                foreach (var exp in datalist)
+                {
+                    Voucher v = new Voucher
+                    {
+                        VoucherType = VoucherType.Expense,
+                        OnDate = exp.OnDate,
+                        Amount = exp.Amount,
+                        EmployeeId = exp.EmployeeId.ToString(),
+                        EntryStatus = EntryStatus.Approved,
+                        IsReadOnly = true,
+                        MarkedDeleted = false,
+                        PartyId = exp.PartyId > 0 ? $"ARD/PTY/{exp.PartyId}" : "ARD/PTY/43",
 
-                //        PartyName = String.IsNullOrEmpty(exp.PartyName)?"#NA#":exp.PartyName,
-                //        PaymentDetails = exp.PaymentDetails,
-                //        PaymentMode = exp.PayMode,
-                //        Remarks = exp.Remarks,
-                //        AccountId = exp.BankAccountId.ToString(),
-                //        UserId = exp.UserId,
-                //        StoreId = "ARD",
-                //        VoucherNumber = $"ARD/EXP/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.ExpenseId}",
-                //        SlipNumber = "NA",
-                //        Particulars = exp.Particulars
-                //    };
-                //    count++;
-                //    aKSDb.Vouchers.Add(v);
-                //}
-                //int saved = aKSDb.SaveChanges();
+                        PartyName = String.IsNullOrEmpty(exp.PartyName) ? "#NA#" : exp.PartyName,
+                        PaymentDetails = exp.PaymentDetails,
+                        PaymentMode = exp.PayMode,
+                        Remarks = exp.Remarks,
+                        AccountId = exp.BankAccountId.ToString(),
+                        UserId = exp.UserId,
+                        StoreId = "ARD",
+                        VoucherNumber = $"ARD/EXP/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.ExpenseId}",
+                        SlipNumber = "NA",
+                        Particulars = exp.Particulars
+                    };
+                    count++;
+                    aKSDb.Vouchers.Add(v);
+                }
+                int saved = aKSDb.SaveChanges();
 
-                //if (saved != count)
-                //{
-                //    Flag.Add(false);
-                //}
-                //else { Flag.Add(true); }
-                //datalist.Clear();
+                if (saved != count)
+                {
+                    Flag.Add(false);
+                }
+                else { Flag.Add(true); }
+                datalist.Clear();
                 // Payment
                 var payments = eStoreDb.Payments.OrderBy(c => c.OnDate).ToList();
                 count = 0;
@@ -162,7 +162,7 @@ namespace AKS.DatabaseMigrator
                     count++;
                     aKSDb.Vouchers.Add(v);
                 }
-                int saved = aKSDb.SaveChanges();
+                saved = aKSDb.SaveChanges();
 
                 if (saved != count)
                 {
@@ -225,79 +225,91 @@ namespace AKS.DatabaseMigrator
 
         public static bool MigrarteCashExpense()
         {
-            using AKSDbContext aKSDb = new AKSDbContext();
-            using eStoreDbContext eStoreDb = new eStoreDbContext();
-
-            var tm = eStoreDb.TranscationModes.ToList();
-            foreach (var t in tm)
+            try
             {
-                TranscationMode m = new TranscationMode
+                using AKSDbContext aKSDb = new AKSDbContext();
+                using eStoreDbContext eStoreDb = new eStoreDbContext();
+
+                var tm = eStoreDb.TranscationModes.ToList();
+                //foreach (var t in tm)
+                //{
+                //    TranscationMode m = new TranscationMode
+                //    {
+                //        TranscationName = t.Transcation,
+                //        TranscationId = $"TM/{t.TranscationModeId}"
+
+                //    };
+                //    aKSDb.TranscationModes.Add(m);
+                //}
+                //aKSDb.SaveChanges();
+
+                var cashPayments = eStoreDb.CashPayments.OrderBy(c => c.PaymentDate).ToList();
+                var cashrecpt = eStoreDb.CashReceipts.OrderBy(c => c.InwardDate).ToList();
+                int count = 0;
+                foreach (var cash in cashPayments)
                 {
-                    TranscationName = t.Transcation,
-                    TranscationId = $"TM/{t.TranscationModeId}"
+                    CashVoucher voucher = new CashVoucher
+                    {
+                        Amount = cash.Amount,
+                        EmployeeId = "",
+                        EntryStatus = EntryStatus.Approved,
+                        IsReadOnly = true,
+                        MarkedDeleted = false,
+                        OnDate = cash.PaymentDate,
+                        PartyName = String.IsNullOrEmpty(cash.PaidTo) ? "#NA#" : cash.PaidTo,
+                        Remarks = cash.Remarks,
+                        SlipNumber = String.IsNullOrEmpty( cash.SlipNo)?"#NA#": cash.SlipNo,
+                        StoreId = "ARD",
+                        PartyId = "ARD/PTY/43",
+                        TranscationId = $"TM/{cash.TranscationModeId}",
+                        UserId = cash.UserId,
+                        VoucherType = VoucherType.CashPayment,
+                        VoucherNumber = $"ARD/CPT/{cash.PaymentDate.Year}/{cash.PaymentDate.Month}/{cash.PaymentDate.Day}/{cash.CashPaymentId}",
+                        Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
+                        
+                    };
+                    aKSDb.CashVouchers.Add(voucher);
+                    count++;
+                }
 
-                };
-                aKSDb.TranscationModes.Add(m);
+                int saved = aKSDb.SaveChanges();
+
+                foreach (var cash in cashrecpt)
+                {
+                    CashVoucher voucher = new CashVoucher
+                    {
+                        Amount = cash.Amount,
+                        EmployeeId = "",
+                        EntryStatus = EntryStatus.Approved,
+                        IsReadOnly = true,
+                        MarkedDeleted = false,
+                        OnDate = cash.InwardDate,
+                        PartyName = cash.ReceiptFrom,
+                        Remarks = cash.Remarks,
+                        SlipNumber = String.IsNullOrEmpty(cash.SlipNo)?"#NA#": cash.SlipNo,
+                        StoreId = "ARD",
+                        PartyId = "ARD/PTY/43",
+                        TranscationId = $"TM/{cash.TranscationModeId}",
+                        UserId = cash.UserId,
+                        VoucherType = VoucherType.CashReceipt,
+                        VoucherNumber = $"ARD/CPT/{cash.InwardDate.Year}/{cash.InwardDate.Month}/{cash.InwardDate.Day}/{cash.CashReceiptId}",
+                        Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
+                        
+                    };
+                    aKSDb.CashVouchers.Add(voucher);
+                    count++;
+                }
+
+                saved += aKSDb.SaveChanges();
+                if (saved == count) return true; else return false;
             }
-            aKSDb.SaveChanges();
-
-            var cashPayments = eStoreDb.CashPayments.OrderBy(c => c.PaymentDate).ToList();
-            var cashrecpt = eStoreDb.CashReceipts.OrderBy(c => c.InwardDate).ToList();
-            int count = 0;
-            foreach (var cash in cashPayments)
+            catch (Exception e)
             {
-                CashVoucher voucher = new CashVoucher
-                {
-                    Amount = cash.Amount,
-                    EmployeeId = "",
-                    EntryStatus = EntryStatus.Approved,
-                    IsReadOnly = true,
-                    MarkedDeleted = false,
-                    OnDate = cash.PaymentDate,
-                    PartyName = String.IsNullOrEmpty(cash.PaidTo) ? "#NA#" : cash.PaidTo,
-                    Remarks = cash.Remarks,
-                    SlipNumber = cash.SlipNo,
-                    StoreId = "ARD",
-                    PartyId = "",
-                    TranscationId = $"TM/{cash.TranscationModeId}",
-                    UserId = cash.UserId,
-                    VoucherType = VoucherType.CashPayment,
-                    VoucherNumber = $"ARD/CPT/{cash.PaymentDate.Year}/{cash.PaymentDate.Month}/{cash.PaymentDate.Day}/{cash.CashPaymentId}",
-                    Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
-                };
-                aKSDb.CashVouchers.Add(voucher);
-                count++;
+
+                Console.WriteLine(e.Message);
+                return false;
             }
-
-            int saved = aKSDb.SaveChanges();
-
-            foreach (var cash in cashrecpt)
-            {
-                CashVoucher voucher = new CashVoucher
-                {
-                    Amount = cash.Amount,
-                    EmployeeId = "",
-                    EntryStatus = EntryStatus.Approved,
-                    IsReadOnly = true,
-                    MarkedDeleted = false,
-                    OnDate = cash.InwardDate,
-                    PartyName = cash.ReceiptFrom,
-                    Remarks = cash.Remarks,
-                    SlipNumber = cash.SlipNo,
-                    StoreId = "ARD",
-                    PartyId = "",
-                    TranscationId = $"TM/{cash.TranscationModeId}",
-                    UserId = cash.UserId,
-                    VoucherType = VoucherType.CashReceipt,
-                    VoucherNumber = $"ARD/CPT/{cash.InwardDate.Year}/{cash.InwardDate.Month}/{cash.InwardDate.Day}/{cash.CashReceiptId}",
-                    Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
-                };
-                aKSDb.CashVouchers.Add(voucher);
-                count++;
-            }
-
-            saved += aKSDb.SaveChanges();
-            if (saved == count) return true; else return false;
+            
         }
 
     }

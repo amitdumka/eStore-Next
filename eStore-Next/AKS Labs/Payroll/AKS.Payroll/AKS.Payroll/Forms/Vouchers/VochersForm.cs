@@ -345,11 +345,7 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //TODO: Process Data
-            //pensesMigration.MigrateParty(); 
-            //PayrollMigration payroll= new PayrollMigration();
-            //payroll.Migrate();
-            ExpensesMigration.MigrateExpenses();
+            
 
         }
     }

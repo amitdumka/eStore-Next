@@ -1,1 +1,1 @@
-﻿select * from Vouchers;
+﻿select * from CashReceipts;

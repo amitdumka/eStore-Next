@@ -72,10 +72,6 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.Property<string>("TranscationId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TranscationModeTranscationId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
@@ -91,7 +87,7 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("TranscationModeTranscationId");
+                    b.HasIndex("TranscationId");
 
                     b.ToTable("CashVouchers");
                 });
@@ -1432,7 +1428,7 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasOne("AKS.Shared.Commons.Models.Accounts.TranscationMode", "TranscationMode")
                         .WithMany()
-                        .HasForeignKey("TranscationModeTranscationId")
+                        .HasForeignKey("TranscationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -92,7 +92,11 @@ namespace AKS.Payroll.Database
         public DbSet<CashVoucher> CashVouchers { get; set; }
         public DbSet<Note> Notes { get; set; }
 
+        public DbSet<TranscationMode> TranscationModes { get; set; }
 
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<LedgerGroup> LedgerGroups { get; set; }
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

@@ -19,6 +19,12 @@ namespace AKS.DatabaseMigrator
 
         public DbSet<CashPayment> CashPayments { get; set; }//API
         public DbSet<CashReceipt> CashReceipts { get; set; }//API
+        // New Accounting section
+        public DbSet<LedgerType> LedgerTypes { get; set; }//API
+
+        public DbSet<Party> Parties { get; set; }//APi
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }//APi
+        public DbSet<LedgerEntry> LedgerEntries { get; set; } //api
 
         //UserAuth Api
         //public DbSet<User> Users { get; set; }

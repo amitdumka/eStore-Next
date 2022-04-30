@@ -30,7 +30,11 @@ namespace AKS.Shared.Commons.Models.Accounts
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
         public string SlipNumber { get; set; }
+        
         public string PartyName { get; set; }
+        
+        public string Particulars { get; set; }
+
         public decimal Amount { get; set; }
         public PaymentMode PaymentMode { get; set; }
         public string PaymentDetails { get; set; }
@@ -42,20 +46,31 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Party Party { get; set; }
     }
 
+    public class TranscationMode
+    {
+        [Key]
+        public string TranscationId { get; set; }
+        public string TranscationName { get; set; }
+    }
 
-    public class CashVoucher:BaseST
+    public class CashVoucher : BaseST
     {
 
         [Key]
         public string VoucherNumber { get; set; }
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
+        
+        public string TranscationId{get;set;}
+        public virtual TranscationMode TranscationMode { get;set;}
+        
         public string SlipNumber { get; set; }
         public string PartyName { get; set; }
+        public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public string Remarks { get; set; }
         public string EmployeeId { get; set; }
-
+        
         public string PartyId { get; set; }
         public virtual Party Party { get; set; }
 
@@ -81,6 +96,17 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Party Party { get; set; }
     }
 
+    public class LedgerGroup
+    {
+        [Key]
+        public string LedgerGroupId { get; set; }
+        public string GroupName { get; set; }
+        public LedgerCategory Category { get; set; }
+        public string Remark { get; set; }
+
+
+    }
+
     public class Party:BaseST
     {
         public string PartyId { get; set; }
@@ -90,6 +116,11 @@ namespace AKS.Shared.Commons.Models.Accounts
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
         public LedgerCategory Category { get; set; }
+        public string GSTIN { get; set; }
+        public string PANNo { get; set; }
+        public string Address { get; set; }
+        public string Remarks { get; set; }
+        public string LedgerGroupId { get; set; }
     }
 
     public class LedgerMaster

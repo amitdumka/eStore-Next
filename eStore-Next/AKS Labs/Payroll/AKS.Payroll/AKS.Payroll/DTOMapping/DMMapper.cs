@@ -1,4 +1,6 @@
-﻿using AKS.Shared.Payroll.Models;
+﻿using AKS.Shared.Commons.Models.Accounts;
+using AKS.Shared.Commons.ViewModels.Accounts;
+using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
 
@@ -48,6 +50,12 @@ namespace AKS.Payroll.DTOMapping
 
                     cfg.CreateMap<PaySlip, PaySlipVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
                     cfg.CreateMap<PaySlipVM, PaySlip>();
+                    cfg.CreateMap<CashVoucher, CashVoucherVM>();
+                    cfg.CreateMap<Voucher, VoucherVM>();
+                    cfg.CreateMap<VoucherVM, Voucher>(); 
+                    cfg.CreateMap<CashVoucherVM,CashVoucher>();
+
+
 
                 });
                 Mapper = new Mapper(config);

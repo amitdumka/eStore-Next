@@ -6,43 +6,38 @@ namespace AKS.Payroll.Forms.Vouchers
 {
     public partial class VoucherEntryForm : Form
     {
-        private VoucherType voucherType;
-        private CashVoucher cashVoucher;
-        private Voucher voucher;
+        public VoucherType voucherType;
+        public CashVoucher cashVoucher;
+        public Voucher voucher;
         private bool isNew = false;
-
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
-
-
         public VoucherEntryForm()
         {
             InitializeComponent();
             isNew = true;
             voucherType = VoucherType.Expense;
         }
-
         public VoucherEntryForm(VoucherType voucherType)
         {
+            InitializeComponent();
             isNew = true;
             this.voucherType = voucherType;
         }
-
         public VoucherEntryForm(VoucherType voucherType, Voucher voucher)
         {
+            InitializeComponent();
             this.voucherType = voucherType;
             this.voucher = voucher;
             isNew = false;
         }
-
         public VoucherEntryForm(VoucherType voucherType, CashVoucher voucher)
         {
+            InitializeComponent();
             this.voucherType = voucherType;
-            this.cashVoucher = voucher;
+            cashVoucher = voucher;
             isNew = false;
         }
-
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (btnAdd.Text == "Add")
@@ -50,40 +45,45 @@ namespace AKS.Payroll.Forms.Vouchers
                 isNew = true;
                 ClearFields();
                 btnAdd.Text = "Save";
-
             }
             else if (btnAdd.Text == "Edit")
             {
                 isNew = false;
                 btnAdd.Text = "Save";
             }
-            else if (btnAdd.Text == "Save") {
+            else if (btnAdd.Text == "Save")
+            {
                 if (SaveData())
                 {
                     MessageBox.Show("Voucher is saved!!");
-                    btnAdd.Text = "Add"; 
+                    btnAdd.Text = "Add";
                     ClearFields();
+                    if (isNew)
+                        DialogResult = DialogResult.OK;
+                    else DialogResult = DialogResult.Yes;
                 }
                 else
                 {
                     MessageBox.Show("Error occured while saving voucher");
                 }
-            
             }
         }
-
         private void ClearFields()
         {
             if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
-                cashVoucher= new CashVoucher { 
-                Amount=0, OnDate=DateTime.Now 
+                cashVoucher = new CashVoucher
+                {
+                    Amount = 0,
+                    OnDate = DateTime.Now
                 };
-            else voucher= new Voucher { 
-             OnDate=DateTime.Now, Amount=0, PaymentMode=PaymentMode.Cash
+            else voucher = new Voucher
+            {
+                OnDate = DateTime.Now,
+                Amount = 0,
+                PaymentMode = PaymentMode.Cash
             };
             DisplayData();
         }
-
         private void VoucherEntryForm_Load(object sender, EventArgs e)
         {
             azureDb = new AzurePayrollDbContext();
@@ -111,7 +111,7 @@ namespace AKS.Payroll.Forms.Vouchers
             //cbxParties.ValueMember = "AccountNumber";
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PaymentMode)));
 
-            if(!isNew) DisplayData();
+            if (!isNew) DisplayData();
 
         }
         private void DisplayData()
@@ -149,7 +149,6 @@ namespace AKS.Payroll.Forms.Vouchers
             }
             SetEntryType();
         }
-
         private void SetEntryType()
         {
             switch (voucherType)
@@ -181,8 +180,8 @@ namespace AKS.Payroll.Forms.Vouchers
                     rbExpenses.Checked = false;
                     break;
             }
+            ShowView(voucherType);
         }
-
         private bool ReadData()
         {
             //TODO: Validation of Data is need 
@@ -199,13 +198,13 @@ namespace AKS.Payroll.Forms.Vouchers
                 cashVoucher.EmployeeId = (string)cbxEmployees.SelectedValue;
                 cashVoucher.StoreId = (string)cbxStores.SelectedValue;
                 cashVoucher.PartyId = (string)cbxParties.SelectedValue;
-                
+
                 if (isNew) cashVoucher.EntryStatus = EntryStatus.Added;
                 else cashVoucher.EntryStatus = EntryStatus.Updated;
-                
-                cashVoucher.IsReadOnly = false; 
+
+                cashVoucher.IsReadOnly = false;
                 cashVoucher.MarkedDeleted = false;
-                cashVoucher.UserId = "WinUI";              
+                cashVoucher.UserId = "WinUI";
             }
             else
             {
@@ -257,7 +256,16 @@ namespace AKS.Payroll.Forms.Vouchers
             }
 
         }
-
-
+        private void ShowView(VoucherType type)
+        {
+            if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
+            {
+                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.Absolute, 0F);
+            }
+            else
+            {
+                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.AutoSize);
+            }
+        }
     }
 }

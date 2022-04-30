@@ -1,4 +1,7 @@
 ﻿using AKS.Payroll.Database;
+using AKS.Payroll.DTOMapping;
+using AKS.Shared.Commons.Models.Accounts;
+using AKS.Shared.Commons.ViewModels.Accounts;
 using System.Data;
 
 namespace AKS.Payroll.Forms.Vouchers
@@ -9,6 +12,10 @@ namespace AKS.Payroll.Forms.Vouchers
         private readonly VoucherType voucherType;
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+        private ObservableListSource<VoucherVM> voucherVMs;
+        private ObservableListSource<CashVoucherVM> cashVoucherVMs;
+
+
         private List<int> DataList;
 
         public VochersForm()
@@ -21,6 +28,26 @@ namespace AKS.Payroll.Forms.Vouchers
             InitializeComponent();
             voucherType = type;
         }
+
+        public void UpdateVoucherList(List<Voucher> vouchers)
+        {
+
+            foreach (var vou in vouchers)
+            {
+                voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(vou));
+            }
+
+        }
+        public void UpdateCashVoucherList(List<CashVoucher> cashVouchers)
+        {
+
+            foreach (var vou in cashVoucherVMs)
+            {
+                cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(vou));
+            }
+
+        }
+
 
         private void LoadData()
         {
@@ -161,10 +188,102 @@ namespace AKS.Payroll.Forms.Vouchers
         }
 
 
+        private void RefreshDataView(VoucherType type)
+        {
+            switch (type)
+            {
+                case VoucherType.Payment:
+                    dgvPayments.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    break;
+                case VoucherType.Receipt:
+                    dgvReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+
+                    break;
+                case VoucherType.Contra:
+                    break;
+                case VoucherType.DebitNote:
+                    break;
+                case VoucherType.CreditNote:
+                    break;
+                case VoucherType.JV:
+                    break;
+                case VoucherType.Expense:
+                    dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+
+                    break;
+                case VoucherType.CashReceipt:
+                    dgvCashReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+
+                    break;
+                case VoucherType.CashPayment:
+                    dgvCashPayments.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            VoucherEntryForm voucherEntryForm;
+            VoucherType voucherType = VoucherType.Expense;
+            switch (tabControl1.SelectedIndex)
+            {
+                case 1://Epenses 
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.Expense);
+                    voucherType = VoucherType.Expense;
+                    break;
+                case 2://payment 
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.Payment);
+                    voucherType = VoucherType.Payment;
+                    break;
+                case 3:
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.Receipt);
+                    voucherType = VoucherType.Receipt;
+                    //Receipts 
+                    break;
+                case 4://Cash Receipts 
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.CashReceipt);
+                    voucherType = VoucherType.CashReceipt;
+                    break;
+                case 5:
+                    //Cash Payments 
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.CashPayment);
+                    voucherType = VoucherType.CashPayment;
+                    break;
+                default:
+                    voucherEntryForm = new VoucherEntryForm(VoucherType.Expense);
+                    break;
+            }
+            if (voucherEntryForm.ShowDialog() == DialogResult.OK)
+            {
+                // on event of Add
 
+                if (voucherEntryForm. voucherType == VoucherType.CashReceipt || voucherEntryForm.voucherType == VoucherType.CashPayment)
+                {
+                    // Add to list voucherEntryForm.cashVoucher
+                    cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(voucherEntryForm.cashVoucher));
+                }
+                else
+                {
+                    // Add to voucherEntryForm.voucher
+                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(voucherEntryForm.voucher));
+                }
+                RefreshDataView(voucherEntryForm.voucherType);
+
+
+            }
+            else if (voucherEntryForm.DialogResult == DialogResult.Yes)
+            {
+                // on De
+            }
+            else
+            {
+
+            }
         }
 
         private void tabControl1_TabIndexChanged(object sender, EventArgs e)
@@ -175,6 +294,7 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void VochersForm_Load(object sender, EventArgs e)
         {
+            DMMapper.InitializeAutomapper();
             LoadData();
 
         }

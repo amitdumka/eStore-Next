@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eStore.Shared.Models.Payroll;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,7 @@ namespace eStore.Shared.Models
         public DateTime OnDate { get; set; }
 
         [Display(Name = "Party Name")]
-        public string PartyName { get; set; }
+        public string? PartyName { get; set; }
 
         [Display(Name = "Payment Mode")]
         public PaymentMode PayMode { get; set; }
@@ -23,12 +24,12 @@ namespace eStore.Shared.Models
         //public virtual BankAccount FromAccount { get; set; }
 
         [Display(Name = "Payment Details")]
-        public string PaymentDetails { get; set; }
+        public string? PaymentDetails { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money"), Display(Name = "Amount")]
         public decimal Amount { get; set; }
 
-        public string Remarks { get; set; }
+        public string? Remarks { get; set; }
 
         [Display(Name = "Party")]
         public int? PartyId { get; set; }
@@ -37,13 +38,13 @@ namespace eStore.Shared.Models
         public int? LedgerEnteryId { get; set; }
 
         [DefaultValue(false), Display(Name = "Cash")]
-        public bool IsCash { get; set; }
+        public bool? IsCash { get; set; }
 
         [DefaultValue(false), Display(Name = "ON")]
         public bool? IsOn { get; set; }
 
         [DefaultValue(true), Display(Name = "Dyn")]
-        public bool IsDyn { get; set; }
+        public bool? IsDyn { get; set; }
 
         //public virtual Party Party { get; set; }
         //public virtual LedgerEntry LedgerEntry { get; set; }
@@ -54,12 +55,12 @@ namespace eStore.Shared.Models
         public string Particulars { get; set; }
 
         [Display(Name = "Paid To")]
-        public new string PartyName { get; set; }
+        public new string? PartyName { get; set; }
 
         [Display(Name = "Paid By")]
         public int EmployeeId { get; set; }
 
-        //public virtual Employee PaidBy { get; set; }
+        public virtual Employee PaidBy { get; set; }
     }
     public class Receipt : BasicVoucher
     {
@@ -162,16 +163,16 @@ namespace eStore.Shared.Models
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal OpenningBalance { get; set; }
 
-        public string Address { get; set; }
-        public string PANNo { get; set; }
-        public string GSTNo { get; set; }
+        public string? Address { get; set; }
+        public string? PANNo { get; set; }
+        public string? GSTNo { get; set; }
 
         [Display(Name = "Ledger Group")]
         // public LedgerCategory LedgerType { get; set; }
         public int LedgerTypeId { get; set; }
 
-        //public virtual LedgerType LedgerType { get; set; }
-        public LedgerMaster LedgerMaster { get; set; }
+       // public virtual LedgerType LedgerType { get; set; }
+       // public LedgerMaster LedgerMaster { get; set; }
         //public virtual ICollection<LedgerEntry> Ledgers { get; set; }
     }
     public class LedgerMaster
@@ -190,8 +191,9 @@ namespace eStore.Shared.Models
         [Display(Name = "Ledger Type")]
         public int LedgerTypeId { get; set; }
 
-        public virtual LedgerType LedgerType { get; set; }
+       // public virtual LedgerType LedgerType { get; set; }
     }
+    //Ok
     public class LedgerType
     {
         public int LedgerTypeId { get; set; }
@@ -200,7 +202,7 @@ namespace eStore.Shared.Models
         public string LedgerNameType { get; set; }
 
         public LedgerCategory Category { get; set; }
-        public string Remark { get; set; }
+        public string? Remark { get; set; }
     }
     public class LedgerEntry
     {

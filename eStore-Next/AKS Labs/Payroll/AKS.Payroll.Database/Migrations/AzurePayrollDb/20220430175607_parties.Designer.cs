@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 {
     [DbContext(typeof(AzurePayrollDbContext))]
-    [Migration("20220428191100_vouchersver2")]
-    partial class vouchersver2
+    [Migration("20220430175607_parties")]
+    partial class parties
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,10 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<DateTime>("OnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PartyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -69,6 +73,14 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("TranscationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TranscationModeTranscationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,7 +94,47 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.HasIndex("StoreId");
 
+                    b.HasIndex("TranscationModeTranscationId");
+
                     b.ToTable("CashVouchers");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.LedgerGroup", b =>
+                {
+                    b.Property<string>("LedgerGroupId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LedgerGroupId");
+
+                    b.ToTable("LedgerGroups");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.LedgerMaster", b =>
+                {
+                    b.Property<string>("PartyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("OpeningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartyId");
+
+                    b.ToTable("V1_LedgerMasters");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>
@@ -144,13 +196,17 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("V1_Notes");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Party", b =>
                 {
                     b.Property<string>("PartyId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -164,8 +220,16 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("GSTIN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsReadOnly")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LedgerGroupId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("MarkedDeleted")
                         .HasColumnType("bit");
@@ -176,7 +240,15 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<DateTime>("OpeningDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PANNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -192,7 +264,21 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Party");
+                    b.ToTable("V1_Parties");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.TranscationMode", b =>
+                {
+                    b.Property<string>("TranscationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TranscationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TranscationId");
+
+                    b.ToTable("V1_TranscationModes");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Voucher", b =>
@@ -222,6 +308,10 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.Property<DateTime>("OnDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PartyId")
                         .IsRequired()
@@ -285,6 +375,9 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsEmployee")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -295,6 +388,12 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<string>("StoreId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("UserName");
 
@@ -1334,9 +1433,17 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.TranscationMode", "TranscationMode")
+                        .WithMany()
+                        .HasForeignKey("TranscationModeTranscationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Party");
 
                     b.Navigation("Store");
+
+                    b.Navigation("TranscationMode");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace AKS.Shared.Commons.Models.Accounts
@@ -46,6 +47,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Party Party { get; set; }
     }
 
+    [Table("V1_TranscationModes")]
     public class TranscationMode
     {
         [Key]
@@ -75,7 +77,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Party Party { get; set; }
 
     }
-
+    [Table("V1_Notes")]
     public class Note:BaseST
     {
         [Key]
@@ -106,7 +108,7 @@ namespace AKS.Shared.Commons.Models.Accounts
 
 
     }
-
+    [Table("V1_Parties")]
     public class Party:BaseST
     {
         public string PartyId { get; set; }
@@ -122,7 +124,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public string Remarks { get; set; }
         public string LedgerGroupId { get; set; }
     }
-
+    [Table("V1_LedgerMasters")]
     public class LedgerMaster
     {
         [Key]

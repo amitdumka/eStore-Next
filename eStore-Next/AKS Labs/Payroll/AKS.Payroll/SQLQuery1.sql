@@ -1,0 +1,1 @@
+﻿select * from V1_Parties

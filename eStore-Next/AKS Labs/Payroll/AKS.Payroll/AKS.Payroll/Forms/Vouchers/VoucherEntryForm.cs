@@ -53,19 +53,19 @@ namespace AKS.Payroll.Forms.Vouchers
             }
             else if (btnAdd.Text == "Save")
             {
-                if (SaveData())
-                {
-                    MessageBox.Show("Voucher is saved!!");
-                    btnAdd.Text = "Add";
-                    ClearFields();
-                    if (isNew)
-                        DialogResult = DialogResult.OK;
-                    else DialogResult = DialogResult.Yes;
-                }
-                else
-                {
-                    MessageBox.Show("Error occured while saving voucher");
-                }
+                //if (SaveData())
+                //{
+                //    MessageBox.Show("Voucher is saved!!");
+                //    btnAdd.Text = "Add";
+                //    ClearFields();
+                //    if (isNew)
+                //        DialogResult = DialogResult.OK;
+                //    else DialogResult = DialogResult.Yes;
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Error occured while saving voucher");
+                //}
             }
         }
         private void ClearFields()
@@ -232,30 +232,30 @@ namespace AKS.Payroll.Forms.Vouchers
             }
             return true;
         }
-        private bool SaveData()
-        {
-            if (ReadData())
-            {
-                if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
-                {
-                    if (isNew)
-                        azureDb.CashVouchers.Add(cashVoucher);
-                    else azureDb.CashVouchers.Update(cashVoucher);
-                }
-                else
-                {
-                    if (isNew)
-                        azureDb.Vouchers.Add(voucher);
-                    else azureDb.Vouchers.Update(voucher);
-                }
-                return azureDb.SaveChanges() > 0;
-            }
-            else
-            {
-                return false;
-            }
+        //private bool SaveData()
+        //{
+        //    //if (ReadData())
+        //    //{
+        //    //    if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+        //    //    {
+        //    //        if (isNew)
+        //    //            azureDb.CashVouchers.Add(cashVoucher);
+        //    //        else azureDb.CashVouchers.Update(cashVoucher);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        if (isNew)
+        //    //            azureDb.Vouchers.Add(voucher);
+        //    //        else azureDb.Vouchers.Update(voucher);
+        //    //    }
+        //    //    return azureDb.SaveChanges() > 0;
+        //    //}
+        //    //else
+        //    //{
+        //    //    return false;
+        //    //}
 
-        }
+        //}
         private void ShowView(VoucherType type)
         {
             if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)

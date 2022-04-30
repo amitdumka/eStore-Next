@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eStore.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AKS.DatabaseMigrator
 {
@@ -10,6 +11,14 @@ namespace AKS.DatabaseMigrator
             //ApplyMigrations(this);
         }
 
+        //// new Expenses/Reciept System with Party Support
+        public DbSet<Expense> Expenses { get; set; }//API
+
+        public DbSet<Payment> Payments { get; set; }//APi
+        public DbSet<Receipt> Receipts { get; set; }//API
+
+        public DbSet<CashPayment> CashPayments { get; set; }//API
+        public DbSet<CashReceipt> CashReceipts { get; set; }//API
 
         //UserAuth Api
         //public DbSet<User> Users { get; set; }
@@ -42,7 +51,7 @@ namespace AKS.DatabaseMigrator
         public DbSet<eStore.Shared.Models.Payroll.Attendance> Attendances { get; set; } //ok//UI//API
         public DbSet<eStore.Shared.Models.Salesman> Salesmen { get; set; } //ok//API
 
-        //public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
+        public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
         //public DbSet<SaleTaxType> SaleTaxTypes { get; set; } //ok//UI //API
         //public DbSet<PurchaseTaxType> PurchaseTaxTypes { get; set; }//UI //API
 
@@ -113,14 +122,7 @@ namespace AKS.DatabaseMigrator
         //public DbSet<LedgerMaster> LedgerMasters { get; set; }//APi
         //public DbSet<LedgerEntry> LedgerEntries { get; set; } //api
 
-        //// new Expenses/Reciept System with Party Support
-        //public DbSet<Expense> Expenses { get; set; }//API
-
-        //public DbSet<Shared.Models.Accounts.Payment> Payments { get; set; }//APi
-        //public DbSet<Receipt> Receipts { get; set; }//API
-
-        //public DbSet<CashPayment> CashPayments { get; set; }//API
-        //public DbSet<CashReceipt> CashReceipts { get; set; }//API
+        
 
         //public DbSet<BankAccount> BankAccounts { get; set; }//APi
         //public DbSet<CurrentSalary> Salaries { get; set; } //API

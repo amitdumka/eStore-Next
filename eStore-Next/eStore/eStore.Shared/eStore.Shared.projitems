@@ -17,5 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\SalaryPayment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Payroll\StaffAdvanceReceipt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Expenses.cs" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,11 @@ namespace AKS.DatabaseMigrator
         public DbSet<Shared.Payroll.Models.StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
         public DbSet<Shared.Commons.Models.Store> Stores { get; set; }
         public DbSet<Shared.Commons.Models.Salesman> Salesmen { get; set; }
+
+        public DbSet<Shared.Commons.Models.Accounts.Voucher> Vouchers { get; set; }
+        public DbSet <Shared.Commons.Models.Accounts.CashVoucher> CashVouchers { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

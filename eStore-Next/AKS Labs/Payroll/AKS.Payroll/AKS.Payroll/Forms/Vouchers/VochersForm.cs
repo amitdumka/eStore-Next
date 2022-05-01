@@ -105,7 +105,7 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             if (!DataList.Contains(2))
             {
-                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Payment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Payment  ).OrderBy(c => c.OnDate).ToList();
                 dgvPayments.DataSource = listData;
                 DataList.Add(2);
                 tabControl1.SelectedTab = tpPayments;
@@ -117,7 +117,7 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             if (!DataList.Contains(3))
             {
-                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Receipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                var listData =azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Receipt  ).OrderBy(c => c.OnDate).ToList();
                 dgvReceipts.DataSource = listData;
                 tabControl1.SelectedTab = tpReceipts;
                 DataList.Add(3);

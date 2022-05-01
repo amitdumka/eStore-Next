@@ -139,7 +139,7 @@ namespace AKS.DatabaseMigrator
                 {
                     Voucher v = new Voucher
                     {
-                        VoucherType = VoucherType.Expense,
+                        VoucherType = VoucherType.Payment,
                         OnDate = exp.OnDate,
                         Amount = exp.Amount,
                         EntryStatus = EntryStatus.Approved,
@@ -179,7 +179,7 @@ namespace AKS.DatabaseMigrator
                 {
                     Voucher v = new Voucher
                     {
-                        VoucherType = VoucherType.Expense,
+                        VoucherType = VoucherType.Receipt,
                         OnDate = exp.OnDate,
                         Amount = exp.Amount,
                         EntryStatus = EntryStatus.Approved,

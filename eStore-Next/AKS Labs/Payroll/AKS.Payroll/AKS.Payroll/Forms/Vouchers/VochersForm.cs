@@ -11,13 +11,17 @@ namespace AKS.Payroll.Forms.Vouchers
     {
 
         private readonly VoucherType voucherType;
+        
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+
         private ObservableListSource<VoucherVM> voucherVMs;
         private ObservableListSource<CashVoucherVM> cashVoucherVMs;
 
-
         private List<int> DataList;
+        private SortedDictionary<string, bool> DataDictionary= new SortedDictionary<string, bool>();
+        
+
 
         public VochersForm()
         {
@@ -54,104 +58,79 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
+        
             LoadYearList();
+            
             DataList = new List<int>();
 
-            switch (voucherType)
+            LoadDataGrid(voucherType, DateTime.Today.Year);
+
+           
+        }
+        
+        private void LoadDataGrid(VoucherType type, int year)
+        {
+            if (!DataDictionary.ContainsKey(type.ToString() + year))
+            {
+                if(type == VoucherType.CashPayment|| type == VoucherType.CashReceipt)
+                {
+                    var listData = azureDb.CashVouchers.Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                    UpdateCashVoucherList(listData);
+                }
+                else
+                {
+                    var listData = azureDb.Vouchers.Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                    UpdateVoucherList(listData);
+                }
+               
+                DataDictionary.Add(type.ToString() + year, true);
+
+            }
+
+            switch (type)
             {
                 case VoucherType.Payment:
-                    LoadPaymentData(DateTime.Today.Year);
+                    dgvPayments.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Payment && c.OnDate.Year == year).ToList();
+                    tabControl1.SelectedTab = tpPayments;
                     break;
                 case VoucherType.Receipt:
-                    LoadReceiptData(DateTime.Today.Year);
+                    dgvReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Receipt && c.OnDate.Year == year).ToList();
+                    tabControl1.SelectedTab = tpReceipts;
                     break;
-                //case VoucherType.Contra:
-                //    break;
-                //case VoucherType.DebitNote:
-                //    break;
-                //case VoucherType.CreditNote:
-                //    break;
-                //case VoucherType.JV:
-                //    break;
+                case VoucherType.Contra:
+                    break;
+                case VoucherType.DebitNote:
+                    break;
+                case VoucherType.CreditNote:
+                    break;
+                case VoucherType.JV:
+                    break;
                 case VoucherType.Expense:
-                    LoadExpensesData(DateTime.Today.Year);
+                    dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).ToList();
+                    tabControl1.SelectedTab = tpExpenses;
                     break;
                 case VoucherType.CashReceipt:
-                    LoadCashReceiptData(DateTime.Today.Year);
+                    dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).ToList();
+                    tabControl1.SelectedTab = tpCashReceipts;
                     break;
                 case VoucherType.CashPayment:
-                    LoadCashPaymentData(DateTime.Today.Year);
+                    dgvCashPayments.DataSource = cashVoucherVMs.Where(c => c.VoucherType == VoucherType.CashPayment && c.OnDate.Year == year).ToList();
+                    tabControl1.SelectedTab = tpCashPayments;
                     break;
                 default:
-                    LoadExpensesData(DateTime.Today.Year);
                     break;
             }
-        }
-        private void LoadExpensesData(int year)
-        {
-
-            if (!DataList.Contains(1))
-            {
-                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-                dgvExpenses.DataSource = listData;
-                tabControl1.SelectedTab = tpExpenses;
-                DataList.Add(1);
-            }
-
 
         }
 
-        private void LoadPaymentData(int year)
-        {
-            if (!DataList.Contains(2))
-            {
-                var listData = azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Payment  ).OrderBy(c => c.OnDate).ToList();
-                dgvPayments.DataSource = listData;
-                DataList.Add(2);
-                tabControl1.SelectedTab = tpPayments;
-
-            }
-
-        }
-        private void LoadReceiptData(int year)
-        {
-            if (!DataList.Contains(3))
-            {
-                var listData =azureDb.Vouchers.Where(c => c.VoucherType == VoucherType.Receipt  ).OrderBy(c => c.OnDate).ToList();
-                dgvReceipts.DataSource = listData;
-                tabControl1.SelectedTab = tpReceipts;
-                DataList.Add(3);
-            }
-        }
-        private void LoadCashReceiptData(int year)
-        {
-            if (!DataList.Contains(4))
-            {
-                var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-                dgvCashReceipts.DataSource = listData;
-                tabControl1.SelectedTab = tpCashReceipts;
-                DataList.Add(4);
-            }
-        }
-
-        private void LoadCashPaymentData(int year)
-        {
-            if (!DataList.Contains(5))
-            {
-                var listData = azureDb.CashVouchers.Where(c => c.VoucherType == VoucherType.CashPayment && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-                dgvCashPayments.DataSource = listData;
-                tabControl1.SelectedTab = tpCashPayments;
-                DataList.Add(5);
-            }
-        }
-
-
+     
         private void LoadYearList()
         {
             var years = azureDb.Vouchers.Select(c => c.OnDate.Year).Distinct().ToList();
             years.AddRange(azureDb.CashVouchers.Select(c => c.OnDate.Year).Distinct().ToList());
             years = years.Distinct().OrderBy(c => c).ToList();
             lbYearList.DataSource = years;
+            lbYearList.SelectedValue = DateTime.Today.Year;
         }
 
 
@@ -160,10 +139,10 @@ namespace AKS.Payroll.Forms.Vouchers
             switch (index)
             {
                 case 1:
-                    LoadPaymentData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Payment, DateTime.Today.Year);
                     break;
                 case 2:
-                    LoadReceiptData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Receipt, DateTime.Today.Year);
                     break;
                 //case VoucherType.Contra:
                 //    break;
@@ -174,16 +153,16 @@ namespace AKS.Payroll.Forms.Vouchers
                 //case VoucherType.JV:
                 //    break;
                 case 0:
-                    LoadExpensesData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Expense, DateTime.Today.Year);
                     break;
                 case 3:
-                    LoadCashReceiptData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.CashPayment, DateTime.Today.Year);
                     break;
                 case 4:
-                    LoadCashPaymentData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.CashReceipt, DateTime.Today.Year);
                     break;
                 default:
-                    LoadExpensesData(DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Expense, DateTime.Today.Year);
                     break;
             }
         }
@@ -296,6 +275,8 @@ namespace AKS.Payroll.Forms.Vouchers
         private void VochersForm_Load(object sender, EventArgs e)
         {
             DMMapper.InitializeAutomapper();
+            voucherVMs = new ObservableListSource<VoucherVM>();
+            cashVoucherVMs = new ObservableListSource<CashVoucherVM>();
             LoadData();
 
         }
@@ -347,6 +328,17 @@ namespace AKS.Payroll.Forms.Vouchers
         {
 
 
+        }
+
+        private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void lbYearList_DoubleClick(object sender, EventArgs e)
+        {
+            int year = (int)lbYearList.SelectedValue;
+            MessageBox.Show("selected " + year);
         }
     }
 }

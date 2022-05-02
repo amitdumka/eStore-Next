@@ -140,6 +140,8 @@
             this.lbYearList.Size = new System.Drawing.Size(105, 372);
             this.lbYearList.TabIndex = 0;
             this.lbYearList.ValueMember = "Year";
+            this.lbYearList.SelectedIndexChanged += new System.EventHandler(this.lbYearList_SelectedIndexChanged);
+            this.lbYearList.DoubleClick += new System.EventHandler(this.lbYearList_DoubleClick);
             // 
             // groupBox3
             // 

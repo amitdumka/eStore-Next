@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Base;
+using AKS.Shared.Payroll.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,7 @@ namespace AKS.Shared.Commons.Models.Accounts
     //    return (VoucherNumber + countName);
     //}
 
+
     public class Voucher:BaseST
     {
         [Key]
@@ -42,6 +44,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public string Remarks { get; set; }
         public string AccountId { get; set; }
         public string EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
 
         public string PartyId { get; set; }
         public virtual Party Party { get; set; }
@@ -75,6 +78,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public decimal Amount { get; set; }
         public string Remarks { get; set; }
         public string EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
         
         public string PartyId { get; set; }
         public virtual Party Party { get; set; }

@@ -73,7 +73,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(800, 56);
+            this.groupBox1.Size = new System.Drawing.Size(975, 56);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
@@ -124,7 +124,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(0, 56);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(111, 394);
+            this.groupBox2.Size = new System.Drawing.Size(111, 405);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Menu";
@@ -137,7 +137,7 @@
             this.lbYearList.ItemHeight = 15;
             this.lbYearList.Location = new System.Drawing.Point(3, 19);
             this.lbYearList.Name = "lbYearList";
-            this.lbYearList.Size = new System.Drawing.Size(105, 372);
+            this.lbYearList.Size = new System.Drawing.Size(105, 383);
             this.lbYearList.TabIndex = 0;
             this.lbYearList.ValueMember = "Year";
             this.lbYearList.SelectedIndexChanged += new System.EventHandler(this.lbYearList_SelectedIndexChanged);
@@ -149,7 +149,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(111, 56);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(689, 394);
+            this.groupBox3.Size = new System.Drawing.Size(864, 405);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Vouchers";
@@ -165,7 +165,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(683, 372);
+            this.tabControl1.Size = new System.Drawing.Size(858, 383);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
@@ -177,7 +177,7 @@
             this.tpExpenses.Location = new System.Drawing.Point(4, 24);
             this.tpExpenses.Name = "tpExpenses";
             this.tpExpenses.Padding = new System.Windows.Forms.Padding(3);
-            this.tpExpenses.Size = new System.Drawing.Size(675, 344);
+            this.tpExpenses.Size = new System.Drawing.Size(850, 355);
             this.tpExpenses.TabIndex = 0;
             this.tpExpenses.Text = "Expenses";
             this.tpExpenses.UseVisualStyleBackColor = true;
@@ -187,13 +187,17 @@
             this.dgvExpenses.AllowUserToAddRows = false;
             this.dgvExpenses.AllowUserToDeleteRows = false;
             this.dgvExpenses.AllowUserToOrderColumns = true;
+            this.dgvExpenses.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvExpenses.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvExpenses.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvExpenses.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvExpenses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvExpenses.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExpenses.Location = new System.Drawing.Point(3, 3);
             this.dgvExpenses.Name = "dgvExpenses";
             this.dgvExpenses.ReadOnly = true;
             this.dgvExpenses.RowTemplate.Height = 25;
-            this.dgvExpenses.Size = new System.Drawing.Size(669, 338);
+            this.dgvExpenses.Size = new System.Drawing.Size(844, 349);
             this.dgvExpenses.TabIndex = 0;
             this.dgvExpenses.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvExpenses_CellContentClick);
             // 
@@ -203,7 +207,7 @@
             this.tpPayments.Location = new System.Drawing.Point(4, 24);
             this.tpPayments.Name = "tpPayments";
             this.tpPayments.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPayments.Size = new System.Drawing.Size(675, 344);
+            this.tpPayments.Size = new System.Drawing.Size(850, 355);
             this.tpPayments.TabIndex = 1;
             this.tpPayments.Text = "Payment";
             this.tpPayments.UseVisualStyleBackColor = true;
@@ -219,7 +223,7 @@
             this.dgvPayments.Name = "dgvPayments";
             this.dgvPayments.ReadOnly = true;
             this.dgvPayments.RowTemplate.Height = 25;
-            this.dgvPayments.Size = new System.Drawing.Size(669, 338);
+            this.dgvPayments.Size = new System.Drawing.Size(844, 349);
             this.dgvPayments.TabIndex = 0;
             this.dgvPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPayments_CellContentClick);
             // 
@@ -229,7 +233,7 @@
             this.tpReceipts.Location = new System.Drawing.Point(4, 24);
             this.tpReceipts.Name = "tpReceipts";
             this.tpReceipts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpReceipts.Size = new System.Drawing.Size(675, 344);
+            this.tpReceipts.Size = new System.Drawing.Size(850, 355);
             this.tpReceipts.TabIndex = 2;
             this.tpReceipts.Text = "Receipts";
             this.tpReceipts.UseVisualStyleBackColor = true;
@@ -245,7 +249,7 @@
             this.dgvReceipts.Name = "dgvReceipts";
             this.dgvReceipts.ReadOnly = true;
             this.dgvReceipts.RowTemplate.Height = 25;
-            this.dgvReceipts.Size = new System.Drawing.Size(669, 338);
+            this.dgvReceipts.Size = new System.Drawing.Size(844, 349);
             this.dgvReceipts.TabIndex = 0;
             this.dgvReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvReceipts_CellContentClick);
             // 
@@ -255,7 +259,7 @@
             this.tpCashReceipts.Location = new System.Drawing.Point(4, 24);
             this.tpCashReceipts.Name = "tpCashReceipts";
             this.tpCashReceipts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCashReceipts.Size = new System.Drawing.Size(675, 344);
+            this.tpCashReceipts.Size = new System.Drawing.Size(850, 355);
             this.tpCashReceipts.TabIndex = 3;
             this.tpCashReceipts.Text = "Cash Receipts";
             this.tpCashReceipts.UseVisualStyleBackColor = true;
@@ -271,7 +275,7 @@
             this.dgvCashReceipts.Name = "dgvCashReceipts";
             this.dgvCashReceipts.ReadOnly = true;
             this.dgvCashReceipts.RowTemplate.Height = 25;
-            this.dgvCashReceipts.Size = new System.Drawing.Size(669, 338);
+            this.dgvCashReceipts.Size = new System.Drawing.Size(844, 349);
             this.dgvCashReceipts.TabIndex = 0;
             this.dgvCashReceipts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCashReceipts_CellContentClick);
             // 
@@ -281,7 +285,7 @@
             this.tpCashPayments.Location = new System.Drawing.Point(4, 24);
             this.tpCashPayments.Name = "tpCashPayments";
             this.tpCashPayments.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCashPayments.Size = new System.Drawing.Size(675, 344);
+            this.tpCashPayments.Size = new System.Drawing.Size(850, 355);
             this.tpCashPayments.TabIndex = 4;
             this.tpCashPayments.Text = "Cash Payments";
             this.tpCashPayments.UseVisualStyleBackColor = true;
@@ -297,15 +301,15 @@
             this.dgvCashPayments.Name = "dgvCashPayments";
             this.dgvCashPayments.ReadOnly = true;
             this.dgvCashPayments.RowTemplate.Height = 25;
-            this.dgvCashPayments.Size = new System.Drawing.Size(669, 338);
+            this.dgvCashPayments.Size = new System.Drawing.Size(844, 349);
             this.dgvCashPayments.TabIndex = 0;
             this.dgvCashPayments.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCashPayments_CellContentClick);
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(111, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(111, 439);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(689, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(864, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -314,7 +318,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(975, 461);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);

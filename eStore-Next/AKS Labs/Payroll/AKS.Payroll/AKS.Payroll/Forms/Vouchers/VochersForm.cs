@@ -3,6 +3,7 @@ using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace AKS.Payroll.Forms.Vouchers
@@ -14,6 +15,7 @@ namespace AKS.Payroll.Forms.Vouchers
         
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+        private int SelectedYear;
 
         private ObservableListSource<VoucherVM> voucherVMs;
         private ObservableListSource<CashVoucherVM> cashVoucherVMs;
@@ -46,7 +48,7 @@ namespace AKS.Payroll.Forms.Vouchers
         public void UpdateCashVoucherList(List<CashVoucher> cashVouchers)
         {
 
-            foreach (var vou in cashVoucherVMs)
+            foreach (var vou in cashVouchers)
             {
                 cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(vou));
             }
@@ -58,7 +60,8 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
-        
+            SelectedYear=DateTime.Now.Year;
+
             LoadYearList();
             
             DataList = new List<int>();
@@ -74,12 +77,14 @@ namespace AKS.Payroll.Forms.Vouchers
             {
                 if(type == VoucherType.CashPayment|| type == VoucherType.CashReceipt)
                 {
-                    var listData = azureDb.CashVouchers.Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                    var listData = azureDb.CashVouchers
+                        .Include(c=>c.Employee).Include(c=>c.Party).Include(c=>c.TranscationMode)
+                        .Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
                     UpdateCashVoucherList(listData);
                 }
                 else
                 {
-                    var listData = azureDb.Vouchers.Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
+                    var listData = azureDb.Vouchers.Include(c => c.Employee).Include(c => c.Party).Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
                     UpdateVoucherList(listData);
                 }
                
@@ -131,6 +136,7 @@ namespace AKS.Payroll.Forms.Vouchers
             years = years.Distinct().OrderBy(c => c).ToList();
             lbYearList.DataSource = years;
             lbYearList.SelectedValue = DateTime.Today.Year;
+            lbYearList.SetSelected(lbYearList.Items.IndexOf(DateTime.Today.Year),true);
         }
 
 
@@ -139,10 +145,10 @@ namespace AKS.Payroll.Forms.Vouchers
             switch (index)
             {
                 case 1:
-                    LoadDataGrid(VoucherType.Payment, DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Payment, SelectedYear);
                     break;
                 case 2:
-                    LoadDataGrid(VoucherType.Receipt, DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Receipt,  SelectedYear);
                     break;
                 //case VoucherType.Contra:
                 //    break;
@@ -153,16 +159,16 @@ namespace AKS.Payroll.Forms.Vouchers
                 //case VoucherType.JV:
                 //    break;
                 case 0:
-                    LoadDataGrid(VoucherType.Expense, DateTime.Today.Year);
-                    break;
-                case 3:
-                    LoadDataGrid(VoucherType.CashPayment, DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Expense,SelectedYear);
                     break;
                 case 4:
-                    LoadDataGrid(VoucherType.CashReceipt, DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.CashPayment,  SelectedYear);
+                    break;
+                case 3:
+                    LoadDataGrid(VoucherType.CashReceipt, SelectedYear);
                     break;
                 default:
-                    LoadDataGrid(VoucherType.Expense, DateTime.Today.Year);
+                    LoadDataGrid(VoucherType.Expense, SelectedYear);
                     break;
             }
         }
@@ -268,6 +274,7 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void tabControl1_TabIndexChanged(object sender, EventArgs e)
         {
+
             var tc = (TabControl)sender;
             OnSelectedTab(tc.SelectedIndex);
         }
@@ -337,8 +344,9 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void lbYearList_DoubleClick(object sender, EventArgs e)
         {
-            int year = (int)lbYearList.SelectedValue;
-            MessageBox.Show("selected " + year);
+            SelectedYear  = (int)lbYearList.SelectedValue;
+            MessageBox.Show("selected " + SelectedYear);
+            OnSelectedTab(tabControl1.SelectedIndex);
         }
     }
 }

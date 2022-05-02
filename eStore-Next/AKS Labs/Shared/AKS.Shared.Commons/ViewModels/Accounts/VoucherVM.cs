@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Commons.ViewModels.Accounts
 {
-    public class VoucherVM  
+
+    public class VoucherVM
     {
         [Key]
         public string VoucherNumber { get; set; }
@@ -10,30 +12,42 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public DateTime OnDate { get; set; }
         public string SlipNumber { get; set; }
         public string PartyName { get; set; }
+        public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public PaymentMode PaymentMode { get; set; }
         public string PaymentDetails { get; set; }
         public string Remarks { get; set; }
-        
+        [Display(Name ="Acc No")]
         public string AccountId { get; set; }
 
+
         public string EmployeeId { get; set; }
+        [Display(Name = "Staff")]
         public string StaffName { get; set; }
 
         public string PartyId { get; set; }
+        [Display(Name = "Ledger")]
         public string Party { get; set; }
+        [Display(Name = "Store")]
+        public string StoreId { get; set; }
+
+
     }
 
 
-    public class CashVoucherVM  
+    public class CashVoucherVM
     {
-
         [Key]
         public string VoucherNumber { get; set; }
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
         public string SlipNumber { get; set; }
+        public string TranscationId { get; set; }
+
+        [ForeignKey("TranscationId")]
+        public string TranscationMode { get; set; }
         public string PartyName { get; set; }
+        public string Particulars { get; set; }
         public decimal Amount { get; set; }
         public string Remarks { get; set; }
 
@@ -43,9 +57,12 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public string PartyId { get; set; }
         public string Party { get; set; }
 
+        public string StoreId { get; set; }
+
+
     }
 
-    public class NoteVM  
+    public class NoteVM
     {
         [Key]
         public string NoteNumber { get; set; }
@@ -63,11 +80,11 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
 
         public string PartyId { get; set; }
         public string Party { get; set; }
-        public string StoreName { get; set; }
-        
+        public string StoreId { get; set; }
+
     }
 
-    public class PartyVM  
+    public class PartyVM
     {
         public string PartyId { get; set; }
         public string PartyName { get; set; }
@@ -76,8 +93,8 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
         public LedgerCategory Category { get; set; }
-        public string StoreName { get; set; }
+        public string StoreId { get; set; }
     }
 
-    
+
 }

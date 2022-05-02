@@ -50,7 +50,7 @@
             this.dtpOnDate = new System.Windows.Forms.DateTimePicker();
             this.txtSlipNo = new System.Windows.Forms.TextBox();
             this.txtPartyName = new System.Windows.Forms.TextBox();
-            this.cbxPaymentMode = new System.Windows.Forms.ComboBox();
+            this.cbxBankAccount = new System.Windows.Forms.ComboBox();
             this.txtPaymentDetails = new System.Windows.Forms.TextBox();
             this.txtRemarks = new System.Windows.Forms.TextBox();
             this.cbxEmployees = new System.Windows.Forms.ComboBox();
@@ -59,12 +59,16 @@
             this.lbBankAccount = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtAmount = new System.Windows.Forms.TextBox();
-            this.cbxBankAccounts = new System.Windows.Forms.ComboBox();
+            this.cbxPaymentMode = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.lnMode = new System.Windows.Forms.Label();
+            this.cbxTranscationMode = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtParticulars = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -206,23 +210,27 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lbMode, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.lbDetails, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.label8, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.label9, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.dtpOnDate, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtSlipNo, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtPartyName, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbxPaymentMode, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbxBankAccount, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtPaymentDetails, 5, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtRemarks, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.cbxEmployees, 5, 2);
             this.tableLayoutPanel1.Controls.Add(this.label10, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbxParties, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lbBankAccount, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtAmount, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cbxBankAccounts, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbxPaymentMode, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbBankAccount, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbMode, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lnMode, 4, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cbxTranscationMode, 5, 3);
+            this.tableLayoutPanel1.Controls.Add(this.txtParticulars, 3, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -247,7 +255,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(257, 0);
+            this.label2.Location = new System.Drawing.Point(264, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 15);
             this.label2.TabIndex = 1;
@@ -265,7 +273,7 @@
             // lbMode
             // 
             this.lbMode.AutoSize = true;
-            this.lbMode.Location = new System.Drawing.Point(257, 29);
+            this.lbMode.Location = new System.Drawing.Point(3, 29);
             this.lbMode.Name = "lbMode";
             this.lbMode.Size = new System.Drawing.Size(88, 15);
             this.lbMode.TabIndex = 4;
@@ -283,7 +291,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(257, 58);
+            this.label8.Location = new System.Drawing.Point(264, 58);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 15);
             this.label8.TabIndex = 7;
@@ -300,7 +308,7 @@
             // 
             // dtpOnDate
             // 
-            this.dtpOnDate.Location = new System.Drawing.Point(90, 3);
+            this.dtpOnDate.Location = new System.Drawing.Point(97, 3);
             this.dtpOnDate.Name = "dtpOnDate";
             this.dtpOnDate.Size = new System.Drawing.Size(161, 23);
             this.dtpOnDate.TabIndex = 9;
@@ -314,22 +322,22 @@
             // 
             // txtPartyName
             // 
-            this.txtPartyName.Location = new System.Drawing.Point(603, 3);
+            this.txtPartyName.Location = new System.Drawing.Point(612, 3);
             this.txtPartyName.Name = "txtPartyName";
             this.txtPartyName.Size = new System.Drawing.Size(177, 23);
             this.txtPartyName.TabIndex = 11;
             // 
-            // cbxPaymentMode
+            // cbxBankAccount
             // 
-            this.cbxPaymentMode.FormattingEnabled = true;
-            this.cbxPaymentMode.Location = new System.Drawing.Point(351, 32);
-            this.cbxPaymentMode.Name = "cbxPaymentMode";
-            this.cbxPaymentMode.Size = new System.Drawing.Size(148, 23);
-            this.cbxPaymentMode.TabIndex = 13;
+            this.cbxBankAccount.FormattingEnabled = true;
+            this.cbxBankAccount.Location = new System.Drawing.Point(351, 32);
+            this.cbxBankAccount.Name = "cbxBankAccount";
+            this.cbxBankAccount.Size = new System.Drawing.Size(148, 23);
+            this.cbxBankAccount.TabIndex = 13;
             // 
             // txtPaymentDetails
             // 
-            this.txtPaymentDetails.Location = new System.Drawing.Point(603, 32);
+            this.txtPaymentDetails.Location = new System.Drawing.Point(612, 32);
             this.txtPaymentDetails.Name = "txtPaymentDetails";
             this.txtPaymentDetails.Size = new System.Drawing.Size(177, 23);
             this.txtPaymentDetails.TabIndex = 14;
@@ -344,7 +352,7 @@
             // cbxEmployees
             // 
             this.cbxEmployees.FormattingEnabled = true;
-            this.cbxEmployees.Location = new System.Drawing.Point(603, 61);
+            this.cbxEmployees.Location = new System.Drawing.Point(612, 61);
             this.cbxEmployees.Name = "cbxEmployees";
             this.cbxEmployees.Size = new System.Drawing.Size(177, 23);
             this.cbxEmployees.TabIndex = 17;
@@ -361,7 +369,7 @@
             // cbxParties
             // 
             this.cbxParties.FormattingEnabled = true;
-            this.cbxParties.Location = new System.Drawing.Point(90, 90);
+            this.cbxParties.Location = new System.Drawing.Point(97, 90);
             this.cbxParties.Name = "cbxParties";
             this.cbxParties.Size = new System.Drawing.Size(161, 23);
             this.cbxParties.TabIndex = 19;
@@ -369,7 +377,7 @@
             // lbBankAccount
             // 
             this.lbBankAccount.AutoSize = true;
-            this.lbBankAccount.Location = new System.Drawing.Point(3, 29);
+            this.lbBankAccount.Location = new System.Drawing.Point(264, 29);
             this.lbBankAccount.Name = "lbBankAccount";
             this.lbBankAccount.Size = new System.Drawing.Size(81, 15);
             this.lbBankAccount.TabIndex = 6;
@@ -386,18 +394,19 @@
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(90, 61);
+            this.txtAmount.Location = new System.Drawing.Point(97, 61);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(161, 23);
             this.txtAmount.TabIndex = 12;
             // 
-            // cbxBankAccounts
+            // cbxPaymentMode
             // 
-            this.cbxBankAccounts.FormattingEnabled = true;
-            this.cbxBankAccounts.Location = new System.Drawing.Point(90, 32);
-            this.cbxBankAccounts.Name = "cbxBankAccounts";
-            this.cbxBankAccounts.Size = new System.Drawing.Size(161, 23);
-            this.cbxBankAccounts.TabIndex = 15;
+            this.cbxPaymentMode.FormattingEnabled = true;
+            this.cbxPaymentMode.Location = new System.Drawing.Point(97, 32);
+            this.cbxPaymentMode.Name = "cbxPaymentMode";
+            this.cbxPaymentMode.Size = new System.Drawing.Size(161, 23);
+            this.cbxPaymentMode.TabIndex = 15;
+            this.cbxPaymentMode.SelectedIndexChanged += new System.EventHandler(this.cbxPaymentMode_SelectedIndexChanged);
             // 
             // groupBox3
             // 
@@ -410,34 +419,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Controls";
             // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(155, 3);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "Cancle";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(80, 3);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 1;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Location = new System.Drawing.Point(5, 3);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
             // panel3
             // 
             this.panel3.AutoSize = true;
@@ -449,6 +430,67 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(233, 30);
             this.panel3.TabIndex = 3;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(155, 3);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 2;
+            this.btnCancel.Text = "Cancle";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(5, 3);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(80, 3);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // lnMode
+            // 
+            this.lnMode.AutoSize = true;
+            this.lnMode.Location = new System.Drawing.Point(505, 87);
+            this.lnMode.Name = "lnMode";
+            this.lnMode.Size = new System.Drawing.Size(101, 15);
+            this.lnMode.TabIndex = 20;
+            this.lnMode.Text = "Transcation Mode";
+            // 
+            // cbxTranscationMode
+            // 
+            this.cbxTranscationMode.FormattingEnabled = true;
+            this.cbxTranscationMode.Location = new System.Drawing.Point(612, 90);
+            this.cbxTranscationMode.Name = "cbxTranscationMode";
+            this.cbxTranscationMode.Size = new System.Drawing.Size(148, 23);
+            this.cbxTranscationMode.TabIndex = 21;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(264, 87);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 15);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Particulars";
+            // 
+            // txtParticulars
+            // 
+            this.txtParticulars.Location = new System.Drawing.Point(351, 90);
+            this.txtParticulars.Name = "txtParticulars";
+            this.txtParticulars.Size = new System.Drawing.Size(148, 23);
+            this.txtParticulars.TabIndex = 23;
             // 
             // VoucherEntryForm
             // 
@@ -511,13 +553,17 @@
         private TextBox txtSlipNo;
         private TextBox txtPartyName;
         private TextBox txtAmount;
-        private ComboBox cbxPaymentMode;
+        private ComboBox cbxBankAccount;
         private TextBox txtPaymentDetails;
-        private ComboBox cbxBankAccounts;
+        private ComboBox cbxPaymentMode;
         private TextBox txtRemarks;
         private ComboBox cbxEmployees;
         private Label label10;
         private ComboBox cbxParties;
         private Panel panel3;
+        private Label lnMode;
+        private ComboBox cbxTranscationMode;
+        private Label label5;
+        private TextBox txtParticulars;
     }
 }

@@ -292,7 +292,7 @@ namespace AKS.DatabaseMigrator
                         TranscationId = $"TM/{cash.TranscationModeId}",
                         UserId = cash.UserId,
                         VoucherType = VoucherType.CashReceipt,
-                        VoucherNumber = $"ARD/CPT/{cash.InwardDate.Year}/{cash.InwardDate.Month}/{cash.InwardDate.Day}/{cash.CashReceiptId}",
+                        VoucherNumber = $"ARD/CRT/{cash.InwardDate.Year}/{cash.InwardDate.Month}/{cash.InwardDate.Day}/{cash.CashReceiptId}",
                         Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
                         
                     };

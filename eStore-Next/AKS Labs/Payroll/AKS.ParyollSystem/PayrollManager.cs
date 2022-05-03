@@ -216,6 +216,14 @@ namespace AKS.ParyollSystem
                 }
             }
         }
-    }
+
+        public List<Attendance> GetMonthlyAttendance(AzurePayrollDbContext db, string empId, DateTime onDate)
+        {
+            if (db == null) db = new AzurePayrollDbContext();
+            var list= db.Attendances.Where(c=>c.EmployeeId==empId && c.OnDate.Month==onDate.Month && c.OnDate.Year==onDate.Year).OrderBy(c=>c.OnDate).ToList();
+            return list;
+
+        }
+    }                                                                        
 }
 

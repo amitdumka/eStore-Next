@@ -8,10 +8,13 @@ namespace AKS.Payroll.Forms.Vouchers
     {
         public VoucherType voucherType;
         public string voucherNumber;
-        public CashVoucher cashVoucher;
-        public Voucher voucher;
+        public CashVoucher SavedCashVoucher { get; set; }
+        public Voucher SavedVoucher { get; set; }
+        private CashVoucher cashVoucher;
+        private Voucher voucher;
 
-        private bool isNew = false;
+        public bool isNew = false;
+
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
         public VoucherEntryForm()
@@ -106,6 +109,7 @@ namespace AKS.Payroll.Forms.Vouchers
                 {
                     if (SaveData())
                     {
+
                         MessageBox.Show("Voucher is saved!!");
                         btnAdd.Text = "Add";
                         ClearFields();
@@ -138,7 +142,7 @@ namespace AKS.Payroll.Forms.Vouchers
                 Amount = 0,
                 PaymentMode = PaymentMode.Cash
             };
-           // DisplayData();
+            // DisplayData();
         }
         private void VoucherEntryForm_Load(object sender, EventArgs e)
         {
@@ -158,18 +162,18 @@ namespace AKS.Payroll.Forms.Vouchers
             cbxEmployees.DisplayMember = "StaffName";
             cbxEmployees.ValueMember = "EmployeeId";
 
-            
+
             cbxBankAccount.DataSource = azureDb.BankAccounts.Select(c => new { c.StoreId, c.AccountNumber, c.IsActive }).ToList();
             cbxBankAccount.DisplayMember = "AccountNumber";
             cbxBankAccount.ValueMember = "AccountNumber";
-            
+
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PaymentMode)));
 
-            cbxParties.DataSource = azureDb.Parties.Select(c => new { c.StoreId, c.PartyId, c.PartyName}).ToList();
+            cbxParties.DataSource = azureDb.Parties.Select(c => new { c.StoreId, c.PartyId, c.PartyName }).ToList();
             cbxParties.DisplayMember = "PartyName";
             cbxParties.ValueMember = "PartyId";
 
-            cbxTranscationMode.DataSource=azureDb.TranscationModes.ToList();
+            cbxTranscationMode.DataSource = azureDb.TranscationModes.ToList();
             cbxTranscationMode.DisplayMember = "TranscationMode";
             cbxTranscationMode.ValueMember = "TranscationId";
 
@@ -223,7 +227,7 @@ namespace AKS.Payroll.Forms.Vouchers
                 case VoucherType.Receipt:
                     rbReceipts.Checked = true;
                     break;
-             
+
                 case VoucherType.Expense:
                     rbExpenses.Checked = true;
                     break;
@@ -268,6 +272,8 @@ namespace AKS.Payroll.Forms.Vouchers
 
 
 
+
+
                 }
                 else
                 {
@@ -282,10 +288,7 @@ namespace AKS.Payroll.Forms.Vouchers
                     cashVoucher.StoreId = (string)cbxStores.SelectedValue;
                     cashVoucher.PartyId = (string)cbxParties.SelectedValue;
                     cashVoucher.Particulars = txtParticulars.Text.Trim();
-
-                    if (isNew) cashVoucher.EntryStatus = EntryStatus.Added;
-                    else cashVoucher.EntryStatus = EntryStatus.Updated;
-
+                    cashVoucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     cashVoucher.IsReadOnly = false;
                     cashVoucher.MarkedDeleted = false;
                     cashVoucher.UserId = "WinUI";
@@ -311,14 +314,15 @@ namespace AKS.Payroll.Forms.Vouchers
                         StoreId = (string)cbxStores.SelectedValue,
                         PartyId = (string)cbxParties.SelectedValue,
                         PaymentDetails = txtPaymentDetails.Text,
-                        AccountId = (string)cbxPaymentMode.SelectedValue,
-                        PaymentMode = (PaymentMode)cbxBankAccount.SelectedValue,
+                        AccountId = (string)cbxBankAccount.SelectedValue,
+                        PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex,
                         Particulars = txtParticulars.Text.Trim(),
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         IsReadOnly = false,
                         MarkedDeleted = false,
                         UserId = "WinUI"
                     };
+                    voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
                 else
                 {
@@ -332,14 +336,16 @@ namespace AKS.Payroll.Forms.Vouchers
                     voucher.StoreId = (string)cbxStores.SelectedValue;
                     voucher.PartyId = (string)cbxParties.SelectedValue;
                     voucher.PaymentDetails = txtPaymentDetails.Text;
-                    voucher.AccountId = (string)cbxPaymentMode.SelectedValue;
-                    voucher.PaymentMode = (PaymentMode)cbxBankAccount.SelectedValue;
+                    // voucher.AccountId = (string)cbxBankAccount.SelectedValue;
+                    voucher.PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex;
                     voucher.Particulars = txtParticulars.Text.Trim();
-                    if (isNew) voucher.EntryStatus = EntryStatus.Added;
-                    else voucher.EntryStatus = EntryStatus.Updated;
+                    voucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     voucher.IsReadOnly = false;
                     voucher.MarkedDeleted = false;
                     voucher.UserId = "WinUI";
+                    voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
+
+
                 }
                 voucher.VoucherNumber = isNew ? GenerateVoucherNumber(voucher.VoucherType, voucher.OnDate, voucher.StoreId) : this.voucherNumber;
 
@@ -363,7 +369,17 @@ namespace AKS.Payroll.Forms.Vouchers
                         azureDb.Vouchers.Add(voucher);
                     else azureDb.Vouchers.Update(voucher);
                 }
-                return azureDb.SaveChanges() > 0;
+                if (azureDb.SaveChanges() > 0)
+                {
+                    if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+                        SavedCashVoucher = cashVoucher;
+                    else SavedVoucher = voucher;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

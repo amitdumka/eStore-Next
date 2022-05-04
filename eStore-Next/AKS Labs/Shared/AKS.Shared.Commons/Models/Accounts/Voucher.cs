@@ -26,6 +26,7 @@ namespace AKS.Shared.Commons.Models.Accounts
     //}
 
 
+
     public class Voucher:BaseST
     {
         [Key]
@@ -47,7 +48,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Employee Employee { get; set; }
 
         public string PartyId { get; set; }
-        public virtual Party Party { get; set; }
+        public virtual Party Partys { get; set; }
     }
 
     [Table("V1_TranscationModes")]
@@ -81,7 +82,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         public virtual Employee Employee { get; set; }
         
         public string PartyId { get; set; }
-        public virtual Party Party { get; set; }
+        public virtual Party Partys { get; set; }
 
     }
     [Table("V1_Notes")]

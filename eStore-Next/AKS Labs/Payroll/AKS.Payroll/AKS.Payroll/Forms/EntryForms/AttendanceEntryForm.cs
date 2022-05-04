@@ -177,7 +177,7 @@ namespace AKS.Payroll.Forms.EntryForms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            //TODO: ask for confirmation for delete.
+            //  ask for confirmation for delete.
             var confirmResult = MessageBox.Show("Are you sure to delete this Attedance ??",
                                       "Confirm Delete!!",
                                       MessageBoxButtons.YesNo);
@@ -193,7 +193,7 @@ namespace AKS.Payroll.Forms.EntryForms
                         this.DialogResult = DialogResult.OK;
                         this.Close();
                     }
-                    else MessageBox.Show("Faild to delete, please try again!", "Delete");
+                    else MessageBox.Show("Failed to delete, please try again!", "Delete");
                 }
                 else
                 {

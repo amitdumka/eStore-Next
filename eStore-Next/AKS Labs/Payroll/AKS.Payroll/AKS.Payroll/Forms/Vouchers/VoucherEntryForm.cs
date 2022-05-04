@@ -8,6 +8,7 @@ namespace AKS.Payroll.Forms.Vouchers
     {
         public VoucherType voucherType;
         public string voucherNumber;
+        public string deleteVoucherNumber;
         public CashVoucher SavedCashVoucher { get; set; }
         public Voucher SavedVoucher { get; set; }
         private CashVoucher cashVoucher;
@@ -35,6 +36,9 @@ namespace AKS.Payroll.Forms.Vouchers
             this.voucherType = voucherType;
             this.voucher = voucher;
             isNew = false;
+            btnAdd.Text = "Edit";
+            voucherNumber = voucher.VoucherNumber;
+            panel1.Enabled = false;
         }
         public VoucherEntryForm(VoucherType voucherType, CashVoucher voucher)
         {
@@ -42,6 +46,9 @@ namespace AKS.Payroll.Forms.Vouchers
             this.voucherType = voucherType;
             cashVoucher = voucher;
             isNew = false;
+            btnAdd.Text = "Edit";
+            voucherNumber=voucher.VoucherNumber;
+            panel1.Enabled = false;
         }
 
         public string GenerateVoucherNumber(VoucherType type, DateTime onDate, string StoreCode)
@@ -173,8 +180,8 @@ namespace AKS.Payroll.Forms.Vouchers
             cbxParties.DisplayMember = "PartyName";
             cbxParties.ValueMember = "PartyId";
 
-            cbxTranscationMode.DataSource = azureDb.TranscationModes.ToList();
-            cbxTranscationMode.DisplayMember = "TranscationMode";
+            cbxTranscationMode.DataSource = azureDb.TranscationModes.Select(c => new { c.TranscationId, c.TranscationName }).ToList();
+            cbxTranscationMode.DisplayMember = "TranscationName";
             cbxTranscationMode.ValueMember = "TranscationId";
 
 
@@ -191,11 +198,15 @@ namespace AKS.Payroll.Forms.Vouchers
                 voucherType = cashVoucher.VoucherType;
                 dtpOnDate.Value = cashVoucher.OnDate;
                 txtAmount.Text = cashVoucher.Amount.ToString();
+
                 txtSlipNo.Text = cashVoucher.SlipNumber;
                 txtPartyName.Text = cashVoucher.PartyName;
                 txtRemarks.Text = cashVoucher.Remarks;
                 cbxParties.SelectedValue = cashVoucher.PartyId;
                 cbxEmployees.SelectedValue = cashVoucher.EmployeeId;
+                cbxTranscationMode.SelectedValue = cashVoucher.TranscationId;
+                txtParticulars.Text = cashVoucher.Particulars;
+                this.Text = "Cash Voucher #\t" + cashVoucher.VoucherNumber;
             }
             else
             {
@@ -209,9 +220,10 @@ namespace AKS.Payroll.Forms.Vouchers
                 cbxParties.SelectedValue = voucher.PartyId;
                 cbxEmployees.SelectedValue = voucher.EmployeeId;
 
-                cbxBankAccount.SelectedIndex = (int)voucher.PaymentMode;
-                cbxPaymentMode.SelectedValue = voucher.AccountId;
+                cbxBankAccount.SelectedValue = voucher.AccountId;
+                cbxPaymentMode.SelectedIndex = (int)voucher.PaymentMode;
                 txtPaymentDetails.Text = voucher.PaymentDetails;
+                txtParticulars.Text = voucher.Particulars;
 
 
             }
@@ -412,6 +424,41 @@ namespace AKS.Payroll.Forms.Vouchers
                 txtPaymentDetails.Enabled = false;
             }
 
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Are you sure to delete this Voucher ??",
+                                       "Confirm Delete!!",
+                                       MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+                {
+                    azureDb.CashVouchers.Remove(cashVoucher);
+                }
+                else
+                {
+                    azureDb.Vouchers.Remove(voucher);
+                }
+
+
+                if (azureDb.SaveChanges() > 0)
+                {
+                    MessageBox.Show("Voucher is deleted!", "Delete");
+                    this.deleteVoucherNumber = voucherNumber;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else MessageBox.Show("Failed to delete, please try again!", "Delete");
+
+
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -43,7 +43,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lbMode = new System.Windows.Forms.Label();
             this.lbDetails = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -56,19 +55,20 @@
             this.cbxEmployees = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cbxParties = new System.Windows.Forms.ComboBox();
-            this.lbBankAccount = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.cbxPaymentMode = new System.Windows.Forms.ComboBox();
+            this.lbBankAccount = new System.Windows.Forms.Label();
+            this.lbMode = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lnMode = new System.Windows.Forms.Label();
+            this.cbxTranscationMode = new System.Windows.Forms.ComboBox();
+            this.txtParticulars = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.lnMode = new System.Windows.Forms.Label();
-            this.cbxTranscationMode = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtParticulars = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -270,15 +270,6 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Party Name";
             // 
-            // lbMode
-            // 
-            this.lbMode.AutoSize = true;
-            this.lbMode.Location = new System.Drawing.Point(3, 29);
-            this.lbMode.Name = "lbMode";
-            this.lbMode.Size = new System.Drawing.Size(88, 15);
-            this.lbMode.TabIndex = 4;
-            this.lbMode.Text = "Payment Mode";
-            // 
             // lbDetails
             // 
             this.lbDetails.AutoSize = true;
@@ -374,15 +365,6 @@
             this.cbxParties.Size = new System.Drawing.Size(161, 23);
             this.cbxParties.TabIndex = 19;
             // 
-            // lbBankAccount
-            // 
-            this.lbBankAccount.AutoSize = true;
-            this.lbBankAccount.Location = new System.Drawing.Point(264, 29);
-            this.lbBankAccount.Name = "lbBankAccount";
-            this.lbBankAccount.Size = new System.Drawing.Size(81, 15);
-            this.lbBankAccount.TabIndex = 6;
-            this.lbBankAccount.Text = "Bank Account";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -407,6 +389,57 @@
             this.cbxPaymentMode.Size = new System.Drawing.Size(161, 23);
             this.cbxPaymentMode.TabIndex = 15;
             this.cbxPaymentMode.SelectedIndexChanged += new System.EventHandler(this.cbxPaymentMode_SelectedIndexChanged);
+            // 
+            // lbBankAccount
+            // 
+            this.lbBankAccount.AutoSize = true;
+            this.lbBankAccount.Location = new System.Drawing.Point(264, 29);
+            this.lbBankAccount.Name = "lbBankAccount";
+            this.lbBankAccount.Size = new System.Drawing.Size(81, 15);
+            this.lbBankAccount.TabIndex = 6;
+            this.lbBankAccount.Text = "Bank Account";
+            // 
+            // lbMode
+            // 
+            this.lbMode.AutoSize = true;
+            this.lbMode.Location = new System.Drawing.Point(3, 29);
+            this.lbMode.Name = "lbMode";
+            this.lbMode.Size = new System.Drawing.Size(88, 15);
+            this.lbMode.TabIndex = 4;
+            this.lbMode.Text = "Payment Mode";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(264, 87);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 15);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Particulars";
+            // 
+            // lnMode
+            // 
+            this.lnMode.AutoSize = true;
+            this.lnMode.Location = new System.Drawing.Point(505, 87);
+            this.lnMode.Name = "lnMode";
+            this.lnMode.Size = new System.Drawing.Size(101, 15);
+            this.lnMode.TabIndex = 20;
+            this.lnMode.Text = "Transcation Mode";
+            // 
+            // cbxTranscationMode
+            // 
+            this.cbxTranscationMode.FormattingEnabled = true;
+            this.cbxTranscationMode.Location = new System.Drawing.Point(612, 90);
+            this.cbxTranscationMode.Name = "cbxTranscationMode";
+            this.cbxTranscationMode.Size = new System.Drawing.Size(148, 23);
+            this.cbxTranscationMode.TabIndex = 21;
+            // 
+            // txtParticulars
+            // 
+            this.txtParticulars.Location = new System.Drawing.Point(351, 90);
+            this.txtParticulars.Name = "txtParticulars";
+            this.txtParticulars.Size = new System.Drawing.Size(148, 23);
+            this.txtParticulars.TabIndex = 23;
             // 
             // groupBox3
             // 
@@ -439,6 +472,7 @@
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancle";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnAdd
             // 
@@ -458,39 +492,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // lnMode
-            // 
-            this.lnMode.AutoSize = true;
-            this.lnMode.Location = new System.Drawing.Point(505, 87);
-            this.lnMode.Name = "lnMode";
-            this.lnMode.Size = new System.Drawing.Size(101, 15);
-            this.lnMode.TabIndex = 20;
-            this.lnMode.Text = "Transcation Mode";
-            // 
-            // cbxTranscationMode
-            // 
-            this.cbxTranscationMode.FormattingEnabled = true;
-            this.cbxTranscationMode.Location = new System.Drawing.Point(612, 90);
-            this.cbxTranscationMode.Name = "cbxTranscationMode";
-            this.cbxTranscationMode.Size = new System.Drawing.Size(148, 23);
-            this.cbxTranscationMode.TabIndex = 21;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(264, 87);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(62, 15);
-            this.label5.TabIndex = 22;
-            this.label5.Text = "Particulars";
-            // 
-            // txtParticulars
-            // 
-            this.txtParticulars.Location = new System.Drawing.Point(351, 90);
-            this.txtParticulars.Name = "txtParticulars";
-            this.txtParticulars.Size = new System.Drawing.Size(148, 23);
-            this.txtParticulars.TabIndex = 23;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // VoucherEntryForm
             // 

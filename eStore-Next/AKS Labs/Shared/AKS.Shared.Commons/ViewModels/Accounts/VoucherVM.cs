@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AKS.Shared.Commons.ViewModels.Accounts
 {
 
+
     public class VoucherVM
     {
         [Key]
@@ -17,7 +18,7 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public PaymentMode PaymentMode { get; set; }
         public string PaymentDetails { get; set; }
         public string Remarks { get; set; }
-        [Display(Name ="Acc No")]
+        [Display(Name = "Acc No")]
         public string AccountId { get; set; }
 
 
@@ -30,8 +31,7 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public string Party { get; set; }
         [Display(Name = "Store")]
         public string StoreId { get; set; }
-
-
+        public EntryStatus EntryStatus { get; set; }
     }
 
 
@@ -58,6 +58,8 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public string Party { get; set; }
 
         public string StoreId { get; set; }
+        public EntryStatus EntryStatus { get; set; }
+
 
 
     }

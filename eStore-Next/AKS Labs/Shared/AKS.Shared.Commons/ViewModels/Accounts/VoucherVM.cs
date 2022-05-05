@@ -45,7 +45,7 @@ namespace AKS.Shared.Commons.ViewModels.Accounts
         public string TranscationId { get; set; }
 
         [ForeignKey("TranscationId")]
-        public string TranscationMode { get; set; }
+        public string TranscationName { get; set; }
         public string PartyName { get; set; }
         public string Particulars { get; set; }
         public decimal Amount { get; set; }

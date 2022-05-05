@@ -198,11 +198,11 @@ namespace AKS.Payroll.Forms.Vouchers
                     dgvExpenses.Refresh();
                     break;
                 case VoucherType.CashReceipt:
-                    dgvCashReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
 
                     break;
                 case VoucherType.CashPayment:
-                    dgvCashPayments.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvCashPayments.DataSource = cashVoucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
 
                     break;
                 default:
@@ -219,24 +219,24 @@ namespace AKS.Payroll.Forms.Vouchers
 
             switch (tabControl1.SelectedIndex)
             {
-                case 1://Epenses 
+                case 0://Epenses 
                     voucherEntryForm = new VoucherEntryForm(VoucherType.Expense);
                     voucherType = VoucherType.Expense;
                     break;
-                case 2://payment 
+                case 1://payment 
                     voucherEntryForm = new VoucherEntryForm(VoucherType.Payment);
                     voucherType = VoucherType.Payment;
                     break;
-                case 3:
+                case 2:
                     voucherEntryForm = new VoucherEntryForm(VoucherType.Receipt);
                     voucherType = VoucherType.Receipt;
                     //Receipts 
                     break;
-                case 4://Cash Receipts 
+                case 3://Cash Receipts 
                     voucherEntryForm = new VoucherEntryForm(VoucherType.CashReceipt);
                     voucherType = VoucherType.CashReceipt;
                     break;
-                case 5:
+                case 4:
                     //Cash Payments 
                     voucherEntryForm = new VoucherEntryForm(VoucherType.CashPayment);
                     voucherType = VoucherType.CashPayment;
@@ -408,7 +408,7 @@ namespace AKS.Payroll.Forms.Vouchers
            
             if (form.ShowDialog() == DialogResult.Yes)
             {
-                if (form.SavedVoucher != null)
+                if (form.SavedCashVoucher != null)
                 {
                     if (!form.isNew)
                         cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);
@@ -444,7 +444,7 @@ namespace AKS.Payroll.Forms.Vouchers
 
             if (form.ShowDialog() == DialogResult.Yes)
             {
-                if (form.SavedVoucher != null)
+                if (form.SavedCashVoucher != null)
                 {
                     if (!form.isNew)
                         cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);

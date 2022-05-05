@@ -51,7 +51,7 @@ namespace AKS.Payroll.DTOMapping
                     cfg.CreateMap<PaySlip, PaySlipVM>().ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
                     cfg.CreateMap<PaySlipVM, PaySlip>();
                     cfg.CreateMap<CashVoucher, CashVoucherVM>()
-                    .ForMember(dest => dest.TranscationMode, act => act.MapFrom(src => src.TranscationMode.TranscationName))
+                    .ForMember(dest => dest.TranscationName, act => act.MapFrom(src => src.TranscationMode.TranscationName))
                     .ForMember(dest => dest.Party, act => act.MapFrom(src => src.Partys.PartyName))
                     .ForMember(dest => dest.StaffName, act => act.MapFrom(src => src.Employee.StaffName));
                     cfg.CreateMap<Voucher, VoucherVM>()

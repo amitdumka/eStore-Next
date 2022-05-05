@@ -185,6 +185,7 @@ namespace AKS.Payroll.Forms.Vouchers
             cbxTranscationMode.ValueMember = "TranscationId";
 
             ShowView(voucherType);
+            SetEntryType( );
             if (!isNew) DisplayData();
 
 
@@ -390,6 +391,7 @@ namespace AKS.Payroll.Forms.Vouchers
                     if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
                         SavedCashVoucher = cashVoucher;
                     else SavedVoucher = voucher;
+                    
                     return true;
                 }
                 else
@@ -403,18 +405,31 @@ namespace AKS.Payroll.Forms.Vouchers
             }
 
         }
+        
         private void ShowView(VoucherType type)
         {
             if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
             {
-                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.Absolute, 0F);
-                lbMode.Visible = true; 
+                lbBankAccount.Visible=false;
+                lbMode.Visible=false;
+                lbDetails.Visible=false;
+                cbxBankAccount.Visible=false;
+                cbxPaymentMode.Visible=false;
+                txtPaymentDetails.Visible=false;
+               
+                lbTMode.Visible = true; 
                 cbxTranscationMode.Visible = true;
             }
             else
             {
-                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.AutoSize);
-                lbMode.Visible = false;
+                lbBankAccount.Visible = true;
+                lbMode.Visible = true;
+                lbDetails.Visible = true;
+                cbxBankAccount.Visible = true;
+                cbxPaymentMode.Visible = true;
+                txtPaymentDetails.Visible = true;
+
+                lbTMode.Visible = false;
                 cbxTranscationMode.Visible = false;
             }
         }

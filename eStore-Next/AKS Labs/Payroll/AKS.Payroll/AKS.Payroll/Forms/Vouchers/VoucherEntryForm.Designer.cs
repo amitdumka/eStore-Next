@@ -61,7 +61,7 @@
             this.lbBankAccount = new System.Windows.Forms.Label();
             this.lbMode = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.lnMode = new System.Windows.Forms.Label();
+            this.lbTMode = new System.Windows.Forms.Label();
             this.cbxTranscationMode = new System.Windows.Forms.ComboBox();
             this.txtParticulars = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -228,7 +228,7 @@
             this.tableLayoutPanel1.Controls.Add(this.lbBankAccount, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.lbMode, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label5, 2, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lnMode, 4, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lbTMode, 4, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbxTranscationMode, 5, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtParticulars, 3, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -417,14 +417,14 @@
             this.label5.TabIndex = 22;
             this.label5.Text = "Particulars";
             // 
-            // lnMode
+            // lbTMode
             // 
-            this.lnMode.AutoSize = true;
-            this.lnMode.Location = new System.Drawing.Point(505, 87);
-            this.lnMode.Name = "lnMode";
-            this.lnMode.Size = new System.Drawing.Size(101, 15);
-            this.lnMode.TabIndex = 20;
-            this.lnMode.Text = "Transcation Mode";
+            this.lbTMode.AutoSize = true;
+            this.lbTMode.Location = new System.Drawing.Point(505, 87);
+            this.lbTMode.Name = "lbTMode";
+            this.lbTMode.Size = new System.Drawing.Size(101, 15);
+            this.lbTMode.TabIndex = 20;
+            this.lbTMode.Text = "Transcation Mode";
             // 
             // cbxTranscationMode
             // 
@@ -563,7 +563,7 @@
         private Label label10;
         private ComboBox cbxParties;
         private Panel panel3;
-        private Label lnMode;
+        private Label lbTMode;
         private ComboBox cbxTranscationMode;
         private Label label5;
         private TextBox txtParticulars;

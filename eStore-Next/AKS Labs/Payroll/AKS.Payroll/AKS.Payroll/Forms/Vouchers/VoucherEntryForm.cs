@@ -184,8 +184,9 @@ namespace AKS.Payroll.Forms.Vouchers
             cbxTranscationMode.DisplayMember = "TranscationName";
             cbxTranscationMode.ValueMember = "TranscationId";
 
-
+            ShowView(voucherType);
             if (!isNew) DisplayData();
+
 
         }
         private void DisplayData()
@@ -279,6 +280,7 @@ namespace AKS.Payroll.Forms.Vouchers
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         TranscationId = (string)cbxTranscationMode.SelectedValue,
                         Particulars = txtParticulars.Text.Trim(),
+                         
 
                     };
 
@@ -305,7 +307,9 @@ namespace AKS.Payroll.Forms.Vouchers
                     cashVoucher.MarkedDeleted = false;
                     cashVoucher.UserId = "WinUI";
                 }
-                cashVoucher.VoucherNumber = isNew ? GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) : this.voucherNumber;
+                cashVoucher.VoucherNumber = isNew ? 
+                    GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) : 
+                    this.voucherNumber;
 
 
             }
@@ -404,10 +408,14 @@ namespace AKS.Payroll.Forms.Vouchers
             if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
             {
                 tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.Absolute, 0F);
+                lbMode.Visible = true; 
+                cbxTranscationMode.Visible = true;
             }
             else
             {
                 tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.AutoSize);
+                lbMode.Visible = false;
+                cbxTranscationMode.Visible = false;
             }
         }
 

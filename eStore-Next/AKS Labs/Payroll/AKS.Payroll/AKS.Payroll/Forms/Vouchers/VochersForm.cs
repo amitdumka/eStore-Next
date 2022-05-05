@@ -216,6 +216,7 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             VoucherEntryForm voucherEntryForm;
             VoucherType voucherType = VoucherType.Expense;
+
             switch (tabControl1.SelectedIndex)
             {
                 case 1://Epenses 
@@ -402,12 +403,73 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void dgvCashReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashReceipts.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.CashReceipt, rowData);
+           
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    if (!form.isNew)
+                        cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);
+                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
+                    RefreshDataView(VoucherType.CashReceipt);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+
+                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
+                }
+                else
+                {
+                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+
+            }
 
         }
 
         private void dgvCashPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashPayments.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.CashPayment, rowData);
 
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    if (!form.isNew)
+                        cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);
+                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
+                    RefreshDataView(VoucherType.CashPayment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+
+                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
+                }
+                else
+                {
+                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -417,7 +479,7 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-
+            RefreshDataView(voucherType);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -428,13 +490,20 @@ namespace AKS.Payroll.Forms.Vouchers
 
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            try
+            {
+                SelectedYear = (int)lbYearList.SelectedValue;
 
-        }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            }
 
         private void lbYearList_DoubleClick(object sender, EventArgs e)
         {
             SelectedYear = (int)lbYearList.SelectedValue;
-            MessageBox.Show("selected " + SelectedYear);
             OnSelectedTab(tabControl1.SelectedIndex);
         }
     }

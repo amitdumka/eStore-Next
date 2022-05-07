@@ -191,7 +191,6 @@
             this.dgvExpenses.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvExpenses.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvExpenses.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-            this.dgvExpenses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvExpenses.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvExpenses.Location = new System.Drawing.Point(3, 3);
             this.dgvExpenses.Name = "dgvExpenses";

@@ -113,6 +113,8 @@ namespace AKS.Payroll.Forms.Vouchers
                 case VoucherType.Expense:
                     dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).ToList();
                     tabControl1.SelectedTab = tpExpenses;
+                    dgvExpenses.ScrollBars = ScrollBars.Both;
+                    dgvExpenses.AutoSize=true;
                     break;
                 case VoucherType.CashReceipt:
                     dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).ToList();
@@ -180,6 +182,7 @@ namespace AKS.Payroll.Forms.Vouchers
             {
                 case VoucherType.Payment:
                     dgvPayments.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                   
                     break;
                 case VoucherType.Receipt:
                     dgvReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
@@ -196,6 +199,8 @@ namespace AKS.Payroll.Forms.Vouchers
                 case VoucherType.Expense:
                     dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
                     dgvExpenses.Refresh();
+                    dgvExpenses.ScrollBars = ScrollBars.Both;
+                    dgvExpenses.AutoSize = true;
                     break;
                 case VoucherType.CashReceipt:
                     dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
@@ -506,5 +511,19 @@ namespace AKS.Payroll.Forms.Vouchers
             SelectedYear = (int)lbYearList.SelectedValue;
             OnSelectedTab(tabControl1.SelectedIndex);
         }
+    
+        private void HideUnwantedCol(List<Object> lst, VoucherType type)
+        {
+            if(type==VoucherType.CashReceipt || type == VoucherType.CashPayment) {
+            
+
+            
+            }
+            else
+            {
+
+            }
+        }
+    
     }
 }

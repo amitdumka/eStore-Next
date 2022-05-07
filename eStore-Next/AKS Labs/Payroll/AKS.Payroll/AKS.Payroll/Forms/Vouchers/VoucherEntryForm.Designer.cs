@@ -141,6 +141,7 @@
             this.rbCashPayment.TabStop = true;
             this.rbCashPayment.Text = "Cash Payment";
             this.rbCashPayment.UseVisualStyleBackColor = true;
+            this.rbCashPayment.CheckedChanged += new System.EventHandler(this.rbCashPayment_CheckedChanged);
             // 
             // rbCashReceipts
             // 
@@ -152,6 +153,7 @@
             this.rbCashReceipts.TabStop = true;
             this.rbCashReceipts.Text = "Cash Receipts";
             this.rbCashReceipts.UseVisualStyleBackColor = true;
+            this.rbCashReceipts.CheckedChanged += new System.EventHandler(this.rbCashReceipts_CheckedChanged);
             // 
             // rbReceipts
             // 
@@ -163,6 +165,7 @@
             this.rbReceipts.TabStop = true;
             this.rbReceipts.Text = "Receipts";
             this.rbReceipts.UseVisualStyleBackColor = true;
+            this.rbReceipts.CheckedChanged += new System.EventHandler(this.rbReceipts_CheckedChanged);
             // 
             // rbPayment
             // 
@@ -174,6 +177,7 @@
             this.rbPayment.TabStop = true;
             this.rbPayment.Text = "Payment";
             this.rbPayment.UseVisualStyleBackColor = true;
+            this.rbPayment.CheckedChanged += new System.EventHandler(this.rbPayment_CheckedChanged);
             // 
             // rbExpenses
             // 
@@ -185,6 +189,7 @@
             this.rbExpenses.TabStop = true;
             this.rbExpenses.Text = "Expenses";
             this.rbExpenses.UseVisualStyleBackColor = true;
+            this.rbExpenses.CheckedChanged += new System.EventHandler(this.rbExpenses_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -363,7 +368,7 @@
             this.cbxParties.Location = new System.Drawing.Point(97, 90);
             this.cbxParties.Name = "cbxParties";
             this.cbxParties.Size = new System.Drawing.Size(161, 23);
-            this.cbxParties.TabIndex = 19;
+            this.cbxParties.TabIndex = 18;
             // 
             // label4
             // 
@@ -379,7 +384,7 @@
             this.txtAmount.Location = new System.Drawing.Point(97, 61);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(161, 23);
-            this.txtAmount.TabIndex = 12;
+            this.txtAmount.TabIndex = 15;
             // 
             // cbxPaymentMode
             // 
@@ -387,7 +392,7 @@
             this.cbxPaymentMode.Location = new System.Drawing.Point(97, 32);
             this.cbxPaymentMode.Name = "cbxPaymentMode";
             this.cbxPaymentMode.Size = new System.Drawing.Size(161, 23);
-            this.cbxPaymentMode.TabIndex = 15;
+            this.cbxPaymentMode.TabIndex = 12;
             this.cbxPaymentMode.SelectedIndexChanged += new System.EventHandler(this.cbxPaymentMode_SelectedIndexChanged);
             // 
             // lbBankAccount
@@ -432,14 +437,14 @@
             this.cbxTranscationMode.Location = new System.Drawing.Point(612, 90);
             this.cbxTranscationMode.Name = "cbxTranscationMode";
             this.cbxTranscationMode.Size = new System.Drawing.Size(148, 23);
-            this.cbxTranscationMode.TabIndex = 21;
+            this.cbxTranscationMode.TabIndex = 20;
             // 
             // txtParticulars
             // 
             this.txtParticulars.Location = new System.Drawing.Point(351, 90);
             this.txtParticulars.Name = "txtParticulars";
             this.txtParticulars.Size = new System.Drawing.Size(148, 23);
-            this.txtParticulars.TabIndex = 23;
+            this.txtParticulars.TabIndex = 19;
             // 
             // groupBox3
             // 

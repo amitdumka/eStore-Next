@@ -483,5 +483,45 @@ namespace AKS.Payroll.Forms.Vouchers
         {
             this.Close();
         }
+
+        private void rbReceipts_CheckedChanged(object sender, EventArgs e)
+        {
+            if(rbReceipts.Checked)
+            {
+                ShowView(VoucherType.Receipt);
+            }
+        }
+
+        private void rbCashPayment_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCashPayment.Checked)
+            {
+                ShowView(VoucherType.CashPayment);
+            }
+        }
+
+        private void rbCashReceipts_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbCashReceipts.Checked)
+            {
+                ShowView(VoucherType.CashReceipt);
+            }
+        }
+
+        private void rbExpenses_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbExpenses.Checked)
+            {
+                ShowView(VoucherType.Expense);
+            }
+        }
+
+        private void rbPayment_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbPayment.Checked)
+            {
+                ShowView(VoucherType.Payment);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -97,6 +98,14 @@ namespace AKS.Payroll.Database
         public DbSet<Party> Parties { get; set; }
         public DbSet<LedgerGroup> LedgerGroups { get; set; }
         public DbSet<LedgerMaster> LedgerMasters { get; set; }
+
+        // Daily Sales
+        public DbSet<DailySale> DailySales { get; set; }
+        public DbSet<EDCTerminal> EDCTerminals { get; set; }
+        public DbSet<DueRecovery> DueRecovery { get; set; }
+        public DbSet<CustomerDue> CustomerDues { get; set; }
+
+
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

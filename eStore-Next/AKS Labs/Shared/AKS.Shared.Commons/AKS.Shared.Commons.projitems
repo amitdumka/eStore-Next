@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Auth\LocalUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Banking\Bank.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Base\BaseModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Sales\DailySale.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Accounts\VoucherVM.cs" />
   </ItemGroup>

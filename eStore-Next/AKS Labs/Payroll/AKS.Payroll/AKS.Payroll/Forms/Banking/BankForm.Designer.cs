@@ -47,13 +47,13 @@
             this.txtBankName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbBankList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.btnAddVendorAccounts = new System.Windows.Forms.Button();
             this.btnAddThirdPartyAccounts = new System.Windows.Forms.Button();
             this.btnAddBankAccount = new System.Windows.Forms.Button();
-            this.lbBankList = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -79,8 +79,9 @@
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(943, 498);
+            this.panel1.Size = new System.Drawing.Size(825, 374);
             this.panel1.TabIndex = 0;
             // 
             // statusStrip1
@@ -89,31 +90,34 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslCount,
             this.tsslCountValue});
-            this.statusStrip1.Location = new System.Drawing.Point(176, 472);
+            this.statusStrip1.Location = new System.Drawing.Point(154, 352);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(767, 26);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(671, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // tsslCount
             // 
             this.tsslCount.Name = "tsslCount";
-            this.tsslCount.Size = new System.Drawing.Size(48, 20);
+            this.tsslCount.Size = new System.Drawing.Size(40, 17);
             this.tsslCount.Text = "Count";
             // 
             // tsslCountValue
             // 
             this.tsslCountValue.Name = "tsslCountValue";
-            this.tsslCountValue.Size = new System.Drawing.Size(17, 20);
+            this.tsslCountValue.Size = new System.Drawing.Size(13, 17);
             this.tsslCountValue.Text = "0";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.tcBank);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(176, 88);
+            this.groupBox3.Location = new System.Drawing.Point(154, 66);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(767, 410);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Size = new System.Drawing.Size(671, 308);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "List";
@@ -125,19 +129,21 @@
             this.tcBank.Controls.Add(this.tabPage3);
             this.tcBank.Controls.Add(this.tabPage4);
             this.tcBank.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcBank.Location = new System.Drawing.Point(3, 23);
+            this.tcBank.Location = new System.Drawing.Point(3, 18);
+            this.tcBank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tcBank.Name = "tcBank";
             this.tcBank.SelectedIndex = 0;
-            this.tcBank.Size = new System.Drawing.Size(761, 384);
+            this.tcBank.Size = new System.Drawing.Size(665, 288);
             this.tcBank.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.dataGridView3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(753, 351);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage1.Size = new System.Drawing.Size(657, 260);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Bank Accounts";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -149,21 +155,23 @@
             this.dataGridView3.AllowUserToOrderColumns = true;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView3.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView3.Location = new System.Drawing.Point(3, 2);
+            this.dataGridView3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.ReadOnly = true;
             this.dataGridView3.RowHeadersWidth = 51;
             this.dataGridView3.RowTemplate.Height = 29;
-            this.dataGridView3.Size = new System.Drawing.Size(747, 345);
+            this.dataGridView3.Size = new System.Drawing.Size(651, 256);
             this.dataGridView3.TabIndex = 0;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(753, 351);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage2.Size = new System.Drawing.Size(658, 263);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Third Party";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -175,21 +183,23 @@
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(747, 345);
+            this.dataGridView1.Size = new System.Drawing.Size(652, 259);
             this.dataGridView1.TabIndex = 0;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.dataGridView2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(753, 351);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage3.Size = new System.Drawing.Size(658, 263);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Vendor Accounts";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -201,21 +211,23 @@
             this.dataGridView2.AllowUserToOrderColumns = true;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView2.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView2.Location = new System.Drawing.Point(3, 2);
+            this.dataGridView2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 29;
-            this.dataGridView2.Size = new System.Drawing.Size(747, 345);
+            this.dataGridView2.Size = new System.Drawing.Size(652, 259);
             this.dataGridView2.TabIndex = 0;
             // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(753, 351);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage4.Size = new System.Drawing.Size(658, 263);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Banks";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -227,27 +239,31 @@
             this.groupBox4.Controls.Add(this.txtBankName);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Location = new System.Drawing.Point(3, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(747, 95);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox4.Size = new System.Drawing.Size(652, 71);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Entry";
             // 
             // btnDeleteBank
             // 
-            this.btnDeleteBank.Location = new System.Drawing.Point(510, 33);
+            this.btnDeleteBank.Location = new System.Drawing.Point(446, 25);
+            this.btnDeleteBank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDeleteBank.Name = "btnDeleteBank";
-            this.btnDeleteBank.Size = new System.Drawing.Size(94, 29);
+            this.btnDeleteBank.Size = new System.Drawing.Size(82, 22);
             this.btnDeleteBank.TabIndex = 3;
             this.btnDeleteBank.Text = "Delete";
             this.btnDeleteBank.UseVisualStyleBackColor = true;
             // 
             // btnAddBank
             // 
-            this.btnAddBank.Location = new System.Drawing.Point(400, 33);
+            this.btnAddBank.Location = new System.Drawing.Point(350, 25);
+            this.btnAddBank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddBank.Name = "btnAddBank";
-            this.btnAddBank.Size = new System.Drawing.Size(94, 29);
+            this.btnAddBank.Size = new System.Drawing.Size(82, 22);
             this.btnAddBank.TabIndex = 2;
             this.btnAddBank.Text = "Add";
             this.btnAddBank.UseVisualStyleBackColor = true;
@@ -255,17 +271,18 @@
             // 
             // txtBankName
             // 
-            this.txtBankName.Location = new System.Drawing.Point(118, 34);
+            this.txtBankName.Location = new System.Drawing.Point(103, 26);
+            this.txtBankName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtBankName.Name = "txtBankName";
-            this.txtBankName.Size = new System.Drawing.Size(266, 27);
+            this.txtBankName.Size = new System.Drawing.Size(233, 23);
             this.txtBankName.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 37);
+            this.label1.Location = new System.Drawing.Point(15, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 20);
+            this.label1.Size = new System.Drawing.Size(68, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Bank Name";
             // 
@@ -273,20 +290,37 @@
             // 
             this.groupBox2.Controls.Add(this.lbBankList);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBox2.Location = new System.Drawing.Point(0, 88);
+            this.groupBox2.Location = new System.Drawing.Point(0, 66);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(176, 410);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(154, 308);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " ";
+            // 
+            // lbBankList
+            // 
+            this.lbBankList.DisplayMember = "Name";
+            this.lbBankList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbBankList.FormattingEnabled = true;
+            this.lbBankList.ItemHeight = 15;
+            this.lbBankList.Location = new System.Drawing.Point(3, 18);
+            this.lbBankList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lbBankList.Name = "lbBankList";
+            this.lbBankList.Size = new System.Drawing.Size(148, 288);
+            this.lbBankList.TabIndex = 2;
+            this.lbBankList.ValueMember = "BankId";
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(943, 88);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(825, 66);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
@@ -298,66 +332,61 @@
             this.panel2.Controls.Add(this.btnAddThirdPartyAccounts);
             this.panel2.Controls.Add(this.btnAddBankAccount);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(446, 23);
+            this.panel2.Location = new System.Drawing.Point(390, 18);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(494, 62);
+            this.panel2.Size = new System.Drawing.Size(432, 46);
             this.panel2.TabIndex = 0;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(352, 14);
+            this.button4.Location = new System.Drawing.Point(308, 10);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(96, 32);
+            this.button4.Size = new System.Drawing.Size(84, 24);
             this.button4.TabIndex = 3;
             this.button4.Text = "Refresh";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // btnAddVendorAccounts
             // 
-            this.btnAddVendorAccounts.Location = new System.Drawing.Point(240, 14);
+            this.btnAddVendorAccounts.Location = new System.Drawing.Point(210, 10);
+            this.btnAddVendorAccounts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddVendorAccounts.Name = "btnAddVendorAccounts";
-            this.btnAddVendorAccounts.Size = new System.Drawing.Size(96, 32);
+            this.btnAddVendorAccounts.Size = new System.Drawing.Size(84, 24);
             this.btnAddVendorAccounts.TabIndex = 2;
             this.btnAddVendorAccounts.Text = "+ Vendors";
             this.btnAddVendorAccounts.UseVisualStyleBackColor = true;
             // 
             // btnAddThirdPartyAccounts
             // 
-            this.btnAddThirdPartyAccounts.Location = new System.Drawing.Point(128, 14);
+            this.btnAddThirdPartyAccounts.Location = new System.Drawing.Point(112, 10);
+            this.btnAddThirdPartyAccounts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddThirdPartyAccounts.Name = "btnAddThirdPartyAccounts";
-            this.btnAddThirdPartyAccounts.Size = new System.Drawing.Size(96, 32);
+            this.btnAddThirdPartyAccounts.Size = new System.Drawing.Size(84, 24);
             this.btnAddThirdPartyAccounts.TabIndex = 1;
             this.btnAddThirdPartyAccounts.Text = "+Third Party";
             this.btnAddThirdPartyAccounts.UseVisualStyleBackColor = true;
             // 
             // btnAddBankAccount
             // 
-            this.btnAddBankAccount.Location = new System.Drawing.Point(16, 14);
+            this.btnAddBankAccount.Location = new System.Drawing.Point(14, 10);
+            this.btnAddBankAccount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddBankAccount.Name = "btnAddBankAccount";
-            this.btnAddBankAccount.Size = new System.Drawing.Size(96, 32);
+            this.btnAddBankAccount.Size = new System.Drawing.Size(84, 24);
             this.btnAddBankAccount.TabIndex = 0;
             this.btnAddBankAccount.Text = "+ Accounts";
             this.btnAddBankAccount.UseVisualStyleBackColor = true;
             this.btnAddBankAccount.Click += new System.EventHandler(this.btnAddBankAccount_Click);
             // 
-            // lbBankList
-            // 
-            this.lbBankList.DisplayMember = "Name";
-            this.lbBankList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbBankList.FormattingEnabled = true;
-            this.lbBankList.ItemHeight = 20;
-            this.lbBankList.Location = new System.Drawing.Point(3, 23);
-            this.lbBankList.Name = "lbBankList";
-            this.lbBankList.Size = new System.Drawing.Size(170, 384);
-            this.lbBankList.TabIndex = 2;
-            this.lbBankList.ValueMember = "BankId";
-            // 
             // BankForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(943, 498);
+            this.ClientSize = new System.Drawing.Size(825, 374);
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "BankForm";
             this.Text = "Banks";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

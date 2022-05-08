@@ -3,6 +3,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AKS.DatabaseMigrator
 {
+
+    public class BankAccount
+    {
+        public int BankAccountId { get; set; }
+        public int BankId { get; set; }
+        public string Account { get; set; }
+        public int AccountType { get; set; }
+        public string BranchName { get; set; }
+    }
+
     public class eStoreDbContext : DbContext
     {
         private static readonly string _connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
@@ -27,6 +37,8 @@ namespace AKS.DatabaseMigrator
         public DbSet<Party> Parties { get; set; }//APi
         public DbSet<LedgerMaster> LedgerMasters { get; set; }//APi
         public DbSet<LedgerEntry> LedgerEntries { get; set; } //api
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
 
         //UserAuth Api
         //public DbSet<User> Users { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using AKS.Shared.Commons.Models.Banking;
 using AKS.Shared.Commons.Models.Accounts;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +95,7 @@ namespace AKS.DatabaseMigrator
             {
                 using AKSDbContext aKSDb = new AKSDbContext();
                 using eStoreDbContext eStoreDb = new eStoreDbContext();
-                 var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
+                var datalist = eStoreDb.Expenses.OrderBy(c => c.OnDate).ToList();
                 int count = 0;
                 List<bool> Flag = new List<bool>();
                 foreach (var exp in datalist)
@@ -154,7 +155,7 @@ namespace AKS.DatabaseMigrator
                         UserId = exp.UserId,
                         StoreId = "ARD",
                         VoucherNumber = $"ARD/PYM/{exp.OnDate.Year}/{exp.OnDate.Month}/{exp.OnDate.Day}/{exp.PaymentId}",
-                        SlipNumber = String.IsNullOrEmpty(exp.PaymentSlipNo)?"#NA#": exp.PaymentSlipNo,
+                        SlipNumber = String.IsNullOrEmpty(exp.PaymentSlipNo) ? "#NA#" : exp.PaymentSlipNo,
                         Particulars = "NA",
                         EmployeeId = ""
 
@@ -258,7 +259,7 @@ namespace AKS.DatabaseMigrator
                         OnDate = cash.PaymentDate,
                         PartyName = String.IsNullOrEmpty(cash.PaidTo) ? "#NA#" : cash.PaidTo,
                         Remarks = cash.Remarks,
-                        SlipNumber = String.IsNullOrEmpty( cash.SlipNo)?"#NA#": cash.SlipNo,
+                        SlipNumber = String.IsNullOrEmpty(cash.SlipNo) ? "#NA#" : cash.SlipNo,
                         StoreId = "ARD",
                         PartyId = "ARD/PTY/43",
                         TranscationId = $"TM/{cash.TranscationModeId}",
@@ -266,7 +267,7 @@ namespace AKS.DatabaseMigrator
                         VoucherType = VoucherType.CashPayment,
                         VoucherNumber = $"ARD/CPT/{cash.PaymentDate.Year}/{cash.PaymentDate.Month}/{cash.PaymentDate.Day}/{cash.CashPaymentId}",
                         Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
-                        
+
                     };
                     aKSDb.CashVouchers.Add(voucher);
                     count++;
@@ -286,7 +287,7 @@ namespace AKS.DatabaseMigrator
                         OnDate = cash.InwardDate,
                         PartyName = cash.ReceiptFrom,
                         Remarks = cash.Remarks,
-                        SlipNumber = String.IsNullOrEmpty(cash.SlipNo)?"#NA#": cash.SlipNo,
+                        SlipNumber = String.IsNullOrEmpty(cash.SlipNo) ? "#NA#" : cash.SlipNo,
                         StoreId = "ARD",
                         PartyId = "ARD/PTY/43",
                         TranscationId = $"TM/{cash.TranscationModeId}",
@@ -294,7 +295,7 @@ namespace AKS.DatabaseMigrator
                         VoucherType = VoucherType.CashReceipt,
                         VoucherNumber = $"ARD/CRT/{cash.InwardDate.Year}/{cash.InwardDate.Month}/{cash.InwardDate.Day}/{cash.CashReceiptId}",
                         Particulars = tm.Where(c => c.TranscationModeId == cash.TranscationModeId).First().Transcation,
-                        
+
                     };
                     aKSDb.CashVouchers.Add(voucher);
                     count++;
@@ -309,7 +310,43 @@ namespace AKS.DatabaseMigrator
                 Console.WriteLine(e.Message);
                 return false;
             }
-            
+
+        }
+
+
+
+        public static bool MigrateBankAccounts()
+        {
+            try
+            {
+                using AKSDbContext aKSDb = new AKSDbContext();
+                using eStoreDbContext eStoreDb = new eStoreDbContext();
+
+                var bList = eStoreDb.BankAccounts.ToList();
+                foreach (var b in bList)
+                {
+                    Shared.Commons.Models.Banking.
+                     BankAccount bA = new Shared.Commons.Models.Banking.BankAccount {
+                     AccountNumber=b.Account, AccountType=(AccountType)b.AccountType, 
+                     BankId="ANB", BranchName=b.BranchName, DefaultBank=false, 
+                     IFSCCode="NA", IsActive=true, MarkedDeleted=false, OpenningBalance=0,
+                     OpenningDate= new DateTime(2015,04,01), StoreId="ARD", 
+                     SharedAccount=false
+                     };
+                    aKSDb.BankAccounts.Add(bA);
+
+                }
+
+                return aKSDb.SaveChanges() > 0;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+
         }
 
     }

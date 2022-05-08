@@ -34,6 +34,8 @@ namespace AKS.Shared.Commons.Models.Banking
 
         public string StoreId { get; set; }
         public bool MarkedDeleted { get; set; }
+
+         
     }
     [Table("V1_VendorBankAccounts")]
     public class VendorBankAccount : BankAccountBase

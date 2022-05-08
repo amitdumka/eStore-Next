@@ -21,6 +21,7 @@ namespace AKS.DatabaseMigrator
         public DbSet<LedgerGroup> LedgerGroups { get; set; }
         public DbSet<LedgerMaster> LedgerMasters { get; set; }
         public DbSet<TranscationMode> TranscationModes { get; set; }
+        public DbSet<AKS.Shared.Commons.Models.Banking.BankAccount> BankAccounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

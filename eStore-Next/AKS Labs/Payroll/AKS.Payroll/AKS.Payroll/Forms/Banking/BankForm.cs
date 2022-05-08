@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.DatabaseMigrator;
+using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Banking;
 using Microsoft.EntityFrameworkCore;
 
@@ -108,6 +109,18 @@ namespace AKS.Payroll.Forms.Banking
 
             }
 
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+           if(ExpensesMigration.MigrateBankAccounts())
+            {
+                MessageBox.Show("Saved");
+            }
+           else
+            {
+                MessageBox.Show("Error");
+            }
         }
     }
 }

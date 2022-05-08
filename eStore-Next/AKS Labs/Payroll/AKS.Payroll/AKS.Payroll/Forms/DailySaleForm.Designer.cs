@@ -29,35 +29,35 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lbYearList = new System.Windows.Forms.ListBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.rbYearly = new System.Windows.Forms.RadioButton();
+            this.lbLMonth = new System.Windows.Forms.RadioButton();
+            this.rbCMonth = new System.Windows.Forms.RadioButton();
             this.btnReload = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbYearList = new System.Windows.Forms.ListBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dgvSales = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dgvDues = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dgvRecovered = new System.Windows.Forms.DataGridView();
-            this.dgvDues = new System.Windows.Forms.DataGridView();
-            this.dgvSales = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.rbCMonth = new System.Windows.Forms.RadioButton();
-            this.lbLMonth = new System.Windows.Forms.RadioButton();
-            this.rbYearly = new System.Windows.Forms.RadioButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSales)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDues)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecovered)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDues)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSales)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -74,6 +74,85 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.rbYearly);
+            this.panel1.Controls.Add(this.lbLMonth);
+            this.panel1.Controls.Add(this.rbCMonth);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel1.Location = new System.Drawing.Point(539, 19);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(258, 49);
+            this.panel1.TabIndex = 3;
+            // 
+            // rbYearly
+            // 
+            this.rbYearly.AutoSize = true;
+            this.rbYearly.Location = new System.Drawing.Point(208, 8);
+            this.rbYearly.Name = "rbYearly";
+            this.rbYearly.Size = new System.Drawing.Size(47, 19);
+            this.rbYearly.TabIndex = 2;
+            this.rbYearly.Text = "Year";
+            this.rbYearly.UseVisualStyleBackColor = true;
+            this.rbYearly.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
+            // 
+            // lbLMonth
+            // 
+            this.lbLMonth.AutoSize = true;
+            this.lbLMonth.Location = new System.Drawing.Point(112, 8);
+            this.lbLMonth.Name = "lbLMonth";
+            this.lbLMonth.Size = new System.Drawing.Size(85, 19);
+            this.lbLMonth.TabIndex = 1;
+            this.lbLMonth.Text = "Last Month";
+            this.lbLMonth.UseVisualStyleBackColor = true;
+            this.lbLMonth.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
+            // 
+            // rbCMonth
+            // 
+            this.rbCMonth.AutoSize = true;
+            this.rbCMonth.Checked = true;
+            this.rbCMonth.Location = new System.Drawing.Point(0, 8);
+            this.rbCMonth.Name = "rbCMonth";
+            this.rbCMonth.Size = new System.Drawing.Size(104, 19);
+            this.rbCMonth.TabIndex = 0;
+            this.rbCMonth.TabStop = true;
+            this.rbCMonth.Text = "Current Month";
+            this.rbCMonth.UseVisualStyleBackColor = true;
+            this.rbCMonth.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
+            // 
+            // btnReload
+            // 
+            this.btnReload.AutoSize = true;
+            this.btnReload.Location = new System.Drawing.Point(203, 30);
+            this.btnReload.Name = "btnReload";
+            this.btnReload.Size = new System.Drawing.Size(75, 25);
+            this.btnReload.TabIndex = 2;
+            this.btnReload.Text = "Refresh";
+            this.btnReload.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.AutoSize = true;
+            this.btnDelete.Location = new System.Drawing.Point(122, 28);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 25);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.AutoSize = true;
+            this.btnAdd.Location = new System.Drawing.Point(41, 28);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 25);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbYearList);
@@ -84,25 +163,6 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Year";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.tabControl1);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(112, 71);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(688, 379);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Sale List";
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(112, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(688, 22);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // lbYearList
             // 
@@ -116,35 +176,16 @@
             this.lbYearList.TabIndex = 0;
             this.lbYearList.ValueMember = "Year";
             // 
-            // btnAdd
+            // groupBox3
             // 
-            this.btnAdd.AutoSize = true;
-            this.btnAdd.Location = new System.Drawing.Point(41, 28);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 25);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.AutoSize = true;
-            this.btnDelete.Location = new System.Drawing.Point(122, 28);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 25);
-            this.btnDelete.TabIndex = 1;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnReload
-            // 
-            this.btnReload.AutoSize = true;
-            this.btnReload.Location = new System.Drawing.Point(203, 30);
-            this.btnReload.Name = "btnReload";
-            this.btnReload.Size = new System.Drawing.Size(75, 25);
-            this.btnReload.TabIndex = 2;
-            this.btnReload.Text = "Refresh";
-            this.btnReload.UseVisualStyleBackColor = true;
+            this.groupBox3.Controls.Add(this.tabControl1);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(112, 71);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(688, 379);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Sale List";
             // 
             // tabControl1
             // 
@@ -169,6 +210,20 @@
             this.tabPage1.Text = "Daily Sale";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // dgvSales
+            // 
+            this.dgvSales.AllowUserToAddRows = false;
+            this.dgvSales.AllowUserToDeleteRows = false;
+            this.dgvSales.AllowUserToOrderColumns = true;
+            this.dgvSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSales.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSales.Location = new System.Drawing.Point(3, 3);
+            this.dgvSales.Name = "dgvSales";
+            this.dgvSales.ReadOnly = true;
+            this.dgvSales.RowTemplate.Height = 25;
+            this.dgvSales.Size = new System.Drawing.Size(668, 323);
+            this.dgvSales.TabIndex = 0;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dgvDues);
@@ -179,6 +234,20 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Dues";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dgvDues
+            // 
+            this.dgvDues.AllowUserToAddRows = false;
+            this.dgvDues.AllowUserToDeleteRows = false;
+            this.dgvDues.AllowUserToOrderColumns = true;
+            this.dgvDues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDues.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDues.Location = new System.Drawing.Point(3, 3);
+            this.dgvDues.Name = "dgvDues";
+            this.dgvDues.ReadOnly = true;
+            this.dgvDues.RowTemplate.Height = 25;
+            this.dgvDues.Size = new System.Drawing.Size(668, 323);
+            this.dgvDues.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -205,82 +274,13 @@
             this.dgvRecovered.Size = new System.Drawing.Size(668, 323);
             this.dgvRecovered.TabIndex = 0;
             // 
-            // dgvDues
+            // statusStrip1
             // 
-            this.dgvDues.AllowUserToAddRows = false;
-            this.dgvDues.AllowUserToDeleteRows = false;
-            this.dgvDues.AllowUserToOrderColumns = true;
-            this.dgvDues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDues.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDues.Location = new System.Drawing.Point(3, 3);
-            this.dgvDues.Name = "dgvDues";
-            this.dgvDues.ReadOnly = true;
-            this.dgvDues.RowTemplate.Height = 25;
-            this.dgvDues.Size = new System.Drawing.Size(668, 323);
-            this.dgvDues.TabIndex = 0;
-            // 
-            // dgvSales
-            // 
-            this.dgvSales.AllowUserToAddRows = false;
-            this.dgvSales.AllowUserToDeleteRows = false;
-            this.dgvSales.AllowUserToOrderColumns = true;
-            this.dgvSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSales.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSales.Location = new System.Drawing.Point(3, 3);
-            this.dgvSales.Name = "dgvSales";
-            this.dgvSales.ReadOnly = true;
-            this.dgvSales.RowTemplate.Height = 25;
-            this.dgvSales.Size = new System.Drawing.Size(668, 323);
-            this.dgvSales.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.AutoSize = true;
-            this.panel1.Controls.Add(this.rbYearly);
-            this.panel1.Controls.Add(this.lbLMonth);
-            this.panel1.Controls.Add(this.rbCMonth);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(539, 19);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(258, 49);
-            this.panel1.TabIndex = 3;
-            // 
-            // rbCMonth
-            // 
-            this.rbCMonth.AutoSize = true;
-            this.rbCMonth.Location = new System.Drawing.Point(0, 8);
-            this.rbCMonth.Name = "rbCMonth";
-            this.rbCMonth.Size = new System.Drawing.Size(104, 19);
-            this.rbCMonth.TabIndex = 0;
-            this.rbCMonth.TabStop = true;
-            this.rbCMonth.Text = "Current Month";
-            this.rbCMonth.UseVisualStyleBackColor = true;
-            this.rbCMonth.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
-            // 
-            // lbLMonth
-            // 
-            this.lbLMonth.AutoSize = true;
-            this.lbLMonth.Location = new System.Drawing.Point(112, 8);
-            this.lbLMonth.Name = "lbLMonth";
-            this.lbLMonth.Size = new System.Drawing.Size(85, 19);
-            this.lbLMonth.TabIndex = 1;
-            this.lbLMonth.TabStop = true;
-            this.lbLMonth.Text = "Last Month";
-            this.lbLMonth.UseVisualStyleBackColor = true;
-            this.lbLMonth.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
-            // 
-            // rbYearly
-            // 
-            this.rbYearly.AutoSize = true;
-            this.rbYearly.Location = new System.Drawing.Point(208, 8);
-            this.rbYearly.Name = "rbYearly";
-            this.rbYearly.Size = new System.Drawing.Size(47, 19);
-            this.rbYearly.TabIndex = 2;
-            this.rbYearly.TabStop = true;
-            this.rbYearly.Text = "Year";
-            this.rbYearly.UseVisualStyleBackColor = true;
-            this.rbYearly.CheckedChanged += new System.EventHandler(this.RadioBoxes_CheckedChanged);
+            this.statusStrip1.Location = new System.Drawing.Point(112, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(688, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // DailySaleForm
             // 
@@ -298,17 +298,17 @@
             this.Load += new System.EventHandler(this.DailySaleForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSales)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDues)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecovered)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDues)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSales)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -48,10 +48,10 @@ namespace AKS.Shared.Commons.Models.Sales
         public string TerminalName { get; set; }
         public string StoreName { get; set; }
 
+        public EntryStatus EntryStatus { get; set; }
+        public string StoreId { get; set; }
         public string SalemanId { get; set; }       
         public string EDCTerminalId { get; set; }
-        public virtual EDCTerminal EDCTerminal { get; set; }
-        public virtual Saleman  Saleman { get; set; }
         
 
     }

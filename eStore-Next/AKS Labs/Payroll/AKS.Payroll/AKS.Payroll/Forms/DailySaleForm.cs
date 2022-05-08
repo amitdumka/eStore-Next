@@ -83,7 +83,23 @@ namespace AKS.Payroll.Forms
         {
             UpdateSaleList(azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
             && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList());
+            
             dgvSales.DataSource = dailySaleVMs;
+            dgvSales.ScrollBars = ScrollBars.Both;
+
+            dgvSales.Columns["SalemanId"].Visible=false;
+            dgvSales.Columns["EDCTerminalId"].Visible = false;
+            dgvSales.Columns["StoreId"].Visible = false;
+            dgvSales.Columns["EntryStatus"].Visible = false;
+
+            YearList.AddRange(azureDb.DailySales
+                .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
+                .Distinct().OrderBy(c => c).ToList());
+            if (YearList.Contains(DateTime.Today.Year)==false)
+                YearList.Add(DateTime.Today.Year);
+                lbYearList.DataSource = YearList;
+            
+
         }
         private void UpdateSaleList(List<DailySale> sales)
         {
@@ -120,8 +136,20 @@ namespace AKS.Payroll.Forms
 
         private void RadioBoxes_CheckedChanged(object sender, EventArgs e)
         {
-            if(((RadioButton)sender).Checked)
+            if (((RadioButton)sender).Checked)
                 this.FilterData((RadioButton)sender);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            DailySaleEntryForm form = new DailySaleEntryForm();
+            if( form.ShowDialog() == DialogResult.OK)
+            {
+
+            }else
+            {
+
+            }
         }
     }
 }

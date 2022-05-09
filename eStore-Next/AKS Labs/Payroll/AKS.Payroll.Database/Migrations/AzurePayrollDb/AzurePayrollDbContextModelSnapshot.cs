@@ -769,7 +769,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("EDCTerminalId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EntryStatus")

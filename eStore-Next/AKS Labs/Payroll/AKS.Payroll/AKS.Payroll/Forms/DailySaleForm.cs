@@ -81,6 +81,7 @@ namespace AKS.Payroll.Forms
 
         private void LoadData()
         {
+            DMMapper.InitializeAutomapper();
             UpdateSaleList(azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
             && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList());
             
@@ -143,12 +144,47 @@ namespace AKS.Payroll.Forms
         private void btnAdd_Click(object sender, EventArgs e)
         {
             DailySaleEntryForm form = new DailySaleEntryForm();
+
             if( form.ShowDialog() == DialogResult.OK)
             {
+                if (form.IsSaved)
+                {
+                    dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    dgvSales.Refresh();
+                    //TODO: reload Data; 
 
+                    
+                }
             }else
             {
 
+            }
+        }
+
+        private void dgvSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var sale = DMMapper.Mapper.Map<DailySale>(dgvSales.CurrentRow.DataBoundItem);
+            DailySaleEntryForm form = new DailySaleEntryForm(sale);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                if (form.IsSaved)
+                {
+                    dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    dgvSales.Refresh();
+                    //TODO: reload Data; 
+
+
+                }
+            }
+            else if (form.DialogResult==DialogResult.No)
+            {
+                if (string.IsNullOrEmpty(form.DeletedI))
+                {
+                    dailySaleVMs.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());
+                    dgvSales.Refresh(); 
+                    //TODO; realod data; 
+                }
             }
         }
     }

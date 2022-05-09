@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Accounts;
+using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Commons.ViewModels.Accounts;
 using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
@@ -60,6 +61,8 @@ namespace AKS.Payroll.DTOMapping
                     cfg.CreateMap<VoucherVM, Voucher>();
 
                     cfg.CreateMap<CashVoucherVM, CashVoucher>();
+                    cfg.CreateMap<DailySale, DailySaleVM>();
+                    cfg.CreateMap<DailySaleVM, DailySale>();
                     
 
 

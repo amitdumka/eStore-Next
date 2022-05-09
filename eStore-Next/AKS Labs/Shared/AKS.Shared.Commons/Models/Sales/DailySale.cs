@@ -25,7 +25,8 @@ namespace AKS.Shared.Commons.Models.Sales
         public bool SalesReturn { get; set; }
         public bool TailoringBill { get; set; }
         public string Remarks { get; set; }
-        public string EDCTerminalId { get; set; }
+        
+        public string? EDCTerminalId { get; set; }
 
     }
     //TODO: Move to VM
@@ -51,7 +52,7 @@ namespace AKS.Shared.Commons.Models.Sales
         public EntryStatus EntryStatus { get; set; }
         public string StoreId { get; set; }
         public string SalemanId { get; set; }       
-        public string EDCTerminalId { get; set; }
+        public string? EDCTerminalId { get; set; }
         
 
     }

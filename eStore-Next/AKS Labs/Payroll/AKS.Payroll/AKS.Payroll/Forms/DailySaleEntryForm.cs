@@ -17,8 +17,10 @@ namespace AKS.Payroll.Forms
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
         private static string StoreCode = "ARD";
-        private DailySale sale;
+        public DailySale sale;
         private bool isNew;
+        public string DeletedI { get; set; }
+        public bool IsSaved { get; set; }
         public DailySaleEntryForm()
         {
             InitializeComponent();
@@ -29,9 +31,29 @@ namespace AKS.Payroll.Forms
             InitializeComponent();
             sale = daily;
             isNew = false;
+            btnAdd.Text = "Edit";
 
         }
 
+        private void DisplayData()
+        {
+            cbxStores.SelectedValue = sale.StoreId;
+            txtAmount.Text = sale.Amount.ToString();
+            txtCash.Text=sale.CashAmount.ToString();
+            txtNonCash.Text=sale.NonCashAmount.ToString();
+            dtpOnDate.Value = sale.OnDate;
+            cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
+            cbxPOS.SelectedValue = sale.EDCTerminalId;
+            cbxSaleman.SelectedValue = sale.SalemanId;
+            cbManual.Checked = sale.ManualBill;
+            cbSalesReturn.Checked = sale.SalesReturn;
+            cbTailoring.Checked = sale.TailoringBill;
+            cbDue.Checked = sale.IsDue; 
+            txtInvoiceNumber.Text = sale.InvoiceNumber.ToString();
+            txtRemarks.Text = sale.Remarks.ToString();
+
+           
+        }
 
         private void LoadData()
         {
@@ -53,7 +75,7 @@ namespace AKS.Payroll.Forms
             cbxPOS.DataSource = azureDb.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new { c.EDCTerminalId, c.Name }).ToList();
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PayMode)));
 
-
+            if (!isNew) DisplayData();
         }
 
         private void ReloadComoboData()
@@ -129,6 +151,7 @@ namespace AKS.Payroll.Forms
                         ClearFields();
                         if(isNew) this.DialogResult = DialogResult.OK;
                         else this.DialogResult = DialogResult.Yes;
+                        IsSaved = true;
                     }
                     else MessageBox.Show("An error occured while saving");
                 }

@@ -223,6 +223,7 @@
             this.dgvSales.RowTemplate.Height = 25;
             this.dgvSales.Size = new System.Drawing.Size(668, 323);
             this.dgvSales.TabIndex = 0;
+            this.dgvSales.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSales_CellContentClick);
             // 
             // tabPage2
             // 

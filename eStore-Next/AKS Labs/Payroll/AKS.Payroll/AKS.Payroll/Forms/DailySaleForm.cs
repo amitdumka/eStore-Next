@@ -84,11 +84,11 @@ namespace AKS.Payroll.Forms
             DMMapper.InitializeAutomapper();
             UpdateSaleList(azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
             && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList());
-            
+
             dgvSales.DataSource = dailySaleVMs;
             dgvSales.ScrollBars = ScrollBars.Both;
 
-            dgvSales.Columns["SalemanId"].Visible=false;
+            dgvSales.Columns["SalemanId"].Visible = false;
             dgvSales.Columns["EDCTerminalId"].Visible = false;
             dgvSales.Columns["StoreId"].Visible = false;
             dgvSales.Columns["EntryStatus"].Visible = false;
@@ -96,16 +96,16 @@ namespace AKS.Payroll.Forms
             YearList.AddRange(azureDb.DailySales
                 .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
                 .Distinct().OrderBy(c => c).ToList());
-            if (YearList.Contains(DateTime.Today.Year)==false)
+            if (YearList.Contains(DateTime.Today.Year) == false)
                 YearList.Add(DateTime.Today.Year);
-                lbYearList.DataSource = YearList;
-            
+            lbYearList.DataSource = YearList;
+
 
         }
         private void UpdateSaleList(List<DailySale> sales)
         {
             foreach (var sale in sales)
-                DMMapper.Mapper.Map<DailySaleVM>(sale);
+                dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(sale));
         }
 
         private void UpdateSaleList(List<DailySale> sales, int year)
@@ -145,7 +145,7 @@ namespace AKS.Payroll.Forms
         {
             DailySaleEntryForm form = new DailySaleEntryForm();
 
-            if( form.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
                 if (form.IsSaved)
                 {
@@ -153,9 +153,10 @@ namespace AKS.Payroll.Forms
                     dgvSales.Refresh();
                     //TODO: reload Data; 
 
-                    
+
                 }
-            }else
+            }
+            else
             {
 
             }
@@ -177,12 +178,24 @@ namespace AKS.Payroll.Forms
 
                 }
             }
-            else if (form.DialogResult==DialogResult.No)
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.IsSaved)
+                {
+                    dailySaleVMs.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.sale.InvoiceNumber).First());
+                    dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    dgvSales.Refresh();
+                    //TODO: reload Data; 
+
+
+                }
+            }
+            else if (form.DialogResult == DialogResult.No)
             {
                 if (string.IsNullOrEmpty(form.DeletedI))
                 {
                     dailySaleVMs.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());
-                    dgvSales.Refresh(); 
+                    dgvSales.Refresh();
                     //TODO; realod data; 
                 }
             }

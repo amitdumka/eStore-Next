@@ -32,27 +32,36 @@ namespace AKS.Payroll.Forms
             sale = daily;
             isNew = false;
             btnAdd.Text = "Edit";
+            txtInvoiceNumber.Enabled = false;
 
         }
 
         private void DisplayData()
         {
-            cbxStores.SelectedValue = sale.StoreId;
-            txtAmount.Text = sale.Amount.ToString();
-            txtCash.Text=sale.CashAmount.ToString();
-            txtNonCash.Text=sale.NonCashAmount.ToString();
-            dtpOnDate.Value = sale.OnDate;
-            cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
-            cbxPOS.SelectedValue = sale.EDCTerminalId;
-            cbxSaleman.SelectedValue = sale.SalemanId;
-            cbManual.Checked = sale.ManualBill;
-            cbSalesReturn.Checked = sale.SalesReturn;
-            cbTailoring.Checked = sale.TailoringBill;
-            cbDue.Checked = sale.IsDue; 
-            txtInvoiceNumber.Text = sale.InvoiceNumber.ToString();
-            txtRemarks.Text = sale.Remarks.ToString();
+            try
+            {
+                cbxStores.SelectedValue = sale.StoreId;
+                txtAmount.Text = sale.Amount.ToString();
+                txtCash.Text = sale.CashAmount.ToString();
+                txtNonCash.Text = sale.NonCashAmount.ToString();
+                dtpOnDate.Value = sale.OnDate;
+                cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
+                cbxPOS.SelectedValue =sale.EDCTerminalId!=null? sale.EDCTerminalId:"";
+                cbxSaleman.SelectedValue = sale.SalemanId;
+                cbManual.Checked = sale.ManualBill;
+                cbSalesReturn.Checked = sale.SalesReturn;
+                cbTailoring.Checked = sale.TailoringBill;
+                cbDue.Checked = sale.IsDue;
+                txtInvoiceNumber.Text = sale.InvoiceNumber.ToString();
+                txtRemarks.Text = sale.Remarks.ToString();
+            }
+            catch (Exception ex)
+            {
 
-           
+                MessageBox.Show(ex.Message);
+            }
+
+
         }
 
         private void LoadData()
@@ -84,53 +93,90 @@ namespace AKS.Payroll.Forms
             cbxPOS.DataSource = azureDb.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new { c.EDCTerminalId, c.Name }).ToList();
         }
 
-        private bool ReadData()
+       private bool ReadData()
         {
-            if (isNew)
+            try
             {
-                sale = new DailySale
+                if (isNew)
                 {
-                    Amount = decimal.Parse(txtAmount.Text.Trim()),
-                    CashAmount = decimal.Parse(txtCash.Text.Trim()),
-                    NonCashAmount = decimal.Parse(txtNonCash.Text.Trim()),
-                    EDCTerminalId = (string)cbxPOS.SelectedValue,
-                    EntryStatus = EntryStatus.Added,
-                    InvoiceNumber = txtInvoiceNumber.Text,
-                    IsDue = cbDue.Checked,
-                    IsReadOnly = false,
-                    ManualBill = cbManual.Checked,
-                    MarkedDeleted = false,
-                    OnDate = dtpOnDate.Value,
-                    PayMode = (PayMode)cbxPaymentMode.SelectedIndex,
-                    Remarks = txtRemarks.Text,
-                    SalemanId = (string)cbxSaleman.SelectedValue,
-                    SalesReturn = cbSalesReturn.Checked,
-                    StoreId = (string)cbxStores.SelectedValue,
-                    TailoringBill = cbTailoring.Checked,
-                    UserId = "WinUI"
-                };
+                    sale = new DailySale
+                    {
+                        Amount = decimal.Parse(txtAmount.Text.Trim()),
+                        CashAmount = decimal.Parse(txtCash.Text.Trim()),
+                        NonCashAmount = decimal.Parse(txtNonCash.Text.Trim()),
+                        EDCTerminalId = (string)cbxPOS.SelectedValue,
+                        EntryStatus = EntryStatus.Added,
+                        InvoiceNumber = txtInvoiceNumber.Text,
+                        IsDue = cbDue.Checked,
+                        IsReadOnly = false,
+                        ManualBill = cbManual.Checked,
+                        MarkedDeleted = false,
+                        OnDate = dtpOnDate.Value,
+                        PayMode = (PayMode)cbxPaymentMode.SelectedIndex,
+                        Remarks = txtRemarks.Text,
+                        SalemanId = (string)cbxSaleman.SelectedValue,
+                        SalesReturn = cbSalesReturn.Checked,
+                        StoreId = (string)cbxStores.SelectedValue,
+                        TailoringBill = cbTailoring.Checked,
+                        UserId = "WinUI"
+                    };
+                }
+                else
+                {
+                    sale.Amount = decimal.Parse(txtAmount.Text.Trim());
+                    sale.CashAmount = decimal.Parse(txtCash.Text.Trim());
+                    sale.NonCashAmount = decimal.Parse(txtNonCash.Text.Trim());
+                    sale.EDCTerminalId = (string)cbxPOS.SelectedValue;
+                    sale.EntryStatus = EntryStatus.Added; sale.InvoiceNumber = txtInvoiceNumber.Text;
+                    sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
+                    sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
+                    sale.Remarks = txtRemarks.Text; sale.SalemanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
+                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = "WinUI";
+                }
+                return true;
+
             }
-            else
+            catch (Exception ex)
             {
-                sale.Amount = decimal.Parse(txtAmount.Text.Trim());
-                sale.CashAmount = decimal.Parse(txtCash.Text.Trim());
-                sale.NonCashAmount = decimal.Parse(txtNonCash.Text.Trim());
-                sale.EDCTerminalId = (string)cbxPOS.SelectedValue;
-                sale.EntryStatus = EntryStatus.Added; sale.InvoiceNumber = txtInvoiceNumber.Text;
-                sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
-                sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
-                sale.Remarks = txtRemarks.Text; sale.SalemanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
-                sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = "WinUI";
+                MessageBox.Show(ex.Message);
+                return false;
+
             }
-            return true;
+        }
+       private void SaveDue()
+        {
+            //TODO: Ideal is meet, when due is not present then add, when due present and edit due removed. 
+            CustomerDue due = new() {
+                InvoiceNumber = sale.InvoiceNumber, Amount=sale.Amount, 
+                 EntryStatus= EntryStatus.Added, IsReadOnly=false, MarkedDeleted=false, 
+                  OnDate=sale.OnDate, Paid=false, StoreId=sale.StoreId, UserId=sale.UserId, 
+                   
+            };
+            if(isNew)
+            azureDb.CustomerDues.Add(due);
+            else azureDb.CustomerDues.Update(due);
+        }
+       private void SavePaymentData()
+        {
+            //TODO: Implement this . for banking input. 
         }
         private bool SaveData()
         {
+            try
+            {
+                if (sale.IsDue) SaveDue();
 
-            if(isNew)
-                azureDb.DailySales.Add(sale);
-            else azureDb.DailySales.Update(sale);
-            return azureDb.SaveChanges() > 0;
+                if (isNew)
+                    azureDb.DailySales.Add(sale);
+                else azureDb.DailySales.Update(sale);
+
+                return azureDb.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
 
         }
 
@@ -140,7 +186,8 @@ namespace AKS.Payroll.Forms
         {
             if (btnAdd.Text == "Add") { btnAdd.Text = "Save"; }
             else if (btnAdd.Text == "Edit") { btnAdd.Text = "Save"; }
-            else if (btnAdd.Text == "Save") {
+            else if (btnAdd.Text == "Save")
+            {
 
                 if (ReadData())
                 {
@@ -149,7 +196,7 @@ namespace AKS.Payroll.Forms
                         MessageBox.Show("Invoice is saved");
                         btnAdd.Text = "Add";
                         ClearFields();
-                        if(isNew) this.DialogResult = DialogResult.OK;
+                        if (isNew) this.DialogResult = DialogResult.OK;
                         else this.DialogResult = DialogResult.Yes;
                         IsSaved = true;
                     }
@@ -190,6 +237,29 @@ namespace AKS.Payroll.Forms
                 Console.WriteLine(err.Message);
             }
 
+        }
+
+        private void cbxPaymentMode_SelectedValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbxPaymentMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
+            {
+                cbxPOS.Enabled = false; 
+                txtNonCash.Enabled = false;
+                txtNonCash.Text = "0"; 
+                txtCash.Text = "0";
+            }
+            else
+            {
+                cbxPOS.Enabled = true;
+                txtNonCash.Enabled = true;
+                txtNonCash.Text = "0";
+                txtCash.Text = "0";
+            }
         }
     }
 }

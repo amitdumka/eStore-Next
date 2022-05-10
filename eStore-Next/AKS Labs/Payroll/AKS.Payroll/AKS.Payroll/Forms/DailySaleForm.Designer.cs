@@ -69,7 +69,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(800, 71);
+            this.groupBox1.Size = new System.Drawing.Size(800, 59);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
@@ -84,7 +84,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(539, 19);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(258, 49);
+            this.panel1.Size = new System.Drawing.Size(258, 37);
             this.panel1.TabIndex = 3;
             // 
             // rbYearly
@@ -157,9 +157,9 @@
             // 
             this.groupBox2.Controls.Add(this.lbYearList);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.groupBox2.Location = new System.Drawing.Point(0, 71);
+            this.groupBox2.Location = new System.Drawing.Point(0, 59);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(112, 379);
+            this.groupBox2.Size = new System.Drawing.Size(112, 391);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Year";
@@ -172,7 +172,7 @@
             this.lbYearList.ItemHeight = 15;
             this.lbYearList.Location = new System.Drawing.Point(3, 19);
             this.lbYearList.Name = "lbYearList";
-            this.lbYearList.Size = new System.Drawing.Size(106, 357);
+            this.lbYearList.Size = new System.Drawing.Size(106, 369);
             this.lbYearList.TabIndex = 0;
             this.lbYearList.ValueMember = "Year";
             // 
@@ -180,9 +180,9 @@
             // 
             this.groupBox3.Controls.Add(this.tabControl1);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(112, 71);
+            this.groupBox3.Location = new System.Drawing.Point(112, 59);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(688, 379);
+            this.groupBox3.Size = new System.Drawing.Size(688, 391);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Sale List";
@@ -196,8 +196,10 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(682, 357);
+            this.tabControl1.Size = new System.Drawing.Size(682, 369);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
             // 
             // tabPage1
             // 
@@ -205,7 +207,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(674, 329);
+            this.tabPage1.Size = new System.Drawing.Size(674, 341);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Daily Sale";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -221,7 +223,7 @@
             this.dgvSales.Name = "dgvSales";
             this.dgvSales.ReadOnly = true;
             this.dgvSales.RowTemplate.Height = 25;
-            this.dgvSales.Size = new System.Drawing.Size(668, 323);
+            this.dgvSales.Size = new System.Drawing.Size(668, 335);
             this.dgvSales.TabIndex = 0;
             this.dgvSales.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSales_CellContentClick);
             // 
@@ -231,7 +233,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(674, 329);
+            this.tabPage2.Size = new System.Drawing.Size(674, 341);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Dues";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -247,7 +249,7 @@
             this.dgvDues.Name = "dgvDues";
             this.dgvDues.ReadOnly = true;
             this.dgvDues.RowTemplate.Height = 25;
-            this.dgvDues.Size = new System.Drawing.Size(668, 323);
+            this.dgvDues.Size = new System.Drawing.Size(668, 335);
             this.dgvDues.TabIndex = 0;
             // 
             // tabPage3
@@ -256,7 +258,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(674, 329);
+            this.tabPage3.Size = new System.Drawing.Size(674, 341);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Dues Recovered";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -272,7 +274,7 @@
             this.dgvRecovered.Name = "dgvRecovered";
             this.dgvRecovered.ReadOnly = true;
             this.dgvRecovered.RowTemplate.Height = 25;
-            this.dgvRecovered.Size = new System.Drawing.Size(668, 323);
+            this.dgvRecovered.Size = new System.Drawing.Size(668, 335);
             this.dgvRecovered.TabIndex = 0;
             // 
             // statusStrip1

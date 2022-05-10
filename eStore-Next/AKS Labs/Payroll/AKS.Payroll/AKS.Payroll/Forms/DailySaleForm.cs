@@ -1,15 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Shared.Commons.Models.Sales;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AKS.Payroll.Forms
 {
@@ -38,6 +30,7 @@ namespace AKS.Payroll.Forms
             YearDataList = new List<int>();
             YearList = new List<int>();
             LoadData();
+
         }
 
         private void FilterData(RadioButton rb)
@@ -116,22 +109,41 @@ namespace AKS.Payroll.Forms
                     DMMapper.Mapper.Map<DailySaleVM>(sale);
             }
         }
+        private bool DueDataLoaded = false;
         private void LoadDueData()
         {
             if (customerDues == null || customerDues.Count() == 0)
             {
+                if (customerDues == null) customerDues = new List<CustomerDue>();
                 customerDues.AddRange(azureDb.CustomerDues
                     .Where(c => c.StoreId == StoreCode && !c.Paid)
                     .OrderByDescending(c => c.OnDate)
                     .ToList());
-
+                if (dueRecoveryList == null) dueRecoveryList = new List<DueRecovery>();
                 dueRecoveryList.AddRange(azureDb.DueRecovery.Where(c => c.StoreId == StoreCode &&
                 c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
 
             }
 
-            dgvDues.DataSource = customerDues;
-            dgvRecovered.DataSource = dueRecoveryList;
+            if (!DueDataLoaded)
+            {
+                dgvDues.DataSource = customerDues;
+                dgvRecovered.DataSource = dueRecoveryList;
+                DueDataLoaded = true;
+                dgvDues.Columns["Store"].Visible = false;
+                dgvDues.Columns["IsReadOnly"].Visible = false;
+                dgvDues.Columns["EntryStatus"].Visible = false;
+                dgvDues.Columns["USerId"].Visible = false;
+                dgvDues.Columns["MarkedDeleted"].Visible = false;
+
+                dgvRecovered.Columns["Store"].Visible = false;
+                dgvRecovered.Columns["IsReadOnly"].Visible = false;
+                dgvRecovered.Columns["EntryStatus"].Visible = false;
+                dgvRecovered.Columns["USerId"].Visible = false;
+                dgvRecovered.Columns["MarkedDeleted"].Visible = false;
+
+            }
+
 
         }
 
@@ -178,7 +190,7 @@ namespace AKS.Payroll.Forms
 
                 }
             }
-            if (form.ShowDialog() == DialogResult.Yes)
+            else if (form.DialogResult == DialogResult.Yes)
             {
                 if (form.IsSaved)
                 {
@@ -192,13 +204,28 @@ namespace AKS.Payroll.Forms
             }
             else if (form.DialogResult == DialogResult.No)
             {
-                if (string.IsNullOrEmpty(form.DeletedI))
+                if (!string.IsNullOrEmpty(form.DeletedI))
                 {
                     dailySaleVMs.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());
                     dgvSales.Refresh();
                     //TODO; realod data; 
                 }
             }
+        }
+
+        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show("Test");
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (tabControl1.SelectedTab == tabPage2 || tabControl1.SelectedTab == tabPage3)
+            {
+                LoadDueData();
+            }
+
         }
     }
 }

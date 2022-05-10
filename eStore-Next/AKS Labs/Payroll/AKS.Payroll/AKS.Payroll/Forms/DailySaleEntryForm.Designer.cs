@@ -232,7 +232,6 @@
             this.cbxPaymentMode.Size = new System.Drawing.Size(121, 23);
             this.cbxPaymentMode.TabIndex = 16;
             this.cbxPaymentMode.SelectedIndexChanged += new System.EventHandler(this.cbxPaymentMode_SelectedIndexChanged);
-            this.cbxPaymentMode.SelectedValueChanged += new System.EventHandler(this.cbxPaymentMode_SelectedValueChanged);
             // 
             // txtAmount
             // 

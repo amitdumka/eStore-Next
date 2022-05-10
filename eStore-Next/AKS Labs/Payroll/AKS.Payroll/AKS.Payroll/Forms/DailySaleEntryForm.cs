@@ -1,14 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Sales;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AKS.Payroll.Forms
 {
@@ -16,8 +8,10 @@ namespace AKS.Payroll.Forms
     {
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+
         private static string StoreCode = "ARD";
         public DailySale sale;
+        public CustomerDue CustomerDue;
         private bool isNew;
         public string DeletedI { get; set; }
         public bool IsSaved { get; set; }
@@ -146,15 +140,15 @@ namespace AKS.Payroll.Forms
        private void SaveDue()
         {
             //TODO: Ideal is meet, when due is not present then add, when due present and edit due removed. 
-            CustomerDue due = new() {
+            CustomerDue = new() {
                 InvoiceNumber = sale.InvoiceNumber, Amount=sale.Amount, 
                  EntryStatus= EntryStatus.Added, IsReadOnly=false, MarkedDeleted=false, 
                   OnDate=sale.OnDate, Paid=false, StoreId=sale.StoreId, UserId=sale.UserId, 
                    
             };
             if(isNew)
-            azureDb.CustomerDues.Add(due);
-            else azureDb.CustomerDues.Update(due);
+            azureDb.CustomerDues.Add(CustomerDue);
+            else azureDb.CustomerDues.Update(CustomerDue);
         }
        private void SavePaymentData()
         {
@@ -208,7 +202,27 @@ namespace AKS.Payroll.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            var confirmResult = DeleteBox("Sale ");
+            if (confirmResult == DialogResult.Yes)
+            {
+                if (sale.OnDate.Date > new DateTime(2022, 3, 31))
+                {
+                    azureDb.DailySales.Remove(sale);
+                    if (azureDb.SaveChanges() > 0)
+                    {
+                        MessageBox.Show("Sale is deleted!", "Delete");
+                        this.DeletedI = sale.InvoiceNumber;
+                        this.DialogResult = DialogResult.No;
+                        this.Close();
+                    }
+                    else MessageBox.Show("Failed to delete, please try again!", "Delete");
+                }
+                else
+                {
+                    MessageBox.Show("Sale before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
+                }
 
+            }
         }
 
         private void btnCancle_Click(object sender, EventArgs e)
@@ -239,11 +253,7 @@ namespace AKS.Payroll.Forms
 
         }
 
-        private void cbxPaymentMode_SelectedValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void cbxPaymentMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
@@ -261,5 +271,33 @@ namespace AKS.Payroll.Forms
                 txtCash.Text = "0";
             }
         }
+    
+        public DialogResult DeleteBox(string name)
+        {
+            return MessageBox.Show($"Are you sure to delete this {name} ??",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+            //if (confirmResult == DialogResult.Yes)
+            //{
+            //    if (newAtt.OnDate.Date > new DateTime(2022, 3, 31))
+            //    {
+            //        db.Attendances.Remove(newAtt);
+            //        if (db.SaveChanges() > 0)
+            //        {
+            //            MessageBox.Show("Attendance is deleted!", "Delete");
+            //            this.DeletedAttednance = newAtt.AttendanceId;
+            //            this.DialogResult = DialogResult.OK;
+            //            this.Close();
+            //        }
+            //        else MessageBox.Show("Failed to delete, please try again!", "Delete");
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Attendace before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
+            //    }
+
+            //}
+        }
+    
     }
 }

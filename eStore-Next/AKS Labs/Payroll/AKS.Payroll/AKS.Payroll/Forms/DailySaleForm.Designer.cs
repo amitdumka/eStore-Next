@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnDueRecovery = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbYearly = new System.Windows.Forms.RadioButton();
             this.lbLMonth = new System.Windows.Forms.RadioButton();
@@ -62,6 +63,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnDueRecovery);
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Controls.Add(this.btnReload);
             this.groupBox1.Controls.Add(this.btnDelete);
@@ -73,6 +75,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
+            // 
+            // btnDueRecovery
+            // 
+            this.btnDueRecovery.Location = new System.Drawing.Point(284, 31);
+            this.btnDueRecovery.Name = "btnDueRecovery";
+            this.btnDueRecovery.Size = new System.Drawing.Size(75, 23);
+            this.btnDueRecovery.TabIndex = 4;
+            this.btnDueRecovery.Text = "Recovery";
+            this.btnDueRecovery.UseVisualStyleBackColor = true;
+            this.btnDueRecovery.Click += new System.EventHandler(this.btnDueRecovery_Click);
             // 
             // panel1
             // 
@@ -251,6 +263,7 @@
             this.dgvDues.RowTemplate.Height = 25;
             this.dgvDues.Size = new System.Drawing.Size(668, 335);
             this.dgvDues.TabIndex = 0;
+            this.dgvDues.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDues_CellContentClick);
             // 
             // tabPage3
             // 
@@ -276,6 +289,7 @@
             this.dgvRecovered.RowTemplate.Height = 25;
             this.dgvRecovered.Size = new System.Drawing.Size(668, 335);
             this.dgvRecovered.TabIndex = 0;
+            this.dgvRecovered.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRecovered_CellContentClick);
             // 
             // statusStrip1
             // 
@@ -338,5 +352,6 @@
         private RadioButton rbYearly;
         private RadioButton lbLMonth;
         private RadioButton rbCMonth;
+        private Button btnDueRecovery;
     }
 }

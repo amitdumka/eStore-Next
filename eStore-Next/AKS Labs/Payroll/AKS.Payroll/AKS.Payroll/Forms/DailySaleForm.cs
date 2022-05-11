@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
+using AKS.Payroll.Forms.EntryForms;
 using AKS.Shared.Commons.Models.Sales;
 using System.Data;
 
@@ -198,14 +199,17 @@ namespace AKS.Payroll.Forms
                     dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
                     dgvSales.Refresh();
                     //TODO: reload Data; 
-
-
                 }
             }
             else if (form.DialogResult == DialogResult.No)
             {
                 if (!string.IsNullOrEmpty(form.DeletedI))
                 {
+                    if (form.sale.IsDue || form.CustomerDue!=null)
+                    {
+                        customerDues.Remove(form.CustomerDue);
+                        dgvDues.Refresh();
+                    }
                     dailySaleVMs.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());
                     dgvSales.Refresh();
                     //TODO; realod data; 
@@ -225,6 +229,68 @@ namespace AKS.Payroll.Forms
             {
                 LoadDueData();
             }
+
+        }
+
+        private void btnDueRecovery_Click(object sender, EventArgs e)
+        {
+            DueRecoveryEntryForm form = new DueRecoveryEntryForm();
+            if(form.ShowDialog()== DialogResult.OK)
+            {
+
+            }
+        }
+
+        private void dgvRecovered_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // var sale = DMMapper.Mapper.Map<DailySale>(dgvSales.CurrentRow.DataBoundItem);
+            var dueRec = (DueRecovery)dgvRecovered.CurrentRow.DataBoundItem;
+
+            DueRecoveryEntryForm form = new DueRecoveryEntryForm(dueRec);
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                if (form.IsSave)
+                {
+                    //dueRecoveryList.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    dueRecoveryList.Add(form.DueRecovery);
+                    dgvRecovered.Refresh();
+                    //TODO: reload Data; 
+
+
+                }
+            }
+            else if (form.DialogResult == DialogResult.Yes)
+            {
+                if (form.IsSave)
+                {
+                    //dueRecoveryList.Remove(dailySaleVMs.Where(c => c.InvoiceNumber == form.sale.InvoiceNumber).First());
+                    //dueRecoveryList.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    dueRecoveryList.Remove(form.DueRecovery);
+                    dueRecoveryList.Add(form.DueRecovery);
+
+                    dgvRecovered.Refresh();
+                    //TODO: reload Data; 
+                }
+            }
+            else if (form.DialogResult == DialogResult.No)
+            {
+                if (!string.IsNullOrEmpty(form.DeleteId))
+                {
+                    if (!form.DueRecovery.ParticialPayment)
+                    {
+                        customerDues.Remove(customerDues.Where(c=>c.InvoiceNumber==form.DueRecovery.InvoiceNumber).First());
+                        dgvDues.Refresh();
+                    }
+                    dueRecoveryList.Remove(form.DueRecovery);
+                    dgvRecovered.Refresh();
+                    //TODO; realod data; 
+                }
+            }
+        }
+
+        private void dgvDues_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
     }

@@ -208,6 +208,11 @@ namespace AKS.Payroll.Forms
                 if (sale.OnDate.Date > new DateTime(2022, 3, 31))
                 {
                     azureDb.DailySales.Remove(sale);
+                    if (sale.IsDue)
+                    {
+                       var d= azureDb.CustomerDues.Where(c=>c.InvoiceNumber==sale.InvoiceNumber).FirstOrDefault();
+                        if (d != null) { azureDb.CustomerDues.Remove(d); }
+                    }
                     if (azureDb.SaveChanges() > 0)
                     {
                         MessageBox.Show("Sale is deleted!", "Delete");

@@ -127,6 +127,12 @@ namespace AKS.Payroll.Forms
                     sale.Remarks = txtRemarks.Text; sale.SalemanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
                     sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = "WinUI";
                 }
+
+                if(sale.PayMode!=PayMode.Card || sale.PayMode!=PayMode.UPI|| sale.PayMode == PayMode.Wallets || sale.PayMode!=PayMode.MixPayments)
+                {
+                    sale.EDCTerminalId = "";
+                }
+
                 return true;
 
             }

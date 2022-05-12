@@ -112,7 +112,7 @@ namespace AKS.Payroll.Forms
                         SalesReturn = cbSalesReturn.Checked,
                         StoreId = (string)cbxStores.SelectedValue,
                         TailoringBill = cbTailoring.Checked,
-                        UserId = "WinUI"
+                        UserId=CurrentSession.UserName
                     };
                 }
                 else
@@ -125,7 +125,7 @@ namespace AKS.Payroll.Forms
                     sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
                     sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
                     sale.Remarks = txtRemarks.Text; sale.SalemanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
-                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = "WinUI";
+                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId=CurrentSession.UserName;
                 }
 
                 if(sale.PayMode!=PayMode.Card || sale.PayMode!=PayMode.UPI|| sale.PayMode == PayMode.Wallets || sale.PayMode!=PayMode.MixPayments)

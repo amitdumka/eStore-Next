@@ -77,6 +77,8 @@ namespace AKS.Payroll.Database
 
         public DbSet<Salesman> Salesmen { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
+        public DbSet<User> Users { get; set; }
+
         // Banking  Note: Some of Table will move to other part. 
 
         public DbSet<Bank> Banks { get; set; }

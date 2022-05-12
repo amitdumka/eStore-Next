@@ -32,7 +32,7 @@ namespace AKS.Payroll.Forms.EntryForms
                     Remarks = "",
                     StoreId = "ARD",// TODO: read from Global Variable/session
                     MarkedDeleted = false,
-                    UserId = "WinUI"
+                    UserId = CurrentSession.UserName
                 };
             LoadData();
         }
@@ -215,6 +215,7 @@ namespace AKS.Payroll.Forms.EntryForms
             newAtt.EntryTime = txtEntryTime.Text;
             newAtt.EmployeeId = (string)cbxEmployees.SelectedValue;
             newAtt.IsTailoring = cbIsTailors.Checked;
+            newAtt.UserId = CurrentSession.UserName;
 
             return newAtt;
         }

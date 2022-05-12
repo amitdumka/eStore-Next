@@ -116,7 +116,7 @@ namespace AKS.Payroll.Forms.EntryForms
                     IsReadOnly = false,
                     OnDate = dtpOnDate.Value,
                     PayMode = (PayMode)cbxPayMode.SelectedIndex,
-                    UserId = "WinUI",
+                    UserId=CurrentSession.UserName,
                     StoreId = cbxStores.SelectedValue.ToString(),
                     Remarks = txtRemarks.Text.Trim(),
                     ParticialPayment = cbParticalPayment.Checked,
@@ -132,7 +132,7 @@ namespace AKS.Payroll.Forms.EntryForms
                 DueRecovery.IsReadOnly = false;
                 DueRecovery.OnDate = dtpOnDate.Value;
                 DueRecovery.PayMode = (PayMode)cbxPayMode.SelectedIndex;
-                DueRecovery.UserId = "WinUI";
+                DueRecovery.UserId=CurrentSession.UserName;
                 DueRecovery.StoreId = cbxStores.SelectedValue.ToString();
                 DueRecovery.Remarks = txtRemarks.Text.Trim();
                 DueRecovery.ParticialPayment = cbParticalPayment.Checked;

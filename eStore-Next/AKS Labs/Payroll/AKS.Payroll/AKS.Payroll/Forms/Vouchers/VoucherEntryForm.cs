@@ -277,7 +277,7 @@ namespace AKS.Payroll.Forms.Vouchers
                         PartyId = (string)cbxParties.SelectedValue,
                         IsReadOnly = false,
                         MarkedDeleted = false,
-                        UserId = "WinUI",
+                        UserId=CurrentSession.UserName,
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         TranscationId = (string)cbxTranscationMode.SelectedValue,
                         Particulars = txtParticulars.Text.Trim(),
@@ -306,7 +306,7 @@ namespace AKS.Payroll.Forms.Vouchers
                     cashVoucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     cashVoucher.IsReadOnly = false;
                     cashVoucher.MarkedDeleted = false;
-                    cashVoucher.UserId = "WinUI";
+                    cashVoucher.UserId=CurrentSession.UserName;
                 }
                 cashVoucher.VoucherNumber = isNew ? 
                     GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) : 
@@ -337,7 +337,7 @@ namespace AKS.Payroll.Forms.Vouchers
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         IsReadOnly = false,
                         MarkedDeleted = false,
-                        UserId = "WinUI"
+                        UserId=CurrentSession.UserName
                     };
                     voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
@@ -359,7 +359,7 @@ namespace AKS.Payroll.Forms.Vouchers
                     voucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     voucher.IsReadOnly = false;
                     voucher.MarkedDeleted = false;
-                    voucher.UserId = "WinUI";
+                    voucher.UserId=CurrentSession.UserName;
                     voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
 
 

@@ -279,7 +279,8 @@ namespace AKS.Payroll.Forms
                 {
                     if (!form.DueRecovery.ParticialPayment)
                     {
-                        customerDues.Remove(customerDues.Where(c=>c.InvoiceNumber==form.DueRecovery.InvoiceNumber).First());
+                        var dd = customerDues.Where(c => c.InvoiceNumber == form.DueRecovery.InvoiceNumber).First();
+                       if(dd!=null) customerDues.Remove(dd);
                         dgvDues.Refresh();
                     }
                     dueRecoveryList.Remove(form.DueRecovery);

@@ -233,6 +233,7 @@ namespace AKS.Payroll.Forms
         private void btnCancle_Click(object sender, EventArgs e)
         {
             ClearFields();
+            this.Close();
         }
 
         private void DailySaleEntryForm_Load(object sender, EventArgs e)

@@ -215,14 +215,14 @@
             this.dtpOnDate.Location = new System.Drawing.Point(66, 3);
             this.dtpOnDate.Name = "dtpOnDate";
             this.dtpOnDate.Size = new System.Drawing.Size(151, 23);
-            this.dtpOnDate.TabIndex = 14;
+            this.dtpOnDate.TabIndex = 1;
             // 
             // txtInvoiceNumber
             // 
             this.txtInvoiceNumber.Location = new System.Drawing.Point(321, 3);
             this.txtInvoiceNumber.Name = "txtInvoiceNumber";
             this.txtInvoiceNumber.Size = new System.Drawing.Size(135, 23);
-            this.txtInvoiceNumber.TabIndex = 15;
+            this.txtInvoiceNumber.TabIndex = 2;
             // 
             // cbxPaymentMode
             // 
@@ -230,7 +230,7 @@
             this.cbxPaymentMode.Location = new System.Drawing.Point(574, 3);
             this.cbxPaymentMode.Name = "cbxPaymentMode";
             this.cbxPaymentMode.Size = new System.Drawing.Size(121, 23);
-            this.cbxPaymentMode.TabIndex = 16;
+            this.cbxPaymentMode.TabIndex = 3;
             this.cbxPaymentMode.SelectedIndexChanged += new System.EventHandler(this.cbxPaymentMode_SelectedIndexChanged);
             // 
             // txtAmount
@@ -238,21 +238,21 @@
             this.txtAmount.Location = new System.Drawing.Point(66, 32);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(151, 23);
-            this.txtAmount.TabIndex = 17;
+            this.txtAmount.TabIndex = 4;
             // 
             // txtCash
             // 
             this.txtCash.Location = new System.Drawing.Point(321, 32);
             this.txtCash.Name = "txtCash";
             this.txtCash.Size = new System.Drawing.Size(135, 23);
-            this.txtCash.TabIndex = 18;
+            this.txtCash.TabIndex = 5;
             // 
             // txtNonCash
             // 
             this.txtNonCash.Location = new System.Drawing.Point(574, 32);
             this.txtNonCash.Name = "txtNonCash";
             this.txtNonCash.Size = new System.Drawing.Size(100, 23);
-            this.txtNonCash.TabIndex = 24;
+            this.txtNonCash.TabIndex = 6;
             // 
             // cbxPOS
             // 
@@ -260,7 +260,7 @@
             this.cbxPOS.Location = new System.Drawing.Point(66, 61);
             this.cbxPOS.Name = "cbxPOS";
             this.cbxPOS.Size = new System.Drawing.Size(121, 23);
-            this.cbxPOS.TabIndex = 25;
+            this.cbxPOS.TabIndex = 7;
             // 
             // label10
             // 
@@ -277,7 +277,7 @@
             this.cbManual.Location = new System.Drawing.Point(223, 61);
             this.cbManual.Name = "cbManual";
             this.cbManual.Size = new System.Drawing.Size(85, 19);
-            this.cbManual.TabIndex = 21;
+            this.cbManual.TabIndex = 8;
             this.cbManual.Text = "Manual Bill";
             this.cbManual.UseVisualStyleBackColor = true;
             // 
@@ -287,7 +287,7 @@
             this.cbDue.Location = new System.Drawing.Point(321, 61);
             this.cbDue.Name = "cbDue";
             this.cbDue.Size = new System.Drawing.Size(47, 19);
-            this.cbDue.TabIndex = 22;
+            this.cbDue.TabIndex = 9;
             this.cbDue.Text = "Due";
             this.cbDue.UseVisualStyleBackColor = true;
             // 
@@ -297,7 +297,7 @@
             this.cbTailoring.Location = new System.Drawing.Point(462, 61);
             this.cbTailoring.Name = "cbTailoring";
             this.cbTailoring.Size = new System.Drawing.Size(71, 19);
-            this.cbTailoring.TabIndex = 23;
+            this.cbTailoring.TabIndex = 10;
             this.cbTailoring.Text = "Tailoring";
             this.cbTailoring.UseVisualStyleBackColor = true;
             // 
@@ -307,7 +307,7 @@
             this.cbSalesReturn.Location = new System.Drawing.Point(574, 61);
             this.cbSalesReturn.Name = "cbSalesReturn";
             this.cbSalesReturn.Size = new System.Drawing.Size(90, 19);
-            this.cbSalesReturn.TabIndex = 26;
+            this.cbSalesReturn.TabIndex = 11;
             this.cbSalesReturn.Text = "Sales Return";
             this.cbSalesReturn.UseVisualStyleBackColor = true;
             // 
@@ -317,14 +317,14 @@
             this.cbxSaleman.Location = new System.Drawing.Point(66, 90);
             this.cbxSaleman.Name = "cbxSaleman";
             this.cbxSaleman.Size = new System.Drawing.Size(121, 23);
-            this.cbxSaleman.TabIndex = 27;
+            this.cbxSaleman.TabIndex = 12;
             // 
             // txtRemarks
             // 
             this.txtRemarks.Location = new System.Drawing.Point(321, 90);
             this.txtRemarks.Name = "txtRemarks";
             this.txtRemarks.Size = new System.Drawing.Size(100, 23);
-            this.txtRemarks.TabIndex = 28;
+            this.txtRemarks.TabIndex = 13;
             // 
             // groupBox3
             // 

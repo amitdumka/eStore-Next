@@ -1,10 +1,55 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Payroll.Models;
-
+using AKS.Shared.Payrolls.ViewModels;
 namespace AKS.ParyollSystem
 {
     public class PayrollManager
     {
+        public SalaryLedgerVM GetSalaryLedger(AzurePayrollDbContext db, string empId)
+        {
+            var sl = db.SalaryLedgers.Where(c => c.EmployeeId == empId).OrderBy(c => c.OnDate)
+                .Select(c => new SalaryLedgerDetailVM { OnDate = c.OnDate, Particulars = c.Particulars, InAmount = c.InAmount, OutAmount = c.OutAmount })
+                .ToList();
+            SalaryLedgerVM vm = new SalaryLedgerVM { EmployeeId = empId, StaffName = "", Details = sl };
+            return vm;
+        }
+
+        //Salary Ledger
+        public bool UpdateSalaryLedgerForSalary(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string salaryMonth)
+        {
+            return UpdateSalaryLedger(db, empId, onDate, amount, salaryMonth, false);
+        }
+        public bool UpdateSalaryLedgerForPayment(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string salaryMonth)
+        {
+            return UpdateSalaryLedger(db, empId, onDate, amount, salaryMonth, true);
+        }
+
+
+        public bool UpdateSalaryLedger(AzurePayrollDbContext db, string empId, DateTime onDate, decimal amount, string reson, bool isOut)
+        {
+            SalaryLedger salary = new()
+            {
+                EmployeeId = empId,
+                IsReadOnly = false,
+                OnDate = onDate,
+                Particulars = reson,
+                MarkedDeleted = false,
+                UserId = "AutoAdded",
+                InAmount = 0,
+                OutAmount = 0
+
+            };
+            if (isOut) salary.OutAmount = amount; else salary.InAmount = amount;
+            db.SalaryLedgers.Add(salary);
+            return db.SaveChanges() > 0;
+        }
+
+        public bool UpdateSalaryLedger(AzurePayrollDbContext db, SalaryLedger salary)
+        {
+            db.SalaryLedgers.Add(salary);
+            return db.SaveChanges() > 0;
+        }
+
         /// <summary>
         /// Calculate for a month for a particular employee
         /// </summary>
@@ -171,6 +216,14 @@ namespace AKS.ParyollSystem
                 }
             }
         }
-    }
+
+        public List<Attendance> GetMonthlyAttendance(AzurePayrollDbContext db, string empId, DateTime onDate)
+        {
+            if (db == null) db = new AzurePayrollDbContext();
+            var list= db.Attendances.Where(c=>c.EmployeeId==empId && c.OnDate.Month==onDate.Month && c.OnDate.Year==onDate.Year).OrderBy(c=>c.OnDate).ToList();
+            return list;
+
+        }
+    }                                                                        
 }
 

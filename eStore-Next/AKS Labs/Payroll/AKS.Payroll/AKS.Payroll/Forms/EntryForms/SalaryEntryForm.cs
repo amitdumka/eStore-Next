@@ -38,7 +38,7 @@ namespace AKS.Payroll.Forms.EntryForms
                 MarkedDeleted = false,
                 SalaryId = "",
                 StoreId = "ARD",
-                UserId = "WinUI",
+                UserId=CurrentSession.UserName,
                 WowBill = false
             };
         }
@@ -85,7 +85,7 @@ namespace AKS.Payroll.Forms.EntryForms
                 EmployeeId = (string)cbxEmployees.SelectedValue,
                 EntryStatus = EntryStatus.Added,// newSalary.EntryStatus,
                 MarkedDeleted = false,
-                UserId = "WinUI",
+                UserId=CurrentSession.UserName,
                 IsEffective = cbIsEffective.Checked,
 
                 LastPcs = this.clbOptions.GetItemChecked(1),

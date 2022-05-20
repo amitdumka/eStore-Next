@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.DatabaseMigrator;
+using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Banking;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,7 +71,7 @@ namespace AKS.Payroll.Forms.Banking
 
             }
         }
-        
+
         private void LoadData()
         {
             UpdateBankList(azureDb.Banks.ToList());
@@ -94,12 +95,12 @@ namespace AKS.Payroll.Forms.Banking
 
         private void btnAddBankAccount_Click(object sender, EventArgs e)
         {
-            BankAccountEntryForm form = new BankAccountEntryForm(1);
-          
-            if( form.ShowDialog()==DialogResult.OK)
+            BankAccountEntryForm form = new BankAccountEntryForm();
+            if (form.ShowDialog() == DialogResult.OK)
             {
 
-            }else if(DialogResult== DialogResult.Yes)
+            }
+            else if (DialogResult == DialogResult.Yes)
             {
 
             }

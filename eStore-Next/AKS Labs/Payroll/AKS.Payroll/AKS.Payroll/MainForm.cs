@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Forms;
 using AKS.Payroll.Forms.Banking;
+using AKS.Payroll.Forms.Vouchers;
 using AKS.Payroll.Ops;
 
 namespace AKS.Payroll
@@ -205,6 +206,36 @@ namespace AKS.Payroll
         private void bankToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new BankForm());
+        }
+
+        private void expensesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Expense));
+        }
+
+        private void paymentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Payment));
+        }
+
+        private void receiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Receipt));
+        }
+
+        private void cashPaymentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.CashPayment));
+        }
+
+        private void cashReceiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.CashReceipt));
+        }
+
+        private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new DailySaleForm());
         }
     }
 }

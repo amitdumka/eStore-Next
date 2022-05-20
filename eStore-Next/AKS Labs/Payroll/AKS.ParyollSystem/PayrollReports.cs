@@ -11,6 +11,37 @@ namespace AKS.ParyollSystem
 {
     public class PayrollReports
     {
+        public void   AttendanceSheet(AzurePayrollDbContext db, DateTime onDate, string empid)
+        {
+            if (db == null) db = new AzurePayrollDbContext();
+            var list= new PayrollManager().GetMonthlyAttendance(db,empid,onDate);
+            if(list!=null && list.Count>0)
+            {
+                ReportPDFGenerator pdfGen = new ReportPDFGenerator();
+                List<Object> pList = new List<Object>();
+                var P1 = pdfGen.AddParagraph($"No of Working Days: {DateTime.DaysInMonth(onDate.Year, onDate.Month)}", iText.Layout.Properties.TextAlignment.CENTER, ColorConstants.BLUE);
+                
+                pList.Add(P1);
+                var P2=pdfGen.AddParagraph($"Employee Name:{db.Employees.Find(empid).StaffName}", iText.Layout.Properties.TextAlignment.CENTER, ColorConstants.MAGENTA);
+                float[] columnWidths = { 1, 5, 5, 1 };
+
+                Cell[] HeaderCell = new Cell[]{
+                    new Cell().SetBackgroundColor(new DeviceGray(0.75f)).Add(new Paragraph("#")),
+                    new Cell().SetBackgroundColor(new DeviceGray(0.75f)).Add(new Paragraph("Date").SetTextAlignment(TextAlignment.CENTER)),
+                    new Cell().SetBackgroundColor(new DeviceGray(0.75f)).Add(new Paragraph("Status").SetTextAlignment(TextAlignment.CENTER)),
+                    new Cell().SetBackgroundColor(new DeviceGray(0.75f)).Add(new Paragraph("Unit").SetTextAlignment(TextAlignment.CENTER)),
+                   
+            };
+
+                var table = pdfGen.GenerateTable(columnWidths, HeaderCell);
+
+
+            }
+            else
+            {
+
+            }
+        }
         public void PaySlipReportForEmployee(AzurePayrollDbContext db, DateTime onDate, string empId)
         {
             var emp = db.Employees.Find(empId);

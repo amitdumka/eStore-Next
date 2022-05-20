@@ -1,6 +1,8 @@
 ﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
@@ -68,21 +70,42 @@ namespace AKS.Payroll.Database
 
         public DbSet<PaySlip> PaySlips { get; set; }
 
+        public DbSet<SalaryLedger> SalaryLedgers { get; set; }
+
         //Common Table which will be shared accross Databases.
         public DbSet<Store> Stores { get; set; }
 
         public DbSet<Salesman> Salesmen { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
+        public DbSet<User> Users { get; set; }
+
         // Banking  Note: Some of Table will move to other part. 
 
         public DbSet<Bank> Banks { get; set; }
         public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }
-        public  DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BankAccountList> AccountLists { get; set; }
         public DbSet<ChequeBook> ChequeBooks { get; set; }
         public DbSet<ChequeIssued> ChequeIssued { get; set; }
-        public DbSet<ChequeLog>ChequeLogs { get; set; }
+        public DbSet<ChequeLog> ChequeLogs { get; set; }
 
+
+        // Vouchers and Notes  Note: Some of the table will move to other parts
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<CashVoucher> CashVouchers { get; set; }
+        public DbSet<Note> Notes { get; set; }
+
+        public DbSet<TranscationMode> TranscationModes { get; set; }
+
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<LedgerGroup> LedgerGroups { get; set; }
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }
+
+        // Daily Sales
+        public DbSet<DailySale> DailySales { get; set; }
+        public DbSet<EDCTerminal> EDCTerminals { get; set; }
+        public DbSet<DueRecovery> DueRecovery { get; set; }
+        public DbSet<CustomerDue> CustomerDues { get; set; }
 
 
     }

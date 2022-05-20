@@ -13,8 +13,8 @@ namespace AKS.Payroll.Forms
         private readonly IMapper _mapper;
         private AzurePayrollDbContext context;
         private ObservableListSource<AttendanceVM> Attendances;
-        // public readonly ObservableListSource<string> EmpIDs;
         private DateTime OnDate;
+        private string SelectedEmployee = "";
 
         private static Mapper InitializeAutomapper()
         {
@@ -91,8 +91,22 @@ namespace AKS.Payroll.Forms
 
         private void UpdateGridView(string empId, DateTime onDate)
         {
+
             dgvAttendances.DataBindings.Clear();
-            dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == empId).ToList();
+            if (onDate.Date != DateTime.Today.Date)
+            {
+                if((Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).Count()) <= 0 )
+                {
+                    AddToList(context.Attendances.Where(c => c.EmployeeId == empId && c.OnDate.Year == onDate.Year && c.OnDate.Month == onDate.Month).ToList());
+
+                }
+                dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == empId
+                && c.OnDate.Year == onDate.Year
+                && c.OnDate.Month == onDate.Month).OrderByDescending(c=>c.OnDate).ToList();
+
+            }
+            else
+                dgvAttendances.DataSource = Attendances.Where(c => c.EmployeeId == empId).OrderByDescending(c => c.OnDate).ToList();
             tSSLCountValue.Text = dgvAttendances.Rows.Count.ToString();
         }
 
@@ -109,7 +123,12 @@ namespace AKS.Payroll.Forms
         private void lbEmployees_DoubleClick(object sender, EventArgs e)
         {
             var x = ((System.Windows.Forms.ListBox)sender);
-            UpdateGridView(x.SelectedValue.ToString(), OnDate);
+            SelectedEmployee = (string)x.SelectedValue;
+            if (cbLastMonth.Checked)
+                UpdateGridView(x.SelectedValue.ToString(), OnDate.AddMonths(-1));
+            else
+                UpdateGridView(x.SelectedValue.ToString(), OnDate);
+
         }
 
         private void btnAddAttendance_Click(object sender, EventArgs e)
@@ -178,9 +197,26 @@ namespace AKS.Payroll.Forms
             }
         }
 
-        //public void UpdateRecord(string empId, int attd, int mode)
-        //{
-        //    MessageBox.Show($"{empId}=>{attd}=>{mode}");
-        //}
+        private void cbAllEmployee_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbLastMonth_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (cbLastMonth.Checked)
+            {
+            }
+            else
+            {
+            }
+        }
+
+        private void lbEmployees_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 }

@@ -82,7 +82,7 @@ namespace AKS.Shared.Payroll.Models
         public string MaritalStatus { get; set; }
         public string SpouseName { get; set; }
         public string HighestQualification { get; set; }
-        
+
         public string BankAccountNumber { get; set; }
         public string BankNameWithBranch { get; set; }
         public string IFSCode { get; set; }
@@ -199,7 +199,7 @@ namespace AKS.Shared.Payroll.Models
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Receipt Date")]
-        public DateTime ReceiptDate { get; set; }
+        public DateTime OnDate { get; set; }
 
         [DataType(DataType.Currency), Column(TypeName = "money")]
         public decimal Amount { get; set; }
@@ -285,5 +285,15 @@ namespace AKS.Shared.Payroll.Models
         public bool? IsTailoring { get; set; }
     }
 
+    public class SalaryLedger : Base
+    {
+        public int Id { get; set; }
+        public string EmployeeId { get; set; }
+        public DateTime OnDate { get; set; }
+        public string Particulars { get; set; }
+        public decimal InAmount { get; set; }
+        public decimal OutAmount { get; set; }
+
+    }
 
 }

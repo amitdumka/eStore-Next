@@ -31,7 +31,7 @@ namespace AKS.Payroll.Forms.EntryForms
                     EmployeeId = "",
                     StoreId = "ARD",// TODO: read from Global Variable/session
                     MarkedDeleted = false,
-                    UserId = "WinUI",
+                    UserId=CurrentSession.UserName,
                     Amount = 0,
                     Details = "",
                     PayMode = PayMode.Cash,

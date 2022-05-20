@@ -20,9 +20,9 @@ namespace AKS.DatabaseMigrator
             if (AKS == null) AKS = new AKSDbContext();
             if (db == null) db = new eStoreDbContext();
             // MigrateStore();
-            // MigrateEmployee();
+             MigrateEmployee();
             //this.MigrateSalaryPayment();
-            this.MigrateSalesman();
+            //this.MigrateSalesman();
             // MigrateAttendance();
             //var s = db.Salesmen.Distinct();
             // Console.WriteLine(s);

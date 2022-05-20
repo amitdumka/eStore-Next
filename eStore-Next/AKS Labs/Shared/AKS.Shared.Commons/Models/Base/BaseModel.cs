@@ -12,7 +12,7 @@ namespace AKS.Shared.Commons.Models.Base
 
     public class BaseST : Base
     {
-        [DefaultValue(1)]
+        [DefaultValue("ARD")]
         [Display(Name = "Store")]
         public string StoreId { get; set; }
         public virtual Store Store { get; set; }

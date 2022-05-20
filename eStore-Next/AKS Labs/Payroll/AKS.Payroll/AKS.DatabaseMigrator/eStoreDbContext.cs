@@ -1,15 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eStore.Shared.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AKS.DatabaseMigrator
 {
+
+    public class BankAccount
+    {
+        public int BankAccountId { get; set; }
+        public int BankId { get; set; }
+        public string Account { get; set; }
+        public int AccountType { get; set; }
+        public string BranchName { get; set; }
+    }
+
     public class eStoreDbContext : DbContext
     {
+        private static readonly string _connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
+
         public eStoreDbContext() { }
         public eStoreDbContext(DbContextOptions<eStoreDbContext> options) : base(options)
         {
             //ApplyMigrations(this);
         }
 
+        //// new Expenses/Reciept System with Party Support
+        public DbSet<Expense> Expenses { get; set; }//API
+
+        public DbSet<Payment> Payments { get; set; }//APi
+        public DbSet<Receipt> Receipts { get; set; }//API
+
+        public DbSet<CashPayment> CashPayments { get; set; }//API
+        public DbSet<CashReceipt> CashReceipts { get; set; }//API
+        // New Accounting section
+        public DbSet<LedgerType> LedgerTypes { get; set; }//API
+
+        public DbSet<Party> Parties { get; set; }//APi
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }//APi
+        public DbSet<LedgerEntry> LedgerEntries { get; set; } //api
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
 
         //UserAuth Api
         //public DbSet<User> Users { get; set; }
@@ -42,7 +71,7 @@ namespace AKS.DatabaseMigrator
         public DbSet<eStore.Shared.Models.Payroll.Attendance> Attendances { get; set; } //ok//UI//API
         public DbSet<eStore.Shared.Models.Salesman> Salesmen { get; set; } //ok//API
 
-        //public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
+        public DbSet<TranscationMode> TranscationModes { get; set; } //ok//UI //API
         //public DbSet<SaleTaxType> SaleTaxTypes { get; set; } //ok//UI //API
         //public DbSet<PurchaseTaxType> PurchaseTaxTypes { get; set; }//UI //API
 
@@ -113,14 +142,7 @@ namespace AKS.DatabaseMigrator
         //public DbSet<LedgerMaster> LedgerMasters { get; set; }//APi
         //public DbSet<LedgerEntry> LedgerEntries { get; set; } //api
 
-        //// new Expenses/Reciept System with Party Support
-        //public DbSet<Expense> Expenses { get; set; }//API
-
-        //public DbSet<Shared.Models.Accounts.Payment> Payments { get; set; }//APi
-        //public DbSet<Receipt> Receipts { get; set; }//API
-
-        //public DbSet<CashPayment> CashPayments { get; set; }//API
-        //public DbSet<CashReceipt> CashReceipts { get; set; }//API
+        
 
         //public DbSet<BankAccount> BankAccounts { get; set; }//APi
         //public DbSet<CurrentSalary> Salaries { get; set; } //API
@@ -191,19 +213,26 @@ namespace AKS.DatabaseMigrator
         public DbSet<eStore.Shared.Models.Payroll.MonthlyAttendance> MonthlyAttendances { get; set; }
         // public DbSet<YearlyAttendance> YearlyAttendances { get; set; }
 
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+
+        //        //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
+        //        //string connectionString = String.IsNullOrEmpty( ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString)? "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654": ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString;
+        //        string connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
+
+        //        optionsBuilder.UseSqlServer(connectionString);
+
+        //    }
+
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;");
-                //string connectionString = String.IsNullOrEmpty( ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString)? "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654": ConfigurationManager.ConnectionStrings["AzureDb"].ConnectionString;
-                string connectionString = "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
-
-                optionsBuilder.UseSqlServer(connectionString);
-
+                optionsBuilder.UseSqlServer(_connectionString);
             }
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

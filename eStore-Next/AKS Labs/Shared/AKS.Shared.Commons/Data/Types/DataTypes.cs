@@ -12,10 +12,12 @@ public enum Size { S, M, L, XL, XXL, XXXL, T28, T30, T32, T34, T36, T38, T40, T4
 public enum ProductCategory { Fabric, ReadyMade, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others }
 public enum Card { DebitCard, CreditCard, AmexCard }
 public enum CardType { Visa, MasterCard, Mastro, Amex, Dinners, Rupay, }
+
 public enum LedgerCategory { Credit, Debit, Income, Expenses, Assests, Bank, Loan, Purchase, Sale, Vendor, Customer }
+
 public enum WalletType { PayTm, GooglePay, PhonePay, AirtelPay, BhimPay, Others }
 public enum AttUnit { Present, Absent, HalfDay, Sunday, Holiday, StoreClosed, SundayHoliday, SickLeave, PaidLeave, CasualLeave, OnLeave };
-public enum SalaryComponet { NetSalary, LastPcs, WOWBill, SundaySalary, Incentive, Others, Advance, PaidLeave, SickLeave }
+public enum SalaryComponet { NetSalary, LastPcs, WOWBill, SundaySalary, Incentive, Others, Advance, PaidLeave, SickLeave, SalaryAdvance }
 public enum EmpType { Salesman, StoreManager, HouseKeeping, Owner, Accounts, TailorMaster, Tailors, TailoringAssistance, Others }
 public enum TaxType { GST, SGST, CGST, IGST, VAT, CST }
 public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccountant, Member, PowerUser };
@@ -82,7 +84,7 @@ public enum LedgerEntryType { Expenses, Payment, Reciept, Salary, AdvacePayment,
 
 //public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 
-public enum VoucherType { Payment, Reciept, Contra, DebitNote, CreditNote, JV }
+public enum VoucherType { Payment, Receipt, Contra, DebitNote, CreditNote, JV ,Expense,CashReceipt,CashPayment}
 
 public enum LedgerTo { CashSales, POSSale, Cash, TailorBook, Suspense }
 

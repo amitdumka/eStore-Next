@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore-MAUI-Next", "eStore-MAUI-Next\eStore-MAUI-Next.csproj", "{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OlderProjects", "OlderProjects", "{14E1A21B-1F10-4DC7-9E76-7370D0ACE008}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2C313520-A8E5-4039-94A1-BB45BCF76EB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreMobileX", "eStoreMobileX\eStoreMobileX.csproj", "{DEBF4D82-EDF9-4182-88E5-236A0853162C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedProjects", "SharedProjects", "{0AADC88C-02AB-4EFF-A633-7000EAACFF66}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.shproj", "{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Payrolls", "..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.shproj", "{062A8AC3-2766-4147-8809-9E46C9C71B34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99ACD6DA-A25A-41EF-A420-DD0301F4C7B6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DEBF4D82-EDF9-4182-88E5-236A0853162C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBF4D82-EDF9-4182-88E5-236A0853162C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEBF4D82-EDF9-4182-88E5-236A0853162C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEBF4D82-EDF9-4182-88E5-236A0853162C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DEBF4D82-EDF9-4182-88E5-236A0853162C} = {2C313520-A8E5-4039-94A1-BB45BCF76EB2}
+		{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C} = {0AADC88C-02AB-4EFF-A633-7000EAACFF66}
+		{062A8AC3-2766-4147-8809-9E46C9C71B34} = {0AADC88C-02AB-4EFF-A633-7000EAACFF66}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
+		..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
+		..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{debf4d82-edf9-4182-88e5-236a0853162c}*SharedItemsImports = 5
+		..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{debf4d82-edf9-4182-88e5-236a0853162c}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

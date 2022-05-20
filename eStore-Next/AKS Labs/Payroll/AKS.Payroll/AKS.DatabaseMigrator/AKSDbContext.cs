@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using AKS.Shared.Commons.Models.Accounts;
 namespace AKS.DatabaseMigrator
 {
     public class AKSDbContext : DbContext
@@ -13,6 +13,16 @@ namespace AKS.DatabaseMigrator
         public DbSet<Shared.Payroll.Models.StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
         public DbSet<Shared.Commons.Models.Store> Stores { get; set; }
         public DbSet<Shared.Commons.Models.Salesman> Salesmen { get; set; }
+
+        public DbSet<Shared.Commons.Models.Accounts.Voucher> Vouchers { get; set; }
+        public DbSet <Shared.Commons.Models.Accounts.CashVoucher> CashVouchers { get; set; }
+
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<LedgerGroup> LedgerGroups { get; set; }
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }
+        public DbSet<TranscationMode> TranscationModes { get; set; }
+        public DbSet<AKS.Shared.Commons.Models.Banking.BankAccount> BankAccounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -23,7 +23,382 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
             SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
+                {
+                    b.Property<string>("VoucherNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SlipNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TranscationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VoucherType")
+                        .HasColumnType("int");
+
+                    b.HasKey("VoucherNumber");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("TranscationId");
+
+                    b.ToTable("CashVouchers");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.LedgerGroup", b =>
+                {
+                    b.Property<string>("LedgerGroupId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LedgerGroupId");
+
+                    b.ToTable("LedgerGroups");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.LedgerMaster", b =>
+                {
+                    b.Property<string>("PartyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("OpeningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartyId");
+
+                    b.ToTable("V1_LedgerMasters");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>
+                {
+                    b.Property<string>("NoteNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NotesType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WithGST")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("NoteNumber");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Notes");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Party", b =>
+                {
+                    b.Property<string>("PartyId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ClosingBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ClosingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GSTIN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LedgerGroupId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("OpeningBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("OpeningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PANNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PartyId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Parties");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.TranscationMode", b =>
+                {
+                    b.Property<string>("TranscationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TranscationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TranscationId");
+
+                    b.ToTable("V1_TranscationModes");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Voucher", b =>
+                {
+                    b.Property<string>("VoucherNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PaymentMode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SlipNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VoucherType")
+                        .HasColumnType("int");
+
+                    b.HasKey("VoucherNumber");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PartyId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Vouchers");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Auth.LocalUser", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEmployee")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserName");
+
+                    b.ToTable("LocalUsers");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Auth.User", b =>
                 {
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
@@ -53,9 +428,15 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
+
                     b.HasKey("UserName");
 
-                    b.ToTable("LocalUsers");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Banking.Bank", b =>
@@ -374,6 +755,226 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.HasIndex("BankId");
 
                     b.ToTable("V1_VendorBankAccounts");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.CustomerDue", b =>
+                {
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ClearingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InvoiceNumber");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_CustomerDues");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DailySale", b =>
+                {
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CashAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("EDCTerminalId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDue")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ManualBill")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("NonCashAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PayMode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SalemanId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SalesReturn")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("TailoringBill")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InvoiceNumber");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_DailySales");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DueRecovery", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DueInvoiceNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("ParticialPayment")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PayMode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DueInvoiceNumber");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("DueRecovery");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.EDCTerminal", b =>
+                {
+                    b.Property<string>("EDCTerminalId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BankId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EDCTerminalId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_EDCMachine");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Salesman", b =>
@@ -935,6 +1536,46 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_Salaries");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryLedger", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("InAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OutAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Particulars")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalaryLedgers");
+                });
+
             modelBuilder.Entity("AKS.Shared.Payroll.Models.SalaryPayment", b =>
                 {
                     b.Property<string>("SalaryPaymentId")
@@ -1014,11 +1655,11 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<bool>("MarkedDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("PayMode")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("ReceiptDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("StoreId")
                         .IsRequired()
@@ -1035,6 +1676,98 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.HasIndex("StoreId");
 
                     b.ToTable("V1_StaffAdvanceReceipts");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
+                {
+                    b.HasOne("AKS.Shared.Payroll.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Partys")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.TranscationMode", "TranscationMode")
+                        .WithMany()
+                        .HasForeignKey("TranscationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Partys");
+
+                    b.Navigation("Store");
+
+                    b.Navigation("TranscationMode");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Note", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Party")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Party");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Party", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.Voucher", b =>
+                {
+                    b.HasOne("AKS.Shared.Payroll.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Accounts.Party", "Partys")
+                        .WithMany()
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Partys");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Banking.BankAccount", b =>
@@ -1101,6 +1834,56 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired();
 
                     b.Navigation("Bank");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.CustomerDue", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DailySale", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DueRecovery", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Sales.CustomerDue", "Due")
+                        .WithMany()
+                        .HasForeignKey("DueInvoiceNumber");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Due");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.EDCTerminal", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Salesman", b =>

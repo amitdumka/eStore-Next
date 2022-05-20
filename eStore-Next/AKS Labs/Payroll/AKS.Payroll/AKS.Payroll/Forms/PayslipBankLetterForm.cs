@@ -11,15 +11,15 @@ namespace AKS.Payroll.Forms
         {
             InitializeComponent();
             bankLetterDto = new BankLetterDto();
-            azureDb= new AzurePayrollDbContext();
-            localDb= new LocalPayrollDbContext();
+            azureDb = new AzurePayrollDbContext();
+            localDb = new LocalPayrollDbContext();
         }
 
         private void LoadData()
         {
             var employeesList = azureDb.Employees.Where(c => c.IsWorking || c.Category == EmpType.Owner).ToList();
 
-            
+
             cbxApprovedBy.DataSource = employeesList;
             cbxApprovedBy.DisplayMember = "StaffName";
             cbxApprovedBy.ValueMember = "EmployeeId";
@@ -34,8 +34,8 @@ namespace AKS.Payroll.Forms
             cbxStores.ValueMember = "StoreId";
 
             cbxIssuedBanks.DataSource = azureDb.BankAccounts.Where(c => c.IsActive).ToList();
-            nudMonth.Value=DateTime.Now.Month;
-            nudYear.Value=DateTime.Now.Year;    
+            nudMonth.Value = DateTime.Now.Month;
+            nudYear.Value = DateTime.Now.Year;
 
 
         }

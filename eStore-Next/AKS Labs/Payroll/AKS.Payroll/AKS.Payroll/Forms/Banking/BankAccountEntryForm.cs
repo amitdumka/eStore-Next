@@ -13,8 +13,26 @@ namespace AKS.Payroll.Forms.Banking
         private ObservableListSource<BankAccount> BankAccounts;
         private LocalPayrollDbContext localDb;
         private ObservableListSource<VendorBankAccount> VendorBankAccounts;
+        private BankAccount _bankAccount;
+        private VendorBankAccount _vendorBankAccount;
+        private BankAccountList _bankAccountList;
 
         public BankAccountEntryForm(int mode)
+        {
+            InitializeComponent();
+            _FormMode = mode;
+        }
+        public BankAccountEntryForm(int mode, BankAccount account)
+        {
+            InitializeComponent();
+            _FormMode = mode;
+        }
+        public BankAccountEntryForm(int mode, VendorBankAccount account)
+        {
+            InitializeComponent();
+            _FormMode = mode;
+        }
+        public BankAccountEntryForm(int mode, BankAccountList account)
         {
             InitializeComponent();
             _FormMode = mode;
@@ -173,5 +191,15 @@ namespace AKS.Payroll.Forms.Banking
             if (account.IsActive) account.ClosingDate = null;
             return account;
         }
+    
+        private void FillFormValue()
+        {
+            if (rbCompanyAccount.Checked) { }
+            else if (rbVendorAccount.Checked) { }
+            else if(rbThirdPartyAccount.Checked) { }
+
+        }
+    
+    
     }
 }

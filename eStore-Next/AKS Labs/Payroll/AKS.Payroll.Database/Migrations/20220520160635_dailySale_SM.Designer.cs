@@ -4,16 +4,18 @@ using AKS.Payroll.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
+namespace AKS.Payroll.Database.Migrations
 {
-    [DbContext(typeof(AzurePayrollDbContext))]
-    partial class AzurePayrollDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LocalPayrollDbContext))]
+    [Migration("20220520160635_dailySale_SM")]
+    partial class dailySale_SM
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-            SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
                 {
@@ -837,7 +838,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("EDCTerminalId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
@@ -872,7 +873,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.Property<string>("SalesmanId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("StoreId")
                         .IsRequired()
@@ -886,10 +887,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InvoiceNumber");
-
-                    b.HasIndex("EDCTerminalId");
-
-                    b.HasIndex("SalesmanId");
 
                     b.HasIndex("StoreId");
 
@@ -1900,25 +1897,11 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DailySale", b =>
                 {
-                    b.HasOne("AKS.Shared.Commons.Models.Sales.EDCTerminal", "EDC")
-                        .WithMany()
-                        .HasForeignKey("EDCTerminalId");
-
-                    b.HasOne("AKS.Shared.Commons.Models.Salesman", "Saleman")
-                        .WithMany()
-                        .HasForeignKey("SalesmanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EDC");
-
-                    b.Navigation("Saleman");
 
                     b.Navigation("Store");
                 });

@@ -61,9 +61,12 @@ namespace AKS.Payroll.DTOMapping
                     cfg.CreateMap<VoucherVM, Voucher>();
 
                     cfg.CreateMap<CashVoucherVM, CashVoucher>();
-                    cfg.CreateMap<DailySale, DailySaleVM>();
+                    cfg.CreateMap<DailySale, DailySaleVM>()
+                      .ForMember(dest => dest.TerminalName, act => act.MapFrom(src => src.EDC.Name))
+                    .ForMember(dest => dest.StoreName, act => act.MapFrom(src => src.Store.StoreName))
+                   .ForMember(dest => dest.SalemanName, act => act.MapFrom(src => src.Saleman.Name));
                     cfg.CreateMap<DailySaleVM, DailySale>();
-                    
+
 
 
 

@@ -12,4 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Employee.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EmpolyeeVM.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)JavaScript1.js" />
+  </ItemGroup>
 </Project>

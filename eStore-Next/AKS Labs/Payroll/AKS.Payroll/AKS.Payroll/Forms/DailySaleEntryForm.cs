@@ -41,7 +41,7 @@ namespace AKS.Payroll.Forms
                 dtpOnDate.Value = sale.OnDate;
                 cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
                 cbxPOS.SelectedValue =sale.EDCTerminalId!=null? sale.EDCTerminalId:"";
-                cbxSaleman.SelectedValue = sale.SalemanId;
+                cbxSaleman.SelectedValue = sale.SalesmanId;
                 cbManual.Checked = sale.ManualBill;
                 cbSalesReturn.Checked = sale.SalesReturn;
                 cbTailoring.Checked = sale.TailoringBill;
@@ -98,7 +98,7 @@ namespace AKS.Payroll.Forms
                         Amount = decimal.Parse(txtAmount.Text.Trim()),
                         CashAmount = decimal.Parse(txtCash.Text.Trim()),
                         NonCashAmount = decimal.Parse(txtNonCash.Text.Trim()),
-                        EDCTerminalId = (string)cbxPOS.SelectedValue,
+                        EDCTerminalId =   (string)cbxPOS.SelectedValue,
                         EntryStatus = EntryStatus.Added,
                         InvoiceNumber = txtInvoiceNumber.Text,
                         IsDue = cbDue.Checked,
@@ -108,7 +108,7 @@ namespace AKS.Payroll.Forms
                         OnDate = dtpOnDate.Value,
                         PayMode = (PayMode)cbxPaymentMode.SelectedIndex,
                         Remarks = txtRemarks.Text,
-                        SalemanId = (string)cbxSaleman.SelectedValue,
+                        SalesmanId = (string)cbxSaleman.SelectedValue,
                         SalesReturn = cbSalesReturn.Checked,
                         StoreId = (string)cbxStores.SelectedValue,
                         TailoringBill = cbTailoring.Checked,
@@ -124,13 +124,21 @@ namespace AKS.Payroll.Forms
                     sale.EntryStatus = EntryStatus.Added; sale.InvoiceNumber = txtInvoiceNumber.Text;
                     sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
                     sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
-                    sale.Remarks = txtRemarks.Text; sale.SalemanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
+                    sale.Remarks = txtRemarks.Text; sale.SalesmanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
                     sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId=CurrentSession.UserName;
                 }
 
-                if(sale.PayMode!=PayMode.Card || sale.PayMode!=PayMode.UPI|| sale.PayMode == PayMode.Wallets || sale.PayMode!=PayMode.MixPayments)
+                if(sale.PayMode!=PayMode.Card && sale.PayMode!=PayMode.UPI && sale.PayMode == PayMode.Wallets && sale.PayMode!=PayMode.MixPayments || sale.PayMode==PayMode.Cash)
                 {
-                    sale.EDCTerminalId = "";
+                    sale.EDCTerminalId = null;
+                }
+                else if(string.IsNullOrWhiteSpace(sale.EDCTerminalId) || string.IsNullOrEmpty(sale.EDCTerminalId))
+                {
+                    sale.EDCTerminalId = null;
+                }
+                else
+                {
+                    Console.Write("");
                 }
 
                 return true;
@@ -200,7 +208,11 @@ namespace AKS.Payroll.Forms
                         else this.DialogResult = DialogResult.Yes;
                         IsSaved = true;
                     }
-                    else MessageBox.Show("An error occured while saving");
+                    else { 
+                        azureDb.DailySales.Remove(sale);
+                        if (sale.IsDue) azureDb.CustomerDues.Remove(CustomerDue);
+                        MessageBox.Show("An error occured while saving"); 
+                    }
                 }
                 else MessageBox.Show("An error occured while reading");
             }

@@ -4,16 +4,18 @@ using AKS.Payroll.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
+namespace AKS.Payroll.Database.Migrations
 {
-    [DbContext(typeof(AzurePayrollDbContext))]
-    partial class AzurePayrollDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LocalPayrollDbContext))]
+    [Migration("20220520161021_dailySale_SM2")]
+    partial class dailySale_SM2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-            SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
                 {

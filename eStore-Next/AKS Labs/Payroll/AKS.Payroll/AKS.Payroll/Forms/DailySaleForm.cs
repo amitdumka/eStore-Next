@@ -1,8 +1,11 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Payroll.Forms.EntryForms;
+using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Sales;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Text.Json;
 
 namespace AKS.Payroll.Forms
 {
@@ -43,7 +46,7 @@ namespace AKS.Payroll.Forms
                     if (dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.Month
                    && c.OnDate.Year == DateTime.Today.Year).Any() == false)
                     {
-                        UpdateSaleList(azureDb.DailySales.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
+                        UpdateSaleList(azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman).Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
                     && c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
                     }
                     dgvSales.DataSource = dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
@@ -53,7 +56,7 @@ namespace AKS.Payroll.Forms
                 {
                     if (dailySaleVMs.Where(c => c.OnDate.Year == DateTime.Today.Year).Any() == false)
                     {
-                        UpdateSaleList(azureDb.DailySales.Where(c => c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
+                        UpdateSaleList(azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman).Where(c => c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
                     }
                     dgvSales.DataSource = dailySaleVMs.Where(c => c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList();
 
@@ -63,7 +66,7 @@ namespace AKS.Payroll.Forms
                     if (dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
                     && c.OnDate.Year == DateTime.Today.Year).Any() == false)
                     {
-                        UpdateSaleList(azureDb.DailySales.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
+                        UpdateSaleList(azureDb.DailySales.Include(c => c.EDC).Include(c => c.Saleman).Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
                     && c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
                     }
                     dgvSales.DataSource = dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
@@ -76,16 +79,23 @@ namespace AKS.Payroll.Forms
         private void LoadData()
         {
             DMMapper.InitializeAutomapper();
-            UpdateSaleList(azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
-            && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList());
+            var data = azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman).Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
+            && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList();
+            UpdateSaleList(data);
 
             dgvSales.DataSource = dailySaleVMs;
             dgvSales.ScrollBars = ScrollBars.Both;
 
-            dgvSales.Columns["SalemanId"].Visible = false;
+            dgvSales.Columns["SalesmanId"].Visible = false;
             dgvSales.Columns["EDCTerminalId"].Visible = false;
             dgvSales.Columns["StoreId"].Visible = false;
             dgvSales.Columns["EntryStatus"].Visible = false;
+            dgvSales.Columns["UserId"].Visible = false;
+            dgvSales.Columns["IsReadOnly"].Visible = false;
+            dgvSales.Columns["MarkedDeleted"].Visible = false;
+            dgvSales.Columns["Store"].Visible = false;
+            // dgvSales.Columns["EDC"].Visible = false;
+            // dgvSales.Columns["Saleman"].Visible = false;
 
             YearList.AddRange(azureDb.DailySales
                 .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
@@ -205,7 +215,7 @@ namespace AKS.Payroll.Forms
             {
                 if (!string.IsNullOrEmpty(form.DeletedI))
                 {
-                    if (form.sale.IsDue || form.CustomerDue!=null)
+                    if (form.sale.IsDue || form.CustomerDue != null)
                     {
                         customerDues.Remove(form.CustomerDue);
                         dgvDues.Refresh();
@@ -235,7 +245,7 @@ namespace AKS.Payroll.Forms
         private void btnDueRecovery_Click(object sender, EventArgs e)
         {
             DueRecoveryEntryForm form = new DueRecoveryEntryForm();
-            if(form.ShowDialog()== DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
 
             }
@@ -243,6 +253,7 @@ namespace AKS.Payroll.Forms
 
         private void dgvRecovered_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
             // var sale = DMMapper.Mapper.Map<DailySale>(dgvSales.CurrentRow.DataBoundItem);
             var dueRec = (DueRecovery)dgvRecovered.CurrentRow.DataBoundItem;
 
@@ -280,7 +291,7 @@ namespace AKS.Payroll.Forms
                     if (!form.DueRecovery.ParticialPayment)
                     {
                         var dd = customerDues.Where(c => c.InvoiceNumber == form.DueRecovery.InvoiceNumber).First();
-                       if(dd!=null) customerDues.Remove(dd);
+                        if (dd != null) customerDues.Remove(dd);
                         dgvDues.Refresh();
                     }
                     dueRecoveryList.Remove(form.DueRecovery);
@@ -355,7 +366,24 @@ namespace AKS.Payroll.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            EXLS.Read("dailysale_new.csv");
+            //List<DailySale> source = new List<DailySale>();
+            //using (StreamReader r = new StreamReader("data.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    source = JsonSerializer.Deserialize<List<DailySale>>(json);
+            //}
+            //azureDb.DailySales.AddRange(source);
+            //if (azureDb.SaveChanges() > 0)
+            //{
+            //    MessageBox.Show("Test");
+            //}
+            //else MessageBox.Show("err");
         }
     }
 }

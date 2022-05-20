@@ -18,7 +18,8 @@ namespace AKS.Shared.Commons.Models.Sales
         public decimal CashAmount { get; set; }
         public decimal NonCashAmount { get; set; }
         public PayMode PayMode { get; set; }
-        public string SalemanId { get; set; }
+        public string SalesmanId { get; set; }
+        
         public bool IsDue { get; set; }
 
         public bool ManualBill { get; set; }
@@ -27,6 +28,8 @@ namespace AKS.Shared.Commons.Models.Sales
         public string Remarks { get; set; }
         
         public string? EDCTerminalId { get; set; }
+        public virtual EDCTerminal EDC { get; set; }
+        public virtual Salesman Saleman { get; set; }
 
     }
     //TODO: Move to VM
@@ -51,7 +54,7 @@ namespace AKS.Shared.Commons.Models.Sales
 
         public EntryStatus EntryStatus { get; set; }
         public string StoreId { get; set; }
-        public string SalemanId { get; set; }       
+        public string SalesmanId { get; set; }       
         public string? EDCTerminalId { get; set; }
         
 
@@ -99,18 +102,18 @@ namespace AKS.Shared.Commons.Models.Sales
 
     }
 
-    public class Saleman
-    {
-        public string SalemanId { get; set; }
-        public string EmployeeId { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
-        public string StoreId { get; set; }
-        public bool MarkedDeleted { get; set; }
-        public virtual Store Store { get; set; }
-        public virtual Employee Employee { get; set; }
+    //public class Saleman
+    //{
+    //    public string SalemanId { get; set; }
+    //    public string EmployeeId { get; set; }
+    //    public string Name { get; set; }
+    //    public bool Active { get; set; }
+    //    public string StoreId { get; set; }
+    //    public bool MarkedDeleted { get; set; }
+    //    public virtual Store Store { get; set; }
+    //    public virtual Employee Employee { get; set; }
 
-    }
+    //}
 
     
 }

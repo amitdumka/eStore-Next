@@ -457,6 +457,10 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<string>("AccountNumber")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AccountHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
 
@@ -470,6 +474,9 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.Property<DateTime?>("ClosingDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CurrentBalance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("DefaultBank")
                         .HasColumnType("bit");
@@ -508,6 +515,10 @@ namespace AKS.Payroll.Database.Migrations
                 {
                     b.Property<string>("AccountNumber")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
@@ -553,6 +564,9 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BankAccountAccountNumber")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -593,6 +607,8 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasKey("ChequeBookId");
 
+                    b.HasIndex("BankAccountAccountNumber");
+
                     b.HasIndex("StoreId");
 
                     b.ToTable("V1_ChequeeBooks");
@@ -610,9 +626,12 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("BankAccountAccountNumber")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ChequeBookId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("ChequeNumber")
                         .HasColumnType("bigint");
@@ -642,6 +661,10 @@ namespace AKS.Payroll.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ChequeIssuedId");
+
+                    b.HasIndex("BankAccountAccountNumber");
+
+                    b.HasIndex("ChequeBookId");
 
                     b.HasIndex("StoreId");
 
@@ -710,6 +733,10 @@ namespace AKS.Payroll.Database.Migrations
                 {
                     b.Property<string>("AccountNumber")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AccountType")
                         .HasColumnType("int");
@@ -809,7 +836,7 @@ namespace AKS.Payroll.Database.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("EDCTerminalId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
@@ -839,12 +866,12 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SalemanId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("SalesReturn")
                         .HasColumnType("bit");
+
+                    b.Property<string>("SalesmanId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("StoreId")
                         .IsRequired()
@@ -858,6 +885,10 @@ namespace AKS.Payroll.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InvoiceNumber");
+
+                    b.HasIndex("EDCTerminalId");
+
+                    b.HasIndex("SalesmanId");
 
                     b.HasIndex("StoreId");
 
@@ -1793,22 +1824,42 @@ namespace AKS.Payroll.Database.Migrations
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Banking.ChequeBook", b =>
                 {
+                    b.HasOne("AKS.Shared.Commons.Models.Banking.BankAccount", "BankAccount")
+                        .WithMany()
+                        .HasForeignKey("BankAccountAccountNumber");
+
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BankAccount");
 
                     b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Banking.ChequeIssued", b =>
                 {
+                    b.HasOne("AKS.Shared.Commons.Models.Banking.BankAccount", "BankAccount")
+                        .WithMany()
+                        .HasForeignKey("BankAccountAccountNumber");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Banking.ChequeBook", "ChequeBook")
+                        .WithMany()
+                        .HasForeignKey("ChequeBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BankAccount");
+
+                    b.Navigation("ChequeBook");
 
                     b.Navigation("Store");
                 });
@@ -1848,11 +1899,25 @@ namespace AKS.Payroll.Database.Migrations
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.DailySale", b =>
                 {
+                    b.HasOne("AKS.Shared.Commons.Models.Sales.EDCTerminal", "EDC")
+                        .WithMany()
+                        .HasForeignKey("EDCTerminalId");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Salesman", "Saleman")
+                        .WithMany()
+                        .HasForeignKey("SalesmanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EDC");
+
+                    b.Navigation("Saleman");
 
                     b.Navigation("Store");
                 });

@@ -24,17 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.DatabaseMigrator", "AKS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.Libs", "AKS.Libs\AKS.Libs.csproj", "{D7C7479E-E4FE-4327-B737-7515CC1B058F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AKS.Payroll.Setup", "AKS.Payroll.Setup\AKS.Payroll.Setup.vdproj", "{2BB1AEE3-B0B8-453E-8AF8-0B14F7EBBA6B}"
-EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
-		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{2147e9df-8118-4daa-8611-40dd72c259f9}*SharedItemsImports = 13
-		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
-		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
-		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
-		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{e7d3a8b8-6511-49dc-8f9f-f64eede437cf}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -60,13 +50,19 @@ Global
 		{D7C7479E-E4FE-4327-B737-7515CC1B058F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7C7479E-E4FE-4327-B737-7515CC1B058F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7C7479E-E4FE-4327-B737-7515CC1B058F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BB1AEE3-B0B8-453E-8AF8-0B14F7EBBA6B}.Debug|Any CPU.ActiveCfg = Debug
-		{2BB1AEE3-B0B8-453E-8AF8-0B14F7EBBA6B}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E330ACB7-D840-4475-B428-7A550A69C68A}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
+		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{2147e9df-8118-4daa-8611-40dd72c259f9}*SharedItemsImports = 13
+		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
+		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
+		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
+		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{e7d3a8b8-6511-49dc-8f9f-f64eede437cf}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

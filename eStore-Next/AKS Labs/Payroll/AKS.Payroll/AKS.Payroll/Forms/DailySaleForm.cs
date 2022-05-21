@@ -371,19 +371,7 @@ namespace AKS.Payroll.Forms
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            EXLS.Read("dailysale_new.csv");
-            //List<DailySale> source = new List<DailySale>();
-            //using (StreamReader r = new StreamReader("data.json"))
-            //{
-            //    string json = r.ReadToEnd();
-            //    source = JsonSerializer.Deserialize<List<DailySale>>(json);
-            //}
-            //azureDb.DailySales.AddRange(source);
-            //if (azureDb.SaveChanges() > 0)
-            //{
-            //    MessageBox.Show("Test");
-            //}
-            //else MessageBox.Show("err");
+             
         }
     }
 }

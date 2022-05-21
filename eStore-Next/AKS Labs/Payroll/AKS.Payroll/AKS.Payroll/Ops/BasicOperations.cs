@@ -32,13 +32,68 @@ namespace AKS.Payroll.Ops
                 foreach (PropertyInfo pro in temp.GetProperties())
                 {
                     if (pro.Name == column.ColumnName)
-                        pro.SetValue (obj, dr[column.ColumnName], null);
+                    {
+                        switch (column.ColumnName)
+                        {
+                            case "Amount":
+
+                            case "CashAmount":
+                            case "NonCashAmount":
+                                pro.SetValue(obj, decimal.Parse((string)dr[column.ColumnName]), null);
+                                break;
+                            case "OnDate":
+                                pro.SetValue(obj, DateTime.Parse((string)dr[column.ColumnName]), null);
+                                break;
+                            case "EntryStatus":
+                            case "PayMode":
+                                pro.SetValue(obj, int.Parse((string)dr[column.ColumnName]), null);
+                                break;
+                            case "IsDue":
+                            case "ManualBill":
+                            case "SalesReturn":
+                            case "TailoringBill":
+                            case "IsReadOnly":
+                            case "MarkedDeleted":
+
+
+                                pro.SetValue(obj, bool.Parse((string)dr[column.ColumnName]), null);
+                                break;
+                            case "EDCTerminalId":
+                                pro.SetValue(obj,null, null);
+                                break;
+                            default:
+                                if (dr[column.ColumnName]!=null)
+                                pro.SetValue(obj,dr[column.ColumnName], null);
+                                break;
+                        }
+
+                    }
                     else
                         continue;
                 }
             }
             return obj;
         }
+
+        public static void UpDateSale(string path)
+        {
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Excel2013;
+                IWorkbook workbook = application.Workbooks.Open(path, ExcelOpenType.Automatic);
+                IWorksheet worksheet = workbook.Worksheets[0];
+                var x = worksheet.ExportDataTable(1, 1, 101, 18, ExcelExportDataTableOptions.ColumnNames);
+
+
+
+            }
+
+
+
+        }
+
+
         public static string Read(string path)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -47,10 +102,10 @@ namespace AKS.Payroll.Ops
                 application.DefaultVersion = ExcelVersion.Excel2013;
                 IWorkbook workbook = application.Workbooks.Open(path, ExcelOpenType.Automatic);
 
-                workbook.ActiveSheetIndex = 0;
-                workbook.SaveAsJson  ("data.json");
+                //workbook.ActiveSheetIndex = 0;
+                // workbook.SaveAsJson  ("data.json");
                 IWorksheet worksheet = workbook.Worksheets[0];
-               //var data=  worksheet.ExportData<DailySale>(1, 1, 101, 18);
+                //var data=  worksheet.ExportData<DailySale>(1, 1, 101, 18);
 
                 var x = worksheet.ExportDataTable(1, 1, 101, 18, ExcelExportDataTableOptions.ColumnNames);
                 var s = x.Rows.Count;
@@ -60,13 +115,14 @@ namespace AKS.Payroll.Ops
                 List<DailySale> data = new List<DailySale>();
                 data = ConvertDataTable<DailySale>(x);
                 var oo = data.Count;
-                using (var db= new AzurePayrollDbContext())
+
+                using (var db = new AzurePayrollDbContext())
                 {
                     db.DailySales.AddRange(data);
-                    //int s = db.SaveChanges();
+                    int s1 = db.SaveChanges();
                     Console.Write("");
                 }
-                return "data.json"; 
+                return "data.json";
 
                 //if (checkBox1.Checked)
                 //{

@@ -23,6 +23,7 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.0-preview.3.22175.1" />
 	</ItemGroup>
 
+	 
 	<Import Project="..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems" Label="Shared" />
 
 	<Import Project="..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems" Label="Shared" />

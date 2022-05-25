@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AKS.Shared.Commons.Models.Auth;
+using eStoreMobileX.Data.DataModels.Auth;
 
 namespace eStoreMobileX.Data.ViewModels.Auth
 {
@@ -18,13 +21,13 @@ namespace eStoreMobileX.Data.ViewModels.Auth
             ItemList = new ObservableCollection<User>();
             this.Item = new User
             {
-                StoreId = 1,
+                StoreId = "ARD",
             };
             dm = new UsersDataModel();
 
         }
 
-        public UserViewModel(int storeId)
+        public UserViewModel(string storeId)
         {
             Title = "User";
             ItemList = new ObservableCollection<User>();

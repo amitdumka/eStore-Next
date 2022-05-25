@@ -1,4 +1,6 @@
-﻿namespace eStore_MAUI_Next;
+﻿//using DevExpress.Maui;
+
+namespace eStore_MAUI_Next;
 
 public static class MauiProgram
 {
@@ -7,7 +9,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+               //.UseDevExpress()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

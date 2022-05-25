@@ -4,11 +4,54 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:eStore_MAUI_Next"
-    Shell.FlyoutBehavior="Disabled">
+     Title="eStore"
+    FlyoutBackgroundImage="thearvindstore005.png"
+    FlyoutBackgroundImageAspect="AspectFill"
+    Shell.FlyoutBehavior="Flyout">
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="WhiteSmoke" HeightRequest="190">
+                <Image
+                    Aspect="AspectFill"
+                    MaximumHeightRequest="185"
+                    MaximumWidthRequest="165"
+                    Opacity="0.6"
+                    Source="aprajitaretails.jpg" />
+                <Label
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Text="eStore"
+                    TextColor="IndianRed"
+                    VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
 
-    <ShellContent
-        Title="eStore-Mobile_NXT!"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem Title="Dashboard">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Route="dashboard" />
+    </FlyoutItem>
+
+    <!--<TabBar>
+        <ShellContent ContentTemplate="{DataTemplate auth:LoginPage}" Route="LoginPage" />
+    </TabBar>-->
+    <MenuItem
+        Clicked="OnSyncMenuClicked"
+        StyleClass="MenuItemLayoutStyle"
+        Text="Sync" />
+    <MenuItem
+        Clicked="DoLogout"
+        StyleClass="MenuItemLayoutStyle"
+        Text="Logout" />
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <StackLayout HorizontalOptions="Start">
+                <Label
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="eStore Mobile UI"
+                    TextColor="GhostWhite" />
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutFooterTemplate>
 
 </Shell>

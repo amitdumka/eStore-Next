@@ -18,7 +18,7 @@
                 HorizontalOptions="Center"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 SemanticProperties.HeadingLevel="Level1"
-                Text="Welcome to .NET Multi-platform App UI" />
+                Text="Welcome to .Aprajita Retails" />
 
             <Label
                 x:Name="CounterLabel"

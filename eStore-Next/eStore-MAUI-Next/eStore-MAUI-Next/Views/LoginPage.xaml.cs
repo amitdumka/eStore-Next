@@ -1,4 +1,4 @@
-namespace eStore_MAUI_Next;
+namespace eStore_MAUI_Next.Auth;
 
 public partial class LoginPage : ContentPage
 {

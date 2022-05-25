@@ -1,4 +1,6 @@
-﻿namespace eStore_MAUI_Next;
+﻿using eStore_MAUI_Next.Auth;
+
+namespace eStore_MAUI_Next;
 
 public partial class AppShell : Shell
 {

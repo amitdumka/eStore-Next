@@ -20,11 +20,12 @@ namespace eStoreMobileX.Data.DataModels.Base
 
         protected HybridDataMode(ConType conType) : base(conType)
         {
-
+            this.InitDatabase();
         }
         protected HybridDataMode(ConType conType, string url, string name) : base(conType)
         {
             _url = url; _name = name;
+            this.InitDatabase();
         }
 
         public override async Task<bool> Delete(int id)

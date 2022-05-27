@@ -49,9 +49,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.3.22175.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.3.22175.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.0.0-preview.3.22175.1" />
 	  <PackageReference Include="Syncfusion.Shared.Windows" Version="20.1.0.57" />
 	  <PackageReference Include="Syncfusion.Tools.Windows" Version="20.1.0.57" />
 	</ItemGroup>

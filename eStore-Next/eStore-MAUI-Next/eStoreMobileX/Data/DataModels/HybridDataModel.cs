@@ -1,113 +1,248 @@
 ﻿using eStoreMobileX.Core.Database;
 using eStoreMobileX.Data.RemoteServer;
+
+public enum DbType { Local, Azure, API }
 namespace eStoreMobileX.Data.DataModels.Base
 {
-    public abstract class HybridDataModel<T> where T : class
+    /// <summary>
+    /// New Hybrid Model 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+
+    public abstract class HybridDataMode<T> : BaseDataModel<T> where T : class
     {
-        public List<T> Entity { get; set; }
-        protected AppDBContext _context;
-        protected RemoteServer<T> service;
+        protected RemoteServer<T> _service;
         protected AzureDBContext _azureDb;
+        protected AppDBContext _localDb;
+        protected string _url, _name;
+        public DbType Mode;
+        public bool FailSafe = false;
 
-        public HybridDataModel(string url, string name)
+        protected HybridDataMode(ConType conType) : base(conType)
         {
-            service = new RemoteServer<T>(url, name);
+
         }
-        public async Task<T> GetById(int id, bool isLocal = true) { return null; }
-        public async Task<bool> Save(T item, bool isNew = true, bool isLocal = true) { return false; }
-        public async Task<bool> Delete(int id, bool isLocal = true) { return true; }
-        public bool IsExists(int id) { return false; }
-        public abstract Task<List<T>> FindAsync(QueryParam query, bool isLocal = true);
-        public abstract Task<List<T>> GetItems(int storeid, bool isLocal = true);
-
-    }
-    public abstract class HybridDataModel2<T> where T : class
-    {
-        public List<T> Entity { get; set; }
-        protected AppDBContext _context;
-        protected RemoteServer<T> service;
-        protected AzureDBContext _azureDb;
-
-        public HybridDataModel2(string url, string name)
+        protected HybridDataMode(ConType conType, string url, string name) : base(conType)
         {
-            service = new RemoteServer<T>(url, name);
+            _url = url; _name = name;
         }
-        public async Task<bool> Delete(int id, bool isLocal = true)
+
+        public override async Task<bool> Delete(int id)
         {
-            if (isLocal)
+            switch (Mode)
             {
-                using (_context = new AppDBContext())
-                {
-                    var element = await _context.FindAsync<T>(id);
-                    _context.Remove<T>(element);
-                    return (await _context.SaveChangesAsync()) > 0;
-                }
+                case DbType.Local:
+
+                    var element = await _localDb.FindAsync<T>(id);
+                    _localDb.Remove<T>(element);
+                    return (await _localDb.SaveChangesAsync()) > 0;
+                    break;
+                case DbType.Azure:
+                    var azureEle = await _azureDb.FindAsync<T>(id);
+                    _azureDb.Remove<T>(azureEle);
+                    return (await _azureDb.SaveChangesAsync()) > 0;
+                    break;
+                case DbType.API:
+                    return await _service.DeleteAsync(id);
+                    break;
+                default:
+                    return false;
+                    break;
             }
-            else
-            {
-                return await service.DeleteAsync(id);
 
+        }
+
+        public override async Task<bool> Delete(string id)
+        {
+            switch (Mode)
+            {
+                case DbType.Local:
+
+                    var element = await _localDb.FindAsync<T>(id);
+                    _localDb.Remove<T>(element);
+                    return (await _localDb.SaveChangesAsync()) > 0;
+
+                    break;
+                case DbType.Azure:
+                    var azureEle = await _azureDb.FindAsync<T>(id);
+                    _azureDb.Remove<T>(azureEle);
+                    return (await _azureDb.SaveChangesAsync()) > 0;
+                    break;
+                case DbType.API:
+                    return await _service.DeleteAsync(id);
+                    break;
+                default:
+                    return false;
+                    break;
             }
         }
-        public async Task<T> GetById(int id, bool isLocal = true)
+
+        public override async Task<T> GetById(string id)
         {
-            if (isLocal)
-                using (_context = new AppDBContext())
-                {
-                    return _context.Find<T>(id);
-                }
-            else
+            switch (Mode)
             {
-                return await service.GetByIdAsync(id);
+                case DbType.Local:
+                    return await _localDb.FindAsync<T>(id);
+                    break;
+                case DbType.Azure:
+                    return await _azureDb.FindAsync<T>(id);
+                    break;
+                case DbType.API:
+                    return await _service.GetByIdAsync(id);
+                    break;
+                default:
+                    return null;
+                    break;
             }
         }
-        /// <summary>
-        /// It is a function which check in local database
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool IsExists(int id)
+
+        public override async Task<T> GetById(int id)
         {
-            if (_context.Find<T>(id) != null) return true; else return false;
+            switch (Mode)
+            {
+                case DbType.Local:
+                    return await _localDb.FindAsync<T>(id);
+                    break;
+                case DbType.Azure:
+                    return await _azureDb.FindAsync<T>(id);
+                    break;
+                case DbType.API:
+                    return await _service.GetByIdAsync(id);
+                    break;
+                default:
+                    return null;
+                    break;
+            }
         }
 
-        /// <summary>
-        ///  Save Data to Local or Server.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="isNew"></param>
-        /// <param name="isLocal"></param>
-        /// <returns></returns>
-        public async Task<bool> Save(T item, bool isNew = true, bool isLocal = true)
+        public override bool IsExists(string id)
         {
-            if (isLocal)
+            switch (Mode)
             {
-                using (_context = new AppDBContext())
-                {
+                case DbType.Local:
+                    if (_localDb.Find<T>(id) != null) return true; else return false;
+                    break;
+                case DbType.Azure:
+                    if (_azureDb.Find<T>(id) != null) return true; else return false;
+                    break;
+                case DbType.API:
+                    return false;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
 
+        public override bool IsExists(int id)
+        {
+            switch (Mode)
+            {
+                case DbType.Local:
+                    if (_localDb.Find<T>(id) != null) return true; else return false;
+                    break;
+                case DbType.Azure:
+                    if (_azureDb.Find<T>(id) != null) return true; else return false;
+                    break;
+                case DbType.API:
+                    return false;
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+
+        public override async Task<bool> Save(T item, bool isNew = true)
+        {
+            switch (Mode)
+            {
+                case DbType.Local:
                     if (isNew)
                     {
-                        await _context.AddAsync<T>(item);
+                        await _localDb.AddAsync<T>(item);
 
                     }
                     else
                     {
-                        _context.Update<T>(item);
+                        _localDb.Update<T>(item);
                     }
-                    return (await _context.SaveChangesAsync()) > 0;
-                }
-            }
-            else
-            {
-                return await service.SaveAsync(item, isNew);
+                    return (await _localDb.SaveChangesAsync()) > 0;
+
+                    break;
+                case DbType.Azure:
+                    if (isNew)
+                    {
+                        await _azureDb.AddAsync<T>(item);
+
+                    }
+                    else
+                    {
+                        _azureDb.Update<T>(item);
+                    }
+                    return (await _azureDb.SaveChangesAsync()) > 0;
+                    break;
+                case DbType.API:
+                    return await _service.SaveAsync(item, isNew);
+                    break;
+                default:
+                    return false;
+                    break;
             }
         }
-        public abstract Task<List<T>> FindAsync(QueryParam query, bool isLocal = true);
-        public abstract Task<List<T>> GetItems(int storeid, bool isLocal = true);
 
+        /// <summary>
+        /// Init database based on Contype
+        /// </summary>
+        /// <returns></returns>
+        protected bool InitDatabase()
+        {
+            try
+            {
 
+                switch (this.ConType)
+                {
+                    case ConType.Local:
+                        _localDb = new AppDBContext();
+                        break;
+                    case ConType.Remote:
+                        if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
+                            _service = new RemoteServer<T>(_url, _name);
+                        else return false;
+                        break;
+                    case ConType.RemoteDb:
+                        _azureDb = new AzureDBContext();
+                        break;
+                    case ConType.HybridApi:
+                        if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
+                            _service = new RemoteServer<T>(_url, _name);
+                        _localDb = new AppDBContext();
+                        break;
+                    case ConType.HybridDB:
+                        _azureDb = new AzureDBContext();
+                        _localDb = new AppDBContext();
+                        break;
+                    case ConType.Hybrid:
+                        _localDb = new AppDBContext();
+                        _azureDb = new AzureDBContext();
+                        if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
+                            _service = new RemoteServer<T>(_url, _name);
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
 
-    }
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+
+    }//End of class
 
 
 }

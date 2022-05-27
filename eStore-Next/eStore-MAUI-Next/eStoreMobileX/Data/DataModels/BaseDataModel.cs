@@ -19,6 +19,7 @@ namespace eStoreMobileX.Data.DataModels.Base
     {
         public ConType ConType { get; set; }
         public List<T> Entity { get; set; }
+        
         public BaseDataModel(ConType conType )
         {
             ConType = conType;

@@ -23,6 +23,7 @@ namespace eStoreMobileX.Core
     public class Constants
     {
         public const string BackendUrl = "https://zumo-abcd1234.azurewebsites.net";
+        public const string Con = "";
 
         //Database
         public const string DatabaseFilename = "estoreSQLiteVer5.db3";

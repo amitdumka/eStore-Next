@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AKS.Shared.Commons.Models.Auth;
+using eStoreMobileX.Config;
 using eStoreMobileX.Data.DataModels.Auth;
 
 namespace eStoreMobileX.Data.ViewModels.Auth
@@ -17,10 +18,9 @@ namespace eStoreMobileX.Data.ViewModels.Auth
 
         public UserViewModel()
         {
-             
             this.Item = new User
             {
-                StoreId = "ARD",
+                StoreId = AppConfig.StoreId,
             };
 
             InitObject();
@@ -28,7 +28,7 @@ namespace eStoreMobileX.Data.ViewModels.Auth
 
         public UserViewModel(string storeId)
         {
-            
+
             this.Item = new User
             {
                 StoreId = storeId,
@@ -40,7 +40,9 @@ namespace eStoreMobileX.Data.ViewModels.Auth
         {
             try
             {
-                dm = new UsersDataModel();
+                dm = new UsersDataModel(ConType);
+                dm.Mode = AppConfig.DbMode;
+
                 List<User> Data = await dm.GetItems();
 
                 if (Data == null || Data.Count <= 0)
@@ -113,6 +115,7 @@ namespace eStoreMobileX.Data.ViewModels.Auth
             if (Item != null)
             {
                 // Do Login Work like setting variables and others.
+                UpdateLoginInfo();
                 return Item;
             }
             else return null;
@@ -123,12 +126,24 @@ namespace eStoreMobileX.Data.ViewModels.Auth
         {
             Title = "User";
             ItemList = new ObservableCollection<User>();
-            
-            dm = new UsersDataModel();
             ConType = ConType.HybridDB;
+            dm = new UsersDataModel(ConType);
+            dm.Mode =mode = AppConfig.DbMode;
+
         }
-    
-    
+
+        public async void UpdateLoginInfo()
+        {
+            AppConfig.StoreId = Item.StoreId;
+            AppConfig.UserName = Item.UserName;
+            AppConfig.Name = Item.GuestName;
+            AppConfig.Role = Item.Role;
+            AppConfig.UserType = Item.UserType;
+            AppConfig.EmployeeId = string.IsNullOrEmpty(Item.EmployeeId) ? Item.EmployeeId : String.Empty;
+            AppConfig.LogInTime = DateTime.Now;
+            AppConfig.LoggedIn = true; 
+        }
+
     }
 
 }

@@ -1,10 +1,15 @@
+using eStoreMobileX.Data.ViewModels.Auth;
+
 namespace eStore_MAUI_Next.Auth;
 
 public partial class LoginPage : ContentPage
 {
+    UserViewModel viewModel;
+
 	public LoginPage()
 	{
 		InitializeComponent();
+        viewModel = new UserViewModel();
 	}
     void OnSubmitClicked(Object sender, EventArgs e)
     {
@@ -22,6 +27,7 @@ public partial class LoginPage : ContentPage
     {
         if (UserName.Text == "Admin" && Password.Text == "Admin")
         {
+           
             Application.Current.MainPage = new AppShell();
         }
         else if (DoLogin(UserName.Text, Password.Text))
@@ -36,9 +42,10 @@ public partial class LoginPage : ContentPage
 
     bool DoLogin(string username, string password)
     {
-        //UsersDataModel dm = new UsersDataModel();
-        //return dm.DoLogin(username, password);
-        return true;
+       var user= viewModel.SignIn(UserName.Text.Trim(), Password.Text.Trim());
+        if (user != null)
+            return true;
+        else return false;
 
     }
 }

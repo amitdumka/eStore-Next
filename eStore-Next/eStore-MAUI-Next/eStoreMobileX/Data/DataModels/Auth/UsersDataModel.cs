@@ -6,24 +6,49 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eStoreMobileX.Data.DataModels.Auth
 {
-    public class UsersDataModel : LocalDataModel<User>
+    public class UsersDataModel : HybridDataMode<User>
     {
-        public UsersDataModel(): base(ConType.Local)
-        {
-            
-        }
         public UsersDataModel(ConType conType) : base(conType)
         {
         }
 
         public override Task<List<User>> FindAsync(QueryParam query)
         {
-            throw new NotImplementedException();
+
+            switch (Mode)
+            {
+                case DbType.Local:
+
+                    break;
+                case DbType.Azure:
+                    break;
+                case DbType.API:
+                    break;
+                default:
+                    break;
+            }
+            return null;
         }
 
+        
         public override async Task<List<User>> GetItems(int storeid)
         {
-            using (_context = new AppDBContext()) return await _context.Users.ToListAsync();
+            switch (Mode)
+            {
+                case DbType.Local:
+                    using (_localDb = new AppDBContext()) return await _localDb.Users.ToListAsync();
+                    break;
+                case DbType.Azure:
+                    using (_localDb = new AppDBContext()) return await _localDb.Users.ToListAsync();
+                    break;
+                case DbType.API:
+                    return null;
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+
         }
 
         /// <summary>
@@ -34,15 +59,21 @@ namespace eStoreMobileX.Data.DataModels.Auth
         /// <returns></returns>
         public User SigIn(string userName, string password)
         {
-            //TODO: based on Connection Type it should query database.
-
-            using (_context = new AppDBContext())
+            User user = null;
+            switch (Mode)
             {
-                var user = _context.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
-                // TODO: Set Logged In User Info so it can be used across the app. 
-
-                if (user != null) return user; else return null;
+                case DbType.Local:
+                    user = _localDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                    break;
+                case DbType.Azure:
+                    user = _azureDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                    break;
+                case DbType.API:
+                    break;
+                default:
+                    break;
             }
+            if (user != null) return user; else return null;
         }
 
         /// <summary>
@@ -53,13 +84,24 @@ namespace eStoreMobileX.Data.DataModels.Auth
         /// <returns></returns>
         public bool DoLogin(string UserName, string password)
         {
-            using (_context = new AppDBContext())
-            {
-                var user = _context.Users.Where(c => c.UserName == UserName && c.Password == password).FirstOrDefault();
-                // TODO: Set Logged In User Info so it can be used across the app. 
+            User user = null;
 
-                if (user != null) return true; else return false;
+            switch (Mode)
+            {
+                case DbType.Local:
+                    user = _localDb.Users.Where(c => c.UserName == UserName && c.Password == password).FirstOrDefault();
+                    break;
+                case DbType.Azure:
+                    user = _azureDb.Users.Where(c => c.UserName == UserName && c.Password == password).FirstOrDefault();
+                    break;
+                case DbType.API:
+                    break;
+                default:
+                    break;
             }
+
+            if (user != null) return true; else return false;
+
         }
 
         internal Task<List<User>> GetItems()
@@ -69,13 +111,13 @@ namespace eStoreMobileX.Data.DataModels.Auth
 
         public bool PasswordChange(string userName, string oldPassword, string newPassword)
         {
-            var user = _context.Users.Where(c => c.UserName == userName && c.Password == oldPassword).FirstOrDefault();
+            var user = _localDb.Users.Where(c => c.UserName == userName && c.Password == oldPassword).FirstOrDefault();
             if (user != null)
             {
                 // TODO: Send info that old password is not matched or user not found!.
                 user.Password = newPassword;
-                _context.Update(user);
-                return _context.SaveChanges() > 0;
+                _localDb.Update(user);
+                return _localDb.SaveChanges() > 0;
             }
             else return false;
 
@@ -93,16 +135,15 @@ namespace eStoreMobileX.Data.DataModels.Auth
             foreach (var user in users)
             {
                 user.UserId = 0; //TODO: remove is leagace.
-
             }
-            _context.Users.AddRange(users);
-            return _context.SaveChanges() > 0;
+            _localDb.Users.AddRange(users);
+            return _localDb.SaveChanges() > 0;
 
         }
 
         public override async Task<List<User>> GetItems(string storeid)
         {
-            using (_context = new AppDBContext()) return await _context.Users.ToListAsync();
+            using (_localDb = new AppDBContext()) return await _localDb.Users.ToListAsync();
         }
     }
 

@@ -8,9 +8,16 @@ namespace eStoreMobileX.Data.ViewModels
         #region Fields
         private Command<object> backButtonCommand;
         private Command<object> saveButtonCommand;
-        private ConType conType;
+        protected ConType conType;
+        protected DbType mode;
 
         private string title;
+
+        public DbType Mode
+        {
+            get { return mode; }
+            set { mode = value; NotifyPropertyChanged("Mode"); }
+        }
 
         public ConType ConType
         {
@@ -18,7 +25,7 @@ namespace eStoreMobileX.Data.ViewModels
             set
             {
                 conType = value; //OnPropertyChanged();
-                NotifyPropertyChanged("Title");
+                NotifyPropertyChanged("ConType");
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using AKS.Shared.Commons.Models.Auth;
+﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStoreMobileX.Core.Database
@@ -6,7 +7,7 @@ namespace eStoreMobileX.Core.Database
     /// <summary>
     /// Database Basic structure
     /// </summary>
-    public class AppDBContext:DbContext
+    public class AppDBContext : DatabaseContext
     {
         private string DatabasePath { get; set; }
         public AppDBContext()
@@ -14,6 +15,7 @@ namespace eStoreMobileX.Core.Database
             DatabasePath = Constants.DatabasePath;
             SQLitePCL.Batteries_V2.Init();
             this.Database.EnsureCreated();
+
         }
         public AppDBContext(string databasePath)
         {
@@ -22,11 +24,30 @@ namespace eStoreMobileX.Core.Database
             this.Database.EnsureCreated();
         }
 
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) 
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite($"Filename={DatabasePath}");
 
+
+
+    }
+
+    public class AzureDBContext : DatabaseContext
+    {
+        private string ConnectionString = "";
+        public AzureDBContext(string conn)
+        {
+
+        }
+        public AzureDBContext()
+        {
+
+        }
+    }
+
+    public abstract class DatabaseContext : DbContext
+    {
         public DbSet<User> Users { get; set; }
-        
+        public DbSet<Store> Stores { get; set; }
     }
 }

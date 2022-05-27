@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
+﻿using System.Text;
 using System.Diagnostics;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using eStoreMobileX.Data.DataModels.Base;
 
 namespace eStoreMobileX.Data.RemoteServer

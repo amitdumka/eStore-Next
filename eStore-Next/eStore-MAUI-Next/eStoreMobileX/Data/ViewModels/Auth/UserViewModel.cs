@@ -17,26 +17,24 @@ namespace eStoreMobileX.Data.ViewModels.Auth
 
         public UserViewModel()
         {
-            Title = "User";
-            ItemList = new ObservableCollection<User>();
+             
             this.Item = new User
             {
                 StoreId = "ARD",
             };
-            dm = new UsersDataModel();
 
+            InitObject();
         }
 
         public UserViewModel(string storeId)
         {
-            Title = "User";
-            ItemList = new ObservableCollection<User>();
+            
             this.Item = new User
             {
                 StoreId = storeId,
             };
-            dm = new UsersDataModel();
 
+            InitObject();
         }
         private async void RefreshData()
         {
@@ -109,6 +107,28 @@ namespace eStoreMobileX.Data.ViewModels.Auth
 
         }
 
+        public User SignIn(string userName, string password)
+        {
+            Item = dm.SigIn(userName, password);
+            if (Item != null)
+            {
+                // Do Login Work like setting variables and others.
+                return Item;
+            }
+            else return null;
+        }
+
+        // All Initilzation work here which is common
+        public override async void InitObject()
+        {
+            Title = "User";
+            ItemList = new ObservableCollection<User>();
+            
+            dm = new UsersDataModel();
+            ConType = ConType.HybridDB;
+        }
+    
+    
     }
 
 }

@@ -3,13 +3,24 @@ using System.Runtime.CompilerServices;
 
 namespace eStoreMobileX.Data.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
         #region Fields
         private Command<object> backButtonCommand;
         private Command<object> saveButtonCommand;
+        private ConType conType;
 
         private string title;
+
+        public ConType ConType
+        {
+            get { return conType; }
+            set
+            {
+                conType = value; //OnPropertyChanged();
+                NotifyPropertyChanged("Title");
+            }
+        }
 
         public string Title
         {
@@ -119,6 +130,7 @@ namespace eStoreMobileX.Data.ViewModels
 
         #region AbstractFunctions
         // public abstract async void LoadData();
+        public abstract  void InitObject();
         #endregion
 
         #region Constructor

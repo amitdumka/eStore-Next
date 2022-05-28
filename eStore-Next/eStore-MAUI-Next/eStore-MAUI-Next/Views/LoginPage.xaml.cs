@@ -42,9 +42,11 @@ public partial class LoginPage : ContentPage
 
     bool DoLogin(string username, string password)
     {
-       var user= viewModel.SignIn(UserName.Text.Trim(), Password.Text.Trim());
+       var user= viewModel.SignIn(UserName.Text.Trim()+"@eStore.in", Password.Text.Trim());
         if (user != null)
-            return true;
+        { 
+            return true; 
+        }
         else return false;
 
     }

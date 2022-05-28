@@ -30,7 +30,7 @@ namespace eStoreMobileX.Data.DataModels.Auth
             return null;
         }
 
-        
+
         public override async Task<List<User>> GetItems(int storeid)
         {
             switch (Mode)
@@ -73,7 +73,16 @@ namespace eStoreMobileX.Data.DataModels.Auth
                 default:
                     break;
             }
-            if (user != null) return user; else return null;
+            if (user != null) { 
+                using(_localDb=new AppDBContext())
+                {
+                  if(  !_localDb.Users.Any(c=>c.UserName == userName))
+                    {
+                        _localDb.Users.Add(user);
+                        _localDb.SaveChangesAsync();
+                    }
+                }
+                return user; } else return null;
         }
 
         /// <summary>

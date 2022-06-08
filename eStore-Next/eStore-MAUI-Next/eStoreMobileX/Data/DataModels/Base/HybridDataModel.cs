@@ -1,5 +1,6 @@
 ﻿using eStoreMobileX.Core.Database;
 using eStoreMobileX.Data.RemoteServer;
+using Microsoft.EntityFrameworkCore;
 
 public enum DbType { Local, Azure, API }
 namespace eStoreMobileX.Data.DataModels.Base
@@ -188,6 +189,29 @@ namespace eStoreMobileX.Data.DataModels.Base
                     break;
                 default:
                     return false;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Experimental 
+        /// </summary>
+        /// <returns></returns>
+        public override async Task<List<T>> GetItems()
+        {
+            switch (Mode)
+            {
+                case DbType.Local:
+                    return await _localDb.Set<T>().ToListAsync();
+                    break;
+                case DbType.Azure:
+                    return await _azureDb.Set<T>().ToListAsync();
+                    break;
+                case DbType.API:
+                    return await _service.RefreshDataAsync();
+                    break;
+                default:
+                    return null;
                     break;
             }
         }

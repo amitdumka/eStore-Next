@@ -138,6 +138,8 @@ namespace eStoreMobileX.Data.ViewModels
         #region AbstractFunctions
         // public abstract async void LoadData();
         public abstract  void InitObject();
+        protected abstract void RefreshDataAsync();
+        public abstract void ItemsSourceRefresh();
         #endregion
 
         #region Constructor

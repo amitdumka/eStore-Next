@@ -36,6 +36,7 @@ namespace eStoreMobileX.Data.DataModels.Base
         public abstract Task<List<T>> FindAsync(QueryParam query);
         public abstract Task<List<T>> GetItems(int storeid);
         public abstract Task<List<T>> GetItems(string storeid);
+        public abstract Task<List<T>> GetItems();
 
     }
 

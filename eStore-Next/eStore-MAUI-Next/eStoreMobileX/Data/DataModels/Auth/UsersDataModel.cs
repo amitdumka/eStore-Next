@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eStoreMobileX.Data.DataModels.Auth
 {
+    /// <summary>
+    ///  User Data Model. It is not completed and error free
+    /// </summary>
     public class UsersDataModel : HybridDataMode<User>
     {
+        //TODO: need to check and verify each operations
         public UsersDataModel(ConType conType) : base(conType)
         {
         }

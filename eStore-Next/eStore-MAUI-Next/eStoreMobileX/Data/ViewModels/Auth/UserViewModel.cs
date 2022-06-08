@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using AKS.Shared.Commons.Models.Auth;
 using eStoreMobileX.Config;
 using eStoreMobileX.Data.DataModels.Auth;
@@ -36,7 +31,7 @@ namespace eStoreMobileX.Data.ViewModels.Auth
 
             InitObject();
         }
-        private async void RefreshData()
+        protected override async void RefreshDataAsync()
         {
             try
             {
@@ -76,9 +71,9 @@ namespace eStoreMobileX.Data.ViewModels.Auth
         /// <summary>
         /// Refresh Data store.
         /// </summary>
-        public void ItemsSourceRefresh()
+        public override void ItemsSourceRefresh()
         {
-            RefreshData();
+            RefreshDataAsync();
         }
 
         public async Task<bool> SignUP(User User, bool isNew = true)

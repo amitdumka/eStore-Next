@@ -3,8 +3,9 @@
     x:Class="eStore_MAUI_Next.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:eStore_MAUI_Next"
     xmlns:auth="clr-namespace:eStore_MAUI_Next.Auth"
+    xmlns:local="clr-namespace:eStore_MAUI_Next"
+    xmlns:views="clr-namespace:eStore_MAUI_Next.Views"
     Title="eStore"
     FlyoutBackgroundImage="thearvindstore005.png"
     FlyoutBackgroundImageAspect="AspectFill"
@@ -39,11 +40,11 @@
     </FlyoutItem>
     <FlyoutItem Title="Attendance">
         <ShellContent ContentTemplate="{DataTemplate payroll:EmployeesPage}" Route="attendances" />
-    </FlyoutItem>
-    <FlyoutItem Title="Store">
-        <ShellContent ContentTemplate="{DataTemplate store:StoresPage}" Route="stores" />
     </FlyoutItem>-->
-    
+    <FlyoutItem Title="Store">
+        <ShellContent ContentTemplate="{DataTemplate views:StoresPage}" Route="stores" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Login">
         <ShellContent ContentTemplate="{DataTemplate auth:LoginPage}" Route="login" />
     </FlyoutItem>

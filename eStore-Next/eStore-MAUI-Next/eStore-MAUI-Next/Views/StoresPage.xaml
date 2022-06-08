@@ -3,7 +3,11 @@
     x:Class="eStore_MAUI_Next.Views.StoresPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vms="clr-namespace:eStoreMobileX.Data.ViewModels.Stores;assembly=eStoreMobileX"
     Title="Stores">
+    <ContentPage.BindingContext>
+        <vms:StoreViewModel />
+    </ContentPage.BindingContext>
     <StackLayout>
         <Label
             FontSize="Header"
@@ -12,10 +16,15 @@
             TextColor="BlueViolet"
             VerticalOptions="Center" />
         <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
-            <ListView
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="StartAndExpand"
-                VerticalScrollBarVisibility="Always" />
+            <ListView BackgroundColor="White" ItemsSource="{Binding ItemList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding StoreName}" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
         </StackLayout>
     </StackLayout>

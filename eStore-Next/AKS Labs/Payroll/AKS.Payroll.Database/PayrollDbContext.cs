@@ -107,6 +107,7 @@ namespace AKS.Payroll.Database
         public DbSet<DueRecovery> DueRecovery { get; set; }
         public DbSet<CustomerDue> CustomerDues { get; set; }
 
+        public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
 
     }
 

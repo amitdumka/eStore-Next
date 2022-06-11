@@ -140,4 +140,33 @@ namespace AKS.Shared.Commons.Models.Accounts
         public string PartyName { get; set; }
         public DateTime OpeningDate { get; set; }
     }
+
+    [Table("V1_PettyCashSheets")]
+    public class PettyCashSheet
+    {
+        public string Id { get; set; }
+        public DateTime OnDate { get; set; }
+        public decimal OpeningBalance { get; set; }
+        public decimal BankDeposit { get; set; }
+        public decimal BankWithdrawal { get; set; }
+        public decimal ClosingBalance { get; set; }
+
+        public decimal DailySale { get; set; }
+
+        public decimal TailoringSale { get; set; }
+        public decimal TailoringPayment { get; set; }
+
+        public decimal ManualSale { get; set; }
+        public decimal CardSale { get; set; }
+
+        public decimal CustomerDue { get; set; }
+        public decimal CustomerRecovery { get; set; }
+
+        public string ReceiptsNaration { get; set; }
+        public decimal ReceiptsTotal { get; set; }
+
+        public string PaymentNaration { get; set; }
+        public decimal PaymentTotal { get; set; }
+
+    }
 }

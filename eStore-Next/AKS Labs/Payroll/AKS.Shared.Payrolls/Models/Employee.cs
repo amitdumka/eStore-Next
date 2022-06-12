@@ -295,5 +295,16 @@ namespace AKS.Shared.Payroll.Models
         public decimal OutAmount { get; set; }
 
     }
+    public class TimeSheet : Base
+    {
+        public string Id { get;set; }
+        public string EmployeeId { get; set; }
+        public DateTime OutTime { get; set; }
+        public DateTime InTime { get; set; }    
+        public string Reason { get; set; }
+        public Employee Employee { get; set; }
+        public double Duration { get { return (InTime - OutTime).TotalMinutes; } }
+
+     }
 
 }

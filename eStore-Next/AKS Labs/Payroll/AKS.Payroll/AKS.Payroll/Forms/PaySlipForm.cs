@@ -84,5 +84,15 @@ namespace AKS.Payroll.Forms
             dgvPayslips.DataSource = PaySlips.ToBindingList();
             tsslCountValue.Text = PaySlips.Count.ToString();
         }
+
+        private void btnPrintPayslip_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnProcessAll_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

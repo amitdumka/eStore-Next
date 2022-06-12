@@ -146,21 +146,29 @@ namespace AKS.Shared.Commons.Models.Accounts
     {
         public string Id { get; set; }
         public DateTime OnDate { get; set; }
+        //Balance
         public decimal OpeningBalance { get; set; }
+        public decimal ClosingBalance { get; set; }
+        
+        //Bank
         public decimal BankDeposit { get; set; }
         public decimal BankWithdrawal { get; set; }
-        public decimal ClosingBalance { get; set; }
-
+        
+        //Sale
         public decimal DailySale { get; set; }
 
         public decimal TailoringSale { get; set; }
         public decimal TailoringPayment { get; set; }
 
+        //Different Sale
         public decimal ManualSale { get; set; }
         public decimal CardSale { get; set; }
+        public decimal NonCashSale { get; set; }
 
         public decimal CustomerDue { get; set; }
+        public string DueList { get; set; }
         public decimal CustomerRecovery { get; set; }
+        public string RecoveryList { get; set; }
 
         public string ReceiptsNaration { get; set; }
         public decimal ReceiptsTotal { get; set; }

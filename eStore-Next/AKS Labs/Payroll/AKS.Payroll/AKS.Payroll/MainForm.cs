@@ -237,5 +237,10 @@ namespace AKS.Payroll
         {
             LoadForm(new DailySaleForm());
         }
+
+        private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new PettyCashSheetForm());
+        }
     }
 }

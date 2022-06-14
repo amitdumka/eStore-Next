@@ -87,7 +87,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnDueRecovery = new System.Windows.Forms.Button();
+            this.btnPrint = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbYearly = new System.Windows.Forms.RadioButton();
             this.lbLMonth = new System.Windows.Forms.RadioButton();
@@ -682,7 +682,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btnDueRecovery);
+            this.groupBox1.Controls.Add(this.btnPrint);
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Controls.Add(this.btnPreview);
             this.groupBox1.Controls.Add(this.btnDelete);
@@ -695,15 +695,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
             // 
-            // btnDueRecovery
+            // btnPrint
             // 
-            this.btnDueRecovery.Location = new System.Drawing.Point(283, 22);
-            this.btnDueRecovery.Name = "btnDueRecovery";
-            this.btnDueRecovery.Size = new System.Drawing.Size(75, 30);
-            this.btnDueRecovery.TabIndex = 4;
-            this.btnDueRecovery.Text = "Recovery";
-            this.btnDueRecovery.UseVisualStyleBackColor = true;
-            this.btnDueRecovery.Click += new System.EventHandler(this.btnDueRecovery_Click);
+            this.btnPrint.Enabled = false;
+            this.btnPrint.Location = new System.Drawing.Point(283, 22);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(75, 30);
+            this.btnPrint.TabIndex = 4;
+            this.btnPrint.Text = "Print";
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnDueRecovery_Click);
             // 
             // panel1
             // 
@@ -828,7 +829,7 @@
         private GroupBox groupBox2;
         private ListBox lbYearList;
         private GroupBox groupBox1;
-        private Button btnDueRecovery;
+        private Button btnPrint;
         private Panel panel1;
         private RadioButton rbYearly;
         private RadioButton lbLMonth;

@@ -208,13 +208,13 @@ namespace AKS.Payroll.Forms
 
         private void btnDueRecovery_Click(object sender, EventArgs e)
         {
-            //printDialog1 = new PrintDialog();
-            //if (printDialog1.ShowDialog() == DialogResult.OK)
-            //{
-            //    printDialog1.AllowPrintToFile = true;
+          var   printDialog1 = new PrintDialog();
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDialog1.AllowPrintToFile = true;
 
-            //    pdfDocumentView1.Print(printDialog1.PrinterSettings.PrinterName);
-            //}
+                pdfView.Print(printDialog1.PrinterSettings.PrinterName);
+            }
         }
 
         public int ReadInt(TextBox text)
@@ -231,7 +231,13 @@ namespace AKS.Payroll.Forms
         }
         private async void ViewPdf()
         {
-             pdfView.Load(GeneratePdf());
+            string fileName = GeneratePdf();
+            if (string.IsNullOrEmpty(fileName) == false)
+            {
+                pdfView.Load(fileName);
+                btnPrint.Enabled = true;
+            }
+             
         }
 
         private string  GeneratePdf()

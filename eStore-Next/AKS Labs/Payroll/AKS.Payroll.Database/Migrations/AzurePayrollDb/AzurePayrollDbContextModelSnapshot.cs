@@ -263,6 +263,77 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_Parties");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.PettyCashSheet", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("BankDeposit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("BankWithdrawal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CardSale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ClosingBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CustomerDue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CustomerRecovery")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DailySale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DueList")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ManualSale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("NonCashSale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OpeningBalance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PaymentNaration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PaymentTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ReceiptsNaration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ReceiptsTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("RecoveryList")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TailoringPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TailoringSale")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("V1_PettyCashSheets");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.TranscationMode", b =>
                 {
                     b.Property<string>("TranscationId")

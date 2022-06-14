@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings3 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings3 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PettyCashSheetForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings3 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -631,16 +631,16 @@
             this.pdfView.IsTextSearchEnabled = true;
             this.pdfView.IsTextSelectionEnabled = true;
             this.pdfView.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings3.EnableNotification = true;
-            this.pdfView.MessageBoxSettings = messageBoxSettings3;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfView.MessageBoxSettings = messageBoxSettings1;
             this.pdfView.MinimumZoomPercentage = 50;
             this.pdfView.Name = "pdfView";
             this.pdfView.PageBorderThickness = 1;
-            pdfViewerPrinterSettings3.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings3.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings3.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings3.PrintLocation")));
-            pdfViewerPrinterSettings3.ShowPrintStatusDialog = true;
-            this.pdfView.PrinterSettings = pdfViewerPrinterSettings3;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfView.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfView.ReferencePath = null;
             this.pdfView.ScrollDisplacementValue = 0;
             this.pdfView.ShowHorizontalScrollBar = true;
@@ -648,10 +648,10 @@
             this.pdfView.Size = new System.Drawing.Size(937, 360);
             this.pdfView.SpaceBetweenPages = 8;
             this.pdfView.TabIndex = 0;
-            textSearchSettings3.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings3.HighlightAllInstance = true;
-            textSearchSettings3.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfView.TextSearchSettings = textSearchSettings3;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfView.TextSearchSettings = textSearchSettings1;
             this.pdfView.ThemeName = "Default";
             this.pdfView.VerticalScrollOffset = 0;
             this.pdfView.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;

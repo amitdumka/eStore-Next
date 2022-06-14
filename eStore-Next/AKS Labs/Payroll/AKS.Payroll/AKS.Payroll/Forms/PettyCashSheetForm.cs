@@ -20,7 +20,7 @@ namespace AKS.Payroll.Forms
         {
             InitializeComponent();
         }
-
+        private List<PettyCashSheet> ItemList;
         private void PettyCashSheetForm_Load(object sender, EventArgs e)
         {
             azureDb = new AzurePayrollDbContext();
@@ -37,6 +37,8 @@ namespace AKS.Payroll.Forms
             cbxStore.DataSource = azureDb.Stores.Select(c => new { c.StoreId, c.StoreName }).ToList();
             cbxStore.DisplayMember = "StoreName";
             cbxStore.ValueMember = "StoreId";
+            ItemList = azureDb.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+            dgvPettyCashSheet.DataSource = ItemList;
         }
 
         private void Reset()
@@ -204,6 +206,30 @@ namespace AKS.Payroll.Forms
             if(pcs!=null)
             ViewPdf();
             else MessageBox.Show("No Record Found");
+        }
+
+        private void dgvPettyCashSheet_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var row =(PettyCashSheet) dgvPettyCashSheet.CurrentRow.DataBoundItem ;
+            if (row != null)
+            {
+                azureDb.PettyCashSheets.Remove(row);
+                if (azureDb.SaveChanges() > 0)
+                {
+                    MessageBox.Show("Deleted");
+                    
+                    ItemList.Remove(row); 
+                    dgvPettyCashSheet.Refresh();
+                    dgvPettyCashSheet.Rows.Remove(dgvPettyCashSheet.CurrentRow);
+                    dgvPettyCashSheet.SelectedRows.Clear();
+
+                }
+            }
         }
 
         private void btnDueRecovery_Click(object sender, EventArgs e)
@@ -514,6 +540,10 @@ namespace AKS.Payroll.Forms
 
             
         }
+
+
+
+
     }
 
     internal class RowData

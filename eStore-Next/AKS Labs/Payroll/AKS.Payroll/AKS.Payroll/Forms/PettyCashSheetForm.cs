@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Accounts;
+using Microsoft.EntityFrameworkCore;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
@@ -15,17 +16,19 @@ namespace AKS.Payroll.Forms
         private decimal tPay, tRec, tDue, tdRec;
         private string pNar, rNar, dNar, rcNar;
         private bool isNew = false;
+        private ObservableListSource<PettyCashSheet> ItemList;
 
         public PettyCashSheetForm()
         {
             InitializeComponent();
         }
-        private List<PettyCashSheet> ItemList;
+       // private List<PettyCashSheet> ItemList;
         private void PettyCashSheetForm_Load(object sender, EventArgs e)
         {
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
             pcs = new PettyCashSheet();
+            ItemList = new ObservableListSource<PettyCashSheet>();
             LoadData();
             tRec = tPay = (decimal)0.0;
         }
@@ -37,8 +40,16 @@ namespace AKS.Payroll.Forms
             cbxStore.DataSource = azureDb.Stores.Select(c => new { c.StoreId, c.StoreName }).ToList();
             cbxStore.DisplayMember = "StoreName";
             cbxStore.ValueMember = "StoreId";
-            ItemList = azureDb.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
-            dgvPettyCashSheet.DataSource = ItemList;
+            UpdateItemList ( azureDb.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList());
+            dgvPettyCashSheet.DataSource = ItemList.ToBindingList();
+        }
+        private ObservableListSource<PettyCashSheet> UpdateItemList(List<PettyCashSheet> items)
+        {
+            foreach (var item in items)
+            {
+                ItemList.Add(item);
+            }
+            return ItemList;
         }
 
         private void Reset()
@@ -224,8 +235,8 @@ namespace AKS.Payroll.Forms
                     MessageBox.Show("Deleted");
                     
                     ItemList.Remove(row); 
-                    dgvPettyCashSheet.Refresh();
-                    dgvPettyCashSheet.Rows.Remove(dgvPettyCashSheet.CurrentRow);
+                   // dgvPettyCashSheet.Refresh();
+                   // dgvPettyCashSheet.Rows.Remove(dgvPettyCashSheet.CurrentRow);
                     dgvPettyCashSheet.SelectedRows.Clear();
 
                 }
@@ -276,7 +287,7 @@ namespace AKS.Payroll.Forms
                 PdfDocument document = new PdfDocument();
                 
                 //Adds page settings
-                document.PageSettings.Orientation = PdfPageOrientation.Landscape;
+                document.PageSettings.Orientation = PdfPageOrientation.Portrait;
                 document.PageSettings.Margins.All = 50;
 
                 //Add a page to the document.
@@ -318,6 +329,9 @@ namespace AKS.Payroll.Forms
 
                 //Draw Bill line
                 graphics.DrawLine(new PdfPen(new PdfColor(126, 151, 173), 0.70f), new PointF(0, result.Bounds.Bottom + 3), new PointF(graphics.ClientSize.Width, result.Bounds.Bottom + 3));
+
+               
+
 
                 //Create a PdfGrid
                 PdfGrid pdfGrid = new PdfGrid();
@@ -391,6 +405,40 @@ namespace AKS.Payroll.Forms
 
                 //Draws the grid to the PDF page.
                 PdfGridLayoutResult gridResult = pdfGrid.Draw(page,
+                    new RectangleF(
+                        new PointF(0, result.Bounds.Bottom + 40),
+                        new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
+
+                //Draw Bill line Page Break Line
+                graphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResult.Bounds.Bottom + 10), new PointF(graphics.ClientSize.Width, gridResult.Bounds.Bottom + 10));
+
+                //Draw Rectangle place on location
+                graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, gridResult.Bounds.Bottom + 40, graphics.ClientSize.Width, 30));
+                 element = new PdfTextElement("Aprajita Retails \t" + PKey, subHeadingFont);
+                element.Brush = PdfBrushes.White;
+                result = element.Draw(page, new PointF(10, gridResult.Bounds.Bottom + 48));
+
+               // string currentDate = "On: " + DateTime.Now.ToString("MM/dd/yyyy");
+               // SizeF textSize = subHeadingFont.MeasureString(currentDate);
+                graphics.DrawString(currentDate, subHeadingFont, element.Brush, new PointF(graphics.ClientSize.Width - textSize.Width - 10, result.Bounds.Y));
+
+                //Draw Bill header
+                element = new PdfTextElement("Petty Cash Sheet ", new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
+                element.Brush = new PdfSolidBrush(new PdfColor(126, 155, 203));
+                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 25));
+
+                //Draw Bill address
+                element = new PdfTextElement(string.Format("{0}, {1}, {2}", $"Date: {pcs.OnDate.ToString("dd/MM/yyyy")} ",
+                    $"\t\tSN: {PKey} ", " Dumka, Jharkhand"), new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
+                element.Brush = new PdfSolidBrush(new PdfColor(89, 89, 93));
+                result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 3, graphics.ClientSize.Width / 2, 100));
+
+                //Draw Bill line
+                graphics.DrawLine(new PdfPen(new PdfColor(126, 151, 173), 0.70f), new PointF(0, result.Bounds.Bottom + 3), new PointF(graphics.ClientSize.Width, result.Bounds.Bottom + 3));
+
+
+                //Draws the grid to the PDF page. again
+                PdfGridLayoutResult gridResult2 = pdfGrid.Draw(page,
                     new RectangleF(
                         new PointF(0, result.Bounds.Bottom + 40),
                         new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);

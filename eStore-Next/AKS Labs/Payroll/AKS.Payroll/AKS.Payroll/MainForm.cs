@@ -242,5 +242,10 @@ namespace AKS.Payroll
         {
             LoadForm(new PettyCashSheetForm());
         }
+
+        private void timeSheetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new TimeSheetForm());
+        }
     }
 }

@@ -108,6 +108,8 @@ namespace AKS.Payroll.Database
         public DbSet<CustomerDue> CustomerDues { get; set; }
 
         public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
+        public DbSet<TimeSheet> TimeSheets { get; set; }    
+
 
     }
 

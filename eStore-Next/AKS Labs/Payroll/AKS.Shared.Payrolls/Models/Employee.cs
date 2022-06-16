@@ -300,10 +300,10 @@ namespace AKS.Shared.Payroll.Models
         public string Id { get;set; }
         public string EmployeeId { get; set; }
         public DateTime OutTime { get; set; }
-        public DateTime InTime { get; set; }    
+        public DateTime? InTime { get; set; }    
         public string Reason { get; set; }
-        public Employee Employee { get; set; }
-        public double Duration { get { return (InTime - OutTime).TotalMinutes; } }
+        public virtual Employee Employee { get; set; }
+        public double Duration { get { return (OutTime - (InTime.HasValue?InTime.Value:DateTime.Now)).TotalMinutes; } }
 
      }
 

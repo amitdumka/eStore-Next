@@ -1780,6 +1780,42 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_StaffAdvanceReceipts");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.TimeSheet", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("InTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("TimeSheets");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
                 {
                     b.HasOne("AKS.Shared.Payroll.Models.Employee", "Employee")
@@ -2173,6 +2209,17 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Navigation("Employee");
 
                     b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Payroll.Models.TimeSheet", b =>
+                {
+                    b.HasOne("AKS.Shared.Payroll.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
         }

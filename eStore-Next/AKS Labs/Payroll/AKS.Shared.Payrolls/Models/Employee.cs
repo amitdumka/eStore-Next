@@ -303,7 +303,7 @@ namespace AKS.Shared.Payroll.Models
         public DateTime? InTime { get; set; }    
         public string Reason { get; set; }
         public virtual Employee Employee { get; set; }
-        public double Duration { get { return (OutTime - (InTime.HasValue?InTime.Value:DateTime.Now)).TotalMinutes; } }
+        public double Duration { get { return ( (InTime.HasValue?InTime.Value:DateTime.Now)-OutTime).TotalMinutes; } }
 
      }
 

@@ -238,8 +238,6 @@
             // 
             this.dtpTime.Location = new System.Drawing.Point(246, 32);
             this.dtpTime.Name = "dtpTime";
-            this.dtpTime.ShowCheckBox = true;
-            this.dtpTime.ShowUpDown = true;
             this.dtpTime.Size = new System.Drawing.Size(200, 23);
             this.dtpTime.TabIndex = 12;
             // 

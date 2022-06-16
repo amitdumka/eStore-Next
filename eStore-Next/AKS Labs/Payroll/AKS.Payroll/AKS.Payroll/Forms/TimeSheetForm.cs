@@ -38,13 +38,14 @@ namespace AKS.Payroll.Forms
             var empList = azureDb.Employees.Where(c => c.IsWorking).Select(c => new { c.EmployeeId, c.StaffName, c.StoreId }).ToList();
             cbxEmployees.DataSource = empList;
             lbEmployees.DataSource = empList;
-            dtpTime.MaxDate = DateTime.Now;
+            dtpTime.MaxDate = DateTime.Now.AddHours(1);
             ItemUpdate(azureDb.TimeSheets.Include(c=>c.Employee).Where(c => c.OutTime.Date == DateTime.Today.Date).ToList());
             dgvTimeSheet.DataSource = ItemList.ToBindingList();  ;
             dgvTimeSheet.Columns["IsReadOnly"].Visible = false;
             dgvTimeSheet.Columns["UserId"].Visible = false;
             dgvTimeSheet.Columns["MarkedDeleted"].Visible = false;
             dgvTimeSheet.Columns["Employee"].Visible=false;
+            dtpTime.Format = DateTimePickerFormat.Time;
 
 
         }

@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PettyCashSheetForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -87,10 +87,11 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCancle = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbYearly = new System.Windows.Forms.RadioButton();
-            this.lbLMonth = new System.Windows.Forms.RadioButton();
+            this.rbLMonth = new System.Windows.Forms.RadioButton();
             this.rbCMonth = new System.Windows.Forms.RadioButton();
             this.btnPreview = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -632,16 +633,16 @@
             this.pdfView.IsTextSearchEnabled = true;
             this.pdfView.IsTextSelectionEnabled = true;
             this.pdfView.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfView.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfView.MessageBoxSettings = messageBoxSettings1;
             this.pdfView.MinimumZoomPercentage = 50;
             this.pdfView.Name = "pdfView";
             this.pdfView.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfView.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfView.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfView.ReferencePath = null;
             this.pdfView.ScrollDisplacementValue = 0;
             this.pdfView.ShowHorizontalScrollBar = true;
@@ -649,10 +650,10 @@
             this.pdfView.Size = new System.Drawing.Size(937, 360);
             this.pdfView.SpaceBetweenPages = 8;
             this.pdfView.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfView.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfView.TextSearchSettings = textSearchSettings1;
             this.pdfView.ThemeName = "Default";
             this.pdfView.VerticalScrollOffset = 0;
             this.pdfView.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -683,6 +684,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnCancle);
             this.groupBox1.Controls.Add(this.btnPrint);
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Controls.Add(this.btnPreview);
@@ -696,6 +698,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
             // 
+            // btnCancle
+            // 
+            this.btnCancle.AutoSize = true;
+            this.btnCancle.Location = new System.Drawing.Point(364, 23);
+            this.btnCancle.Name = "btnCancle";
+            this.btnCancle.Size = new System.Drawing.Size(75, 30);
+            this.btnCancle.TabIndex = 5;
+            this.btnCancle.Text = "Cancle";
+            this.btnCancle.UseVisualStyleBackColor = true;
+            this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
+            // 
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
@@ -705,14 +718,14 @@
             this.btnPrint.TabIndex = 4;
             this.btnPrint.Text = "Print";
             this.btnPrint.UseVisualStyleBackColor = true;
-            this.btnPrint.Click += new System.EventHandler(this.btnDueRecovery_Click);
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
             this.panel1.AutoSize = true;
             this.panel1.Controls.Add(this.rbYearly);
-            this.panel1.Controls.Add(this.lbLMonth);
+            this.panel1.Controls.Add(this.rbLMonth);
             this.panel1.Controls.Add(this.rbCMonth);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(808, 19);
@@ -729,16 +742,18 @@
             this.rbYearly.TabIndex = 2;
             this.rbYearly.Text = "Year";
             this.rbYearly.UseVisualStyleBackColor = true;
+            this.rbYearly.CheckedChanged += new System.EventHandler(this.rbYearly_CheckedChanged);
             // 
-            // lbLMonth
+            // rbLMonth
             // 
-            this.lbLMonth.AutoSize = true;
-            this.lbLMonth.Location = new System.Drawing.Point(112, 8);
-            this.lbLMonth.Name = "lbLMonth";
-            this.lbLMonth.Size = new System.Drawing.Size(85, 19);
-            this.lbLMonth.TabIndex = 1;
-            this.lbLMonth.Text = "Last Month";
-            this.lbLMonth.UseVisualStyleBackColor = true;
+            this.rbLMonth.AutoSize = true;
+            this.rbLMonth.Location = new System.Drawing.Point(112, 8);
+            this.rbLMonth.Name = "rbLMonth";
+            this.rbLMonth.Size = new System.Drawing.Size(85, 19);
+            this.rbLMonth.TabIndex = 1;
+            this.rbLMonth.Text = "Last Month";
+            this.rbLMonth.UseVisualStyleBackColor = true;
+            this.rbLMonth.CheckedChanged += new System.EventHandler(this.rbLMonth_CheckedChanged);
             // 
             // rbCMonth
             // 
@@ -751,6 +766,7 @@
             this.rbCMonth.TabStop = true;
             this.rbCMonth.Text = "Current Month";
             this.rbCMonth.UseVisualStyleBackColor = true;
+            this.rbCMonth.CheckedChanged += new System.EventHandler(this.rbCMonth_CheckedChanged);
             // 
             // btnPreview
             // 
@@ -787,8 +803,10 @@
             // 
             // PettyCashSheetForm
             // 
+            this.AcceptButton = this.btnAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancle;
             this.ClientSize = new System.Drawing.Size(1069, 497);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -834,7 +852,7 @@
         private Button btnPrint;
         private Panel panel1;
         private RadioButton rbYearly;
-        private RadioButton lbLMonth;
+        private RadioButton rbLMonth;
         private RadioButton rbCMonth;
         private Button btnPreview;
         private Button btnDelete;
@@ -884,5 +902,6 @@
         private Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView pdfView;
         private Button btnRecovery;
         private Button btnDue;
+        private Button btnCancle;
     }
 }

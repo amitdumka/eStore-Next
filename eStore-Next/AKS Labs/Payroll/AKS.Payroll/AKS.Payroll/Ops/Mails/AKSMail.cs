@@ -14,6 +14,15 @@ namespace AKS.Payroll.Ops.Mails
         public static string User = "Store Manager";
     }
 
+    //***********HNgFM6
+    // L1tDhX5BkxsNfYZ9
+    //SMTP Serversmtp-relay.sendinblue.com
+    //Port587
+    //Loginaprajitaretailsdumka @gmail.com
+    //SMTP KEY NAME SMTP KEY VALUE  CREATED
+    //Master passwordL1tDhX5BkxsNfYZ9
+
+
     public class Msg
     {
         public string Subject { get; set; }
@@ -32,6 +41,10 @@ namespace AKS.Payroll.Ops.Mails
             var to = new EmailAddress(msg.ToAddresses, msg.Names);
             var mailMessage = MailHelper.CreateSingleEmail(from, to, msg.Subject, msg.PlainContent, msg.HTMLContext);
             await sendGridClient.SendEmailAsync(mailMessage);
+
+        }
+        public void SendBlue(Msg msg)
+        {
 
         }
     }

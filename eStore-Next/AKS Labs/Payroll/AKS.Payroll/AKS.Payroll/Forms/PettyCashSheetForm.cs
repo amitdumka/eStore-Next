@@ -167,6 +167,11 @@ namespace AKS.Payroll.Forms
                     ReadData();
                     if (SaveData())
                     {
+                        if(!isNew)
+                        {
+                            ItemList.Remove(ItemList.Where(c => c.Id == pcs.Id).FirstOrDefault());                         
+                        }
+                        ItemList.Add(pcs);
                         btnAdd.Text = "Add";
                         MessageBox.Show("Petty Cash Sheet Add!");
                         ViewPdf();
@@ -298,19 +303,18 @@ namespace AKS.Payroll.Forms
                 
                 //Set the standard font.
                 PdfFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
-
                 
                 //Draw the text.
                 graphics.DrawString("Petty Cash Sheet", font, PdfBrushes.Red, new PointF(page.Graphics.ClientSize.Width / 2,0 ));
 
-                PdfLayoutResult result = new PdfLayoutResult(page, new RectangleF(0, 0, page.Graphics.ClientSize.Width / 2, 25));
+                PdfLayoutResult result = new PdfLayoutResult(page, new RectangleF(0, 0, page.Graphics.ClientSize.Width / 2, 0));
                 PdfFont subHeadingFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 14);
 
                 //Draw Rectangle place on location
-                graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, result.Bounds.Bottom + 40, graphics.ClientSize.Width, 30));
+                graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, result.Bounds.Bottom + 20, graphics.ClientSize.Width, 30));
                 var element = new PdfTextElement("Aprajita Retails \t" + PKey, subHeadingFont);
                 element.Brush = PdfBrushes.White;
-                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 48));
+                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 28));
 
                 string currentDate = "On: " + DateTime.Now.ToString("MM/dd/yyyy");
                 SizeF textSize = subHeadingFont.MeasureString(currentDate);
@@ -319,7 +323,7 @@ namespace AKS.Payroll.Forms
                 //Draw Bill header
                 element = new PdfTextElement("Petty Cash Sheet ", new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
                 element.Brush = new PdfSolidBrush(new PdfColor(126, 155, 203));
-                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 25));
+                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 10));
 
                 //Draw Bill address
                 element = new PdfTextElement(string.Format("{0}, {1}, {2}", $"Date: {pcs.OnDate.ToString("dd/MM/yyyy")} ",
@@ -331,7 +335,7 @@ namespace AKS.Payroll.Forms
                 graphics.DrawLine(new PdfPen(new PdfColor(126, 151, 173), 0.70f), new PointF(0, result.Bounds.Bottom + 3), new PointF(graphics.ClientSize.Width, result.Bounds.Bottom + 3));
 
                
-
+                // Adding Table part
 
                 //Create a PdfGrid
                 PdfGrid pdfGrid = new PdfGrid();
@@ -406,17 +410,17 @@ namespace AKS.Payroll.Forms
                 //Draws the grid to the PDF page.
                 PdfGridLayoutResult gridResult = pdfGrid.Draw(page,
                     new RectangleF(
-                        new PointF(0, result.Bounds.Bottom + 40),
+                        new PointF(0, result.Bounds.Bottom + 10),
                         new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
 
                 //Draw Bill line Page Break Line
                 graphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResult.Bounds.Bottom + 10), new PointF(graphics.ClientSize.Width, gridResult.Bounds.Bottom + 10));
 
                 //Draw Rectangle place on location
-                graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, gridResult.Bounds.Bottom + 40, graphics.ClientSize.Width, 30));
+                graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, gridResult.Bounds.Bottom + 20, graphics.ClientSize.Width, 30));
                  element = new PdfTextElement("Aprajita Retails \t" + PKey, subHeadingFont);
                 element.Brush = PdfBrushes.White;
-                result = element.Draw(page, new PointF(10, gridResult.Bounds.Bottom + 48));
+                result = element.Draw(page, new PointF(10, gridResult.Bounds.Bottom + 28));
 
                // string currentDate = "On: " + DateTime.Now.ToString("MM/dd/yyyy");
                // SizeF textSize = subHeadingFont.MeasureString(currentDate);
@@ -425,7 +429,12 @@ namespace AKS.Payroll.Forms
                 //Draw Bill header
                 element = new PdfTextElement("Petty Cash Sheet ", new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
                 element.Brush = new PdfSolidBrush(new PdfColor(126, 155, 203));
-                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 25));
+                result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 10));
+
+                 string cc = "Carbon Copy";
+                 SizeF textSize2 = subHeadingFont.MeasureString(currentDate);
+                graphics.DrawString(cc, new PdfStandardFont(PdfFontFamily.TimesRoman, 10), new PdfSolidBrush(new PdfColor(26, 55, 03)), new PointF(graphics.ClientSize.Width - textSize2.Width - 10, result.Bounds.Y));
+
 
                 //Draw Bill address
                 element = new PdfTextElement(string.Format("{0}, {1}, {2}", $"Date: {pcs.OnDate.ToString("dd/MM/yyyy")} ",
@@ -440,7 +449,7 @@ namespace AKS.Payroll.Forms
                 //Draws the grid to the PDF page. again
                 PdfGridLayoutResult gridResult2 = pdfGrid.Draw(page,
                     new RectangleF(
-                        new PointF(0, result.Bounds.Bottom + 40),
+                        new PointF(0, result.Bounds.Bottom + 10),
                         new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
 
                 //Save the document.

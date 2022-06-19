@@ -63,7 +63,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dgvSaleItems = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
@@ -87,7 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -196,7 +196,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label14, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label12, 4, 2);
             this.tableLayoutPanel1.Controls.Add(this.button4, 6, 3);
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView2, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.dgvSaleItems, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.cbxInvType, 6, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 5, 0);
             this.tableLayoutPanel1.Controls.Add(this.radioButton3, 4, 0);
@@ -418,17 +418,17 @@
             this.button4.Text = "+";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // dgvSaleItems
             // 
-            this.dataGridView2.AllowUserToOrderColumns = true;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tableLayoutPanel1.SetColumnSpan(this.dataGridView2, 7);
-            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView2.Location = new System.Drawing.Point(3, 91);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 25;
-            this.dataGridView2.Size = new System.Drawing.Size(869, 220);
-            this.dataGridView2.TabIndex = 24;
+            this.dgvSaleItems.AllowUserToOrderColumns = true;
+            this.dgvSaleItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel1.SetColumnSpan(this.dgvSaleItems, 7);
+            this.dgvSaleItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvSaleItems.Location = new System.Drawing.Point(3, 91);
+            this.dgvSaleItems.Name = "dgvSaleItems";
+            this.dgvSaleItems.RowTemplate.Height = 25;
+            this.dgvSaleItems.Size = new System.Drawing.Size(869, 220);
+            this.dgvSaleItems.TabIndex = 24;
             // 
             // tabPage3
             // 
@@ -496,6 +496,7 @@
             this.rbManual.TabStop = true;
             this.rbManual.Text = "Manual";
             this.rbManual.UseVisualStyleBackColor = true;
+            this.rbManual.CheckedChanged += new System.EventHandler(this.rbManual_CheckedChanged);
             // 
             // rbRegular
             // 
@@ -508,6 +509,7 @@
             this.rbRegular.TabStop = true;
             this.rbRegular.Text = "Regular";
             this.rbRegular.UseVisualStyleBackColor = true;
+            this.rbRegular.CheckedChanged += new System.EventHandler(this.rbRegular_CheckedChanged);
             // 
             // panel2
             // 
@@ -622,6 +624,7 @@
             this.cbSalesReturn.TabIndex = 2;
             this.cbSalesReturn.Text = " Return";
             this.cbSalesReturn.UseVisualStyleBackColor = true;
+            this.cbSalesReturn.CheckedChanged += new System.EventHandler(this.cbSalesReturn_CheckedChanged);
             // 
             // SalesForm
             // 
@@ -643,7 +646,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -699,7 +702,7 @@
         private Label label14;
         private Label label12;
         private Button button4;
-        private DataGridView dataGridView2;
+        private DataGridView dgvSaleItems;
         private TabPage tabPage3;
         private Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView pdfViewer;
         private ComboBox cbxInvType;

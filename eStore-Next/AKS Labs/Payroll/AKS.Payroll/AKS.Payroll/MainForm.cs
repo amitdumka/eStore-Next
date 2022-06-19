@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Forms;
 using AKS.Payroll.Forms.Banking;
+using AKS.Payroll.Forms.Inventory;
 using AKS.Payroll.Forms.Vouchers;
 using AKS.Payroll.Ops;
 
@@ -246,6 +247,26 @@ namespace AKS.Payroll
         private void timeSheetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new TimeSheetForm());
+        }
+
+        private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new SalesForm(InvoiceType.Sales));
+        }
+
+        private void manualSalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new SalesForm(InvoiceType.ManualSale));
+        }
+
+        private void saleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new SalesForm(InvoiceType.SalesReturn));
+        }
+
+        private void manulSaleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
         }
     }
 }

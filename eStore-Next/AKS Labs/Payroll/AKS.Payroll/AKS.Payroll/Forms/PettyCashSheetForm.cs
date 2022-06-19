@@ -51,7 +51,7 @@ namespace AKS.Payroll.Forms
                 this.tabControl1.SelectedIndex = 1;
                 Reset();
                 isNew = true;
-                tPay=tRec =tDue=tdRec=0;
+                tPay = tRec = tDue = tdRec = 0;
             }
             else if (btnAdd.Text == "Save")
             {
@@ -110,7 +110,7 @@ namespace AKS.Payroll.Forms
 
         private void btnDue_Click(object sender, EventArgs e)
         {//TODO: prend
-            tDue+= ReadDec(txtDueAmount);
+            tDue += ReadDec(txtDueAmount);
             dNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
 
             lbPay.Text = lbPay.Text + "\n" + txtDueNaration.Text;
@@ -121,7 +121,7 @@ namespace AKS.Payroll.Forms
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
-            tPay+= ReadDec(txtAmount);
+            tPay += ReadDec(txtAmount);
             pNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbPay.Text = lbPay.Text + "\n" + txtNaration.Text;
             lbPayList.Text = lbPayList.Text + "\n" + txtAmount.Text;
@@ -134,7 +134,13 @@ namespace AKS.Payroll.Forms
             pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
             if (pcs != null)
                 ViewPdf();
-            else MessageBox.Show("No Record Found");
+            else
+            {
+                pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
+                if (pcs != null) ViewPdf();
+                else
+                    MessageBox.Show("No Record Found");
+            }
         }
 
         private void btnPrint_Click(object sender, EventArgs e)
@@ -150,7 +156,7 @@ namespace AKS.Payroll.Forms
 
         private void btnReceipt_Click(object sender, EventArgs e)
         {
-            tRec+= ReadDec(txtAmount);
+            tRec += ReadDec(txtAmount);
             rNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtAmount.Text;
@@ -160,7 +166,7 @@ namespace AKS.Payroll.Forms
 
         private void btnRecovery_Click(object sender, EventArgs e)
         {
-            tdRec+= ReadDec(txtDueAmount);
+            tdRec += ReadDec(txtDueAmount);
             rcNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtDueNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtDueAmount.Text;

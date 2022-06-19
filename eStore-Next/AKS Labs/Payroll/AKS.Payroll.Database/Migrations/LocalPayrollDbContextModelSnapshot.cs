@@ -854,6 +854,513 @@ namespace AKS.Payroll.Database.Migrations
                     b.ToTable("V1_VendorBankAccounts");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Brand", b =>
+                {
+                    b.Property<string>("BrandCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BrandCode");
+
+                    b.ToTable("V1_Brands");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CardPaymentDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AuthCode")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Card")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardLastDigit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CardType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EDCTerminalId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("InvoiceCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EDCTerminalId");
+
+                    b.ToTable("V1_CardPaymentDetails");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductItem", b =>
+                {
+                    b.Property<string>("Barcode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HSNCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MRP")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductCategory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StyleCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TaxType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
+
+                    b.HasKey("Barcode");
+
+                    b.HasIndex("SubCategory");
+
+                    b.ToTable("V1_Products");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductSale", b =>
+                {
+                    b.Property<string>("InvoiceCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Adjusted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("BilledQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FreeQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InvoiceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InvoiceType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SalesmanId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Tailoring")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Taxed")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("TotalDiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalTaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InvoiceCode");
+
+                    b.HasIndex("SalesmanId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_ProductSales");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductSubCategory", b =>
+                {
+                    b.Property<string>("SubCategory")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductCategory")
+                        .HasColumnType("int");
+
+                    b.HasKey("SubCategory");
+
+                    b.ToTable("ProductSubCategories");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CostValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FreeQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InvoiceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductItemBarcode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PurchaseProductInvoiceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Qty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductItemBarcode");
+
+                    b.HasIndex("PurchaseProductInvoiceNo");
+
+                    b.ToTable("V1_PurchaseItems");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", b =>
+                {
+                    b.Property<string>("InvoiceNo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("BasicAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("BillQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FreeQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("InvoiceType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("ShippingCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TaxType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VendorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceNo");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("VendorId");
+
+                    b.ToTable("V1_PurchaseProducts");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.SaleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Adjusted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("BilledQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FreeQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InvoiceCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LastPcs")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductItemBarcode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductSaleInvoiceCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductItemBarcode");
+
+                    b.HasIndex("ProductSaleInvoiceCode");
+
+                    b.ToTable("V1_SaleItems");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.SalePaymentDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("InvoiceCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PayMode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductSaleInvoiceCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RefId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductSaleInvoiceCode");
+
+                    b.ToTable("V1_SalePaymentDetails");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Stock", b =>
+                {
+                    b.Property<string>("Barcode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("HoldQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProductBarcode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("PurhcaseQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SoldQty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Barcode");
+
+                    b.HasIndex("ProductBarcode");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Stocks");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Supplier", b =>
+                {
+                    b.Property<string>("SupplierName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Warehouse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SupplierName");
+
+                    b.ToTable("V2_Suppliers");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Vendor", b =>
+                {
+                    b.Property<string>("VendorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VendorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VendorType")
+                        .HasColumnType("int");
+
+                    b.HasKey("VendorId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_Vendors");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.CustomerDue", b =>
                 {
                     b.Property<string>("InvoiceNumber")
@@ -1993,6 +2500,135 @@ namespace AKS.Payroll.Database.Migrations
                     b.Navigation("Bank");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CardPaymentDetail", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Sales.EDCTerminal", "PosMachine")
+                        .WithMany()
+                        .HasForeignKey("EDCTerminalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PosMachine");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductItem", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSubCategory", "ProductSubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductSubCategory");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductSale", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Salesman", "Salesman")
+                        .WithMany()
+                        .HasForeignKey("SalesmanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Salesman");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseItem", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductItem", "ProductItem")
+                        .WithMany()
+                        .HasForeignKey("ProductItemBarcode");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", "PurchaseProduct")
+                        .WithMany("Items")
+                        .HasForeignKey("PurchaseProductInvoiceNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductItem");
+
+                    b.Navigation("PurchaseProduct");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+
+                    b.Navigation("Vendor");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.SaleItem", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductItem", "ProductItem")
+                        .WithMany()
+                        .HasForeignKey("ProductItemBarcode");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSale", "ProductSale")
+                        .WithMany("Items")
+                        .HasForeignKey("ProductSaleInvoiceCode");
+
+                    b.Navigation("ProductItem");
+
+                    b.Navigation("ProductSale");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.SalePaymentDetail", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSale", "ProductSale")
+                        .WithMany()
+                        .HasForeignKey("ProductSaleInvoiceCode");
+
+                    b.Navigation("ProductSale");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Stock", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductItem", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductBarcode");
+
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Vendor", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Sales.CustomerDue", b =>
                 {
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
@@ -2219,6 +2855,16 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductSale", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

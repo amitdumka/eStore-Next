@@ -27,6 +27,7 @@ public enum SlipBookType { Payment, Reciept, PaymentRecieptCombo, DailyBook, Deb
 public enum VendorType { EBO, MBO, Tailoring, NonSalable, OtherSaleable, Others, TempVendor }
 public enum NotesType { DebitNote, CreditNote }
 public enum InvoiceType { Sales, SalesReturn, ManualSale, ManualSaleReturn }
+public enum PurchaseInvoiceType { Purchase,PurchaseReturn }
 
 
 //TODO: Below need to be checked and assimilated. 
@@ -49,7 +50,7 @@ public enum ArvindAccount { ArvindLimited, ALBL, AFL, Others }
 
 //public enum ProductCategory { Fabric, ReadyMade, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others }
 
-public enum CardMode { DebitCard, CreditCard, AmexCard }
+//public enum CardMode { DebitCard, CreditCard, AmexCard }
 
 //public enum CardType { Visa, MasterCard, Mastro, Amex, Dinners, Rupay, }
 

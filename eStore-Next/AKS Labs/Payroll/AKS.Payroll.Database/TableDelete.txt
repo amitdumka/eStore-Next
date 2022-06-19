@@ -1,0 +1,52 @@
+﻿--drop table  CardTranscations;
+--drop Table CardMachine;
+--drop table CashInBanks; 
+--drop table CashInHands;
+--drop table Categories; 
+--insert into ProductSubCategories (SubCategory, CategoryName, ProductCategory)
+--select DISTINCT  CategoryName,CategoryName,IsPrimaryCategory from Categories;
+--drop table Company
+--
+--drop table CouponAndPoints;
+--drop table CouponPayments
+--drop table DailySalePayments
+--drop table EDC;
+--drop table  EndOfDays
+--drop table Files
+--drop table HSN;
+--drop table Todos;
+--drop table ToDoMessages
+--drop table TaxRegisters
+--drop table Suppliers
+--drop table StoreCloses;
+--drop table StoreHolidays; 
+--drop table StoreOpens;
+--drop table StockLists;
+--drop table Stocks;
+--drop table SaleTaxTypes;
+--drop table SalesmanInfo
+--drop table SaleItems
+--drop table SaleInvoices
+--drop table SaleInvoicePayments;
+--drop table SaleCardDetails;
+--drop table PointRedeemeds
+--drop table PrintedSlipBooks
+--drop table PersonalExpenses;
+--drop table  PaymentDetails;
+----drop table   LedgerEntries;
+--drop table ItemDatas;
+----drop table PurchaseTaxTypes
+--drop table  ProductLists
+--drop table SaleTaxTypes
+--drop table SaleInvoices
+--drop table OnlineSaleReturns
+--drop table OnlineSales
+--drop table OnlineVendors
+--drop table MixPayments;
+----drop table CardMachine
+----drop table CardTranscations
+--drop table RegularInvoices
+----drop table CouponAndPoints;
+----drop table EDC; 
+
+

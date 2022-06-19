@@ -2,6 +2,7 @@
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
@@ -108,9 +109,24 @@ namespace AKS.Payroll.Database
         public DbSet<CustomerDue> CustomerDues { get; set; }
 
         public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
-        public DbSet<TimeSheet> TimeSheets { get; set; }    
+        public DbSet<TimeSheet> TimeSheets { get; set; }  
+        
+        //Inventory
+       
+        public DbSet<ProductItem> ProductItems { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; } 
+        public DbSet<Stock> Stocks { get; set; }
 
-
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+        public DbSet<PurchaseItem> PurchaseItems { get; set; }
+        public DbSet<ProductSale> ProductSales { set; get; }
+        public DbSet<SaleItem> SaleItems { get; set; }
+        public DbSet<SalePaymentDetail> SalePaymentDetails { get; set; }
+        public DbSet<CardPaymentDetail> CardPaymentDetails { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+ 
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

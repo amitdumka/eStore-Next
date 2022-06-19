@@ -4,16 +4,18 @@ using AKS.Payroll.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
+namespace AKS.Payroll.Database.Migrations
 {
-    [DbContext(typeof(AzurePayrollDbContext))]
-    partial class AzurePayrollDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LocalPayrollDbContext))]
+    [Migration("20220619110804_inventorySystem")]
+    partial class inventorySystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-            SqlServerModelBuilderExtensions.HasDatabaseMaxSize(modelBuilder, "2 GB");
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Accounts.CashVoucher", b =>
                 {
@@ -855,20 +856,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_VendorBankAccounts");
                 });
 
-            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Brand", b =>
-                {
-                    b.Property<string>("BrandCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("BrandName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BrandCode");
-
-                    b.ToTable("V1_Brands");
-                });
-
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CardPaymentDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -930,6 +917,10 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<int>("ProductCategory")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductSubCategorySubCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
@@ -939,7 +930,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.Property<string>("SubCategory")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaxType")
                         .HasColumnType("int");
@@ -949,7 +940,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.HasKey("Barcode");
 
-                    b.HasIndex("SubCategory");
+                    b.HasIndex("ProductSubCategorySubCategory");
 
                     b.ToTable("V1_Products");
                 });
@@ -1093,7 +1084,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
 
                     b.HasIndex("PurchaseProductInvoiceNo");
 
-                    b.ToTable("V1_PurchaseItems");
+                    b.ToTable("V1_ProductItems");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", b =>
@@ -1301,20 +1292,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.HasIndex("StoreId");
 
                     b.ToTable("V1_Stocks");
-                });
-
-            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Supplier", b =>
-                {
-                    b.Property<string>("SupplierName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Warehouse")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SupplierName");
-
-                    b.ToTable("V2_Suppliers");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Vendor", b =>
@@ -2516,7 +2493,7 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                 {
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSubCategory", "ProductSubCategory")
                         .WithMany()
-                        .HasForeignKey("SubCategory")
+                        .HasForeignKey("ProductSubCategorySubCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

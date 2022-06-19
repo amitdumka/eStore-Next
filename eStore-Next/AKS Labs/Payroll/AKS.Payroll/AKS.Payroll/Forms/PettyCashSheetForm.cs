@@ -443,7 +443,7 @@ namespace AKS.Payroll.Forms
                     Id = "",
                 };
                 // pcs.Id = $"{StoreId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}";
-                pcs.Id = $"ARD/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}";
+                pcs.Id = $"ARD/{pcs.OnDate.Year}/{pcs.OnDate.Month}/{pcs.OnDate.Day}";
             }
             else
             {

@@ -26,6 +26,10 @@ namespace AKS.Payroll.Forms.Inventory
         private List<int> YearList;
         private bool IsNew;
 
+        // Cart Information 
+        private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
+        private int TotalCount;
+
         public SalesForm()
         {
             InitializeComponent();
@@ -121,6 +125,7 @@ namespace AKS.Payroll.Forms.Inventory
             SetupForm(); 
             azureDb = new AzurePayrollDbContext(); 
             localDb = new LocalPayrollDbContext();
+
             SeletedYear = DateTime.Today.Year;
             YearList = azureDb.ProductSales.Select(c => c.OnDate.Year).Distinct().OrderByDescending(c => c).ToList();
             lbYearList.DataSource = YearList;
@@ -132,9 +137,74 @@ namespace AKS.Payroll.Forms.Inventory
             dataGridView1.DataSource=Items.Where(c=>c.InvoiceType==InvoiceType).ToList();
 
         }
+        private void SetGridView()
+        {
+            dataGridView1.DataSource = Items.Where(c => c.InvoiceType == InvoiceType).ToList();
+        }
         private void SalesForm_Load(object sender, EventArgs e)
         {
             LoadData(); 
         }
+
+        private void LoadFormData()
+        {
+            cbxMmobile.DataSource= azureDb.Customers.Select(c=> new { c.MobileNo, c.CustomerName}).OrderBy(c=>c.CustomerName).ToList();
+            cbxMmobile.DisplayMember = "MobieNo";
+            cbxMmobile.ValueMember = "CustomerName";
+            
+            cbxInvType.Items.AddRange(Enum.GetNames(typeof(InvoiceType)));
+
+        }
+
+        private void cbxMmobile_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtCustomerName.Text = (string) cbxMmobile.SelectedValue;
+        }
+
+        private void btnAddToCart_Click(object sender, EventArgs e)
+        {
+            AddToCart();
+        }
+
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            // Show Dailog to Add Customer. 
+        }
+
+        private void ResetCard()
+        {
+            this.TotalAmount=this.TotalDiscount=this.TotalTax=TotalQty=TotalFreeQty=0;
+            TotalCount = 0;
+            dgvSaleItems.Rows.Clear();
+
+        }
+
+        private void UpdateCart()
+        {
+
+        }
+        public void AddToCart()
+        {
+            var si = new SaleItemVM
+            {
+                Barcode = txtBarcode.Text.Trim(), 
+                Rate=decimal.Parse(txtRate.Text.Trim()), 
+
+            };
+        }
+
+
+    }
+
+
+    public class SaleItemVM
+    {
+        public string Barcode { get; set; }
+        public string ProductItem { get; set; }
+        public decimal Qty { get; set; }
+        public decimal Rate { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Amount { get; set; }
     }
 }

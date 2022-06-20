@@ -44,4 +44,21 @@ namespace AKS.Shared.Commons.Models
         public string EmployeeId { get; set; }
         public bool IsActive { get; set; }
     }
+
+    [Table("V1_Customers")]
+    public class Customer
+    {
+        [Key]
+        public string MobileNo { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string CustomerName { get { return (FirstName + " " + LastName); } }
+        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string City { get; set; }       
+        public Gender Gender { get; set; }
+        public int NoOfBills { get; set; }
+        public decimal TotalAmount { get; set; }
+        public DateTime OnDate { get; set; }
+    }
 }

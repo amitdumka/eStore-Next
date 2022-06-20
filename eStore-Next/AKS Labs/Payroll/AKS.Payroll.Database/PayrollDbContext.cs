@@ -126,6 +126,7 @@ namespace AKS.Payroll.Database
         public DbSet<CardPaymentDetail> CardPaymentDetails { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
  
     }
 

@@ -177,18 +177,18 @@ namespace AKS.Payroll.Forms.Inventory
         private bool ReturnKey = false;
         private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
         {
-           // if(e.KeyChar==Keys.Enter)
-            MessageBox.Show(e.KeyChar+"");
+            // if(e.KeyChar==Keys.Enter)
+            MessageBox.Show(e.KeyChar + "");
         }
 
         private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                MessageBox.Show("Enter Is Pressed!"); 
+                MessageBox.Show("Enter Is Pressed!");
                 ReturnKey = true;
             }
-            
+
         }
 
         private void txtBarcode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -199,8 +199,9 @@ namespace AKS.Payroll.Forms.Inventory
                 ReturnKey = true;
             }
             else if (e.KeyCode == Keys.Enter)
-            { MessageBox.Show("Enter");
-                ReturnKey= true;
+            {
+                MessageBox.Show("Enter");
+                ReturnKey = true;
             }
 
         }
@@ -217,12 +218,24 @@ namespace AKS.Payroll.Forms.Inventory
             dgvSaleItems.Rows.Clear();
 
         }
+        private void BasicRateCalucaltion(decimal mrp, decimal taxRate)
+        {
+            decimal price = (100*mrp)/(100+taxRate);
+            decimal taxAmount = mrp - price;
+        }
 
         private void UpdateCart()
         {
 
         }
-        public void AddToCart()
+        private void DisplayStockInfo(StockInfo info)
+        {
+            txtQty.Text = info.Qty.ToString();
+            txtRate.Text = info.Rate.ToString();
+            txtValue.Text = (info.Qty * info.Rate).ToString(); 
+            txtProductItem.Text=info.ProductItem.ToString();
+        }
+        private void AddToCart()
         {
             var si = new SaleItemVM
             {
@@ -232,15 +245,99 @@ namespace AKS.Payroll.Forms.Inventory
                 ProductItem = txtProductItem.Text.Trim(),
                 Qty = decimal.Parse(txtQty.Text.Trim()),
                 Amount = 0,
-                Tax =0,
+                Tax = 0,
             };
             si.Amount = (si.Rate * si.Qty) - si.Discount;
 
         }
-
+        /// <summary>
+        /// return stock info. Add to API/DataModel
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns></returns>
+        private StockInfo? GetItemDetail(string barcode)
+        {
+            if (barcode.Length < 10)
+            {
+                return null;
+            }
+            var item = azureDb.Stocks.Include(c => c.Product).Where(c => c.Barcode == barcode)
+                .Select(item =>
+           new StockInfo()
+           {
+               Barcode = item.Barcode,
+               HoldQty = item.CurrentQtyWH,
+               Qty = item.CurrentQty,
+               Rate = item.Product.MRP,
+               ProductItem = item.Product.Name,
+               TaxType = item.Product.TaxType,
+               Unit = item.Product.Unit,
+               Category = item.Product.ProductCategory,
+               TaxRate = SetTaxRate(item.Product.ProductCategory,item.Product.MRP)
+           }).FirstOrDefault();
+            return item;
+        }
+        /// <summary>
+        /// make static and common functions
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="Price"></param>
+        /// <returns></returns>
+        private int SetTaxRate(ProductCategory category, decimal Price)
+        {
+            int rate = 0;
+            switch (category)
+            {
+                case ProductCategory.Fabric:
+                    rate = 5;
+                    break;
+                case ProductCategory.ReadyMade:
+                    rate = Price > 999 ? 12 : 5;
+                    break;
+                case ProductCategory.Accessiories:
+                    rate = 12;
+                    break;
+                case ProductCategory.Tailoring:
+                    rate = 5;
+                    break;
+                case ProductCategory.Trims:
+                    rate = 5;
+                    break;
+                case ProductCategory.PromoItems:
+                    rate = 0;
+                    break;
+                case ProductCategory.Coupons:
+                    rate = 0;
+                    break;
+                case ProductCategory.GiftVouchers:
+                    rate = 0;
+                    break;
+                case ProductCategory.Others:
+                    rate = 18;
+                    break;
+                default:
+                    rate = 5;
+                    break;
+            }
+            return rate;
+        }
 
     }
 
+    public class StockInfo
+    {
+        public string Barcode { get; set; }
+        public string ProductItem { get; set; }
+        public decimal Qty { get; set; }
+        public decimal HoldQty { get; set; }
+        public decimal Rate { get; set; }
+        public decimal TaxRate { get; set; }
+        public TaxType TaxType { get; set; }
+        public Unit Unit { get; set; }
+        public ProductCategory Category { get; set; }
+
+
+    }
 
     public class SaleItemVM
     {

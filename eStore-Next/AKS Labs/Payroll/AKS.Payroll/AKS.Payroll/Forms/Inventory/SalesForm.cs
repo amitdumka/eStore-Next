@@ -70,7 +70,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        
+
         private void rbRegular_CheckedChanged(object sender, EventArgs e)
         {
             if (rbRegular.Checked)
@@ -98,20 +98,20 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (cbSalesReturn.Checked)
             {
-                if(rbManual.Checked)
+                if (rbManual.Checked)
                     InvoiceType = InvoiceType.ManualSaleReturn;
-                else if(rbRegular.Checked)
+                else if (rbRegular.Checked)
                     InvoiceType = InvoiceType.SalesReturn;
             }
             else
             {
                 if (rbManual.Checked)
                     InvoiceType = InvoiceType.ManualSale;
-                else  if (rbManual.Checked)
+                else if (rbManual.Checked)
                     InvoiceType = InvoiceType.Sales;
             }
         }
-        
+
         private void UpdateSaleList(List<ProductSale> sales)
         {
             foreach (var item in sales)
@@ -119,11 +119,11 @@ namespace AKS.Payroll.Forms.Inventory
                 Items.Add(item);
             }
         }
-        
+
         private void LoadData()
         {
-            SetupForm(); 
-            azureDb = new AzurePayrollDbContext(); 
+            SetupForm();
+            azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
 
             SeletedYear = DateTime.Today.Year;
@@ -131,10 +131,10 @@ namespace AKS.Payroll.Forms.Inventory
             lbYearList.DataSource = YearList;
 
             UpdateSaleList(azureDb.ProductSales.Include(c => c.Items)
-                .Where(c=>c.OnDate.Year==SeletedYear).OrderByDescending(c=>c.OnDate)
+                .Where(c => c.OnDate.Year == SeletedYear).OrderByDescending(c => c.OnDate)
                 .ToList());
 
-            dataGridView1.DataSource=Items.Where(c=>c.InvoiceType==InvoiceType).ToList();
+            dataGridView1.DataSource = Items.Where(c => c.InvoiceType == InvoiceType).ToList();
 
         }
         private void SetGridView()
@@ -143,27 +143,66 @@ namespace AKS.Payroll.Forms.Inventory
         }
         private void SalesForm_Load(object sender, EventArgs e)
         {
-            LoadData(); 
+            //LoadData();
         }
 
         private void LoadFormData()
         {
-            cbxMmobile.DataSource= azureDb.Customers.Select(c=> new { c.MobileNo, c.CustomerName}).OrderBy(c=>c.CustomerName).ToList();
+            cbxMmobile.DataSource = azureDb.Customers.Select(c => new { c.MobileNo, c.CustomerName }).OrderBy(c => c.CustomerName).ToList();
             cbxMmobile.DisplayMember = "MobieNo";
             cbxMmobile.ValueMember = "CustomerName";
-            
+
             cbxInvType.Items.AddRange(Enum.GetNames(typeof(InvoiceType)));
 
         }
 
         private void cbxMmobile_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtCustomerName.Text = (string) cbxMmobile.SelectedValue;
+            txtCustomerName.Text = (string)cbxMmobile.SelectedValue;
         }
 
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
             AddToCart();
+        }
+
+        private void txtBarcode_TextChanged(object sender, EventArgs e)
+        {
+            if (ReturnKey)
+            {
+                MessageBox.Show(txtBarcode.Text);
+                ReturnKey = false;
+            }
+        }
+        private bool ReturnKey = false;
+        private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           // if(e.KeyChar==Keys.Enter)
+            MessageBox.Show(e.KeyChar+"");
+        }
+
+        private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                MessageBox.Show("Enter Is Pressed!"); 
+                ReturnKey = true;
+            }
+            
+        }
+
+        private void txtBarcode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+                MessageBox.Show("Tab is pressed");
+                ReturnKey = true;
+            }
+            else if (e.KeyCode == Keys.Enter)
+            { MessageBox.Show("Enter");
+                ReturnKey= true;
+            }
+
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -173,7 +212,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void ResetCard()
         {
-            this.TotalAmount=this.TotalDiscount=this.TotalTax=TotalQty=TotalFreeQty=0;
+            this.TotalAmount = this.TotalDiscount = this.TotalTax = TotalQty = TotalFreeQty = 0;
             TotalCount = 0;
             dgvSaleItems.Rows.Clear();
 
@@ -187,10 +226,16 @@ namespace AKS.Payroll.Forms.Inventory
         {
             var si = new SaleItemVM
             {
-                Barcode = txtBarcode.Text.Trim(), 
-                Rate=decimal.Parse(txtRate.Text.Trim()), 
-
+                Barcode = txtBarcode.Text.Trim(),
+                Rate = decimal.Parse(txtRate.Text.Trim()),
+                Discount = decimal.Parse(txtDiscount.Text.Trim()),
+                ProductItem = txtProductItem.Text.Trim(),
+                Qty = decimal.Parse(txtQty.Text.Trim()),
+                Amount = 0,
+                Tax =0,
             };
+            si.Amount = (si.Rate * si.Qty) - si.Discount;
+
         }
 
 

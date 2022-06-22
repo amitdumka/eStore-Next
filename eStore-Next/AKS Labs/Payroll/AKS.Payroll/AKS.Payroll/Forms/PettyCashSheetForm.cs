@@ -19,6 +19,7 @@ namespace AKS.Payroll.Forms
         private string pNar, rNar, dNar, rcNar;
         private decimal tPay, tRec, tDue, tdRec;
         private List<int> YearList;
+        private bool EnableCashAdd=false;
 
         public PettyCashSheetForm()
         {
@@ -64,10 +65,16 @@ namespace AKS.Payroll.Forms
                         {
                             ItemList.Remove(ItemList.Where(c => c.Id == pcs.Id).FirstOrDefault());
                         }
+                        
                         ItemList.Add(pcs);
                         btnAdd.Text = "Add";
                         MessageBox.Show("Petty Cash Sheet Add!");
                         dgvPettyCashSheet.Refresh();
+                        if (isNew)
+                        {
+                            EnableCashAdd = true;
+                            tabControl1.SelectedIndex = 3; 
+                        }
                         ViewPdf();
                     }
                     else

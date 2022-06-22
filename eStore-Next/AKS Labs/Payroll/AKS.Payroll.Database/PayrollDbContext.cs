@@ -110,6 +110,7 @@ namespace AKS.Payroll.Database
 
         public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
         public DbSet<TimeSheet> TimeSheets { get; set; }  
+        public DbSet<CashDetail> CashDetails { get; set; }
         
         //Inventory
        

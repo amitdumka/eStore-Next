@@ -84,6 +84,48 @@
             this.txtDueAmount = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.pdfView = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.nud2000 = new System.Windows.Forms.NumericUpDown();
+            this.nud1000 = new System.Windows.Forms.NumericUpDown();
+            this.nud500 = new System.Windows.Forms.NumericUpDown();
+            this.nud200 = new System.Windows.Forms.NumericUpDown();
+            this.nud100 = new System.Windows.Forms.NumericUpDown();
+            this.nud50 = new System.Windows.Forms.NumericUpDown();
+            this.nud20 = new System.Windows.Forms.NumericUpDown();
+            this.nud10 = new System.Windows.Forms.NumericUpDown();
+            this.nudCoin10 = new System.Windows.Forms.NumericUpDown();
+            this.nudCoin5 = new System.Windows.Forms.NumericUpDown();
+            this.nudCoin2 = new System.Windows.Forms.NumericUpDown();
+            this.nudCoin1 = new System.Windows.Forms.NumericUpDown();
+            this.label30 = new System.Windows.Forms.Label();
+            this.lbTotalAmount = new Syncfusion.Windows.Forms.Tools.GradientLabel();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.lb2000 = new System.Windows.Forms.Label();
+            this.lb1000 = new System.Windows.Forms.Label();
+            this.lb500 = new System.Windows.Forms.Label();
+            this.lb200 = new System.Windows.Forms.Label();
+            this.lb100 = new System.Windows.Forms.Label();
+            this.lb50 = new System.Windows.Forms.Label();
+            this.lb20 = new System.Windows.Forms.Label();
+            this.lb10 = new System.Windows.Forms.Label();
+            this.lbCoin10 = new System.Windows.Forms.Label();
+            this.lbCoin5 = new System.Windows.Forms.Label();
+            this.lbCoin2 = new System.Windows.Forms.Label();
+            this.lbCoin1 = new System.Windows.Forms.Label();
+            this.lbCount = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -103,6 +145,21 @@
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud2000)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud1000)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud500)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud200)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud100)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud50)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -133,6 +190,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
@@ -659,6 +717,494 @@
             this.pdfView.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
             this.pdfView.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.Default;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panel2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(943, 366);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Cash Details";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.tableLayoutPanel2);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(943, 366);
+            this.panel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 8;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.label17, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label18, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label19, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label20, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label21, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label22, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label23, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label24, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.nud2000, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud1000, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud500, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud200, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud100, 4, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud50, 5, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud20, 6, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nud10, 7, 1);
+            this.tableLayoutPanel2.Controls.Add(this.nudCoin10, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.nudCoin5, 1, 4);
+            this.tableLayoutPanel2.Controls.Add(this.nudCoin2, 2, 4);
+            this.tableLayoutPanel2.Controls.Add(this.nudCoin1, 3, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label30, 5, 4);
+            this.tableLayoutPanel2.Controls.Add(this.lbTotalAmount, 6, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label28, 3, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label27, 2, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label26, 1, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label25, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.lb2000, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb1000, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb500, 2, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb200, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb100, 4, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb50, 5, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb20, 6, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lb10, 7, 2);
+            this.tableLayoutPanel2.Controls.Add(this.lbCoin10, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.lbCoin5, 1, 5);
+            this.tableLayoutPanel2.Controls.Add(this.lbCoin2, 2, 5);
+            this.tableLayoutPanel2.Controls.Add(this.lbCoin1, 3, 5);
+            this.tableLayoutPanel2.Controls.Add(this.lbCount, 7, 4);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(943, 188);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(3, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(31, 15);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "2000";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(84, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(31, 15);
+            this.label18.TabIndex = 1;
+            this.label18.Text = "1000";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(161, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(25, 15);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "500";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(249, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(25, 15);
+            this.label20.TabIndex = 3;
+            this.label20.Text = "200";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(342, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(25, 15);
+            this.label21.TabIndex = 4;
+            this.label21.Text = "100";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(432, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(19, 15);
+            this.label22.TabIndex = 5;
+            this.label22.Text = "50";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(505, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(19, 15);
+            this.label23.TabIndex = 6;
+            this.label23.Text = "20";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(589, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(19, 15);
+            this.label24.TabIndex = 7;
+            this.label24.Text = "10";
+            // 
+            // nud2000
+            // 
+            this.nud2000.Location = new System.Drawing.Point(3, 18);
+            this.nud2000.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud2000.Name = "nud2000";
+            this.nud2000.Size = new System.Drawing.Size(75, 23);
+            this.nud2000.TabIndex = 13;
+            this.nud2000.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud1000
+            // 
+            this.nud1000.Location = new System.Drawing.Point(84, 18);
+            this.nud1000.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud1000.Name = "nud1000";
+            this.nud1000.Size = new System.Drawing.Size(71, 23);
+            this.nud1000.TabIndex = 14;
+            this.nud1000.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud500
+            // 
+            this.nud500.Location = new System.Drawing.Point(161, 18);
+            this.nud500.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud500.Name = "nud500";
+            this.nud500.Size = new System.Drawing.Size(82, 23);
+            this.nud500.TabIndex = 15;
+            this.nud500.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud200
+            // 
+            this.nud200.Location = new System.Drawing.Point(249, 18);
+            this.nud200.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud200.Name = "nud200";
+            this.nud200.Size = new System.Drawing.Size(87, 23);
+            this.nud200.TabIndex = 16;
+            this.nud200.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud100
+            // 
+            this.nud100.Location = new System.Drawing.Point(342, 18);
+            this.nud100.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud100.Name = "nud100";
+            this.nud100.Size = new System.Drawing.Size(84, 23);
+            this.nud100.TabIndex = 17;
+            this.nud100.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud50
+            // 
+            this.nud50.Location = new System.Drawing.Point(432, 18);
+            this.nud50.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud50.Name = "nud50";
+            this.nud50.Size = new System.Drawing.Size(67, 23);
+            this.nud50.TabIndex = 18;
+            this.nud50.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud20
+            // 
+            this.nud20.Location = new System.Drawing.Point(505, 18);
+            this.nud20.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud20.Name = "nud20";
+            this.nud20.Size = new System.Drawing.Size(78, 23);
+            this.nud20.TabIndex = 19;
+            this.nud20.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nud10
+            // 
+            this.nud10.Location = new System.Drawing.Point(589, 18);
+            this.nud10.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nud10.Name = "nud10";
+            this.nud10.Size = new System.Drawing.Size(74, 23);
+            this.nud10.TabIndex = 20;
+            this.nud10.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nudCoin10
+            // 
+            this.nudCoin10.Location = new System.Drawing.Point(3, 77);
+            this.nudCoin10.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudCoin10.Name = "nudCoin10";
+            this.nudCoin10.Size = new System.Drawing.Size(75, 23);
+            this.nudCoin10.TabIndex = 21;
+            this.nudCoin10.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nudCoin5
+            // 
+            this.nudCoin5.Location = new System.Drawing.Point(84, 77);
+            this.nudCoin5.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudCoin5.Name = "nudCoin5";
+            this.nudCoin5.Size = new System.Drawing.Size(71, 23);
+            this.nudCoin5.TabIndex = 22;
+            this.nudCoin5.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nudCoin2
+            // 
+            this.nudCoin2.Location = new System.Drawing.Point(161, 77);
+            this.nudCoin2.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudCoin2.Name = "nudCoin2";
+            this.nudCoin2.Size = new System.Drawing.Size(82, 23);
+            this.nudCoin2.TabIndex = 23;
+            this.nudCoin2.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // nudCoin1
+            // 
+            this.nudCoin1.Location = new System.Drawing.Point(249, 77);
+            this.nudCoin1.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudCoin1.Name = "nudCoin1";
+            this.nudCoin1.Size = new System.Drawing.Size(87, 23);
+            this.nudCoin1.TabIndex = 24;
+            this.nudCoin1.ValueChanged += new System.EventHandler(this.nud2000_ValueChanged);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(432, 74);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(32, 15);
+            this.label30.TabIndex = 27;
+            this.label30.Text = "Total";
+            // 
+            // lbTotalAmount
+            // 
+            this.lbTotalAmount.BeforeTouchSize = new System.Drawing.Size(78, 23);
+            this.lbTotalAmount.BorderSides = ((System.Windows.Forms.Border3DSide)((((System.Windows.Forms.Border3DSide.Left | System.Windows.Forms.Border3DSide.Top) 
+            | System.Windows.Forms.Border3DSide.Right) 
+            | System.Windows.Forms.Border3DSide.Bottom)));
+            this.lbTotalAmount.Location = new System.Drawing.Point(505, 74);
+            this.lbTotalAmount.Name = "lbTotalAmount";
+            this.lbTotalAmount.Size = new System.Drawing.Size(78, 23);
+            this.lbTotalAmount.TabIndex = 26;
+            this.lbTotalAmount.Text = "0";
+            this.lbTotalAmount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(249, 59);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(41, 15);
+            this.label28.TabIndex = 11;
+            this.label28.Text = "Coin 1";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(161, 59);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(41, 15);
+            this.label27.TabIndex = 10;
+            this.label27.Text = "Coin 2";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(84, 59);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(41, 15);
+            this.label26.TabIndex = 9;
+            this.label26.Text = "Coin 5";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 59);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(47, 15);
+            this.label25.TabIndex = 8;
+            this.label25.Text = "Coin 10";
+            // 
+            // lb2000
+            // 
+            this.lb2000.AutoSize = true;
+            this.lb2000.Location = new System.Drawing.Point(3, 44);
+            this.lb2000.Name = "lb2000";
+            this.lb2000.Size = new System.Drawing.Size(13, 15);
+            this.lb2000.TabIndex = 28;
+            this.lb2000.Text = "0";
+            // 
+            // lb1000
+            // 
+            this.lb1000.AutoSize = true;
+            this.lb1000.Location = new System.Drawing.Point(84, 44);
+            this.lb1000.Name = "lb1000";
+            this.lb1000.Size = new System.Drawing.Size(13, 15);
+            this.lb1000.TabIndex = 29;
+            this.lb1000.Text = "0";
+            // 
+            // lb500
+            // 
+            this.lb500.AutoSize = true;
+            this.lb500.Location = new System.Drawing.Point(161, 44);
+            this.lb500.Name = "lb500";
+            this.lb500.Size = new System.Drawing.Size(13, 15);
+            this.lb500.TabIndex = 30;
+            this.lb500.Text = "0";
+            // 
+            // lb200
+            // 
+            this.lb200.AutoSize = true;
+            this.lb200.Location = new System.Drawing.Point(249, 44);
+            this.lb200.Name = "lb200";
+            this.lb200.Size = new System.Drawing.Size(13, 15);
+            this.lb200.TabIndex = 31;
+            this.lb200.Text = "0";
+            // 
+            // lb100
+            // 
+            this.lb100.AutoSize = true;
+            this.lb100.Location = new System.Drawing.Point(342, 44);
+            this.lb100.Name = "lb100";
+            this.lb100.Size = new System.Drawing.Size(13, 15);
+            this.lb100.TabIndex = 32;
+            this.lb100.Text = "0";
+            // 
+            // lb50
+            // 
+            this.lb50.AutoSize = true;
+            this.lb50.Location = new System.Drawing.Point(432, 44);
+            this.lb50.Name = "lb50";
+            this.lb50.Size = new System.Drawing.Size(13, 15);
+            this.lb50.TabIndex = 33;
+            this.lb50.Text = "0";
+            // 
+            // lb20
+            // 
+            this.lb20.AutoSize = true;
+            this.lb20.Location = new System.Drawing.Point(505, 44);
+            this.lb20.Name = "lb20";
+            this.lb20.Size = new System.Drawing.Size(13, 15);
+            this.lb20.TabIndex = 34;
+            this.lb20.Text = "0";
+            // 
+            // lb10
+            // 
+            this.lb10.AutoSize = true;
+            this.lb10.Location = new System.Drawing.Point(589, 44);
+            this.lb10.Name = "lb10";
+            this.lb10.Size = new System.Drawing.Size(13, 15);
+            this.lb10.TabIndex = 35;
+            this.lb10.Text = "0";
+            // 
+            // lbCoin10
+            // 
+            this.lbCoin10.AutoSize = true;
+            this.lbCoin10.Location = new System.Drawing.Point(3, 103);
+            this.lbCoin10.Name = "lbCoin10";
+            this.lbCoin10.Size = new System.Drawing.Size(13, 15);
+            this.lbCoin10.TabIndex = 36;
+            this.lbCoin10.Text = "0";
+            // 
+            // lbCoin5
+            // 
+            this.lbCoin5.AutoSize = true;
+            this.lbCoin5.Location = new System.Drawing.Point(84, 103);
+            this.lbCoin5.Name = "lbCoin5";
+            this.lbCoin5.Size = new System.Drawing.Size(13, 15);
+            this.lbCoin5.TabIndex = 37;
+            this.lbCoin5.Text = "0";
+            // 
+            // lbCoin2
+            // 
+            this.lbCoin2.AutoSize = true;
+            this.lbCoin2.Location = new System.Drawing.Point(161, 103);
+            this.lbCoin2.Name = "lbCoin2";
+            this.lbCoin2.Size = new System.Drawing.Size(13, 15);
+            this.lbCoin2.TabIndex = 38;
+            this.lbCoin2.Text = "0";
+            // 
+            // lbCoin1
+            // 
+            this.lbCoin1.AutoSize = true;
+            this.lbCoin1.Location = new System.Drawing.Point(249, 103);
+            this.lbCoin1.Name = "lbCoin1";
+            this.lbCoin1.Size = new System.Drawing.Size(13, 15);
+            this.lbCoin1.TabIndex = 39;
+            this.lbCoin1.Text = "0";
+            // 
+            // lbCount
+            // 
+            this.lbCount.BorderSides = ((System.Windows.Forms.Border3DSide)((((System.Windows.Forms.Border3DSide.Left | System.Windows.Forms.Border3DSide.Top) 
+            | System.Windows.Forms.Border3DSide.Right) 
+            | System.Windows.Forms.Border3DSide.Bottom)));
+            this.lbCount.Location = new System.Drawing.Point(589, 74);
+            this.lbCount.Name = "lbCount";
+            this.lbCount.Size = new System.Drawing.Size(100, 23);
+            this.lbCount.TabIndex = 40;
+            this.lbCount.Text = "0";
+            this.lbCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.lbYearList);
@@ -827,6 +1373,22 @@
             this.tableLayoutPanel1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud2000)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud1000)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud500)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud200)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud100)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud50)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCoin1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -903,5 +1465,47 @@
         private Button btnRecovery;
         private Button btnDue;
         private Button btnCancle;
+        private TabPage tabPage4;
+        private Panel panel2;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Label label17;
+        private Label label18;
+        private Label label19;
+        private Label label20;
+        private Label label21;
+        private Label label22;
+        private Label label23;
+        private Label label24;
+        private NumericUpDown nud2000;
+        private NumericUpDown nud1000;
+        private NumericUpDown nud500;
+        private NumericUpDown nud200;
+        private NumericUpDown nud100;
+        private NumericUpDown nud50;
+        private NumericUpDown nud20;
+        private NumericUpDown nud10;
+        private NumericUpDown nudCoin10;
+        private NumericUpDown nudCoin5;
+        private NumericUpDown nudCoin2;
+        private NumericUpDown nudCoin1;
+        private Label label30;
+        private Syncfusion.Windows.Forms.Tools.GradientLabel lbTotalAmount;
+        private Label label28;
+        private Label label27;
+        private Label label26;
+        private Label label25;
+        private Label lb2000;
+        private Label lb1000;
+        private Label lb500;
+        private Label lb200;
+        private Label lb100;
+        private Label lb50;
+        private Label lb20;
+        private Label lb10;
+        private Label lbCoin10;
+        private Label lbCoin5;
+        private Label lbCoin2;
+        private Label lbCoin1;
+        private Syncfusion.Windows.Forms.Tools.GradientLabel lbCount;
     }
 }

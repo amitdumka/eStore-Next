@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Database;
+using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Pdf;
@@ -22,7 +23,6 @@ namespace AKS.Payroll.Forms
         public PettyCashSheetForm()
         {
             InitializeComponent();
-
         }
 
         public decimal ReadDec(TextBox text)
@@ -384,6 +384,7 @@ namespace AKS.Payroll.Forms
             tRec = tPay = (decimal)0.0;
             YearList = new List<int>();
         }
+
         private void rbCMonth_CheckedChanged(object sender, EventArgs e)
         {
             UpdateView();
@@ -485,6 +486,94 @@ namespace AKS.Payroll.Forms
             lbRec.Text = "";
             lbRecList.Text = "";
             dtpOnDate.Value = DateTime.Now;
+        }
+
+        private int TotalCurreny=0, TotalCurrenyAmount=0;
+
+        private void UpdateLabel(Label lb, decimal value)
+        {
+            var oldVal= GetIntLable(lb);
+            lb.Text = value.ToString();
+            TotalCurrenyAmount += (int)(value-oldVal);
+           
+        }
+
+        private void CalculateTotalCount()
+        {
+            //foreach (var item in collection)
+            //{
+
+            //}
+        }
+
+        private void nud2000_ValueChanged(object sender, EventArgs e)
+        {
+            NumericUpDown field = (NumericUpDown)sender;
+            TotalCurreny += (int)field.Value;
+            switch (field.Name)
+            {
+                case "nud2000":
+                    UpdateLabel(lb2000, 2000 * nud2000.Value);
+
+                    break;
+
+                case "nud1000":
+                    UpdateLabel(lb1000, 1000 * nud1000.Value);
+                    break;
+
+                case "nud200":
+                    UpdateLabel(lb200, 200 * nud200.Value);
+                    break;
+
+                case "nud100":
+                    UpdateLabel(lb100, 100 * nud100.Value);
+
+                    break;
+
+                case "nud500":
+
+                    UpdateLabel(lb500, 500 * nud500.Value);
+                    break;
+
+                case "nud50":
+
+                    UpdateLabel(lb50, 50 * nud50.Value);
+
+                    break;
+
+                case "nud20":
+
+                    UpdateLabel(lb20, 20 * nud20.Value);
+                    break;
+
+                case "nud10":
+                    UpdateLabel(lb10, 10 * nud10.Value);
+
+                    break;
+
+                case "nudCoin10":
+                    UpdateLabel(lbCoin10, 10 * nudCoin10.Value);
+
+                    break;
+
+                case "nudCoin5":
+                    UpdateLabel(lbCoin5, 5 * nudCoin5.Value);
+                    break;
+
+                case "nudCoin2":
+                    UpdateLabel(lbCoin2, 2 * nudCoin2.Value);
+                    break;
+
+                case "nudCoin1":
+                    UpdateLabel(lbCoin1, 1 * nudCoin1.Value);
+                    break;
+
+                default:
+
+                    break;
+            }
+            lbTotalAmount.Text = TotalCurrenyAmount.ToString();
+            lbCount.Text = TotalCurreny.ToString();
         }
 
         private DataTable ToDataTable(out int rI, out int dI)
@@ -630,6 +719,7 @@ namespace AKS.Payroll.Forms
             else if (rbLMonth.Checked)
                 dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList());
         }
+
         private async void ViewPdf()
         {
             string fileName = GeneratePdf();
@@ -639,6 +729,39 @@ namespace AKS.Payroll.Forms
                 btnPrint.Enabled = true;
                 this.tabControl1.SelectedIndex = 2;
             }
+        }
+
+        private void ReadCashDetails()
+        {
+            CashDetail cd = new CashDetail
+            {
+                C1 = GetIntLable(lbCoin1),
+                C10 = GetIntLable(lbCoin10),
+                C2 = GetIntLable(lbCoin2),
+                C5 = GetIntLable(lbCoin5),
+                CashDetailId = $"ARD/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = false,
+                MarkedDeleted = false,
+                N10 = GetIntLable(lb10),
+                N100 = GetIntLable(lb100),
+                N1000 = GetIntLable(lb100),
+                N50 = GetIntLable(lb50),
+                N20 = GetIntLable(lb20),
+                N200 = GetIntLable(lb200),
+                N2000 = GetIntLable(lb2000),
+                N500 = GetIntLable(lb500),
+                OnDate = DateTime.Now,
+                StoreId = "ARD",
+                UserId = "WinUI",
+                Count = GetIntLable(lbCount),
+                TotalAmount = GetIntLable(lbTotalAmount),
+            };
+        }
+
+        private int GetIntLable(Label lb)
+        {
+            return Int32.Parse(lb.Text.Trim());
         }
     }
 

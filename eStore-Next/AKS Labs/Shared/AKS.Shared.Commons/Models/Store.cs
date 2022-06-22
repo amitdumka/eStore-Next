@@ -61,4 +61,28 @@ namespace AKS.Shared.Commons.Models
         public decimal TotalAmount { get; set; }
         public DateTime OnDate { get; set; }
     }
+    [Table("V1_CashDetails")]
+    public class CashDetail:BaseST
+    {
+        [Key]
+        public string CashDetailId { get; set; }
+        public DateTime OnDate { get; set; }
+        public int Count { get; set; }
+        public int TotalAmount { get; set; }
+
+        public int N2000 { get; set; }
+        public int N1000 { get; set; }
+        public int N500 { get; set; }
+        public int N200 { get; set; }
+        public int N100 { get; set; }
+        public int N50 { get;set; }
+        public int N20 { get; set; }
+        public int N10 { get; set; }
+
+        public int C10 { get; set; }
+        public int C5 { get; set; }
+        public int C2 { get; set; }
+        public int C1 { get; set; }
+
+    }
 }

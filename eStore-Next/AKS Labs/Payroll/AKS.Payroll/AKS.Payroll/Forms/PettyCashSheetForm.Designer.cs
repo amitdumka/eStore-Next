@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PettyCashSheetForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tpList = new System.Windows.Forms.TabPage();
             this.dgvPettyCashSheet = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpEntry = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.cbxStore = new System.Windows.Forms.ComboBox();
@@ -82,9 +82,9 @@
             this.btnDue = new System.Windows.Forms.Button();
             this.txtCashInHand = new System.Windows.Forms.TextBox();
             this.txtDueAmount = new System.Windows.Forms.TextBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tpView = new System.Windows.Forms.TabPage();
             this.pdfView = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tpCashDetail = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label17 = new System.Windows.Forms.Label();
@@ -140,12 +140,12 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tpList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPettyCashSheet)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tpEntry.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.tpView.SuspendLayout();
+            this.tpCashDetail.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud2000)).BeginInit();
@@ -187,10 +187,10 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tpList);
+            this.tabControl1.Controls.Add(this.tpEntry);
+            this.tabControl1.Controls.Add(this.tpCashDetail);
+            this.tabControl1.Controls.Add(this.tpView);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
@@ -198,16 +198,16 @@
             this.tabControl1.Size = new System.Drawing.Size(951, 394);
             this.tabControl1.TabIndex = 0;
             // 
-            // tabPage1
+            // tpList
             // 
-            this.tabPage1.Controls.Add(this.dgvPettyCashSheet);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(943, 366);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Petty Cash Sheet";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tpList.Controls.Add(this.dgvPettyCashSheet);
+            this.tpList.Location = new System.Drawing.Point(4, 24);
+            this.tpList.Name = "tpList";
+            this.tpList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpList.Size = new System.Drawing.Size(943, 366);
+            this.tpList.TabIndex = 0;
+            this.tpList.Text = "Petty Cash Sheet";
+            this.tpList.UseVisualStyleBackColor = true;
             // 
             // dgvPettyCashSheet
             // 
@@ -225,16 +225,16 @@
             this.dgvPettyCashSheet.TabIndex = 0;
             this.dgvPettyCashSheet.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPettyCashSheet_CellContentClick);
             // 
-            // tabPage2
+            // tpEntry
             // 
-            this.tabPage2.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(943, 366);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Entry";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpEntry.Controls.Add(this.tableLayoutPanel1);
+            this.tpEntry.Location = new System.Drawing.Point(4, 24);
+            this.tpEntry.Name = "tpEntry";
+            this.tpEntry.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEntry.Size = new System.Drawing.Size(943, 366);
+            this.tpEntry.TabIndex = 1;
+            this.tpEntry.Text = "Entry";
+            this.tpEntry.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -668,16 +668,16 @@
             this.txtDueAmount.Size = new System.Drawing.Size(144, 23);
             this.txtDueAmount.TabIndex = 39;
             // 
-            // tabPage3
+            // tpView
             // 
-            this.tabPage3.Controls.Add(this.pdfView);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(943, 366);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Print/View";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tpView.Controls.Add(this.pdfView);
+            this.tpView.Location = new System.Drawing.Point(4, 24);
+            this.tpView.Name = "tpView";
+            this.tpView.Padding = new System.Windows.Forms.Padding(3);
+            this.tpView.Size = new System.Drawing.Size(943, 366);
+            this.tpView.TabIndex = 2;
+            this.tpView.Text = "Print/View";
+            this.tpView.UseVisualStyleBackColor = true;
             // 
             // pdfView
             // 
@@ -691,16 +691,16 @@
             this.pdfView.IsTextSearchEnabled = true;
             this.pdfView.IsTextSelectionEnabled = true;
             this.pdfView.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings1.EnableNotification = true;
-            this.pdfView.MessageBoxSettings = messageBoxSettings1;
+            messageBoxSettings2.EnableNotification = true;
+            this.pdfView.MessageBoxSettings = messageBoxSettings2;
             this.pdfView.MinimumZoomPercentage = 50;
             this.pdfView.Name = "pdfView";
             this.pdfView.PageBorderThickness = 1;
-            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
-            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
-            this.pdfView.PrinterSettings = pdfViewerPrinterSettings1;
+            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
+            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
+            this.pdfView.PrinterSettings = pdfViewerPrinterSettings2;
             this.pdfView.ReferencePath = null;
             this.pdfView.ScrollDisplacementValue = 0;
             this.pdfView.ShowHorizontalScrollBar = true;
@@ -708,24 +708,24 @@
             this.pdfView.Size = new System.Drawing.Size(937, 360);
             this.pdfView.SpaceBetweenPages = 8;
             this.pdfView.TabIndex = 0;
-            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings1.HighlightAllInstance = true;
-            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfView.TextSearchSettings = textSearchSettings1;
+            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings2.HighlightAllInstance = true;
+            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfView.TextSearchSettings = textSearchSettings2;
             this.pdfView.ThemeName = "Default";
             this.pdfView.VerticalScrollOffset = 0;
             this.pdfView.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
             this.pdfView.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.Default;
             // 
-            // tabPage4
+            // tpCashDetail
             // 
-            this.tabPage4.Controls.Add(this.panel2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(943, 366);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Cash Details";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tpCashDetail.Controls.Add(this.panel2);
+            this.tpCashDetail.Location = new System.Drawing.Point(4, 24);
+            this.tpCashDetail.Name = "tpCashDetail";
+            this.tpCashDetail.Size = new System.Drawing.Size(943, 366);
+            this.tpCashDetail.TabIndex = 3;
+            this.tpCashDetail.Text = "Cash Details";
+            this.tpCashDetail.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
@@ -1366,14 +1366,14 @@
             this.Load += new System.EventHandler(this.PettyCashSheetForm_Load);
             this.groupBox3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tpList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPettyCashSheet)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.tpEntry.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
+            this.tpView.ResumeLayout(false);
+            this.tpView.PerformLayout();
+            this.tpCashDetail.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -1404,10 +1404,10 @@
         private StatusStrip statusStrip1;
         private GroupBox groupBox3;
         private TabControl tabControl1;
-        private TabPage tabPage1;
+        private TabPage tpList;
         private DataGridView dgvPettyCashSheet;
-        private TabPage tabPage2;
-        private TabPage tabPage3;
+        private TabPage tpEntry;
+        private TabPage tpView;
         private GroupBox groupBox2;
         private ListBox lbYearList;
         private GroupBox groupBox1;
@@ -1465,7 +1465,7 @@
         private Button btnRecovery;
         private Button btnDue;
         private Button btnCancle;
-        private TabPage tabPage4;
+        private TabPage tpCashDetail;
         private Panel panel2;
         private TableLayoutPanel tableLayoutPanel2;
         private Label label17;

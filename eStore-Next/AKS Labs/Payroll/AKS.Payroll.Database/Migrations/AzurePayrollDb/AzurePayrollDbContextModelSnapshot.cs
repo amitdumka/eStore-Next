@@ -855,6 +855,120 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_VendorBankAccounts");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.CashDetail", b =>
+                {
+                    b.Property<string>("CashDetailId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("C1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("C10")
+                        .HasColumnType("int");
+
+                    b.Property<int>("C2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("C5")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("N10")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N100")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N1000")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N20")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N200")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N2000")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N50")
+                        .HasColumnType("int");
+
+                    b.Property<int>("N500")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StoreId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TotalAmount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CashDetailId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("V1_CashDetails");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Customer", b =>
+                {
+                    b.Property<string>("MobileNo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NoOfBills")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("MobileNo");
+
+                    b.ToTable("V1_Customers");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.Brand", b =>
                 {
                     b.Property<string>("BrandCode")
@@ -2499,6 +2613,17 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .IsRequired();
 
                     b.Navigation("Bank");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.CashDetail", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CardPaymentDetail", b =>

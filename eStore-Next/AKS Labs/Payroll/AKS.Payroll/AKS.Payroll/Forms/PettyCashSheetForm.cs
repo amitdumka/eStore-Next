@@ -19,7 +19,7 @@ namespace AKS.Payroll.Forms
         private string pNar, rNar, dNar, rcNar;
         private decimal tPay, tRec, tDue, tdRec;
         private List<int> YearList;
-        private bool EnableCashAdd=false;
+        private bool EnableCashAdd = false;
         private CashDetail cashDetail;
 
         public PettyCashSheetForm()
@@ -55,11 +55,11 @@ namespace AKS.Payroll.Forms
                 isNew = true;
                 tPay = tRec = tDue = tdRec = 0;
             }
-            else if(btnAdd.Text=="Add Cash")
+            else if (btnAdd.Text == "Add Cash")
             {
-               if(SaveCashDetails(ReadCashDetails()))
+                if (SaveCashDetails(ReadCashDetails()))
                 {
-                    btnAdd.Text = "Add"; 
+                    btnAdd.Text = "Add";
                     this.tabControl1.SelectedIndex = 3;
                     Reset();
                     MessageBox.Show("Cash Details is saved!!");
@@ -69,7 +69,6 @@ namespace AKS.Payroll.Forms
                 {
                     MessageBox.Show("An Error occured while saving cash details, kindly check and try again!!");
                 }
-
             }
             else if (btnAdd.Text == "Save")
             {
@@ -82,7 +81,7 @@ namespace AKS.Payroll.Forms
                         {
                             ItemList.Remove(ItemList.Where(c => c.Id == pcs.Id).FirstOrDefault());
                         }
-                        
+
                         ItemList.Add(pcs);
                         btnAdd.Text = "Add Cash";
                         MessageBox.Show("Petty Cash Sheet Add! Kindly now add Cash Sheet");
@@ -91,7 +90,7 @@ namespace AKS.Payroll.Forms
                         if (isNew)
                         {
                             EnableCashAdd = true;
-                            tabControl1.SelectedIndex = 2; 
+                            tabControl1.SelectedIndex = 2;
                         }
                         //ViewPdf();
                     }
@@ -167,7 +166,6 @@ namespace AKS.Payroll.Forms
 
                 if (pcs != null)
                     ViewPdf();
-
                 else
                 {
                     pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
@@ -262,7 +260,7 @@ namespace AKS.Payroll.Forms
             PdfGrid pdfGrid = new PdfGrid();
 
             int rI = 0, dI = 0;
-           
+
             //Assign data source
             pdfGrid.DataSource = ToDataTable(out rI, out dI);
             //Creates the grid cell styles
@@ -321,7 +319,6 @@ namespace AKS.Payroll.Forms
             footerStyle.Font = new PdfStandardFont(PdfFontFamily.Helvetica, 13f, PdfFontStyle.Italic);
             lastRow.ApplyStyle(footerStyle);
 
-           
             //Draws the grid to the PDF page.
             PdfGridLayoutResult gridResult = pdfGrid.Draw(page,
                 new RectangleF(
@@ -337,7 +334,7 @@ namespace AKS.Payroll.Forms
             //Applies the header style
             pdfCashGrid.Headers[0].ApplyStyle(headerStyle);
             pdfCashGrid.Rows[pdfCashGrid.Rows.Count - 1].ApplyStyle(footerStyle);
-            
+
             //Draw the text.
             graphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(page.Graphics.ClientSize.Width / 3, gridResult.Bounds.Bottom + 30));
 
@@ -353,28 +350,197 @@ namespace AKS.Payroll.Forms
 
             return page;
         }
-        private PdfPage GenerateCarbonPage(PdfPage page) {
+
+        private PdfPage GenerateCarbonPage(PdfPage page, PdfPage cPage)
+        {
+
+            //Add a page to the document.
+            //PdfPage page = document.Pages.Add();
+           
+            //Create PDF graphics for the page.
+            PdfGraphics graphics = page.Graphics;
+            
+            //Carbon Copy
+            PdfGraphics cGraphics = cPage.Graphics;
+            
+            //Set the standard font.
+            PdfFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
+            
+            //Draw the text.
+            graphics.DrawString("Petty Cash Sheet", font, PdfBrushes.Red, new PointF(page.Graphics.ClientSize.Width / 3, 0));
+            cGraphics.DrawString("Petty Cash Sheet", font, PdfBrushes.Red, new PointF(cPage.Graphics.ClientSize.Width / 3, 0));
+            cGraphics.DrawString("( Duplicate )", new PdfStandardFont(PdfFontFamily.TimesRoman, 11), PdfBrushes.Brown, 
+                new PointF(cPage.Graphics.ClientSize.Width-70, 0));
+
+            PdfLayoutResult result = new PdfLayoutResult(page, new RectangleF(0, 0, page.Graphics.ClientSize.Width / 2, 0));
+            PdfLayoutResult resultCarbon = new PdfLayoutResult(cPage, new RectangleF(0, 0, cPage.Graphics.ClientSize.Width / 2, 0));
+           
+            PdfFont subHeadingFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 14);
+
+            //Draw Rectangle place on location
+            graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, result.Bounds.Bottom + 20, graphics.ClientSize.Width, 30));
+            cGraphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, resultCarbon.Bounds.Bottom + 20, cGraphics.ClientSize.Width, 30));
+            
+            var element = new PdfTextElement("Aprajita Retails \t" + pcs.Id, subHeadingFont);
+            element.Brush = PdfBrushes.White;
+            result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 28));
+            resultCarbon = element.Draw(cPage, new PointF(10, resultCarbon.Bounds.Bottom + 28));
+
+            string currentDate = "On: " + DateTime.Now.ToString("MM/dd/yyyy");
+            SizeF textSize = subHeadingFont.MeasureString(currentDate);
+            
+            graphics.DrawString(currentDate, subHeadingFont, element.Brush, new PointF(graphics.ClientSize.Width - textSize.Width - 10, result.Bounds.Y));
+            cGraphics.DrawString(currentDate, subHeadingFont, element.Brush, new PointF(cGraphics.ClientSize.Width - textSize.Width - 10, resultCarbon.Bounds.Y));
+
+            //Draw Bill header
+            element = new PdfTextElement("Petty Cash Sheet ", new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
+            element.Brush = new PdfSolidBrush(new PdfColor(126, 155, 203));
+            result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 10));
+            resultCarbon = element.Draw(cPage, new PointF(10, resultCarbon.Bounds.Bottom + 10));
+
+            //Draw Bill address
+            element = new PdfTextElement(string.Format("{0}, {1}, {2}", $"Date: {pcs.OnDate.ToString("dd/MM/yyyy")} ",
+                $"\t\tSN: {pcs.Id} ", " Dumka, Jharkhand"), new PdfStandardFont(PdfFontFamily.TimesRoman, 10));
+            element.Brush = new PdfSolidBrush(new PdfColor(89, 89, 93));
+            result = element.Draw(page, new RectangleF(10, result.Bounds.Bottom + 3, graphics.ClientSize.Width / 2, 100));
+            resultCarbon = element.Draw(cPage, new RectangleF(10, resultCarbon.Bounds.Bottom + 3, cGraphics.ClientSize.Width / 2, 100));
+
+            //Draw Bill line
+            graphics.DrawLine(new PdfPen(new PdfColor(126, 151, 173), 0.70f), new PointF(0, result.Bounds.Bottom + 3), new PointF(graphics.ClientSize.Width, result.Bounds.Bottom + 3));
+            cGraphics.DrawLine(new PdfPen(new PdfColor(126, 151, 173), 0.70f), new PointF(0, resultCarbon.Bounds.Bottom + 3), new PointF(cGraphics.ClientSize.Width, result.Bounds.Bottom + 3));
+
+            // Adding Table part
+
+            //Create a PdfGrid
+            PdfGrid pdfGrid = new PdfGrid();
+
+            int rI = 0, dI = 0;
+
+            //Assign data source
+            pdfGrid.DataSource = ToDataTable(out rI, out dI);
+            //Creates the grid cell styles
+            PdfGridCellStyle cellStyle = new PdfGridCellStyle();
+            cellStyle.Borders.All = PdfPens.White;
+            PdfGridRow header = pdfGrid.Headers[0];
+
+            //Creates the header style
+            PdfGridCellStyle headerStyle = new PdfGridCellStyle();
+            headerStyle.Borders.All = new PdfPen(new PdfColor(126, 151, 173));
+            headerStyle.BackgroundBrush = new PdfSolidBrush(new PdfColor(126, 151, 173)); ;
+            headerStyle.TextBrush = PdfBrushes.White;
+            headerStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 14f, PdfFontStyle.Bold);
+
+            //Adds cell customizations
+            for (int i = 0; i < header.Cells.Count; i++)
+            {
+                if (i == 0 || i == 2)
+                    header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
+                else
+                    header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
+            }
+
+            //Applies the header style
+            header.ApplyStyle(headerStyle);
+
+            cellStyle.Borders.Bottom = new PdfPen(new PdfColor(217, 217, 217), 0.70f);
+            cellStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 12f);
+            cellStyle.TextBrush = new PdfSolidBrush(new PdfColor(131, 130, 136));
+
+            //Creates the layout format for grid
+            PdfGridLayoutFormat layoutFormat = new PdfGridLayoutFormat();
+
+            // Creates layout format settings to allow the table pagination
+            layoutFormat.Layout = PdfLayoutType.Paginate;
+
+            PdfGridRow lastRow = pdfGrid.Rows[pdfGrid.Rows.Count - 1];
+
+            PdfGridCellStyle firstRowStyle = new PdfGridCellStyle();
+            firstRowStyle.TextBrush = PdfBrushes.OrangeRed;
+            firstRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
+            pdfGrid.Rows[0].ApplyStyle(firstRowStyle);
+
+            PdfGridCellStyle totalRowStyle = new PdfGridCellStyle();
+            totalRowStyle.TextBrush = PdfBrushes.DarkBlue;
+            totalRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
+
+            if (dI > 0) pdfGrid.Rows[dI].ApplyStyle(totalRowStyle);
+            if (rI > 0) pdfGrid.Rows[rI].ApplyStyle(totalRowStyle);
+            //pdfGrid.Rows[5].ApplyStyle(firstRowStyle);
+
+            PdfGridCellStyle footerStyle = new PdfGridCellStyle();
+            footerStyle.Borders.All = new PdfPen(new PdfColor(Color.RebeccaPurple));
+            footerStyle.BackgroundBrush = new PdfSolidBrush(new PdfColor(Color.LightGray)); ;
+            footerStyle.TextBrush = PdfBrushes.Red;
+            footerStyle.Font = new PdfStandardFont(PdfFontFamily.Helvetica, 13f, PdfFontStyle.Italic);
+            lastRow.ApplyStyle(footerStyle);
+
+            //Draws the grid to the PDF page.
+            PdfGridLayoutResult gridResult = pdfGrid.Draw(page,
+                new RectangleF(
+                    new PointF(0, result.Bounds.Bottom + 10),
+                    new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
+
+            //Draws the grid to the PDF page.
+            PdfGridLayoutResult gridResultCarbon = pdfGrid.Draw(cPage,
+                new RectangleF(
+                    new PointF(0, resultCarbon.Bounds.Bottom + 10),
+                    new SizeF(cGraphics.ClientSize.Width, cGraphics.ClientSize.Height - 100)), layoutFormat);
+
+            //Draw Bill line Page Break Line
+            graphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResult.Bounds.Bottom + 20), new PointF(graphics.ClientSize.Width, gridResult.Bounds.Bottom + 20));
+            cGraphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResultCarbon.Bounds.Bottom + 20), new PointF(cGraphics.ClientSize.Width, gridResultCarbon.Bounds.Bottom + 20));
+
+            //Adding  Cash Details
+            PdfGrid pdfCashGrid = new PdfGrid();
+            pdfCashGrid.DataSource = ToCashTable();
+            //Applies the header style
+            pdfCashGrid.Headers[0].ApplyStyle(headerStyle);
+            pdfCashGrid.Rows[pdfCashGrid.Rows.Count - 1].ApplyStyle(footerStyle);
+
+            //Draw the text.
+            graphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(page.Graphics.ClientSize.Width / 3, gridResult.Bounds.Bottom + 30));
+            cGraphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(cPage.Graphics.ClientSize.Width / 3, gridResultCarbon.Bounds.Bottom + 30));
+
+            //Draws the grid to the PDF page.
+            PdfGridLayoutResult gridCashResult = pdfCashGrid.Draw(page,
+                new RectangleF(
+                    new PointF(0, gridResult.Bounds.Bottom + 55),
+                    new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
+
+            //Draw the text. //TODO: in case of flowing to next page use in section
+            graphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
+                new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(page.Graphics.ClientSize.Width / 8, gridCashResult.Bounds.Bottom + 130));
+           
+            //Draws the grid to the PDF page.
+            PdfGridLayoutResult gridCashResultCarbon = pdfCashGrid.Draw(cPage,
+                new RectangleF(
+                    new PointF(0, gridResultCarbon.Bounds.Bottom + 55),
+                    new SizeF(cGraphics.ClientSize.Width, cGraphics.ClientSize.Height - 100)), layoutFormat);
+
+            //Draw the text. //TODO: in case of flowing to next page use in section
+            cGraphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
+                new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(cPage.Graphics.ClientSize.Width / 8, gridCashResultCarbon.Bounds.Bottom + 130));
 
             return page;
+
         }
 
         private string GeneratePdf()
         {
             try
             {
-
                 //Create a new PDF document.
                 PdfDocument document = new PdfDocument();
 
                 //Adds page settings
                 document.PageSettings.Orientation = PdfPageOrientation.Portrait;
                 document.PageSettings.Margins.All = 50;
-               
+
                 PdfPage pdfPage = document.Pages.Add();
-                GenerateFirstPage(pdfPage);
+               // GenerateFirstPage(pdfPage);
                 PdfPage pdfPage2 = document.Pages.Add();
-                GenerateCarbonPage(pdfPage2);
-               
+                GenerateCarbonPage(pdfPage,pdfPage2);
+
                 //Save the document.
                 document.Save("Output.pdf");
 
@@ -518,21 +684,19 @@ namespace AKS.Payroll.Forms
             dtpOnDate.Value = DateTime.Now;
         }
 
-        private int TotalCurreny=0, TotalCurrenyAmount=0;
+        private int TotalCurreny = 0, TotalCurrenyAmount = 0;
 
         private void UpdateLabel(Label lb, decimal value)
         {
-            var oldVal= GetIntLable(lb);
+            var oldVal = GetIntLable(lb);
             lb.Text = value.ToString();
-            TotalCurrenyAmount += (int)(value-oldVal);
-           
+            TotalCurrenyAmount += (int)(value - oldVal);
         }
 
         private void CalculateTotalCount()
         {
             //foreach (var item in collection)
             //{
-
             //}
         }
 
@@ -611,15 +775,15 @@ namespace AKS.Payroll.Forms
             try
             {
                 DataTable dataTable = new DataTable();
-               
+
                 //Add columns to the DataTable
                 dataTable.Columns.Add("Sn");
                 dataTable.Columns.Add("Denomination");
                 dataTable.Columns.Add("Count");
                 dataTable.Columns.Add("Amount");
-               
+
                 // Adding rows to the Datatable
-                dataTable.Rows.Add(new object[] { "1", "2000", cashDetail.N2000, cashDetail.N2000*2000 });
+                dataTable.Rows.Add(new object[] { "1", "2000", cashDetail.N2000, cashDetail.N2000 * 2000 });
                 dataTable.Rows.Add(new object[] { "2", "1000", cashDetail.N1000, cashDetail.N1000 * 1000 });
                 dataTable.Rows.Add(new object[] { "3", "500", cashDetail.N500, cashDetail.N500 * 500 });
                 dataTable.Rows.Add(new object[] { "4", "200", cashDetail.N200, cashDetail.N200 * 200 });
@@ -631,12 +795,10 @@ namespace AKS.Payroll.Forms
                 dataTable.Rows.Add(new object[] { "10", "Coin 5", cashDetail.C5, cashDetail.C5 * 5 });
                 dataTable.Rows.Add(new object[] { "11", "Coin 2", cashDetail.C2, cashDetail.C2 * 2 });
                 dataTable.Rows.Add(new object[] { "12", "Coin 1", cashDetail.C1, cashDetail.C1 * 1 });
-              //  dataTable.Rows.Add(new object[] { " ", " ", " "," " });
-                dataTable.Rows.Add(new object[] { "Total Count",cashDetail.Count,"Total Amount", cashDetail.TotalAmount });
-
+                //  dataTable.Rows.Add(new object[] { " ", " ", " "," " });
+                dataTable.Rows.Add(new object[] { "Total Count", cashDetail.Count, "Total Amount", cashDetail.TotalAmount });
 
                 return dataTable;
-
             }
             catch (Exception e)
             {
@@ -808,7 +970,6 @@ namespace AKS.Payroll.Forms
                 if (isNew) azureDb.CashDetails.Add(cashDetail);
                 else azureDb.CashDetails.Update(cashDetail);
                 return azureDb.SaveChanges() > 0;
-
             }
             else
             {
@@ -845,10 +1006,12 @@ namespace AKS.Payroll.Forms
             };
             return cd;
         }
+
         private int GetIntField(NumericUpDown nud)
         {
-            return (int) nud.Value;
+            return (int)nud.Value;
         }
+
         private int GetIntLable(Label lb)
         {
             return Int32.Parse(lb.Text.Trim());

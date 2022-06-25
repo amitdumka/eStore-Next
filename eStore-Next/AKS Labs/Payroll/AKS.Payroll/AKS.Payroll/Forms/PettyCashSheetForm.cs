@@ -156,15 +156,26 @@ namespace AKS.Payroll.Forms
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
-            pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
-            if (pcs != null)
+            if (pcs != null && cashDetail != null)
+            {
                 ViewPdf();
+            }
             else
             {
-                pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
-                if (pcs != null) ViewPdf();
+                pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
+                cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
+
+                if (pcs != null)
+                    ViewPdf();
+
                 else
-                    MessageBox.Show("No Record Found");
+                {
+                    pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
+                    cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
+                    if (pcs != null) ViewPdf();
+                    else
+                        MessageBox.Show("No Record Found");
+                }
             }
         }
 
@@ -310,6 +321,7 @@ namespace AKS.Payroll.Forms
             footerStyle.Font = new PdfStandardFont(PdfFontFamily.Helvetica, 13f, PdfFontStyle.Italic);
             lastRow.ApplyStyle(footerStyle);
 
+           
             //Draws the grid to the PDF page.
             PdfGridLayoutResult gridResult = pdfGrid.Draw(page,
                 new RectangleF(
@@ -317,18 +329,27 @@ namespace AKS.Payroll.Forms
                     new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
 
             //Draw Bill line Page Break Line
-            graphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResult.Bounds.Bottom + 10), new PointF(graphics.ClientSize.Width, gridResult.Bounds.Bottom + 10));
-
+            graphics.DrawLine(new PdfPen(new PdfColor(Color.DarkBlue)), new PointF(0, gridResult.Bounds.Bottom + 20), new PointF(graphics.ClientSize.Width, gridResult.Bounds.Bottom + 20));
 
             //Adding  Cash Details
             PdfGrid pdfCashGrid = new PdfGrid();
             pdfCashGrid.DataSource = ToCashTable();
+            //Applies the header style
+            pdfCashGrid.Headers[0].ApplyStyle(headerStyle);
+            pdfCashGrid.Rows[pdfCashGrid.Rows.Count - 1].ApplyStyle(footerStyle);
+            
+            //Draw the text.
+            graphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(page.Graphics.ClientSize.Width / 3, gridResult.Bounds.Bottom + 30));
 
             //Draws the grid to the PDF page.
             PdfGridLayoutResult gridCashResult = pdfCashGrid.Draw(page,
                 new RectangleF(
-                    new PointF(0, result.Bounds.Bottom + 10),
+                    new PointF(0, gridResult.Bounds.Bottom + 55),
                     new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
+
+            //Draw the text. //TODO: in case of flowing to next page use in section
+            graphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
+                new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(page.Graphics.ClientSize.Width / 8, gridCashResult.Bounds.Bottom + 130));
 
             return page;
         }
@@ -607,9 +628,12 @@ namespace AKS.Payroll.Forms
                 dataTable.Rows.Add(new object[] { "7", "20", cashDetail.N20, cashDetail.N20 * 20 });
                 dataTable.Rows.Add(new object[] { "8", "10", cashDetail.N10, cashDetail.N10 * 10 });
                 dataTable.Rows.Add(new object[] { "9", "Coin 10", cashDetail.C10, cashDetail.C10 * 10 });
-                dataTable.Rows.Add(new object[] { "9", "Coin 5", cashDetail.C5, cashDetail.C5 * 5 });
-                dataTable.Rows.Add(new object[] { "9", "Coin 2", cashDetail.C2, cashDetail.C2 * 2 });
-                dataTable.Rows.Add(new object[] { "9", "Coin 1", cashDetail.C1, cashDetail.C1 * 1 });
+                dataTable.Rows.Add(new object[] { "10", "Coin 5", cashDetail.C5, cashDetail.C5 * 5 });
+                dataTable.Rows.Add(new object[] { "11", "Coin 2", cashDetail.C2, cashDetail.C2 * 2 });
+                dataTable.Rows.Add(new object[] { "12", "Coin 1", cashDetail.C1, cashDetail.C1 * 1 });
+              //  dataTable.Rows.Add(new object[] { " ", " ", " "," " });
+                dataTable.Rows.Add(new object[] { "Total Count",cashDetail.Count,"Total Amount", cashDetail.TotalAmount });
+
 
                 return dataTable;
 
@@ -797,22 +821,22 @@ namespace AKS.Payroll.Forms
         {
             CashDetail cd = new CashDetail
             {
-                C1 = GetIntLable(lbCoin1),
-                C10 = GetIntLable(lbCoin10),
-                C2 = GetIntLable(lbCoin2),
-                C5 = GetIntLable(lbCoin5),
+                C1 = GetIntField(nudCoin1),
+                C10 = GetIntField(nudCoin10),
+                C2 = GetIntField(nudCoin2),
+                C5 = GetIntField(nudCoin5),
                 CashDetailId = $"ARD/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}",
                 EntryStatus = EntryStatus.Added,
                 IsReadOnly = false,
                 MarkedDeleted = false,
-                N10 = GetIntLable(lb10),
-                N100 = GetIntLable(lb100),
-                N1000 = GetIntLable(lb100),
-                N50 = GetIntLable(lb50),
-                N20 = GetIntLable(lb20),
-                N200 = GetIntLable(lb200),
-                N2000 = GetIntLable(lb2000),
-                N500 = GetIntLable(lb500),
+                N10 = GetIntField(nud10),
+                N100 = GetIntField(nud100),
+                N1000 = GetIntField(nud100),
+                N50 = GetIntField(nud50),
+                N20 = GetIntField(nud20),
+                N200 = GetIntField(nud200),
+                N2000 = GetIntField(nud2000),
+                N500 = GetIntField(nud500),
                 OnDate = DateTime.Now,
                 StoreId = "ARD",
                 UserId = "WinUI",
@@ -821,7 +845,10 @@ namespace AKS.Payroll.Forms
             };
             return cd;
         }
-
+        private int GetIntField(NumericUpDown nud)
+        {
+            return (int) nud.Value;
+        }
         private int GetIntLable(Label lb)
         {
             return Int32.Parse(lb.Text.Trim());

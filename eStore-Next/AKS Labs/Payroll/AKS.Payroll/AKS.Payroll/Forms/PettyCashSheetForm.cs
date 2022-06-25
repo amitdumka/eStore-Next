@@ -63,6 +63,7 @@ namespace AKS.Payroll.Forms
                     this.tabControl1.SelectedIndex = 3;
                     Reset();
                     MessageBox.Show("Cash Details is saved!!");
+                    dgvCashDetails.Rows.Add(cashDetail);
                     ViewPdf();
                 }
                 else
@@ -155,6 +156,7 @@ namespace AKS.Payroll.Forms
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
+
             if (pcs != null && cashDetail != null)
             {
                 ViewPdf();
@@ -210,6 +212,16 @@ namespace AKS.Payroll.Forms
 
         private void dgvPettyCashSheet_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dgvPettyCashSheet.CurrentCell.Selected)
+            {
+                var row = (PettyCashSheet)dgvPettyCashSheet.CurrentRow.DataBoundItem;
+                if (row != null)
+                {
+                    pcs = row;
+                    cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == pcs.OnDate.Date).FirstOrDefault();
+                    ViewPdf();
+                }
+            }
         }
 
         private void DisplayData()
@@ -356,31 +368,31 @@ namespace AKS.Payroll.Forms
 
             //Add a page to the document.
             //PdfPage page = document.Pages.Add();
-           
+
             //Create PDF graphics for the page.
             PdfGraphics graphics = page.Graphics;
-            
+
             //Carbon Copy
             PdfGraphics cGraphics = cPage.Graphics;
-            
+
             //Set the standard font.
             PdfFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
-            
+
             //Draw the text.
             graphics.DrawString("Petty Cash Sheet", font, PdfBrushes.Red, new PointF(page.Graphics.ClientSize.Width / 3, 0));
             cGraphics.DrawString("Petty Cash Sheet", font, PdfBrushes.Red, new PointF(cPage.Graphics.ClientSize.Width / 3, 0));
-            cGraphics.DrawString("( Duplicate )", new PdfStandardFont(PdfFontFamily.TimesRoman, 11), PdfBrushes.Brown, 
-                new PointF(cPage.Graphics.ClientSize.Width-70, 0));
+            cGraphics.DrawString("( Duplicate )", new PdfStandardFont(PdfFontFamily.TimesRoman, 11), PdfBrushes.Brown,
+                new PointF(cPage.Graphics.ClientSize.Width - 70, 0));
 
             PdfLayoutResult result = new PdfLayoutResult(page, new RectangleF(0, 0, page.Graphics.ClientSize.Width / 2, 0));
             PdfLayoutResult resultCarbon = new PdfLayoutResult(cPage, new RectangleF(0, 0, cPage.Graphics.ClientSize.Width / 2, 0));
-           
+
             PdfFont subHeadingFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 14);
 
             //Draw Rectangle place on location
             graphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, result.Bounds.Bottom + 20, graphics.ClientSize.Width, 30));
             cGraphics.DrawRectangle(new PdfSolidBrush(new PdfColor(126, 151, 173)), new RectangleF(0, resultCarbon.Bounds.Bottom + 20, cGraphics.ClientSize.Width, 30));
-            
+
             var element = new PdfTextElement("Aprajita Retails \t" + pcs.Id, subHeadingFont);
             element.Brush = PdfBrushes.White;
             result = element.Draw(page, new PointF(10, result.Bounds.Bottom + 28));
@@ -388,7 +400,7 @@ namespace AKS.Payroll.Forms
 
             string currentDate = "On: " + DateTime.Now.ToString("MM/dd/yyyy");
             SizeF textSize = subHeadingFont.MeasureString(currentDate);
-            
+
             graphics.DrawString(currentDate, subHeadingFont, element.Brush, new PointF(graphics.ClientSize.Width - textSize.Width - 10, result.Bounds.Y));
             cGraphics.DrawString(currentDate, subHeadingFont, element.Brush, new PointF(cGraphics.ClientSize.Width - textSize.Width - 10, resultCarbon.Bounds.Y));
 
@@ -418,6 +430,7 @@ namespace AKS.Payroll.Forms
 
             //Assign data source
             pdfGrid.DataSource = ToDataTable(out rI, out dI);
+
             //Creates the grid cell styles
             PdfGridCellStyle cellStyle = new PdfGridCellStyle();
             cellStyle.Borders.All = PdfPens.White;
@@ -493,33 +506,38 @@ namespace AKS.Payroll.Forms
             //Adding  Cash Details
             PdfGrid pdfCashGrid = new PdfGrid();
             pdfCashGrid.DataSource = ToCashTable();
-            //Applies the header style
-            pdfCashGrid.Headers[0].ApplyStyle(headerStyle);
-            pdfCashGrid.Rows[pdfCashGrid.Rows.Count - 1].ApplyStyle(footerStyle);
+            if (pdfCashGrid.DataSource != null)
+            {
+                //Applies the header style
+                pdfCashGrid.Headers[0].ApplyStyle(headerStyle);
+                pdfCashGrid.Rows[pdfCashGrid.Rows.Count - 1].ApplyStyle(footerStyle);
 
-            //Draw the text.
-            graphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(page.Graphics.ClientSize.Width / 3, gridResult.Bounds.Bottom + 30));
-            cGraphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(cPage.Graphics.ClientSize.Width / 3, gridResultCarbon.Bounds.Bottom + 30));
+                //Draw the text.
+                graphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(page.Graphics.ClientSize.Width / 3, gridResult.Bounds.Bottom + 30));
+                cGraphics.DrawString("Cash Details", font, PdfBrushes.DarkMagenta, new PointF(cPage.Graphics.ClientSize.Width / 3, gridResultCarbon.Bounds.Bottom + 30));
 
-            //Draws the grid to the PDF page.
-            PdfGridLayoutResult gridCashResult = pdfCashGrid.Draw(page,
-                new RectangleF(
-                    new PointF(0, gridResult.Bounds.Bottom + 55),
-                    new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
+                //Draws the grid to the PDF page.
+                PdfGridLayoutResult gridCashResult = pdfCashGrid.Draw(page,
+                    new RectangleF(
+                        new PointF(0, gridResult.Bounds.Bottom + 55),
+                        new SizeF(graphics.ClientSize.Width, graphics.ClientSize.Height - 100)), layoutFormat);
 
-            //Draw the text. //TODO: in case of flowing to next page use in section
-            graphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
-                new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(page.Graphics.ClientSize.Width / 8, gridCashResult.Bounds.Bottom + 130));
-           
-            //Draws the grid to the PDF page.
-            PdfGridLayoutResult gridCashResultCarbon = pdfCashGrid.Draw(cPage,
-                new RectangleF(
-                    new PointF(0, gridResultCarbon.Bounds.Bottom + 55),
-                    new SizeF(cGraphics.ClientSize.Width, cGraphics.ClientSize.Height - 100)), layoutFormat);
 
-            //Draw the text. //TODO: in case of flowing to next page use in section
-            cGraphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
-                new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(cPage.Graphics.ClientSize.Width / 8, gridCashResultCarbon.Bounds.Bottom + 130));
+                //Draws the grid to the PDF page.
+                PdfGridLayoutResult gridCashResultCarbon = pdfCashGrid.Draw(cPage,
+                    new RectangleF(
+                        new PointF(0, gridResultCarbon.Bounds.Bottom + 55),
+                        new SizeF(cGraphics.ClientSize.Width, cGraphics.ClientSize.Height - 100)), layoutFormat);
+
+                //Draw the text. //TODO: in case of flowing to next page use in section
+                graphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
+                    new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(page.Graphics.ClientSize.Width / 8, gridCashResult.Bounds.Bottom + 130));
+                //Draw the text. //TODO: in case of flowing to next page use in section
+                cGraphics.DrawString("   Sign StoreManager                                                                     Sign Accountant           ",
+                    new PdfStandardFont(PdfFontFamily.TimesRoman, 12), PdfBrushes.Blue, new PointF(cPage.Graphics.ClientSize.Width / 8, gridCashResultCarbon.Bounds.Bottom + 130));
+
+            }
+
 
             return page;
 
@@ -537,9 +555,9 @@ namespace AKS.Payroll.Forms
                 document.PageSettings.Margins.All = 50;
 
                 PdfPage pdfPage = document.Pages.Add();
-               // GenerateFirstPage(pdfPage);
+                // GenerateFirstPage(pdfPage);
                 PdfPage pdfPage2 = document.Pages.Add();
-                GenerateCarbonPage(pdfPage,pdfPage2);
+                GenerateCarbonPage(pdfPage, pdfPage2);
 
                 //Save the document.
                 document.Save("Output.pdf");
@@ -564,9 +582,9 @@ namespace AKS.Payroll.Forms
             cbxStore.ValueMember = "StoreId";
             UpdateItemList(azureDb.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList());
             dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.Month).ToList());
-
             YearList = azureDb.PettyCashSheets.Select(c => c.OnDate.Year).OrderByDescending(c => c).Distinct().ToList();
             lbYearList.DataSource = YearList;
+            dgvCashDetails.DataSource = azureDb.CashDetails.Where(c => c.OnDate.Month == DateTime.Today.Month).ToList();
         }
 
         // private List<PettyCashSheet> ItemList;
@@ -775,7 +793,7 @@ namespace AKS.Payroll.Forms
             try
             {
                 DataTable dataTable = new DataTable();
-
+                if (cashDetail == null) { return null; }
                 //Add columns to the DataTable
                 dataTable.Columns.Add("Sn");
                 dataTable.Columns.Add("Denomination");
@@ -811,7 +829,9 @@ namespace AKS.Payroll.Forms
         {
             try
             {
+
                 DataTable dataTable = new DataTable();
+
                 //Add columns to the DataTable
                 dataTable.Columns.Add("Receipt");
                 dataTable.Columns.Add("Amount");

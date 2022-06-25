@@ -335,8 +335,6 @@ namespace AKS.Payroll.Forms.Inventory
         public TaxType TaxType { get; set; }
         public Unit Unit { get; set; }
         public ProductCategory Category { get; set; }
-
-
     }
 
     public class SaleItemVM

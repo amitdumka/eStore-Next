@@ -125,6 +125,7 @@ namespace AKS.Payroll.Forms.Inventory
             SetupForm();
             azureDb = new AzurePayrollDbContext();
             localDb = new LocalPayrollDbContext();
+            Items = new ObservableListSource<ProductSale>();
 
             SeletedYear = DateTime.Today.Year;
             YearList = azureDb.ProductSales.Select(c => c.OnDate.Year).Distinct().OrderByDescending(c => c).ToList();
@@ -143,13 +144,13 @@ namespace AKS.Payroll.Forms.Inventory
         }
         private void SalesForm_Load(object sender, EventArgs e)
         {
-            //LoadData();
+            LoadData();
         }
 
         private void LoadFormData()
         {
-            cbxMmobile.DataSource = azureDb.Customers.Select(c => new { c.MobileNo, c.CustomerName }).OrderBy(c => c.CustomerName).ToList();
-            cbxMmobile.DisplayMember = "MobieNo";
+            cbxMmobile.DataSource = azureDb.Customers.Select(c => new { c.MobileNo, c.CustomerName, c.FirstName }).OrderBy(c=> c.FirstName).ToList();
+            cbxMmobile.DisplayMember = "MobileNo";
             cbxMmobile.ValueMember = "CustomerName";
 
             cbxInvType.Items.AddRange(Enum.GetNames(typeof(InvoiceType)));
@@ -228,6 +229,12 @@ namespace AKS.Payroll.Forms.Inventory
         {
 
         }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            LoadFormData();
+        }
+
         private void DisplayStockInfo(StockInfo info)
         {
             txtQty.Text = info.Qty.ToString();

@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.Tools.SplitButtonRenderer splitButtonRenderer1 = new Syncfusion.Windows.Forms.Tools.SplitButtonRenderer();
+            Syncfusion.Windows.Forms.Tools.SliderCollection sliderCollection1 = new Syncfusion.Windows.Forms.Tools.SliderCollection();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -81,6 +83,10 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.splitButton1 = new Syncfusion.Windows.Forms.Tools.SplitButton();
+            this.toggleButton1 = new Syncfusion.Windows.Forms.Tools.ToggleButton();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -94,6 +100,8 @@
             this.groupBox1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.toggleButton1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -203,15 +211,17 @@
             this.tableLayoutPanel1.Controls.Add(this.txtCustomerName, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.radioButton3, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnAddCustomer, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(875, 314);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -413,11 +423,10 @@
             this.dgvSaleItems.AllowUserToOrderColumns = true;
             this.dgvSaleItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableLayoutPanel1.SetColumnSpan(this.dgvSaleItems, 7);
-            this.dgvSaleItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSaleItems.Location = new System.Drawing.Point(3, 101);
             this.dgvSaleItems.Name = "dgvSaleItems";
             this.dgvSaleItems.RowTemplate.Height = 25;
-            this.dgvSaleItems.Size = new System.Drawing.Size(869, 210);
+            this.dgvSaleItems.Size = new System.Drawing.Size(869, 137);
             this.dgvSaleItems.TabIndex = 24;
             // 
             // cbxInvType
@@ -487,16 +496,16 @@
             this.pdfViewer.IsTextSearchEnabled = true;
             this.pdfViewer.IsTextSelectionEnabled = true;
             this.pdfViewer.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfViewer.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfViewer.MessageBoxSettings = messageBoxSettings1;
             this.pdfViewer.MinimumZoomPercentage = 50;
             this.pdfViewer.Name = "pdfViewer";
             this.pdfViewer.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfViewer.ReferencePath = null;
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
@@ -504,10 +513,10 @@
             this.pdfViewer.Size = new System.Drawing.Size(875, 314);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfViewer.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfViewer.TextSearchSettings = textSearchSettings1;
             this.pdfViewer.ThemeName = "Default";
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -647,6 +656,53 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // panel4
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.panel4, 7);
+            this.panel4.Controls.Add(this.button1);
+            this.panel4.Controls.Add(this.toggleButton1);
+            this.panel4.Controls.Add(this.splitButton1);
+            this.panel4.Location = new System.Drawing.Point(3, 244);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(840, 46);
+            this.panel4.TabIndex = 26;
+            // 
+            // splitButton1
+            // 
+            this.splitButton1.BeforeTouchSize = new System.Drawing.Size(117, 27);
+            this.splitButton1.DropDownPosition = Syncfusion.Windows.Forms.Tools.Position.Bottom;
+            this.splitButton1.ForeColor = System.Drawing.Color.Black;
+            this.splitButton1.Location = new System.Drawing.Point(15, 5);
+            this.splitButton1.MinimumSize = new System.Drawing.Size(75, 23);
+            this.splitButton1.Name = "splitButton1";
+            splitButtonRenderer1.SplitButton = this.splitButton1;
+            this.splitButton1.Renderer = splitButtonRenderer1;
+            this.splitButton1.ShowDropDownOnButtonClick = false;
+            this.splitButton1.Size = new System.Drawing.Size(117, 27);
+            this.splitButton1.TabIndex = 0;
+            this.splitButton1.Text = "splitButton1";
+            // 
+            // toggleButton1
+            // 
+            this.toggleButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.toggleButton1.ForeColor = System.Drawing.Color.Black;
+            this.toggleButton1.Location = new System.Drawing.Point(148, 0);
+            this.toggleButton1.MinimumSize = new System.Drawing.Size(52, 20);
+            this.toggleButton1.Name = "toggleButton1";
+            this.toggleButton1.Size = new System.Drawing.Size(90, 40);
+            this.toggleButton1.Slider = sliderCollection1;
+            this.toggleButton1.TabIndex = 1;
+            this.toggleButton1.Text = "toggleButton1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(258, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // SalesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -675,6 +731,8 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.toggleButton1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -730,5 +788,9 @@
         private TextBox txtCustomerName;
         private CheckBox cbSalesReturn;
         private Button btnAddCustomer;
+        private Panel panel4;
+        private Button button1;
+        private Syncfusion.Windows.Forms.Tools.ToggleButton toggleButton1;
+        private Syncfusion.Windows.Forms.Tools.SplitButton splitButton1;
     }
 }

@@ -1391,9 +1391,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.Property<bool>("MarkedDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProductBarcode")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("PurhcaseQty")
                         .HasColumnType("decimal(18,2)");
 
@@ -1409,8 +1406,6 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Barcode");
-
-                    b.HasIndex("ProductBarcode");
 
                     b.HasIndex("StoreId");
 
@@ -2731,7 +2726,9 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                 {
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductItem", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductBarcode");
+                        .HasForeignKey("Barcode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AKS.Shared.Commons.Models.Store", "Store")
                         .WithMany()

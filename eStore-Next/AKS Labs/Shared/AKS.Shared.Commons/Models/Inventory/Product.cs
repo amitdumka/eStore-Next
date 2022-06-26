@@ -49,6 +49,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal CurrentQty { get { return (PurhcaseQty - SoldQty - HoldQty); } }
         public decimal CurrentQtyWH { get { return (PurhcaseQty - SoldQty ); } }
 
+        [ForeignKey("Barcode")]
         public virtual ProductItem Product { get; set; }    
     }
 

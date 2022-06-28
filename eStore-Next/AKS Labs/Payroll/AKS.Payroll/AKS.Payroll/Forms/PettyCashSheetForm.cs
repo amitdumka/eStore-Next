@@ -22,12 +22,11 @@ namespace AKS.Payroll.Forms
         private int TotalCurreny = 0, TotalCurrenyAmount = 0;
         private decimal tPay, tRec, tDue, tdRec;
         private List<int> YearList;
-
+        private List<int> DataList;
         public PettyCashSheetForm()
         {
             InitializeComponent();
         }
-
         public bool SaveData()
         {
             if (isNew)
@@ -35,7 +34,6 @@ namespace AKS.Payroll.Forms
             else azureDb.PettyCashSheets.Update(pcs);
             return azureDb.SaveChanges() > 0;
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (btnAdd.Text == "Add")
@@ -99,13 +97,11 @@ namespace AKS.Payroll.Forms
                 }
             }
         }
-
         private void btnCancle_Click(object sender, EventArgs e)
         {
             btnAdd.Text = "Add";
             Reset();
         }
-
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvPettyCashSheet.CurrentCell.Selected)
@@ -123,7 +119,6 @@ namespace AKS.Payroll.Forms
                 }
             }
         }
-
         private void btnDue_Click(object sender, EventArgs e)
         {//TODO: prend
             tDue += UIManager.ReadDec(txtDueAmount);
@@ -134,7 +129,6 @@ namespace AKS.Payroll.Forms
             txtDueAmount.Text = "0";
             txtDueNaration.Text = "";
         }
-
         private void btnMissingReport_Click(object sender, EventArgs e)
         {
             string filename = new PettyCashSheetManager(azureDb, localDb).GenReport();
@@ -150,7 +144,6 @@ namespace AKS.Payroll.Forms
                 MessageBox.Show("Failed");
             }
         }
-
         private void btnPayment_Click(object sender, EventArgs e)
         {
             tPay += UIManager.ReadDec(txtAmount);
@@ -160,7 +153,6 @@ namespace AKS.Payroll.Forms
             txtAmount.Text = "0";
             txtNaration.Text = "";
         }
-
         private void btnPreview_Click(object sender, EventArgs e)
         {
             if (pcs != null && cashDetail != null)
@@ -184,7 +176,6 @@ namespace AKS.Payroll.Forms
                 }
             }
         }
-
         private void btnPrint_Click(object sender, EventArgs e)
         {
             var printDialog1 = new PrintDialog();
@@ -195,7 +186,6 @@ namespace AKS.Payroll.Forms
                 pdfView.Print(printDialog1.PrinterSettings.PrinterName);
             }
         }
-
         private void btnReceipt_Click(object sender, EventArgs e)
         {
             tRec += UIManager.ReadDec(txtAmount);
@@ -205,7 +195,6 @@ namespace AKS.Payroll.Forms
             txtAmount.Text = "0";
             txtNaration.Text = "";
         }
-
         private void btnRecovery_Click(object sender, EventArgs e)
         {
             tdRec += UIManager.ReadDec(txtDueAmount);
@@ -215,14 +204,12 @@ namespace AKS.Payroll.Forms
             txtDueAmount.Text = "0";
             txtDueNaration.Text = "";
         }
-
         private void CalculateTotalCount()
         {
             //foreach (var item in collection)
             //{
             //}
         }
-
         private void dgvPettyCashSheet_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvPettyCashSheet.CurrentCell.Selected)
@@ -236,29 +223,39 @@ namespace AKS.Payroll.Forms
                 }
             }
         }
-
         private void DisplayData()
         {
         }
-
+        
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            FilterData((int) lbYearList.SelectedValue);
         }
-
+        private void FilterData(int year)
+        {
+            if (DataList.Contains(year)==false)           
+            {
+                UpdateItemList(azureDb.PettyCashSheets.Where(c => c.OnDate.Year == year).ToList());
+                DataList.Add(year);
+            }
+            dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Year == year).ToList());
+            dgvCashDetails.DataSource = azureDb.CashDetails.Where(c => c.OnDate.Year == year).ToList();
+        }
         private void LoadData()
         {
             Reset();
-
+            DataList = new List<int>();
             cbxStore.DataSource = azureDb.Stores.Select(c => new { c.StoreId, c.StoreName }).ToList();
             cbxStore.DisplayMember = "StoreName";
             cbxStore.ValueMember = "StoreId";
+            DataList.Add(DateTime.Today.Year);
             UpdateItemList(azureDb.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList());
             dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.Month).ToList());
-            YearList = azureDb.PettyCashSheets.Select(c => c.OnDate.Year).OrderByDescending(c => c).Distinct().ToList();
             lbYearList.DataSource = YearList;
             dgvCashDetails.DataSource = azureDb.CashDetails.Where(c => c.OnDate.Month == DateTime.Today.Month).ToList();
-        }
+            YearList = azureDb.PettyCashSheets.Select(c => c.OnDate.Year).Distinct().OrderByDescending(c => c).ToList();
 
+        }
         private void nud2000_ValueChanged(object sender, EventArgs e)
         {
             NumericUpDown field = (NumericUpDown)sender;
@@ -328,7 +325,6 @@ namespace AKS.Payroll.Forms
             lbTotalAmount.Text = TotalCurrenyAmount.ToString();
             lbCount.Text = TotalCurreny.ToString();
         }
-
         // private List<PettyCashSheet> ItemList;
         private void PettyCashSheetForm_Load(object sender, EventArgs e)
         {
@@ -340,22 +336,18 @@ namespace AKS.Payroll.Forms
             tRec = tPay = (decimal)0.0;
             YearList = new List<int>();
         }
-
         private void rbCMonth_CheckedChanged(object sender, EventArgs e)
         {
             UpdateView();
         }
-
         private void rbLMonth_CheckedChanged(object sender, EventArgs e)
         {
             UpdateView();
         }
-
         private void rbYearly_CheckedChanged(object sender, EventArgs e)
         {
             UpdateView();
         }
-
         private CashDetail ReadCashDetails()
         {
             CashDetail cd = new CashDetail
@@ -384,7 +376,6 @@ namespace AKS.Payroll.Forms
             };
             return cd;
         }
-
         private void ReadData()
         {
             if (isNew)
@@ -462,7 +453,6 @@ namespace AKS.Payroll.Forms
                 pcs.TailoringSale = UIManager.ReadDec(txtTailoring);
             }
         }
-
         private void Reset()
         {
             lbPrimaryKey.Text = "";
@@ -472,7 +462,6 @@ namespace AKS.Payroll.Forms
             lbRecList.Text = "";
             dtpOnDate.Value = DateTime.Now;
         }
-
         private bool SaveCashDetails(CashDetail cd)
         {
             if (cd != null)
@@ -488,7 +477,6 @@ namespace AKS.Payroll.Forms
                 return false;
             }
         }
-
         private ObservableListSource<PettyCashSheet> UpdateItemList(List<PettyCashSheet> items)
         {
             foreach (var item in items)
@@ -497,14 +485,12 @@ namespace AKS.Payroll.Forms
             }
             return ItemList;
         }
-
         private void UpdateLabel(Label lb, decimal value)
         {
             var oldVal = UIManager.GetIntLable(lb);
             lb.Text = value.ToString();
             TotalCurrenyAmount += (int)(value - oldVal);
         }
-
         private void UpdateView()
         {
             if (rbCMonth.Checked)
@@ -514,7 +500,6 @@ namespace AKS.Payroll.Forms
             else if (rbLMonth.Checked)
                 dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList());
         }
-
         private async void ViewPdf()
         {
             string fileName = new PettyCashSheetManager(azureDb, localDb).GeneratePdf(pcs, cashDetail);

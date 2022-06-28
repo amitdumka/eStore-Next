@@ -84,7 +84,8 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal FreeQty { get; set; }
         public decimal TotalQty { get; set; }
         public bool Paid { get; set; }
-        
+
+        public string Warehouse { get; set; } 
         public virtual Vendor Vendor { get; set; }
         public virtual ICollection<PurchaseItem>Items { get; set; }
     }

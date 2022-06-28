@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PettyCashSheetForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -139,6 +139,7 @@
             this.btnPreview = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.btnMissingReport = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpList.SuspendLayout();
@@ -1195,16 +1196,16 @@
             this.pdfView.IsTextSearchEnabled = true;
             this.pdfView.IsTextSelectionEnabled = true;
             this.pdfView.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfView.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfView.MessageBoxSettings = messageBoxSettings1;
             this.pdfView.MinimumZoomPercentage = 50;
             this.pdfView.Name = "pdfView";
             this.pdfView.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfView.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfView.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfView.ReferencePath = null;
             this.pdfView.ScrollDisplacementValue = 0;
             this.pdfView.ShowHorizontalScrollBar = true;
@@ -1212,10 +1213,10 @@
             this.pdfView.Size = new System.Drawing.Size(937, 360);
             this.pdfView.SpaceBetweenPages = 8;
             this.pdfView.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfView.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfView.TextSearchSettings = textSearchSettings1;
             this.pdfView.ThemeName = "Default";
             this.pdfView.VerticalScrollOffset = 0;
             this.pdfView.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -1246,6 +1247,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnMissingReport);
             this.groupBox1.Controls.Add(this.btnCancle);
             this.groupBox1.Controls.Add(this.btnPrint);
             this.groupBox1.Controls.Add(this.panel1);
@@ -1362,6 +1364,16 @@
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnMissingReport
+            // 
+            this.btnMissingReport.Location = new System.Drawing.Point(461, 26);
+            this.btnMissingReport.Name = "btnMissingReport";
+            this.btnMissingReport.Size = new System.Drawing.Size(75, 23);
+            this.btnMissingReport.TabIndex = 6;
+            this.btnMissingReport.Text = "Missing";
+            this.btnMissingReport.UseVisualStyleBackColor = true;
+            this.btnMissingReport.Click += new System.EventHandler(this.btnMissingReport_Click);
             // 
             // PettyCashSheetForm
             // 
@@ -1525,5 +1537,6 @@
         private Label lbCoin1;
         private Syncfusion.Windows.Forms.Tools.GradientLabel lbCount;
         private DataGridView dgvCashDetails;
+        private Button btnMissingReport;
     }
 }

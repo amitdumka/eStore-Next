@@ -93,7 +93,10 @@ namespace AKS.Shared.Commons.Models.Inventory
     public class PurchaseItem 
     {
         public int Id { get; set; }
+
+        [ForeignKey("PurchaseProduct")]
         public string InwardNumber { get; set; }
+        [ForeignKey("Product")]
         public string Barcode { get; set; }
         public decimal Qty { get; set; }
         public decimal FreeQty { get; set; }
@@ -102,8 +105,10 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal DiscountValue { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal CostValue { get; set; }
-        
+
+        [ForeignKey("InwardNumber")]
         public virtual PurchaseProduct PurchaseProduct { get; set; }
+        [ForeignKey("Barcode")]
         public virtual ProductItem ProductItem { get; set; }
 
     }

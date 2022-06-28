@@ -1172,7 +1172,7 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.Property<string>("Barcode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("CostPrice")
                         .HasColumnType("decimal(18,2)");
@@ -1188,13 +1188,6 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.Property<string>("InwardNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductItemBarcode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PurchaseProductInwardNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Qty")
@@ -1208,9 +1201,9 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductItemBarcode");
+                    b.HasIndex("Barcode");
 
-                    b.HasIndex("PurchaseProductInwardNumber");
+                    b.HasIndex("InwardNumber");
 
                     b.ToTable("V1_PurchaseItems");
                 });
@@ -1286,6 +1279,10 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<string>("VendorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Warehouse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InwardNumber");
 
@@ -2689,11 +2686,13 @@ namespace AKS.Payroll.Database.Migrations
                 {
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductItem", "ProductItem")
                         .WithMany()
-                        .HasForeignKey("ProductItemBarcode");
+                        .HasForeignKey("Barcode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", "PurchaseProduct")
                         .WithMany("Items")
-                        .HasForeignKey("PurchaseProductInwardNumber")
+                        .HasForeignKey("InwardNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1025,6 +1025,10 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<string>("Barcode")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BrandCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1061,6 +1065,8 @@ namespace AKS.Payroll.Database.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Barcode");
+
+                    b.HasIndex("BrandCode");
 
                     b.HasIndex("SubCategory");
 
@@ -1180,14 +1186,14 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<decimal>("FreeQty")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("InvoiceNo")
+                    b.Property<string>("InwardNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductItemBarcode")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("PurchaseProductInvoiceNo")
+                    b.Property<string>("PurchaseProductInwardNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -1204,14 +1210,14 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasIndex("ProductItemBarcode");
 
-                    b.HasIndex("PurchaseProductInvoiceNo");
+                    b.HasIndex("PurchaseProductInwardNumber");
 
                     b.ToTable("V1_PurchaseItems");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", b =>
                 {
-                    b.Property<string>("InvoiceNo")
+                    b.Property<string>("InwardNumber")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("BasicAmount")
@@ -1232,8 +1238,15 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<decimal>("FreeQty")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("InvoiceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("InvoiceType")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("InwardDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsReadOnly")
                         .HasColumnType("bit");
@@ -1274,7 +1287,7 @@ namespace AKS.Payroll.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("InvoiceNo");
+                    b.HasKey("InwardNumber");
 
                     b.HasIndex("StoreId");
 
@@ -1399,6 +1412,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<string>("StoreId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -2633,11 +2649,19 @@ namespace AKS.Payroll.Database.Migrations
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductItem", b =>
                 {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSubCategory", "ProductSubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Brand");
 
                     b.Navigation("ProductSubCategory");
                 });
@@ -2669,7 +2693,7 @@ namespace AKS.Payroll.Database.Migrations
 
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.PurchaseProduct", "PurchaseProduct")
                         .WithMany("Items")
-                        .HasForeignKey("PurchaseProductInvoiceNo")
+                        .HasForeignKey("PurchaseProductInwardNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

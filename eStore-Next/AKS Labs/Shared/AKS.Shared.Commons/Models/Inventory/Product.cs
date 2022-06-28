@@ -24,10 +24,13 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string HSNCode { get; set; }
         public Unit Unit { get; set; }
 
+        public string BrandCode { get;set; }
+        
+        [ForeignKey("BrandCode")]
+        public virtual Brand Brand { get; set; }
+        
         [ForeignKey("SubCategory")]
         public virtual ProductSubCategory ProductSubCategory { get; set; }
-        
-        
     }
 
     public class ProductSubCategory
@@ -37,6 +40,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string CategoryName { get; set; }
         public ProductCategory ProductCategory { get; set; }
     }
+ 
     [Table("V1_Stocks")]
     public class Stock:BaseST
     {
@@ -46,6 +50,9 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal SoldQty { get; set; }
         public decimal HoldQty { get; set; }
         public decimal CostPrice { get; set; }
+        
+        public Unit Unit { get; set; }
+        
         public decimal CurrentQty { get { return (PurhcaseQty - SoldQty - HoldQty); } }
         public decimal CurrentQtyWH { get { return (PurhcaseQty - SoldQty ); } }
 
@@ -56,10 +63,13 @@ namespace AKS.Shared.Commons.Models.Inventory
     [Table("V1_PurchaseProducts")]
     public class PurchaseProduct:BaseST
     {
-
         [Key]
+        public string InwardNumber { get; set; }
+        public DateTime InwardDate { get; set; }
+        
         public string InvoiceNo { get; set; }
         public string VendorId { get; set; }
+        
         public PurchaseInvoiceType InvoiceType { get; set; }
         public TaxType TaxType { get; set; }
         public DateTime OnDate { get; set; }
@@ -74,7 +84,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal FreeQty { get; set; }
         public decimal TotalQty { get; set; }
         public bool Paid { get; set; }
-
+        
         public virtual Vendor Vendor { get; set; }
         public virtual ICollection<PurchaseItem>Items { get; set; }
     }
@@ -82,7 +92,7 @@ namespace AKS.Shared.Commons.Models.Inventory
     public class PurchaseItem 
     {
         public int Id { get; set; }
-        public string InvoiceNo { get; set; }
+        public string InwardNumber { get; set; }
         public string Barcode { get; set; }
         public decimal Qty { get; set; }
         public decimal FreeQty { get; set; }
@@ -182,6 +192,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public virtual EDCTerminal PosMachine { get; set; }
 
     }
+    
     [Table("V1_Brands")]
     public class Brand
     {
@@ -189,6 +200,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string BrandCode { get; set; }
         public string BrandName { get; set; }
     }
+   
     [Table("V2_Suppliers")]
     public class Supplier
     {

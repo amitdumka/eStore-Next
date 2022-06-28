@@ -130,6 +130,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnMissingReport = new System.Windows.Forms.Button();
             this.btnCancle = new System.Windows.Forms.Button();
             this.btnPrint = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -139,7 +140,6 @@
             this.btnPreview = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.btnMissingReport = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpList.SuspendLayout();
@@ -1244,6 +1244,7 @@
             this.lbYearList.Size = new System.Drawing.Size(106, 394);
             this.lbYearList.TabIndex = 0;
             this.lbYearList.ValueMember = "Year";
+            this.lbYearList.SelectedIndexChanged += new System.EventHandler(this.lbYearList_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -1261,6 +1262,16 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
+            // 
+            // btnMissingReport
+            // 
+            this.btnMissingReport.Location = new System.Drawing.Point(461, 26);
+            this.btnMissingReport.Name = "btnMissingReport";
+            this.btnMissingReport.Size = new System.Drawing.Size(75, 23);
+            this.btnMissingReport.TabIndex = 6;
+            this.btnMissingReport.Text = "Missing";
+            this.btnMissingReport.UseVisualStyleBackColor = true;
+            this.btnMissingReport.Click += new System.EventHandler(this.btnMissingReport_Click);
             // 
             // btnCancle
             // 
@@ -1364,16 +1375,6 @@
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // btnMissingReport
-            // 
-            this.btnMissingReport.Location = new System.Drawing.Point(461, 26);
-            this.btnMissingReport.Name = "btnMissingReport";
-            this.btnMissingReport.Size = new System.Drawing.Size(75, 23);
-            this.btnMissingReport.TabIndex = 6;
-            this.btnMissingReport.Text = "Missing";
-            this.btnMissingReport.UseVisualStyleBackColor = true;
-            this.btnMissingReport.Click += new System.EventHandler(this.btnMissingReport_Click);
             // 
             // PettyCashSheetForm
             // 

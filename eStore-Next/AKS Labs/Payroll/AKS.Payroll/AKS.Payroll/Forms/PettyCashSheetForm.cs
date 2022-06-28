@@ -28,16 +28,7 @@ namespace AKS.Payroll.Forms
             InitializeComponent();
         }
 
-        public decimal ReadDec(TextBox text)
-        {
-            return decimal.Parse(text.Text.Trim());
-        }
-
-        public int ReadInt(TextBox text)
-        {
-            return Int32.Parse(text.Text.Trim());
-        }
-
+        
         public bool SaveData()
         {
             if (isNew)
@@ -136,7 +127,7 @@ namespace AKS.Payroll.Forms
 
         private void btnDue_Click(object sender, EventArgs e)
         {//TODO: prend
-            tDue += ReadDec(txtDueAmount);
+            tDue += PettyCashManager.ReadDec(txtDueAmount);
             dNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
 
             lbPay.Text = lbPay.Text + "\n" + txtDueNaration.Text;
@@ -147,7 +138,7 @@ namespace AKS.Payroll.Forms
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
-            tPay += ReadDec(txtAmount);
+            tPay += PettyCashManager.ReadDec(txtAmount);
             pNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbPay.Text = lbPay.Text + "\n" + txtNaration.Text;
             lbPayList.Text = lbPayList.Text + "\n" + txtAmount.Text;
@@ -193,7 +184,7 @@ namespace AKS.Payroll.Forms
 
         private void btnReceipt_Click(object sender, EventArgs e)
         {
-            tRec += ReadDec(txtAmount);
+            tRec += PettyCashManager.ReadDec(txtAmount);
             rNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtAmount.Text;
@@ -203,7 +194,7 @@ namespace AKS.Payroll.Forms
 
         private void btnRecovery_Click(object sender, EventArgs e)
         {
-            tdRec += ReadDec(txtDueAmount);
+            tdRec += PettyCashManager.ReadDec(txtDueAmount);
             rcNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtDueNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtDueAmount.Text;
@@ -1169,15 +1160,12 @@ namespace AKS.Payroll.Forms
             return cd;
         }
 
-        private int GetIntField(NumericUpDown nud)
+        private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            return (int)nud.Value;
+
         }
 
-        private int GetIntLable(Label lb)
-        {
-            return Int32.Parse(lb.Text.Trim());
-        }
+        
         private List<PettyCashSheet> GenDBSheet()
         {
 
@@ -1196,15 +1184,16 @@ namespace AKS.Payroll.Forms
                 PettyCashSheet pcs = new PettyCashSheet
                 {
                     OnDate = onDate,
-                    CardSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && !c.TailoringBill && !c.ManualBill && c.PayMode == PayMode.Card).Select(c => c.Amount).Sum(),
+                    CardSale = dailySale.Where(c => c.OnDate.Date == onDate.Date &&  c.PayMode == PayMode.Card).Select(c => c.Amount).Sum(),
+                    ManualSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.ManualBill).Select(c => c.Amount).Sum(),
+                    DailySale = dailySale.Where(c => c.OnDate.Date == onDate.Date && !c.ManualBill && !c.TailoringBill && !c.SalesReturn).Select(c => c.Amount).Sum(),
+                    NonCashSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.PayMode != PayMode.Cash && c.PayMode != PayMode.Card).Select(c => c.Amount).Sum(),
+
                     BankDeposit = 0,
                     BankWithdrawal = 0,
                     ClosingBalance = 0,
                     CustomerDue = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.IsDue).Select(c => c.Amount).Sum(),
                     CustomerRecovery = 0,
-                    ManualSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.ManualBill).Select(c => c.Amount).Sum(),
-                    DailySale = dailySale.Where(c => c.OnDate.Date == onDate.Date && !c.ManualBill && !c.TailoringBill && !c.SalesReturn).Select(c => c.Amount).Sum(),
-                    NonCashSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.PayMode != PayMode.Card && c.PayMode != PayMode.Card).Select(c => c.Amount).Sum(),
                     TailoringSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.TailoringBill).Select(c => c.Amount).Sum(),
                     OpeningBalance = openbal,PaymentNaration="", ReceiptsNaration="",
                     DueList = "#",
@@ -1227,6 +1216,11 @@ namespace AKS.Payroll.Forms
                 foreach (var item in recs)
                 {
                     pcs.ReceiptsNaration += $"#{item.SlipNumber} / {item.Particulars}/{item.Remarks} :{item.Amount} ";
+                }
+                var ds = dailySale.Where(c => c.OnDate.Date == onDate.Date).ToList();
+                foreach (var item in ds )
+                {
+                    pcs.ReceiptsNaration += $"#{item.InvoiceNumber} / {item.Remarks}/{item.PayMode} :{item.Amount} ";
                 }
                // pcs.PaymentNaration = "$PAYMENT=>";
                 foreach (var item in pay)
@@ -1260,7 +1254,7 @@ namespace AKS.Payroll.Forms
                 //Adds page settings
                 document.PageSettings.Orientation = PdfPageOrientation.Portrait;
                 document.PageSettings.Margins.All = 50;
-                int pageCount = 1 + (pList.Count / 2);
+                int pageCount =   1 + (pList.Count / 2);
                 List<PdfPage> pages = new List<PdfPage>();
                 for (int i = 0; i < pageCount; i++)
                     pages.Add(document.Pages.Add());
@@ -1338,6 +1332,7 @@ namespace AKS.Payroll.Forms
             //Creates the grid cell styles
             PdfGridCellStyle cellStyle = new PdfGridCellStyle();
             cellStyle.Borders.All = PdfPens.White;
+            cellStyle.StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
             PdfGridRow header = pdfGrid.Headers[0];
 
             //Creates the header style
@@ -1361,7 +1356,8 @@ namespace AKS.Payroll.Forms
 
             cellStyle.Borders.Bottom = new PdfPen(new PdfColor(217, 217, 217), 0.70f);
             cellStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 12f);
-            cellStyle.TextBrush = new PdfSolidBrush(new PdfColor(131, 130, 136));
+            cellStyle.TextBrush = new PdfSolidBrush(new PdfColor(131, 130, 136));    
+             
 
             //Creates the layout format for grid
             PdfGridLayoutFormat layoutFormat = new PdfGridLayoutFormat();
@@ -1519,5 +1515,32 @@ namespace AKS.Payroll.Forms
         public string Name2 { get; set; }
         public string Value1 { get; set; }
         public string Value2 { get; set; }
+    }
+
+    public class UIManager
+    {
+        public static decimal ReadDec(TextBox text)
+        {
+            return decimal.Parse(text.Text.Trim());
+        }
+
+        public static int ReadInt(TextBox text)
+        {
+            return Int32.Parse(text.Text.Trim());
+        }
+        public static int GetIntField(NumericUpDown nud)
+        {
+            return (int)nud.Value;
+        }
+
+        public static int GetIntLable(Label lb)
+        {
+            return Int32.Parse(lb.Text.Trim());
+        }
+
+    }
+    public class PettyCashSheetManager
+    {
+
     }
 }

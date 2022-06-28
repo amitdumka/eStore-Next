@@ -494,11 +494,11 @@ namespace AKS.Payroll.Forms
         private void UpdateView()
         {
             if (rbCMonth.Checked)
-                dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.Month).ToList());
+                dgvPettyCashSheet.DataSource = (ItemList.Where(c =>c.OnDate.Year==DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList());
             else if (rbYearly.Checked)
-                dgvPettyCashSheet.DataSource = ItemList.ToBindingList();
+                dgvPettyCashSheet.DataSource = ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
             else if (rbLMonth.Checked)
-                dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList());
+                dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList());
         }
         private async void ViewPdf()
         {

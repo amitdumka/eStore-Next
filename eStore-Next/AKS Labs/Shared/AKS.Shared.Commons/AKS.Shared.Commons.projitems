@@ -21,5 +21,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Sales\DailySale.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Accounts\VoucherVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Widgets\FirstPageVM.cs" />
   </ItemGroup>
 </Project>

@@ -10,4 +10,8 @@
     <PackageReference Include="itext7" Version="7.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+  </ItemGroup>
+
 </Project>

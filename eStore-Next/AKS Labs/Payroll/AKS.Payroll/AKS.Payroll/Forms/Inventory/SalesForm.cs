@@ -6,7 +6,6 @@ using System.Data;
 
 namespace AKS.Payroll.Forms.Inventory
 {
-
     public partial class SalesForm : Form
     {
         private AzurePayrollDbContext azureDb;
@@ -20,10 +19,12 @@ namespace AKS.Payroll.Forms.Inventory
         private List<SaleItem> SalesItems;
         private int SeletedYear;
         private int TotalCount;
+
         // Cart Information
         private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
 
         private List<int> YearList;
+
         public SalesForm()
         {
             InitializeComponent();
@@ -128,7 +129,6 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-           
             LoadFormData();
         }
 
@@ -139,13 +139,16 @@ namespace AKS.Payroll.Forms.Inventory
                 City = "Dumka",
                 Age = 30,
                 DateOfBirth = DateTime.Today.AddYears(-30).Date,
-                Gender = Gender.Male, MobileNo = cbxMmobile.Text.Trim(), NoOfBills = 0, OnDate = DateTime.Today,
+                Gender = Gender.Male,
+                MobileNo = cbxMmobile.Text.Trim(),
+                NoOfBills = 0,
+                OnDate = DateTime.Today,
                 TotalAmount = 0
             };
             var cname = txtCustomerName.Text.Trim().Split(' ');
             c.FirstName = cname[0];
             for (int x = 1; x < cname.Length; x++)
-                c.LastName +=  cname[x]+" ";
+                c.LastName += cname[x] + " ";
             c.LastName = c.LastName.Trim();
             if (azureDb.Customers.Any(C => C.MobileNo == cbxMmobile.Text.Trim()))
             {
@@ -158,9 +161,25 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
+        private bool VerifyProductRow()
+        {
+            bool flag = true;
+
+            if (txtBarcode.Text.Trim().Length <= 0) flag = false;
+            if (txtQty.Text.Trim().Length <= 0)// isNumeric
+                flag = false;
+            if (txtDiscount.Text.Trim().Length <= 0) flag = false;
+            if (txtRate.Text.Trim().Length <= 0) flag = false;
+            if (txtValue.Text.Trim().Length <= 0) flag = false;
+            return flag;
+        }
+
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
-            AddToCart();
+            if(VerifyProductRow())
+                AddToCart();
+            else
+                MessageBox.Show("Check Field before adding...");
         }
 
         private void cbSalesReturn_CheckedChanged(object sender, EventArgs e)
@@ -189,10 +208,8 @@ namespace AKS.Payroll.Forms.Inventory
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.Message);
             }
-
         }
 
         private void DisplayStockInfo(StockInfo info)
@@ -271,10 +288,8 @@ namespace AKS.Payroll.Forms.Inventory
             }
             catch (Exception e)
             {
-
                 MessageBox.Show(e.Message);
             }
-
         }
 
         private void rbManual_CheckedChanged(object sender, EventArgs e)
@@ -348,6 +363,7 @@ namespace AKS.Payroll.Forms.Inventory
                     break;
             }
         }
+
         private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
         {
             //if (e.KeyCode == Keys.Enter)
@@ -443,6 +459,7 @@ namespace AKS.Payroll.Forms.Inventory
                 Items.Add(item);
             }
         }
+
         /// <summary>
         /// make static and common functions
         /// </summary>

@@ -15,7 +15,6 @@ namespace AKS.Libs.Widgets
         {
             try
             {
-
                 // Employee List
                 var emplist = azureDb.Employees.Where(c => c.StoreId == StoreCode && c.IsWorking)
                     .Select(c => new EmployeeInfoWidget
@@ -34,7 +33,7 @@ namespace AKS.Libs.Widgets
 
                 //Daily Sale
                 var daily = azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Date == DateTime.Today.Date)
-                     //.Select(c => new { c.Amount, c.SalesmanId })
+                    //.Select(c => new { c.Amount, c.SalesmanId })
                     .GroupBy(c => new { c.SalesmanId, c.Amount }).OrderBy(c => c.Key.SalesmanId)
                     .Select(c => new { ID = c.Key.SalesmanId, AMT = c.Sum(d => d.Amount), Count = c.Count() })
                     .ToList();
@@ -55,17 +54,30 @@ namespace AKS.Libs.Widgets
                 var mAtt = azureDb.Attendances.
                     Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year &&
                     c.OnDate.Month == DateTime.Today.Month)
-
+                    .GroupBy(c => new { c.EmployeeId, c.Status })
+                    .Select(c => new { c.Key.EmployeeId, c.Key.Status, CTR = c.Count() })
                     .ToList();
 
                 foreach (var emp in emplist)
                 {
+                    var eAtt = mAtt.Where(c => c.EmployeeId == emp.EmployeeId).ToList();
+                    var hf = (decimal?)eAtt.FirstOrDefault(c => c.Status == AttUnit.HalfDay).CTR  ?? 0;
+                    if (hf > 0) hf = hf / 2;
+
+                   
+                    emp.MonthlyPresent += hf;
+                    emp.MonthlyAbsent += hf;
+
+                    emp.MonthlyPresent += (decimal?)eAtt.FirstOrDefault(c => c.Status == AttUnit.Present).CTR ?? 0;
+                    emp.MonthlyAbsent += (decimal?)eAtt.FirstOrDefault(c => c.Status == AttUnit.Absent || c.Status == AttUnit.Sunday).CTR ?? 0;
+
+
                     if (emp.Category == EmpType.Salesman)
                     {
-                        emp.NoOfBill = daily.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().Count;
-                        emp.MonthlySale = monthly.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT;
-                        emp.DailySale = daily.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT;
-                        emp.YearlySale = yearly.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT;
+                        emp.NoOfBill = ((int?)daily.FirstOrDefault(c => c.ID == emp.EmployeeId).Count ?? 0);
+                        emp.MonthlySale = (decimal?)monthly.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT ?? 0;
+                        emp.DailySale = (decimal?)daily.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT ?? 0;
+                        emp.YearlySale = (decimal?)yearly.Where(c => c.ID == emp.EmployeeId).FirstOrDefault().AMT ?? 0;
                         //emp.MonthlyAverage=
                     }
                     else if (emp.Category == EmpType.StoreManager)

@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.Tools.SplitButtonRenderer splitButtonRenderer1 = new Syncfusion.Windows.Forms.Tools.SplitButtonRenderer();
-            Syncfusion.Windows.Forms.Tools.SliderCollection sliderCollection1 = new Syncfusion.Windows.Forms.Tools.SliderCollection();
             Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
             Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesForm));
             Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
-            this.splitButton1 = new Syncfusion.Windows.Forms.Tools.SplitButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -70,10 +67,12 @@
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.btnAddCustomer = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.toggleButton1 = new Syncfusion.Windows.Forms.Tools.ToggleButton();
+            this.btnPayment = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.lbPd = new System.Windows.Forms.Label();
+            this.cbCashBill = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
             this.pdfViewer = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
@@ -87,7 +86,6 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.label16 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -96,29 +94,12 @@
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).BeginInit();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.toggleButton1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitButton1
-            // 
-            this.splitButton1.BeforeTouchSize = new System.Drawing.Size(117, 27);
-            this.splitButton1.DropDownPosition = Syncfusion.Windows.Forms.Tools.Position.Bottom;
-            this.splitButton1.ForeColor = System.Drawing.Color.Black;
-            this.splitButton1.Location = new System.Drawing.Point(15, 5);
-            this.splitButton1.MinimumSize = new System.Drawing.Size(75, 23);
-            this.splitButton1.Name = "splitButton1";
-            splitButtonRenderer1.SplitButton = this.splitButton1;
-            this.splitButton1.Renderer = splitButtonRenderer1;
-            this.splitButton1.ShowDropDownOnButtonClick = false;
-            this.splitButton1.Size = new System.Drawing.Size(117, 27);
-            this.splitButton1.TabIndex = 0;
-            this.splitButton1.Text = "splitButton1";
             // 
             // panel1
             // 
@@ -227,7 +208,10 @@
             this.tableLayoutPanel1.Controls.Add(this.txtCustomerName, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.radioButton3, 6, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnAddCustomer, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.btnPayment, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label17, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.lbPd, 2, 5);
+            this.tableLayoutPanel1.Controls.Add(this.cbCashBill, 3, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -490,37 +474,42 @@
             this.btnAddCustomer.UseVisualStyleBackColor = true;
             this.btnAddCustomer.Click += new System.EventHandler(this.btnAddCustomer_Click);
             // 
-            // panel4
+            // btnPayment
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.panel4, 7);
-            this.panel4.Controls.Add(this.button1);
-            this.panel4.Controls.Add(this.toggleButton1);
-            this.panel4.Controls.Add(this.splitButton1);
-            this.panel4.Location = new System.Drawing.Point(3, 244);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(840, 46);
-            this.panel4.TabIndex = 26;
+            this.btnPayment.Location = new System.Drawing.Point(3, 244);
+            this.btnPayment.Name = "btnPayment";
+            this.btnPayment.Size = new System.Drawing.Size(75, 23);
+            this.btnPayment.TabIndex = 26;
+            this.btnPayment.Text = "Payment";
+            this.btnPayment.UseVisualStyleBackColor = true;
+            this.btnPayment.Click += new System.EventHandler(this.btnPayment_Click);
             // 
-            // button1
+            // label17
             // 
-            this.button1.Location = new System.Drawing.Point(258, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(109, 241);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(92, 15);
+            this.label17.TabIndex = 27;
+            this.label17.Text = "Payment Details";
             // 
-            // toggleButton1
+            // lbPd
             // 
-            this.toggleButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.toggleButton1.ForeColor = System.Drawing.Color.Black;
-            this.toggleButton1.Location = new System.Drawing.Point(148, 0);
-            this.toggleButton1.MinimumSize = new System.Drawing.Size(52, 20);
-            this.toggleButton1.Name = "toggleButton1";
-            this.toggleButton1.Size = new System.Drawing.Size(90, 40);
-            this.toggleButton1.Slider = sliderCollection1;
-            this.toggleButton1.TabIndex = 1;
-            this.toggleButton1.Text = "toggleButton1";
+            this.lbPd.AutoSize = true;
+            this.lbPd.Location = new System.Drawing.Point(236, 241);
+            this.lbPd.Name = "lbPd";
+            this.lbPd.Size = new System.Drawing.Size(0, 15);
+            this.lbPd.TabIndex = 28;
+            // 
+            // cbCashBill
+            // 
+            this.cbCashBill.AutoSize = true;
+            this.cbCashBill.Location = new System.Drawing.Point(342, 244);
+            this.cbCashBill.Name = "cbCashBill";
+            this.cbCashBill.Size = new System.Drawing.Size(78, 19);
+            this.cbCashBill.TabIndex = 29;
+            this.cbCashBill.Text = "Cash Paid";
+            this.cbCashBill.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
@@ -533,6 +522,15 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "View";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(27, 26);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(44, 15);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "label16";
             // 
             // pdfViewer
             // 
@@ -705,15 +703,6 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(27, 26);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(44, 15);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "label16";
-            // 
             // SalesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -735,8 +724,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).EndInit();
-            this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.toggleButton1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -800,10 +787,10 @@
         private TextBox txtCustomerName;
         private CheckBox cbSalesReturn;
         private Button btnAddCustomer;
-        private Panel panel4;
-        private Button button1;
-        private Syncfusion.Windows.Forms.Tools.ToggleButton toggleButton1;
-        private Syncfusion.Windows.Forms.Tools.SplitButton splitButton1;
         private Label label16;
+        private Button btnPayment;
+        private Label label17;
+        private Label lbPd;
+        private CheckBox cbCashBill;
     }
 }

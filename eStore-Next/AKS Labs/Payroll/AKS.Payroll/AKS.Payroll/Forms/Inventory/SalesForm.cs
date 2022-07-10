@@ -19,6 +19,7 @@ namespace AKS.Payroll.Forms.Inventory
         private List<SaleItem> SalesItems;
         private int SeletedYear;
         private int TotalCount;
+        private List<PaymentDetail> PaymentDetails;
 
         // Cart Information
         private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
@@ -404,6 +405,31 @@ namespace AKS.Payroll.Forms.Inventory
             //}
         }
 
+        private void btnPayment_Click(object sender, EventArgs e)
+        {
+            PaymentForm payForm = new PaymentForm();
+            
+            if(payForm.ShowDialog() == DialogResult.OK)
+            {
+                if (PaymentDetails == null) PaymentDetails = new List<PaymentDetail>(); 
+                PaymentDetails.Add(payForm.Pd);
+                lbPd.Text += $"Mode: {payForm.Pd.Mode}\t Rs. {payForm.Pd.Amount}\n";
+                // DisplayPayment(); 
+            }
+            else
+            {
+                MessageBox.Show("Some error occured while fetching payment details");
+            }
+        }
+        private void DisplayPayment() {
+        
+            if (PaymentDetails == null) return;
+            lbPd.Text = "";
+            foreach (var pd in PaymentDetails)
+            {
+                lbPd.Text += $"Mode: {pd.Mode }\t Rs. {pd.Amount}\n";
+            }
+        }
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
             try

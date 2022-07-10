@@ -102,16 +102,5 @@ namespace AKS.Payroll.Forms.Inventory
         }
     }
 }
-public class PaymentDetail
-{
-    public string Id { get; set; }
-    public string InvoiceNumber { get; set; }
-    public decimal Amount { get; set; }
-    public PaymentMode Mode { get; set; }
-    public string RefNumber { get; set; }
-    public Card? Card { get; set; }
-    public CardType? CardType { get; set; }
-    public string AuthCode { get; set; }
-    public int LastFour { get; set; }
-}
+
 

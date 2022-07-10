@@ -365,14 +365,14 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.KeyCode == Keys.Enter)
-            //{
-            //    MessageBox.Show("Enter Is Pressed!");
-            //    ReturnKey = true;
-            //}
-        }
+        //private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    //if (e.KeyCode == Keys.Enter)
+        //    //{
+        //    //    MessageBox.Show("Enter Is Pressed!");
+        //    //    ReturnKey = true;
+        //    //}
+        //}
 
         private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -396,14 +396,14 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        private void txtBarcode_TextChanged(object sender, EventArgs e)
-        {
-            //if (ReturnKey)
-            //{
-            //    MessageBox.Show(txtBarcode.Text);
-            //    ReturnKey = false;
-            //}
-        }
+        //private void txtBarcode_TextChanged(object sender, EventArgs e)
+        //{
+        //    //if (ReturnKey)
+        //    //{
+        //    //    MessageBox.Show(txtBarcode.Text);
+        //    //    ReturnKey = false;
+        //    //}
+        //}
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
@@ -494,16 +494,5 @@ namespace AKS.Payroll.Forms.Inventory
         /// <returns></returns>
     }
 
-    public class StockInfo
-    {
-        public string Barcode { get; set; }
-        public ProductCategory Category { get; set; }
-        public decimal HoldQty { get; set; }
-        public string ProductItem { get; set; }
-        public decimal Qty { get; set; }
-        public decimal Rate { get; set; }
-        public decimal TaxRate { get; set; }
-        public TaxType TaxType { get; set; }
-        public Unit Unit { get; set; }
-    }
+    
 }

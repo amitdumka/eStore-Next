@@ -339,8 +339,8 @@
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(100, 23);
             this.txtBarcode.TabIndex = 4;
-            this.txtBarcode.TextChanged += new System.EventHandler(this.txtBarcode_TextChanged);
-            this.txtBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarcode_KeyDown);
+            //this.txtBarcode.TextChanged += new System.EventHandler(this.txtBarcode_TextChanged);
+            //this.txtBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarcode_KeyDown);
             this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
             this.txtBarcode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBarcode_PreviewKeyDown);
             // 

@@ -130,7 +130,46 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            LoadFormData();
+            if (btnAdd.Text == "Add")
+            {
+                LoadFormData();
+                btnAdd.Text = "Save";
+                tabControl1.SelectedTab = tpEntry;
+               
+                if (rbManual.Checked)
+                {
+                    if (cbSalesReturn.Checked)
+                        cbxInvType.SelectedIndex = (int)InvoiceType.ManualSaleReturn;
+
+                    else
+
+                        cbxInvType.SelectedIndex = (int)InvoiceType.ManualSale;
+
+                }
+                else if (rbRegular.Checked)
+                {
+                    if (cbSalesReturn.Checked)
+
+                        cbxInvType.SelectedIndex = (int)InvoiceType.SalesReturn;
+
+                    else cbxInvType.SelectedIndex = (int)InvoiceType.Sales;
+                }
+                ResetCart();
+
+            }
+            else if (btnAdd.Text == "Edit")
+            {
+                LoadFormData();
+                btnAdd.Text = "Save";
+                tabControl1.SelectedTab = tpEntry;
+            }
+            else if (btnAdd.Text == "Save")
+            {
+
+                tabControl1.SelectedTab = tpView;
+            }
+            
+
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -177,7 +216,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if(VerifyProductRow())
+            if (VerifyProductRow())
                 AddToCart();
             else
                 MessageBox.Show("Check Field before adding...");
@@ -283,9 +322,11 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.DisplayMember = "MobileNo";
                 cbxMmobile.ValueMember = "CustomerName";
                 cbxMmobile.DataSource = azureDb.Customers.Select(c => new { c.MobileNo, c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
-
                 SaleItem = new ObservableListSource<SaleItemVM>();
                 dgvSaleItems.DataSource = SaleItem;
+                PaymentDetails = null;
+                lbPd.Text = "";
+                cbCashBill.Checked = false;
             }
             catch (Exception e)
             {
@@ -315,7 +356,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        private void ResetCard()
+        private void ResetCart()
         {
             this.TotalAmount = this.TotalDiscount = this.TotalTax = TotalQty = TotalFreeQty = 0;
             TotalCount = 0;
@@ -408,10 +449,10 @@ namespace AKS.Payroll.Forms.Inventory
         private void btnPayment_Click(object sender, EventArgs e)
         {
             PaymentForm payForm = new PaymentForm();
-            
-            if(payForm.ShowDialog() == DialogResult.OK)
+
+            if (payForm.ShowDialog() == DialogResult.OK)
             {
-                if (PaymentDetails == null) PaymentDetails = new List<PaymentDetail>(); 
+                if (PaymentDetails == null) PaymentDetails = new List<PaymentDetail>();
                 PaymentDetails.Add(payForm.Pd);
                 lbPd.Text += $"Mode: {payForm.Pd.Mode}\t Rs. {payForm.Pd.Amount}\n";
                 // DisplayPayment(); 
@@ -421,15 +462,30 @@ namespace AKS.Payroll.Forms.Inventory
                 MessageBox.Show("Some error occured while fetching payment details");
             }
         }
-        private void DisplayPayment() {
-        
+        private void DisplayPayment()
+        {
+
             if (PaymentDetails == null) return;
             lbPd.Text = "";
             foreach (var pd in PaymentDetails)
             {
-                lbPd.Text += $"Mode: {pd.Mode }\t Rs. {pd.Amount}\n";
+                lbPd.Text += $"Mode: {pd.Mode}\t Rs. {pd.Amount}\n";
             }
         }
+
+        private void btnCancle_Click(object sender, EventArgs e)
+        {
+            btnAdd.Text = "Add";
+            ResetCart();
+            tabControl1.SelectedTab = tpList;
+
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
             try
@@ -494,5 +550,5 @@ namespace AKS.Payroll.Forms.Inventory
         /// <returns></returns>
     }
 
-    
+
 }

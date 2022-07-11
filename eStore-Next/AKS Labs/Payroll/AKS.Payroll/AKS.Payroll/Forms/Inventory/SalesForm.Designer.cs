@@ -35,9 +35,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tpList = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpEntry = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -71,7 +71,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.lbPd = new System.Windows.Forms.Label();
             this.cbCashBill = new System.Windows.Forms.CheckBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tpView = new System.Windows.Forms.TabPage();
             this.label16 = new System.Windows.Forms.Label();
             this.pdfViewer = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -86,15 +86,16 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tpList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tpEntry.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.tpView.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -125,9 +126,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tpList);
+            this.tabControl1.Controls.Add(this.tpEntry);
+            this.tabControl1.Controls.Add(this.tpView);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
@@ -135,16 +136,16 @@
             this.tabControl1.Size = new System.Drawing.Size(889, 348);
             this.tabControl1.TabIndex = 0;
             // 
-            // tabPage1
+            // tpList
             // 
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(881, 320);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Invoices";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tpList.Controls.Add(this.dataGridView1);
+            this.tpList.Location = new System.Drawing.Point(4, 24);
+            this.tpList.Name = "tpList";
+            this.tpList.Padding = new System.Windows.Forms.Padding(3);
+            this.tpList.Size = new System.Drawing.Size(881, 320);
+            this.tpList.TabIndex = 0;
+            this.tpList.Text = "Invoices";
+            this.tpList.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -159,16 +160,16 @@
             this.dataGridView1.Size = new System.Drawing.Size(875, 314);
             this.dataGridView1.TabIndex = 0;
             // 
-            // tabPage2
+            // tpEntry
             // 
-            this.tabPage2.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(881, 320);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Entry";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpEntry.Controls.Add(this.tableLayoutPanel1);
+            this.tpEntry.Location = new System.Drawing.Point(4, 24);
+            this.tpEntry.Name = "tpEntry";
+            this.tpEntry.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEntry.Size = new System.Drawing.Size(881, 320);
+            this.tpEntry.TabIndex = 1;
+            this.tpEntry.Text = "Entry";
+            this.tpEntry.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
             // 
@@ -339,8 +340,6 @@
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(100, 23);
             this.txtBarcode.TabIndex = 4;
-            //this.txtBarcode.TextChanged += new System.EventHandler(this.txtBarcode_TextChanged);
-            //this.txtBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBarcode_KeyDown);
             this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
             this.txtBarcode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBarcode_PreviewKeyDown);
             // 
@@ -424,9 +423,10 @@
             this.dgvSaleItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableLayoutPanel1.SetColumnSpan(this.dgvSaleItems, 7);
             this.dgvSaleItems.Location = new System.Drawing.Point(3, 101);
+            this.dgvSaleItems.MinimumSize = new System.Drawing.Size(0, 250);
             this.dgvSaleItems.Name = "dgvSaleItems";
             this.dgvSaleItems.RowTemplate.Height = 25;
-            this.dgvSaleItems.Size = new System.Drawing.Size(869, 137);
+            this.dgvSaleItems.Size = new System.Drawing.Size(869, 250);
             this.dgvSaleItems.TabIndex = 24;
             // 
             // cbxInvType
@@ -476,7 +476,7 @@
             // 
             // btnPayment
             // 
-            this.btnPayment.Location = new System.Drawing.Point(3, 244);
+            this.btnPayment.Location = new System.Drawing.Point(3, 357);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(75, 23);
             this.btnPayment.TabIndex = 26;
@@ -487,7 +487,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(109, 241);
+            this.label17.Location = new System.Drawing.Point(109, 354);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(92, 15);
             this.label17.TabIndex = 27;
@@ -496,7 +496,7 @@
             // lbPd
             // 
             this.lbPd.AutoSize = true;
-            this.lbPd.Location = new System.Drawing.Point(236, 241);
+            this.lbPd.Location = new System.Drawing.Point(236, 354);
             this.lbPd.Name = "lbPd";
             this.lbPd.Size = new System.Drawing.Size(0, 15);
             this.lbPd.TabIndex = 28;
@@ -504,24 +504,24 @@
             // cbCashBill
             // 
             this.cbCashBill.AutoSize = true;
-            this.cbCashBill.Location = new System.Drawing.Point(342, 244);
+            this.cbCashBill.Location = new System.Drawing.Point(342, 357);
             this.cbCashBill.Name = "cbCashBill";
             this.cbCashBill.Size = new System.Drawing.Size(78, 19);
             this.cbCashBill.TabIndex = 29;
             this.cbCashBill.Text = "Cash Paid";
             this.cbCashBill.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
+            // tpView
             // 
-            this.tabPage3.Controls.Add(this.label16);
-            this.tabPage3.Controls.Add(this.pdfViewer);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(881, 320);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "View";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tpView.Controls.Add(this.label16);
+            this.tpView.Controls.Add(this.pdfViewer);
+            this.tpView.Location = new System.Drawing.Point(4, 24);
+            this.tpView.Name = "tpView";
+            this.tpView.Padding = new System.Windows.Forms.Padding(3);
+            this.tpView.Size = new System.Drawing.Size(881, 320);
+            this.tpView.TabIndex = 2;
+            this.tpView.Text = "View";
+            this.tpView.UseVisualStyleBackColor = true;
             // 
             // label16
             // 
@@ -592,6 +592,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnRefresh);
             this.groupBox1.Controls.Add(this.panel3);
             this.groupBox1.Controls.Add(this.panel2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -673,6 +674,7 @@
             this.btnCancle.TabIndex = 2;
             this.btnCancle.Text = "Cancle";
             this.btnCancle.UseVisualStyleBackColor = true;
+            this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
             // 
             // btnDelete
             // 
@@ -703,6 +705,17 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnRefresh.Location = new System.Drawing.Point(228, 19);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 36);
+            this.btnRefresh.TabIndex = 2;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // SalesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -718,14 +731,14 @@
             this.panel1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tpList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.tpEntry.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tpView.ResumeLayout(false);
+            this.tpView.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -752,9 +765,9 @@
         private Button btnAdd;
         private StatusStrip statusStrip1;
         private TabControl tabControl1;
-        private TabPage tabPage1;
+        private TabPage tpList;
         private DataGridView dataGridView1;
-        private TabPage tabPage2;
+        private TabPage tpEntry;
         private TableLayoutPanel tableLayoutPanel1;
         private Label label1;
         private Label label2;
@@ -781,7 +794,7 @@
         private Label label12;
         private Button btnAddToCart;
         private DataGridView dgvSaleItems;
-        private TabPage tabPage3;
+        private TabPage tpView;
         private Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView pdfViewer;
         private ComboBox cbxInvType;
         private TextBox txtCustomerName;
@@ -792,5 +805,6 @@
         private Label label17;
         private Label lbPd;
         private CheckBox cbCashBill;
+        private Button btnRefresh;
     }
 }

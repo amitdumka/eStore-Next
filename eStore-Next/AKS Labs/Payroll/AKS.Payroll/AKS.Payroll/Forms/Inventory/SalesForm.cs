@@ -254,11 +254,18 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void DisplayStockInfo(StockInfo info)
         {
-            txtQty.Text = info.Qty.ToString();
-            txtRate.Text = info.Rate.ToString();
-            txtValue.Text = (info.Qty * info.Rate).ToString();
-            txtProductItem.Text = info.ProductItem.ToString();
-            txtDiscount.Text = "0";
+            if (info != null)
+            {
+                txtQty.Text = info.Qty.ToString();
+                txtRate.Text = info.Rate.ToString();
+                txtValue.Text = (info.Qty * info.Rate).ToString();
+                txtProductItem.Text = info.ProductItem.ToString();
+                txtDiscount.Text = "0";
+            }
+            else
+            {
+                MessageBox.Show("Stock Not Found!");
+            }
         }
 
         /// <summary>

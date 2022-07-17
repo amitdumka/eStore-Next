@@ -28,9 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AKS.ParyollSystem\AKS.ParyollSystem.csproj" />
-    <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
-    <ProjectReference Include="..\AKS.DatabaseMigrator\AKS.DatabaseMigrator.csproj" />
+    <ProjectReference Include="..\..\AKS.ParyollSystem\AKS.ParyollSystem.csproj">
+      <ReferenceSourceTarget></ReferenceSourceTarget>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj">
+      <ReferenceSourceTarget></ReferenceSourceTarget>
+    </ProjectReference>
+    <ProjectReference Include="..\AKS.DatabaseMigrator\AKS.DatabaseMigrator.csproj">
+      <ReferenceSourceTarget></ReferenceSourceTarget>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -38,53 +38,7 @@ namespace AKS.Payroll.Forms.Inventory
             InvoiceType = type;
         }
 
-        private static int SetTaxRate(ProductCategory category, decimal Price)
-        {
-            int rate = 0;
-            switch (category)
-            {
-                case ProductCategory.Fabric:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.ReadyMade:
-                    rate = Price > 999 ? 12 : 5;
-                    break;
-
-                case ProductCategory.Accessiories:
-                    rate = 12;
-                    break;
-
-                case ProductCategory.Tailoring:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.Trims:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.PromoItems:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.Coupons:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.GiftVouchers:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.Others:
-                    rate = 18;
-                    break;
-
-                default:
-                    rate = 5;
-                    break;
-            }
-            return rate;
-        }
+        
 
         private void AddToCart()
         {
@@ -122,11 +76,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        private void BasicRateCalucaltion(decimal mrp, decimal taxRate)
-        {
-            decimal price = (100 * mrp) / (100 + taxRate);
-            decimal taxAmount = mrp - price;
-        }
+        
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -413,14 +363,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        //private void txtBarcode_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    //if (e.KeyCode == Keys.Enter)
-        //    //{
-        //    //    MessageBox.Show("Enter Is Pressed!");
-        //    //    ReturnKey = true;
-        //    //}
-        //}
+         
 
         private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -432,26 +375,17 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (e.KeyCode == Keys.Tab)
             {
-                MessageBox.Show("Tab is pressed\n" + txtBarcode.Text.Trim());
-                ReturnKey = true;
+                 ReturnKey = true;
                 HandleBarcodeEntry();
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                MessageBox.Show("Enter\n" + txtBarcode.Text.Trim());
-                ReturnKey = true;
+                 ReturnKey = true;
                 HandleBarcodeEntry();
             }
         }
 
-        //private void txtBarcode_TextChanged(object sender, EventArgs e)
-        //{
-        //    //if (ReturnKey)
-        //    //{
-        //    //    MessageBox.Show(txtBarcode.Text);
-        //    //    ReturnKey = false;
-        //    //}
-        //}
+         
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
@@ -549,12 +483,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        /// <summary>
-        /// make static and common functions
-        /// </summary>
-        /// <param name="category"></param>
-        /// <param name="Price"></param>
-        /// <returns></returns>
+        
     }
 
 

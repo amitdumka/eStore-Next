@@ -166,7 +166,7 @@
             this.tpEntry.Location = new System.Drawing.Point(4, 24);
             this.tpEntry.Name = "tpEntry";
             this.tpEntry.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEntry.Size = new System.Drawing.Size(881, 320);
+            this.tpEntry.Size = new System.Drawing.Size(891, 320);
             this.tpEntry.TabIndex = 1;
             this.tpEntry.Text = "Entry";
             this.tpEntry.UseVisualStyleBackColor = true;
@@ -340,7 +340,6 @@
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(100, 23);
             this.txtBarcode.TabIndex = 4;
-            this.txtBarcode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBarcode_KeyPress);
             this.txtBarcode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtBarcode_PreviewKeyDown);
             // 
             // txtQty
@@ -518,7 +517,7 @@
             this.tpView.Location = new System.Drawing.Point(4, 24);
             this.tpView.Name = "tpView";
             this.tpView.Padding = new System.Windows.Forms.Padding(3);
-            this.tpView.Size = new System.Drawing.Size(881, 320);
+            this.tpView.Size = new System.Drawing.Size(891, 320);
             this.tpView.TabIndex = 2;
             this.tpView.Text = "View";
             this.tpView.UseVisualStyleBackColor = true;
@@ -612,7 +611,6 @@
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // panel3
             // 

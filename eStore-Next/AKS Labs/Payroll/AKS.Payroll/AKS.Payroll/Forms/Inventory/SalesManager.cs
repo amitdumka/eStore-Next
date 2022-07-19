@@ -3,6 +3,7 @@ using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace AKS.Payroll.Forms.Inventory
 {

@@ -1,6 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Payroll.Forms.EntryForms;
+using AKS.Payroll.Forms.Inventory;
 using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Sales;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,14 @@ namespace AKS.Payroll.Forms
             InitializeComponent();
         }
 
+        private async void DisplaySale()
+        {
+            await Task.Delay(15000);
+            Sales.FetchSaleDetails(azureDb, "ARD");
+            tsslMonthly.Text = $"Monthly [Total Sales: Rs. {Sales.MonthlySale} Cash: Rs. {Sales.MonthlyCashSale}  Non Cash: Rs. {Sales.MonthlyNonCashSale}  ] ";
+            sslToday.Text = $"Today [Total Sales: Rs. {Sales.TodaySale} Cash: Rs. {Sales.TodayCashSale}  Non Cash: Rs. {Sales.TodayNonCashSale}  ] ";
+
+        }
 
         private void DailySaleForm_Load(object sender, EventArgs e)
         {
@@ -34,6 +43,7 @@ namespace AKS.Payroll.Forms
             YearDataList = new List<int>();
             YearList = new List<int>();
             LoadData();
+            DisplaySale(); 
 
         }
 
@@ -371,7 +381,7 @@ namespace AKS.Payroll.Forms
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-             
+
         }
     }
 }

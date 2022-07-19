@@ -6,6 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AKS.Payroll.Forms.Inventory
 {
+    public class CustomerListVM
+    {
+        [Key]
+        public string MobileNo { get; set; }
+        public string CustomerName { get; set; }
+    }
+
     /// <summary>
     /// Model/Temeplete class to make manager/VM class
     /// </summary>
@@ -13,14 +20,6 @@ namespace AKS.Payroll.Forms.Inventory
     {
         protected static AzurePayrollDbContext azureDb;
         protected static LocalPayrollDbContext localDb;
-
-        protected abstract void Delete();
-
-        protected abstract void Get(string id);
-
-        protected abstract void GetList();
-
-        protected abstract void Save();
 
         /// <summary>
         /// Helper function if missing
@@ -31,6 +30,14 @@ namespace AKS.Payroll.Forms.Inventory
         {
             return Enum.GetNames(t);
         }
+
+        protected abstract void Delete();
+
+        protected abstract void Get(string id);
+
+        protected abstract void GetList();
+
+        protected abstract void Save();
     }
 
     /// <summary>
@@ -41,6 +48,11 @@ namespace AKS.Payroll.Forms.Inventory
         private InvoiceType InvoiceType;
         private ObservableListSource<ProductSale> Items;
         private int SeletedYear;
+        private int TotalCount;
+
+        // Cart Information
+        private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
+
         private List<int> YearList;
 
         public SalesManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, InvoiceType? iType)
@@ -48,6 +60,66 @@ namespace AKS.Payroll.Forms.Inventory
             azureDb = db; localDb = ldb;
             if (iType == null) InvoiceType = InvoiceType.ManualSale;
             else InvoiceType = iType.Value;
+        }
+
+        public static decimal CalculateRate(string dis, string qty, string rate)
+        {
+            try
+            {
+                if (dis.Contains('%'))
+                {
+                    var x = (decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim()));
+                    x -= x * decimal.Parse(dis.Replace('%', ' ').Trim()) / 100;
+                    return x;
+                }
+                else
+                {
+                    var x = (decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim()))
+                        - decimal.Parse(dis.Trim());
+                    return x;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public void AddNewCustomer(string name, string mobile)
+        {
+            Customer c = new Customer
+            {
+                City = "Dumka",
+                Age = 30,
+                DateOfBirth = DateTime.Today.AddYears(-30).Date,
+                Gender = Gender.Male,
+                MobileNo = mobile,
+                NoOfBills = 0,
+                OnDate = DateTime.Today,
+                TotalAmount = 0
+            };
+
+            var cname = name.Trim().Split(' ');
+            c.FirstName = cname[0];
+            for (int x = 1; x < cname.Length; x++)
+                c.LastName += cname[x] + " ";
+
+            c.LastName = c.LastName.Trim();
+
+            if (azureDb.Customers.Any(C => C.MobileNo == mobile))
+            {
+                return;
+            }
+            else
+            {
+                azureDb.Customers.Add(c);
+                if (azureDb.SaveChanges() > 0) MessageBox.Show("Customer Added");
+            }
+        }
+
+        public List<CustomerListVM> GetCustomerList()
+        {
+            return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
         }
 
         /// <summary>
@@ -64,7 +136,6 @@ namespace AKS.Payroll.Forms.Inventory
             SeletedYear = DateTime.Today.Year;
             YearList = azureDb.ProductSales.Select(c => c.OnDate.Year).Distinct().OrderByDescending(c => c).ToList();
 
-
             UpdateSaleList(azureDb.ProductSales.Include(c => c.Items)
                 .Where(c => c.OnDate.Year == SeletedYear).OrderByDescending(c => c.OnDate)
                 .ToList());
@@ -73,37 +144,20 @@ namespace AKS.Payroll.Forms.Inventory
 
             //dataGridView1.DataSource = Items.Where(c => c.InvoiceType == InvoiceType).ToList();
         }
-        private void UpdateSaleList(List<ProductSale> sales)
+
+        public void ResetCart()
         {
-            if (sales != null)
-                foreach (var item in sales)
-                    Items.Add(item);
+            this.TotalAmount = this.TotalDiscount = this.TotalTax = TotalQty = TotalFreeQty = 0;
+            TotalCount = 0;
+            //dgvSaleItems.Rows.Clear();
         }
 
-        protected override void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void Get(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void GetList()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void Save()
-        {
-            throw new NotImplementedException();
-        }
         protected static void BasicRateCalucaltion(decimal mrp, decimal taxRate)
         {
             decimal price = (100 * mrp) / (100 + taxRate);
             decimal taxAmount = mrp - price;
         }
+
         protected static int SetTaxRate(ProductCategory category, decimal Price)
         {
             int rate = 0;
@@ -151,41 +205,17 @@ namespace AKS.Payroll.Forms.Inventory
             }
             return rate;
         }
-        public void AddNewCustomer(string name, string mobile)
+
+        protected override void Delete()
         {
-            Customer c = new Customer
-            {
-                City = "Dumka",
-                Age = 30,
-                DateOfBirth = DateTime.Today.AddYears(-30).Date,
-                Gender = Gender.Male,
-                MobileNo = mobile,
-                NoOfBills = 0,
-                OnDate = DateTime.Today,
-                TotalAmount = 0
-            };
-
-            var cname = name.Trim().Split(' ');
-            c.FirstName = cname[0];
-            for (int x = 1; x < cname.Length; x++)
-                c.LastName += cname[x] + " ";
-
-            c.LastName = c.LastName.Trim();
-
-            if (azureDb.Customers.Any(C => C.MobileNo == mobile))
-            {
-                return;
-            }
-            else
-            {
-                azureDb.Customers.Add(c);
-                if (azureDb.SaveChanges() > 0) MessageBox.Show("Customer Added");
-            }
+            throw new NotImplementedException();
         }
-        public List<CustomerListVM> GetCustomerList()
+
+        protected override void Get(string id)
         {
-            return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
+            throw new NotImplementedException();
         }
+
         /// <summary>
         /// return stock info. Add to API/DataModel
         /// </summary>
@@ -214,51 +244,33 @@ namespace AKS.Payroll.Forms.Inventory
             return item;
         }
 
-        public decimal Cal(string dis, string qty, string rate)
+        protected override void GetList()
         {
-            try
-            {
-                if (dis.Contains('%'))
-                {
-                    var x = (decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim()));
-                    x -= x * decimal.Parse(dis.Replace('%', ' ').Trim()) / 100;
-                    return x;
-                }
-                else
-                {
-                    var x = (decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim()))
-                        - decimal.Parse(dis.Trim());
-                    return x;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
+            throw new NotImplementedException();
         }
 
-    }
-    public class CustomerListVM
-    {
-        [Key]
-        public string MobileNo { get; set; }
-        public string CustomerName { get; set; }
+        protected override void Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateSaleList(List<ProductSale> sales)
+        {
+            if (sales != null)
+                foreach (var item in sales)
+                    Items.Add(item);
+        }
     }
 }
+
 //        private bool IsNew;
-//       
+//
 //        private List<PaymentDetail> PaymentDetails;
 //        private bool ReturnKey = false;
 //        private ProductSale Sale;
 //        private ObservableListSource<SaleItemVM> SaleItem;
 //        private List<SaleItem> SalesItems;
-//        
-//        private int TotalCount;
-
-//        // Cart Information
-//        private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
-
-
+//
 
 //private void AddToCart()
 //{
@@ -485,13 +497,6 @@ namespace AKS.Payroll.Forms.Inventory
 //    }
 //}
 
-//private void ResetCart()
-//{
-//    this.TotalAmount = this.TotalDiscount = this.TotalTax = TotalQty = TotalFreeQty = 0;
-//    TotalCount = 0;
-//    dgvSaleItems.Rows.Clear();
-//}
-
 //private void SalesForm_Load(object sender, EventArgs e)
 //{
 //    LoadData();
@@ -575,56 +580,3 @@ namespace AKS.Payroll.Forms.Inventory
 //        lbPd.Text += $"Mode: {pd.Mode}\t Rs. {pd.Amount}\n";
 //    }
 //}
-
-//private void btnCancle_Click(object sender, EventArgs e)
-//{
-//    btnAdd.Text = "Add";
-//    ResetCart();
-//    tabControl1.SelectedTab = tpList;
-//}
-
-
-//private void txtDiscount_TextChanged(object sender, EventArgs e)
-//{
-//    try
-//    {
-//        if (txtDiscount.Text.Contains('%'))
-//        {
-//            var x = (decimal.Parse(txtQty.Text.Trim()) * decimal.Parse(txtRate.Text.Trim()));
-//            x -= x * decimal.Parse(txtDiscount.Text.Replace('%', ' ').Trim()) / 100;
-//            txtValue.Text = x.ToString();
-//        }
-//        else
-//        {
-//            var x = (decimal.Parse(txtQty.Text.Trim()) * decimal.Parse(txtRate.Text.Trim()))
-//                - decimal.Parse(txtDiscount.Text.Trim());
-//            txtValue.Text = x.ToString();
-//        }
-//    }
-//    catch
-//    {
-//    }
-//}
-
-//private void txtQty_TextChanged(object sender, EventArgs e)
-//{
-//    try
-//    {
-//        if (txtDiscount.Text.Contains('%'))
-//        {
-//            var x = (decimal.Parse(txtQty.Text.Trim()) * decimal.Parse(txtRate.Text.Trim()));
-//            x -= x * decimal.Parse(txtDiscount.Text.Replace('%', ' ').Trim()) / 100;
-//            txtValue.Text = x.ToString();
-//        }
-//        else
-//        {
-//            var x = (decimal.Parse(txtQty.Text.Trim()) * decimal.Parse(txtRate.Text.Trim()))
-//                - decimal.Parse(txtDiscount.Text.Trim());
-//            txtValue.Text = x.ToString();
-//        }
-//    }
-//    catch
-//    {
-//    }
-//}
-

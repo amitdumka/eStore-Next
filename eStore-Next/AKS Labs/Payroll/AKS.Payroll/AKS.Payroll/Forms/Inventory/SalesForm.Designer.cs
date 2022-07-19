@@ -111,7 +111,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1034, 450);
+            this.panel1.Size = new System.Drawing.Size(1040, 469);
             this.panel1.TabIndex = 0;
             // 
             // groupBox3
@@ -120,7 +120,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(129, 58);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(905, 370);
+            this.groupBox3.Size = new System.Drawing.Size(911, 389);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             // 
@@ -133,7 +133,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(899, 348);
+            this.tabControl1.Size = new System.Drawing.Size(905, 367);
             this.tabControl1.TabIndex = 0;
             // 
             // tpList
@@ -166,7 +166,7 @@
             this.tpEntry.Location = new System.Drawing.Point(4, 24);
             this.tpEntry.Name = "tpEntry";
             this.tpEntry.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEntry.Size = new System.Drawing.Size(891, 320);
+            this.tpEntry.Size = new System.Drawing.Size(897, 339);
             this.tpEntry.TabIndex = 1;
             this.tpEntry.Text = "Entry";
             this.tpEntry.UseVisualStyleBackColor = true;
@@ -223,7 +223,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(875, 314);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(891, 333);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label1
@@ -556,7 +556,7 @@
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
             this.pdfViewer.ShowVerticalScrollBar = true;
-            this.pdfViewer.Size = new System.Drawing.Size(875, 314);
+            this.pdfViewer.Size = new System.Drawing.Size(885, 314);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
             textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
@@ -574,7 +574,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(0, 58);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(129, 370);
+            this.groupBox2.Size = new System.Drawing.Size(129, 389);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Year List";
@@ -586,7 +586,7 @@
             this.lbYearList.ItemHeight = 15;
             this.lbYearList.Location = new System.Drawing.Point(3, 19);
             this.lbYearList.Name = "lbYearList";
-            this.lbYearList.Size = new System.Drawing.Size(123, 348);
+            this.lbYearList.Size = new System.Drawing.Size(123, 367);
             this.lbYearList.TabIndex = 0;
             // 
             // groupBox1
@@ -597,7 +597,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1034, 58);
+            this.groupBox1.Size = new System.Drawing.Size(1040, 58);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
@@ -618,7 +618,7 @@
             this.panel3.Controls.Add(this.rbManual);
             this.panel3.Controls.Add(this.rbRegular);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(823, 19);
+            this.panel3.Location = new System.Drawing.Point(829, 19);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(208, 36);
             this.panel3.TabIndex = 1;
@@ -708,9 +708,9 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 447);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1034, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1040, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -718,7 +718,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1034, 450);
+            this.ClientSize = new System.Drawing.Size(1040, 469);
             this.Controls.Add(this.panel1);
             this.Name = "SalesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

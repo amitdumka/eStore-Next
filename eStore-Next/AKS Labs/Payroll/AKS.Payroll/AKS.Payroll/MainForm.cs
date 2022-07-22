@@ -268,5 +268,10 @@ namespace AKS.Payroll
         {
             LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
         }
+
+        private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new PurchaseForm( ));
+        }
     }
 }

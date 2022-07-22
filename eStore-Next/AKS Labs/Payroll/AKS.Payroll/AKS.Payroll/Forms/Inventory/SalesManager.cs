@@ -48,7 +48,7 @@ namespace AKS.Payroll.Forms.Inventory
         public InvoiceType InvoiceType;
         public ObservableListSource<ProductSale> Items;
         public List<PaymentDetail> PaymentDetails;
-
+        public AutoCompleteStringCollection barcodeList = new AutoCompleteStringCollection();
         public bool ReturnKey = false;
 
         //private List<SaleItem> SalesItems;
@@ -66,7 +66,16 @@ namespace AKS.Payroll.Forms.Inventory
             if (iType == null) InvoiceType = InvoiceType.ManualSale;
             else InvoiceType = iType.Value;
         }
-
+        public void LoadBarcodeList()
+        {
+            if (barcodeList.Count > 0) return;
+            var l = azureDb.Stocks.Where(c => c.PurhcaseQty > 0).Select(c => new { c.Barcode, c.CurrentQty, c.CurrentQtyWH }).ToList();
+            var x = l.Where(c=> c.CurrentQty > 0).Select(c=>c.Barcode).ToList();
+            foreach (var item in x)
+            {
+                barcodeList.Add(item);
+            }
+        }
         public static decimal CalculateRate(string dis, string qty, string rate)
         {
             try
@@ -108,9 +117,9 @@ namespace AKS.Payroll.Forms.Inventory
             c.FirstName = cname[0];
             for (int x = 1; x < cname.Length; x++)
                 c.LastName += cname[x] + " ";
-
-            c.LastName = c.LastName.Trim();
-
+            if (cname.Length > 1)
+                c.LastName = c.LastName.Trim();
+            else c.LastName = "";
             if (azureDb.Customers.Any(C => C.MobileNo == mobile))
             {
                 MessageBox.Show("Customer Already exist!");

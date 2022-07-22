@@ -142,7 +142,7 @@
             this.tpList.Location = new System.Drawing.Point(4, 24);
             this.tpList.Name = "tpList";
             this.tpList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpList.Size = new System.Drawing.Size(891, 320);
+            this.tpList.Size = new System.Drawing.Size(897, 339);
             this.tpList.TabIndex = 0;
             this.tpList.Text = "Invoices";
             this.tpList.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(885, 314);
+            this.dataGridView1.Size = new System.Drawing.Size(891, 333);
             this.dataGridView1.TabIndex = 0;
             // 
             // tpEntry
@@ -256,6 +256,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label4.Location = new System.Drawing.Point(448, 29);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 15);
@@ -265,6 +266,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label5.Location = new System.Drawing.Point(3, 29);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(54, 15);
@@ -274,6 +276,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label6.Location = new System.Drawing.Point(109, 29);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(72, 15);
@@ -283,6 +286,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label7.Location = new System.Drawing.Point(236, 29);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(82, 15);
@@ -292,6 +296,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.label8.Location = new System.Drawing.Point(342, 29);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 15);
@@ -301,6 +306,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.ForeColor = System.Drawing.Color.Maroon;
             this.label9.Location = new System.Drawing.Point(554, 29);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(69, 15);
@@ -517,7 +523,7 @@
             this.tpView.Location = new System.Drawing.Point(4, 24);
             this.tpView.Name = "tpView";
             this.tpView.Padding = new System.Windows.Forms.Padding(3);
-            this.tpView.Size = new System.Drawing.Size(891, 320);
+            this.tpView.Size = new System.Drawing.Size(897, 339);
             this.tpView.TabIndex = 2;
             this.tpView.Text = "View";
             this.tpView.UseVisualStyleBackColor = true;
@@ -556,7 +562,7 @@
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
             this.pdfViewer.ShowVerticalScrollBar = true;
-            this.pdfViewer.Size = new System.Drawing.Size(885, 314);
+            this.pdfViewer.Size = new System.Drawing.Size(891, 333);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
             textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));

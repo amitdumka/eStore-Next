@@ -79,6 +79,11 @@ namespace AKS.Payroll.Forms.Inventory
                     else cbxInvType.SelectedIndex = (int)InvoiceType.Sales;
                 }
                 _salesManager.ResetCart();
+                txtBarcode.AutoCompleteMode = AutoCompleteMode.Suggest;
+                txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+                txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
+               
             }
             else if (btnAdd.Text == "Edit")
             {
@@ -178,7 +183,7 @@ namespace AKS.Payroll.Forms.Inventory
             if (_salesManager.ReturnKey)
                 DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
         }
-
+      
         private void LoadFormData()
         {
             try
@@ -190,13 +195,14 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.ValueMember = "CustomerName";
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
+                _salesManager.LoadBarcodeList();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
         }
-
+        
         private void rbManual_CheckedChanged(object sender, EventArgs e)
         {
             _salesManager.SetRadioButton(false, rbManual.Checked, cbSalesReturn.Checked);

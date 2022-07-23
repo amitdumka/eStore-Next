@@ -178,4 +178,22 @@ namespace AKS.Payroll.Ops
             }
         }
     }
+
+    public class ImportData
+    {
+        public static DataTable ReadExcelToDatatable(string filename, int fRow, int fCol, int MaxRow, int MaxCol)
+        {
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Excel2013;
+                IWorkbook workbook = application.Workbooks.Open(filename, ExcelOpenType.Automatic);
+                IWorksheet worksheet = workbook.Worksheets[0];
+
+                var x = worksheet.ExportDataTable(fCol, fRow, MaxRow, MaxCol, ExcelExportDataTableOptions.ColumnNames);
+                var s = x.Rows.Count;
+                return x;
+            }
+        }
+    }
 }

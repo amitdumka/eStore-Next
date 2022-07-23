@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PurchaseForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpList = new System.Windows.Forms.TabPage();
@@ -91,6 +91,9 @@
             this.btnCancle = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tpList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPurchase)).BeginInit();
@@ -622,6 +625,9 @@
             // 
             // tpView
             // 
+            this.tpView.Controls.Add(this.listBox3);
+            this.tpView.Controls.Add(this.listBox2);
+            this.tpView.Controls.Add(this.listBox1);
             this.tpView.Controls.Add(this.label16);
             this.tpView.Controls.Add(this.pdfViewer);
             this.tpView.Location = new System.Drawing.Point(4, 24);
@@ -652,16 +658,16 @@
             this.pdfViewer.IsTextSearchEnabled = true;
             this.pdfViewer.IsTextSelectionEnabled = true;
             this.pdfViewer.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings1.EnableNotification = true;
-            this.pdfViewer.MessageBoxSettings = messageBoxSettings1;
+            messageBoxSettings2.EnableNotification = true;
+            this.pdfViewer.MessageBoxSettings = messageBoxSettings2;
             this.pdfViewer.MinimumZoomPercentage = 50;
             this.pdfViewer.Name = "pdfViewer";
             this.pdfViewer.PageBorderThickness = 1;
-            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
-            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
-            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings1;
+            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
+            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
+            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings2;
             this.pdfViewer.ReferencePath = null;
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
@@ -669,10 +675,10 @@
             this.pdfViewer.Size = new System.Drawing.Size(1105, 336);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
-            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings1.HighlightAllInstance = true;
-            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfViewer.TextSearchSettings = textSearchSettings1;
+            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings2.HighlightAllInstance = true;
+            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfViewer.TextSearchSettings = textSearchSettings2;
             this.pdfViewer.ThemeName = "Default";
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -803,6 +809,7 @@
             this.btnCancle.TabIndex = 2;
             this.btnCancle.Text = "Cancle";
             this.btnCancle.UseVisualStyleBackColor = true;
+            this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
             // 
             // btnDelete
             // 
@@ -813,6 +820,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAdd
             // 
@@ -823,6 +831,33 @@
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(6, 20);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(123, 304);
+            this.listBox1.TabIndex = 2;
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 15;
+            this.listBox2.Location = new System.Drawing.Point(135, 20);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(123, 304);
+            this.listBox2.TabIndex = 3;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 15;
+            this.listBox3.Location = new System.Drawing.Point(264, 20);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(123, 304);
+            this.listBox3.TabIndex = 4;
             // 
             // PurchaseForm
             // 
@@ -921,5 +956,8 @@
         private Label label20;
         private Syncfusion.Windows.Forms.Tools.DateTimePickerAdv dateTimePickerAdv1;
         private Syncfusion.Windows.Forms.Tools.DateTimePickerAdv dateTimePickerAdv2;
+        private ListBox listBox3;
+        private ListBox listBox2;
+        private ListBox listBox1;
     }
 }

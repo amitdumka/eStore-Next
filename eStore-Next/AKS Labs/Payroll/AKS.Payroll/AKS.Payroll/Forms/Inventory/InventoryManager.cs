@@ -13,12 +13,81 @@ namespace AKS.Payroll.Forms.Inventory
         private List<ProductType> productTypeList;
         private List<ProductSubCategory> productSubCategories;
         private List<string> sizeList;
+        private List<ProductItem> pItemList;
+        private List<Brand> brandList;
 
+        /// <summary>
+        /// Default constr
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="ldb"></param>
+        /// <param name="sc"></param>
         public InventoryManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, string sc)
         {
             azureDb = db; localDb = ldb; StoreCode = sc;
         }
+        /// <summary>
+        /// Checks if product code exist
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns></returns>
+        public bool ProuctItemExist(string barcode)
+        {
+            return pItemList.Any(c => c.Barcode == barcode);
+            //return azureDb.ProductItems.Any(c => c.Barcode == barcode);
+        }
 
+        /// <summary>
+        /// Set Brand Code
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="cat"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private string SetBrandCode(string style, string cat, string type)
+        {
+            string bcode = "";
+            if (cat == "Apparel")
+            {
+
+                if (style.StartsWith("FM"))
+                {
+                    bcode = "FM";
+                }
+                else if (style.StartsWith("ARI")) bcode = "ADR";
+                else if (style.StartsWith("HA")) bcode = "HAN";
+                else if (style.StartsWith("AA")) bcode = "ARN";
+                else if (style.StartsWith("AF")) bcode = "ARR";
+                else if (style.StartsWith("US")) bcode = "USP";
+                else if (style.StartsWith("AB")) bcode = "ARR";
+                else if (style.StartsWith("AK")) bcode = "ARR";
+                else if (style.StartsWith("AN")) bcode = "ARR";
+                else if (style.StartsWith("ARE")) bcode = "ARR";
+                else if (style.StartsWith("ARG")) bcode = "ARR";
+                else if (style.StartsWith("AS")) bcode = "ARS";
+                else if (style.StartsWith("AT")) bcode = "ARR";
+                else if (style.StartsWith("F2")) bcode = "FM";
+                else if (style.StartsWith("UD")) bcode = "UD";
+
+            }
+            else if (cat == "Shirting" || cat == "Suiting")
+            {
+                bcode = "ARD";
+            }
+            else
+
+            if (cat == "Promo")
+            {
+                if (type == "Free GV") { bcode = "AGV"; }
+                else bcode = "ARP";
+            }
+            else if (cat == "Suit Cover")
+            {
+                bcode = "ARA";
+            }
+            return bcode;
+
+        }
         /// <summary>
         /// set Unit for item
         /// </summary>
@@ -54,13 +123,24 @@ namespace AKS.Payroll.Forms.Inventory
                 pi.ProductTypeId = "PT00013";
             }
             pi.SubCategory = cats[2];
-            if (pi.Unit == Unit.Meters || pi.Unit == Unit.Nos || pi.Unit == Unit.NoUnit) pi.Size = Size.NS;
+            if (pi.Unit == Unit.Meters)
+            {
+                pi.Size = Size.NS;
+                pi.BrandCode = "ARD";
+            }
+            else if (pi.Unit == Unit.Nos || pi.Unit == Unit.NoUnit)
+            {
+                pi.Size = Size.NS;
+                pi.BrandCode = SetBrandCode(pi.StyleCode, cats[0], cats[2]);
+            }
             else
             {
                 pi.Size = SetSize(pi.StyleCode, cats[2]);
+                pi.BrandCode = SetBrandCode(pi.StyleCode, cats[0], cats[2]);
             }
             return pi;
         }
+
         /// <summary>
         /// Set Size based on style code and Category
         /// </summary>
@@ -76,8 +156,6 @@ namespace AKS.Payroll.Forms.Inventory
 
             if (category.Contains("Boxer") || category.Contains("Socks") || category.Contains("H-Shorts") || category.Contains("Shirt") || category.Contains("Vests") || category.Contains("Briefs") || category.Contains("Jackets") || category.Contains("Sweat Shirt") || category.Contains("Sweater") || category.Contains("T shirts"))
             {
-
-
                 if (name.EndsWith(Size.XXXL.ToString())) size = Size.XXXL;
                 else if (name.EndsWith(Size.XXL.ToString())) size = Size.XXL;
                 else if (name.EndsWith(Size.XL.ToString())) size = Size.XL;
@@ -106,11 +184,8 @@ namespace AKS.Payroll.Forms.Inventory
                     }
                     else
                     {
-
                     }
-
                 }
-
             }
             else if (category.Contains("Shorts") || category.Contains("Jeans") || category.Contains("Trouser") || category.Contains("Trousers"))
             {
@@ -119,7 +194,6 @@ namespace AKS.Payroll.Forms.Inventory
             }
             else if (category.Contains("Bundis") || category.Contains("Blazer") || category.Contains("Blazers") || category.Contains("Suits"))
             {
-
                 int x = sizeList.IndexOf($"B{name[2]}{name[3]}");
                 if (x == -1)
                 {
@@ -142,7 +216,44 @@ namespace AKS.Payroll.Forms.Inventory
             }
             return size;
         }
-
+        /// <summary>
+        /// Process Missing Product Item
+        /// </summary>
+        /// <param name="DataTable"></param>
+        /// <returns></returns>
+        public List<ProductItem> ProcessProductItem(DataTable DataTable)
+        {
+            enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
+            sizeList = Enum.GetNames(typeof(Size)).ToList();
+            productSubCategories = azureDb.ProductSubCategories.ToList();
+            productTypeList = azureDb.ProductTypes.ToList();
+            pItemList = azureDb.ProductItems.ToList();
+            List<ProductItem> pList = new List<ProductItem>();
+            brandList = azureDb.Brands.ToList();
+            for (int i = 0; i < DataTable.Rows.Count; i++)
+            {
+                if (!ProuctItemExist(DataTable.Rows[i]["Barcode"].ToString()))
+                {
+                    ProductItem item = new ProductItem
+                    {
+                        Barcode = DataTable.Rows[i]["Barcode"].ToString(),
+                        StyleCode = DataTable.Rows[i]["Style Code"].ToString(),
+                        Description = DataTable.Rows[i]["Item Desc"].ToString(),
+                        MRP = decimal.Parse(DataTable.Rows[i]["MRP"].ToString().Trim()),
+                        HSNCode = "NA",
+                        Name = DataTable.Rows[i]["Product Name"].ToString(),
+                        TaxType = TaxType.GST,
+                        Unit = SetUnit(DataTable.Rows[i]["Product Name"].ToString()),
+                    };
+                    item = SetCatgoryAndSize(item);
+                    pList.Add(item);
+                }
+            }
+            pList = pList.Distinct().ToList();
+            azureDb.ProductItems.AddRange(pList);
+            azureDb.SaveChanges();
+            return pList;
+        }
         /// <summary>
         /// Obsolute
         /// </summary>
@@ -224,9 +335,15 @@ namespace AKS.Payroll.Forms.Inventory
             //}
             // azureDb.SaveChanges();
         }
-        
-        
-        public void TryCatnSize(DataTable d, DataGridView dgv, ListBox lb1, ListBox lb2 )
+
+        /// <summary>
+        /// obsolute
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="dgv"></param>
+        /// <param name="lb1"></param>
+        /// <param name="lb2"></param>
+        public void TryCatnSize(DataTable d, DataGridView dgv, ListBox lb1, ListBox lb2)
         {
             //enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
             //sizeList = Enum.GetNames(typeof(Size)).ToList();
@@ -247,80 +364,46 @@ namespace AKS.Payroll.Forms.Inventory
             //    pList.Add(pi);
             //}
             //dgv.DataSource = pList;//.Where(c=>c.Size==Size.NOTVALID);
-            try
-            {
-                int ex= 0,mis=0;
-                pItemList = azureDb.ProductItems.ToList();
-                List<string> mBarcode = new List<string>();
-                DataTable dataTable = d.Clone();
-                for (int i = 0; i < d.Rows.Count; i++)
-                {
-                    if (ProuctItemExist(d.Rows[i]["Barcode"].ToString()))
-                    {
-                        d.Rows[i]["ExmillCost"] = "Exist";
-                        ex++;
-                    }
-                    else
-                    {
-                        d.Rows[i]["ExmillCost"] = "Missing";
-                        mis++;
-                        mBarcode.Add(d.Rows[i]["Barcode"].ToString());
-                        dataTable.ImportRow(d.Rows[i]);
-                    }
-                }
+            //try
+            //{
+            //    int ex= 0,mis=0;
+            //    pItemList = azureDb.ProductItems.ToList();
+            //    List<string> mBarcode = new List<string>();
+            //    DataTable dataTable = d.Clone();
+            //    for (int i = 0; i < d.Rows.Count; i++)
+            //    {
+            //        if (ProuctItemExist(d.Rows[i]["Barcode"].ToString()))
+            //        {
+            //            d.Rows[i]["ExmillCost"] = "Exist";
+            //            ex++;
+            //        }
+            //        else
+            //        {
+            //            d.Rows[i]["ExmillCost"] = "Missing";
+            //            mis++;
+            //            mBarcode.Add(d.Rows[i]["Barcode"].ToString());
+            //            dataTable.ImportRow(d.Rows[i]);
+            //        }
+            //    }
 
-                mBarcode= mBarcode.Distinct().ToList();
-                mBarcode.Sort();
-                dgv.DataSource = dataTable;
-                lb1.Items.Add($"Total:{d.Rows.Count}");
-                lb1.Items.Add($"Missing:{mis}");
-                lb1.Items.Add($"Exsit:{ex}");
-                lb2.DataSource = mBarcode;
-            }
-            catch (Exception e)
-            {
-
-                MessageBox.Show(e.Message);
-            }
-
+            //    mBarcode= mBarcode.Distinct().ToList();
+            //    mBarcode.Sort();
+            //    dgv.DataSource = dataTable;
+            //    lb1.Items.Add($"Total:{d.Rows.Count}");
+            //    lb1.Items.Add($"Missing:{mis}");
+            //    lb1.Items.Add($"Exsit:{ex}");
+            //    lb2.DataSource = mBarcode;
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show(e.Message);
+            //}
         }
-        private List<ProductItem> pItemList;
-        private void ProcessProductItem(DataTable DataTable)
-        {
-            enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
-            productSubCategories = azureDb.ProductSubCategories.ToList();
-            productTypeList = azureDb.ProductTypes.ToList();
-            pItemList = azureDb.ProductItems.ToList();
 
-            for (int i = 0; i < DataTable.Rows.Count; i++)
-            {
-                if (!ProuctItemExist(DataTable.Rows[i]["Barcode"].ToString()))
-                {
-                    ProductItem item = new ProductItem
-                    {
-                        Barcode = DataTable.Rows[i]["Barcode"].ToString(),
-                        StyleCode = DataTable.Rows[i]["StyleCode"].ToString(),
-                        Description = DataTable.Rows[i]["Item Desc"].ToString(),
-                        MRP = decimal.Parse(DataTable.Rows[i]["MRP"].ToString().Trim()),
-                        HSNCode = "",
-                        Name = DataTable.Rows[i]["Product Name"].ToString(),
-                        TaxType = TaxType.GST,
-                        Unit = SetUnit(DataTable.Rows[i]["Product Name"].ToString()),
-                    };
-                    item = SetCatgoryAndSize(item);
-
-                    var names = DataTable.Rows[i]["Product Name"].ToString().Split("/");
-                }
-                else
-                {
-                    DataTable.Rows[i]["ExmilCost"] = "Exist";
-                }
-            }
-
-        }
+        
 
         /// <summary>
-        /// No Use
+        /// Obsulute
         /// </summary>
         private void ProcessStockUpdate()
         {
@@ -366,11 +449,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        public bool ProuctItemExist(string barcode)
-        {
-            return pItemList.Any(c => c.Barcode == barcode);
-            //return azureDb.ProductItems.Any(c => c.Barcode == barcode);
-        }
+        
     }
 
     public class Utils

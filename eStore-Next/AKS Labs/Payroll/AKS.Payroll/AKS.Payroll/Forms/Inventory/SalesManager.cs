@@ -9,6 +9,7 @@ namespace AKS.Payroll.Forms.Inventory
     public class CustomerListVM
     {
         public string CustomerName { get; set; }
+
         [Key]
         public string MobileNo { get; set; }
     }
@@ -53,6 +54,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         //private List<SaleItem> SalesItems;
         public ObservableListSource<SaleItemVM> SaleItem;
+
         public List<int> YearList;
         private int SeletedYear;
         private int TotalCount;
@@ -60,22 +62,25 @@ namespace AKS.Payroll.Forms.Inventory
 
         // Cart Information
         private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
+
         public SalesManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, InvoiceType? iType)
         {
             azureDb = db; localDb = ldb;
             if (iType == null) InvoiceType = InvoiceType.ManualSale;
             else InvoiceType = iType.Value;
         }
+
         public void LoadBarcodeList()
         {
             if (barcodeList.Count > 0) return;
             var l = azureDb.Stocks.Where(c => c.PurhcaseQty > 0).Select(c => new { c.Barcode, c.CurrentQty, c.CurrentQtyWH }).ToList();
-            var x = l.Where(c=> c.CurrentQty > 0).Select(c=>c.Barcode).ToList();
+            var x = l.Where(c => c.CurrentQty > 0).Select(c => c.Barcode).ToList();
             foreach (var item in x)
             {
                 barcodeList.Add(item);
             }
         }
+
         public static decimal CalculateRate(string dis, string qty, string rate)
         {
             try
@@ -202,6 +207,7 @@ namespace AKS.Payroll.Forms.Inventory
             TotalCount = 0;
             //dgvSaleItems.Rows.Clear();
         }
+
         public List<ProductSale> SetGridView() => Items.Where(c => c.InvoiceType == InvoiceType).ToList();
 
         public void SetRadioButton(bool regular, bool manual, bool salesReturn)
@@ -293,6 +299,7 @@ namespace AKS.Payroll.Forms.Inventory
         {
             throw new NotImplementedException();
         }
+
         protected override void GetList()
         {
             throw new NotImplementedException();

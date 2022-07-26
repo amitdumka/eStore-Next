@@ -9,10 +9,12 @@ namespace AKS.Payroll.Forms.Inventory
         public AzurePayrollDbContext azureDb;
         public LocalPayrollDbContext localDb;
         public string StoreCode;
+
         public InventoryManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, string sc)
         {
             azureDb = db; localDb = ldb; StoreCode = sc;
         }
+
         /// <summary>
         /// set Unit for item
         /// </summary>
@@ -51,11 +53,11 @@ namespace AKS.Payroll.Forms.Inventory
             //listBox1.DataSource = a;
             // Color or stle name
             //listBox2.DataSource = b;
-            // Type of Product. 
-           // listBox3.DataSource = c;
+            // Type of Product.
+            // listBox3.DataSource = c;
             //Store In table.
         }
-       
+
         public static global::Size SetSize(string style, string category)
         {
             global::Size size = global::Size.NOTVALID;
@@ -75,11 +77,11 @@ namespace AKS.Payroll.Forms.Inventory
                 else if (name.EndsWith(global::Size.L.ToString())) { size = global::Size.L; }
                 else if (name.EndsWith(global::Size.M.ToString())) { size = global::Size.M; }
                 else if (name.EndsWith(global::Size.S.ToString())) { size = global::Size.S; }
-
             }
             return size;
         }
-        private void ProcessProductItem( DataTable DataTable)
+
+        private void ProcessProductItem(DataTable DataTable)
         {
             for (int i = 0; i < DataTable.Rows.Count; i++)
 
@@ -101,7 +103,6 @@ namespace AKS.Payroll.Forms.Inventory
                     if (item.Unit == Unit.Meters || item.Unit == Unit.Nos || item.Unit == Unit.NoUnit) item.Size = global::Size.NS;
                     else
                     {
-
                     }
                 }
                 else
@@ -110,6 +111,7 @@ namespace AKS.Payroll.Forms.Inventory
                 }
             }
         }
+
         /// <summary>
         /// No Use
         /// </summary>
@@ -134,7 +136,7 @@ namespace AKS.Payroll.Forms.Inventory
             List<Stock> Stocks = new List<Stock>();
             //search for dplicate barcode
 
-            //var dup = stock.GroupBy(c => c.Barcode).Select(c=> new {c.Key , ctr=c.Key.Count()}).Where(c => c.ctr > 1).ToList(); 
+            //var dup = stock.GroupBy(c => c.Barcode).Select(c=> new {c.Key , ctr=c.Key.Count()}).Where(c => c.ctr > 1).ToList();
             foreach (var item in stock)
             {
                 if (Stocks.Any(c => c.Barcode == item.Barcode))
@@ -147,9 +149,7 @@ namespace AKS.Payroll.Forms.Inventory
                 else
                 {
                     Stocks.Add(item);
-
                 }
-
             }
             azureDb.Stocks.AddRange(Stocks);
             var c = azureDb.SaveChanges();
@@ -158,11 +158,11 @@ namespace AKS.Payroll.Forms.Inventory
                 Console.WriteLine(c);
             }
         }
+
         public bool ProuctItemExist(string barcode)
         {
             return azureDb.ProductItems.Any(c => c.Barcode == barcode);
         }
-
     }
 
     public class Utils

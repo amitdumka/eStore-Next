@@ -1047,6 +1047,9 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<int>("ProductCategory")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductTypeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
@@ -1067,6 +1070,8 @@ namespace AKS.Payroll.Database.Migrations
                     b.HasKey("Barcode");
 
                     b.HasIndex("BrandCode");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.HasIndex("SubCategory");
 
@@ -1150,16 +1155,26 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<string>("SubCategory")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ProductCategory")
                         .HasColumnType("int");
 
                     b.HasKey("SubCategory");
 
                     b.ToTable("ProductSubCategories");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductType", b =>
+                {
+                    b.Property<string>("ProductTypeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductTypeId");
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.PurchaseItem", b =>
@@ -2652,6 +2667,10 @@ namespace AKS.Payroll.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId");
+
                     b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSubCategory", "ProductSubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategory")
@@ -2661,6 +2680,8 @@ namespace AKS.Payroll.Database.Migrations
                     b.Navigation("Brand");
 
                     b.Navigation("ProductSubCategory");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductSale", b =>

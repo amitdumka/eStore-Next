@@ -21,6 +21,8 @@ namespace AKS.Shared.Commons.Models.Inventory
         public Size Size { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public string SubCategory { get; set; }
+
+        public string? ProductTypeId { get; set; }   
         public string HSNCode { get; set; }
         public Unit Unit { get; set; }
 
@@ -31,13 +33,19 @@ namespace AKS.Shared.Commons.Models.Inventory
 
         [ForeignKey("SubCategory")]
         public virtual ProductSubCategory ProductSubCategory { get; set; }
+        public virtual ProductType ProductType { get; set; }
     }
-
+    public class ProductType
+    {
+        [Key]
+        public string ProductTypeId { get; set; }
+        public string ProductTypeName { get; set; }
+    }
     public class ProductSubCategory
     {
         [Key]
         public string SubCategory { get; set; }
-        public string CategoryName { get; set; }
+        //public string CategoryName { get; set; }
         public ProductCategory ProductCategory { get; set; }
     }
 

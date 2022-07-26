@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PurchaseForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpList = new System.Windows.Forms.TabPage();
@@ -76,6 +78,9 @@
             this.dateTimePickerAdv1 = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
             this.dateTimePickerAdv2 = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
             this.tpView = new System.Windows.Forms.TabPage();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label16 = new System.Windows.Forms.Label();
             this.pdfViewer = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -91,9 +96,6 @@
             this.btnCancle = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.listBox3 = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tpList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPurchase)).BeginInit();
@@ -114,9 +116,9 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(129, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1125, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1254, 22);
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -129,7 +131,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 19);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1119, 370);
+            this.tabControl1.Size = new System.Drawing.Size(1119, 348);
             this.tabControl1.TabIndex = 0;
             // 
             // tpList
@@ -138,22 +140,41 @@
             this.tpList.Location = new System.Drawing.Point(4, 24);
             this.tpList.Name = "tpList";
             this.tpList.Padding = new System.Windows.Forms.Padding(3);
-            this.tpList.Size = new System.Drawing.Size(1111, 342);
+            this.tpList.Size = new System.Drawing.Size(1111, 320);
             this.tpList.TabIndex = 0;
             this.tpList.Text = "Invoices";
             this.tpList.UseVisualStyleBackColor = true;
             // 
             // dgvPurchase
             // 
-            this.dgvPurchase.AllowUserToAddRows = false;
             this.dgvPurchase.AllowUserToOrderColumns = true;
+            this.dgvPurchase.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvPurchase.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
+            this.dgvPurchase.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgvPurchase.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvPurchase.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SunkenHorizontal;
             this.dgvPurchase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPurchase.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvPurchase.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPurchase.Location = new System.Drawing.Point(3, 3);
             this.dgvPurchase.Name = "dgvPurchase";
-            this.dgvPurchase.ReadOnly = true;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPurchase.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvPurchase.RowTemplate.Height = 25;
-            this.dgvPurchase.Size = new System.Drawing.Size(1105, 336);
+            this.dgvPurchase.Size = new System.Drawing.Size(1105, 314);
             this.dgvPurchase.TabIndex = 0;
             // 
             // tpEntry
@@ -162,7 +183,7 @@
             this.tpEntry.Location = new System.Drawing.Point(4, 24);
             this.tpEntry.Name = "tpEntry";
             this.tpEntry.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEntry.Size = new System.Drawing.Size(1111, 342);
+            this.tpEntry.Size = new System.Drawing.Size(1111, 320);
             this.tpEntry.TabIndex = 1;
             this.tpEntry.Text = "Entry";
             this.tpEntry.UseVisualStyleBackColor = true;
@@ -224,7 +245,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1105, 336);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1105, 314);
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -633,10 +654,37 @@
             this.tpView.Location = new System.Drawing.Point(4, 24);
             this.tpView.Name = "tpView";
             this.tpView.Padding = new System.Windows.Forms.Padding(3);
-            this.tpView.Size = new System.Drawing.Size(1111, 342);
+            this.tpView.Size = new System.Drawing.Size(1111, 320);
             this.tpView.TabIndex = 2;
             this.tpView.Text = "View";
             this.tpView.UseVisualStyleBackColor = true;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 15;
+            this.listBox3.Location = new System.Drawing.Point(264, 20);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(123, 304);
+            this.listBox3.TabIndex = 4;
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 15;
+            this.listBox2.Location = new System.Drawing.Point(135, 20);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(123, 304);
+            this.listBox2.TabIndex = 3;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(6, 20);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(123, 304);
+            this.listBox1.TabIndex = 2;
             // 
             // label16
             // 
@@ -658,27 +706,27 @@
             this.pdfViewer.IsTextSearchEnabled = true;
             this.pdfViewer.IsTextSelectionEnabled = true;
             this.pdfViewer.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfViewer.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfViewer.MessageBoxSettings = messageBoxSettings1;
             this.pdfViewer.MinimumZoomPercentage = 50;
             this.pdfViewer.Name = "pdfViewer";
             this.pdfViewer.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfViewer.ReferencePath = null;
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
             this.pdfViewer.ShowVerticalScrollBar = true;
-            this.pdfViewer.Size = new System.Drawing.Size(1105, 336);
+            this.pdfViewer.Size = new System.Drawing.Size(1105, 314);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfViewer.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfViewer.TextSearchSettings = textSearchSettings1;
             this.pdfViewer.ThemeName = "Default";
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -690,7 +738,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(129, 58);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1125, 392);
+            this.groupBox3.Size = new System.Drawing.Size(1125, 370);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             // 
@@ -700,7 +748,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(0, 58);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(129, 392);
+            this.groupBox2.Size = new System.Drawing.Size(129, 370);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Year List";
@@ -712,7 +760,7 @@
             this.lbYearList.ItemHeight = 15;
             this.lbYearList.Location = new System.Drawing.Point(3, 19);
             this.lbYearList.Name = "lbYearList";
-            this.lbYearList.Size = new System.Drawing.Size(123, 370);
+            this.lbYearList.Size = new System.Drawing.Size(123, 348);
             this.lbYearList.TabIndex = 0;
             // 
             // groupBox1
@@ -832,42 +880,15 @@
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(6, 20);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(123, 304);
-            this.listBox1.TabIndex = 2;
-            // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(135, 20);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(123, 304);
-            this.listBox2.TabIndex = 3;
-            // 
-            // listBox3
-            // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 15;
-            this.listBox3.Location = new System.Drawing.Point(264, 20);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(123, 304);
-            this.listBox3.TabIndex = 4;
-            // 
             // PurchaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1254, 450);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "PurchaseForm";
             this.Text = "PurchaseForm";
             this.Load += new System.EventHandler(this.PurchaseForm_Load);

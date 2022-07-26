@@ -81,7 +81,8 @@ namespace AKS.Payroll.Forms.Inventory
             try
             {
                 //_im.TryCatnSize(DataTable, dgvPurchase,lbYearList, listBox1);
-                dgvPurchase.DataSource = _im.ProcessProductItem(DataTable);
+                dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
+                
                 MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
             }
             catch (Exception ex)

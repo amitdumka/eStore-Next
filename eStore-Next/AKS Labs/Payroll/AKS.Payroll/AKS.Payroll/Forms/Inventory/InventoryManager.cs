@@ -400,7 +400,88 @@ namespace AKS.Payroll.Forms.Inventory
             //}
         }
 
-        
+        public List<Stock> ProcessStocks(DataTable dt)
+        {
+            List<Stock> stocks = new List<Stock>();
+            List<string> barcode = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (barcode.Any(c => c == dt.Rows[i]["Barcode"].ToString()))
+                {
+                    var s = stocks.Find(c => c.Barcode == dt.Rows[i]["Barcode"].ToString());
+                    decimal cost = decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim());
+                    stocks.Remove(s);
+                    if (cost != s.CostPrice)
+                    {
+                        if (s.MultiPrice)
+                        {
+                            //TODO: look for multi
+                        }
+
+                            s.MultiPrice = true;
+                            s.EntryStatus = EntryStatus.Rejected;
+                            Stock nS = new Stock
+                            {
+                                CostPrice = cost,
+                                EntryStatus = EntryStatus.Approved,
+                                MultiPrice = true,
+                                PurhcaseQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),
+                                MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString().Trim()),
+                                Barcode = $"{s.Barcode}#2", IsReadOnly=true, 
+                                HoldQty=0, MarkedDeleted=false, SoldQty=0, StoreId="ARD",
+                                Unit=s.Unit, UserId="Auto"
+                            };
+                            //nS.Barcode = $"{nS.Barcode}#2";
+                            stocks.Add(nS);
+                       
+                        //Stock nS = s;
+                        //nS.CostPrice = cost;
+                        //nS.EntryStatus = EntryStatus.Approved;
+                        //nS.PurhcaseQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim());
+                        //nS.MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString().Trim());
+                        //nS.MultiPrice = true;
+                        //nS.Barcode = $"{nS.Barcode}#2";
+                        //stocks.Remove(s);
+                        //s.EntryStatus = EntryStatus.Updated;
+                        //s.MultiPrice = true;
+                        //stocks.Add(nS);
+                    }
+                    else
+                    {
+
+                        s.PurhcaseQty += decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim());
+                        s.EntryStatus = EntryStatus.Updated;
+                    }
+                    stocks.Add(s);
+                }
+                else
+                {
+                    barcode.Add(dt.Rows[i]["Barcode"].ToString());
+                    Stock stock = new Stock
+                    {
+                        Barcode = dt.Rows[i]["Barcode"].ToString(),
+                        EntryStatus = EntryStatus.Added,
+                        IsReadOnly = true,
+                        StoreId = "ARD",
+                        UserId = "AUTO",
+                        MarkedDeleted = false,
+                        HoldQty = 0,
+                        SoldQty = 0,
+                        CostPrice = decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),
+                        PurhcaseQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),
+                        Unit = SetUnit(dt.Rows[i]["Product Name"].ToString().Trim()),
+                        MultiPrice = false,
+                        MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString().Trim())
+                    };
+                    stocks.Add(stock);
+                }
+
+            }
+            stocks = stocks.Where(c => c.EntryStatus == EntryStatus.Approved).OrderByDescending(c => c.EntryStatus).
+                   ToList();
+            return stocks;
+        }
+
 
         /// <summary>
         /// Obsulute
@@ -449,7 +530,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
 
-        
+
     }
 
     public class Utils

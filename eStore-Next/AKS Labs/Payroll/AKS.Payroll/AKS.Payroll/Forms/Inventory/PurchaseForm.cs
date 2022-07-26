@@ -68,7 +68,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            DataTable = ImportData.ReadExcelToDatatable(txtBarcode.Text.Trim(), ReadInt(txtQty), ReadInt(txtProductItem), ReadInt(txtRate), ReadInt(txtDiscount));
+            DataTable = ImportData.ReadExcelToDatatable(txtBarcode.Text.Trim(), Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem), Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
 
             dgvPurchase.DataSource = DataTable;
 

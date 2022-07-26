@@ -1,3 +1,7 @@
+using AKS.Payroll.Database;
+using AKS.Shared.Commons.Models.Inventory;
+using System.Data;
+
 namespace AKS.Payroll.Forms.Inventory
 {
     public class InventoryManager
@@ -9,6 +13,20 @@ namespace AKS.Payroll.Forms.Inventory
         {
             azureDb = db; localDb = ldb; StoreCode = sc;
         }
+        /// <summary>
+        /// set Unit for item
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Unit SetUnit(string name)
+        {
+            if (name.StartsWith("Apparel")) { return Unit.Pcs; }
+            else if (name.StartsWith("Promo") || name.StartsWith("Suit Cover")) { return Unit.Nos; }
+            else if (name.StartsWith("Shirting") || name.StartsWith("Suiting")) { return Unit.Meters; }
+            return Unit.NoUnit;
+        }
+
+        // Still development
         public void CreateCategoryList(DataTable dataTable)
         {
             var data = dataTable.AsEnumerable().GroupBy(c => c["Product Name"]).Select(c => c.Key.ToString()).ToList();
@@ -30,26 +48,19 @@ namespace AKS.Payroll.Forms.Inventory
             c.Sort();
 
             // Apprel, shirting, suiting
-            listBox1.DataSource = a;
+            //listBox1.DataSource = a;
             // Color or stle name
-            listBox2.DataSource = b;
+            //listBox2.DataSource = b;
             // Type of Product. 
-            listBox3.DataSource = c;
+           // listBox3.DataSource = c;
             //Store In table.
         }
-        //Set Unit size based on category
-        public static Unit SetUnit(string name)
-        {
-            if (name.StartsWith("Apparel")) { return Unit.Pcs; }
-            else if (name.StartsWith("Promo") || name.StartsWith("Suit Cover")) { return Unit.Nos; }
-            else if (name.StartsWith("Shirting") || name.StartsWith("Suiting")) { return Unit.Meters; }
-            return Unit.NoUnit;
-        }
+       
         public static global::Size SetSize(string style, string category)
         {
-            global::Size size;
+            global::Size size = global::Size.NOTVALID;
             var name = style.Substring(style.Length - 4, 4);
-            var enumList = Enum.GetNames(typeof(global::Size));
+            var enumList = Enum.GetNames(typeof(global::Size)).ToList();
             // Jeans and Trousers
             if (category.Contains("Jeans") || category.Contains("Trousers"))
             {
@@ -68,7 +79,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
             return size;
         }
-        private void ProcessProductItem()
+        private void ProcessProductItem( DataTable DataTable)
         {
             for (int i = 0; i < DataTable.Rows.Count; i++)
 
@@ -99,6 +110,9 @@ namespace AKS.Payroll.Forms.Inventory
                 }
             }
         }
+        /// <summary>
+        /// No Use
+        /// </summary>
         private void ProcessStockUpdate()
         {
             var stock = azureDb.PurchaseItems

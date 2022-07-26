@@ -251,7 +251,7 @@ namespace AKS.Payroll.Forms.Inventory
                     rate = 5;
                     break;
 
-                case ProductCategory.ReadyMade:
+                case ProductCategory.Apparel:
                     rate = Price > 999 ? 12 : 5;
                     break;
 

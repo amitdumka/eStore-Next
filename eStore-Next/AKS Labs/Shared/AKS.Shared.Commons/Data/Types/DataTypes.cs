@@ -8,8 +8,8 @@ public enum Gender { Male, Female, TransGender }
 public enum Unit { Meters, Nos, Pcs, Packets, NoUnit }
 public enum ConnectionType { Commercial, Domestic, HighTension }
 public enum RentType { WorkShop, Shop, Goods, Office, House, Others }
-public enum Size { S, M, L, XL, XXL, XXXL, T28, T30, T32, T34, T36, T38, T40, T41, T42, T44, T46, T48, FreeSize, NS, NOTVALID }
-public enum ProductCategory { Fabric, ReadyMade, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others }
+public enum Size { S, M, L, XL, XXL, XXXL, T28, T30, T32, T34, T36, T38, T40, T41, T42, T44, T46, T48, FreeSize, NS, NOTVALID,B36, B38, B40, B42,B44,B46,B96,B100, B104,B108 }
+public enum ProductCategory { Fabric, Apparel, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others , SuitCovers}
 public enum Card { DebitCard, CreditCard, AmexCard }
 public enum CardType { Visa, MasterCard, Mastro, Amex, Dinners, Rupay, }
 

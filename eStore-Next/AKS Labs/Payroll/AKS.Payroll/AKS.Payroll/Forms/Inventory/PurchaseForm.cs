@@ -68,15 +68,37 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            DataTable = ImportData.ReadExcelToDatatable(txtBarcode.Text.Trim(), Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem), Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
+            try
+            {
 
-            dgvPurchase.DataSource = DataTable;
+                //DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 
+                //    Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem), 
+                //    Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
+
+                DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx",6, 1,7037, 16);
+
+                dgvPurchase.DataSource = DataTable;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
 
         }
 
         private void btnCancle_Click(object sender, EventArgs e)
         {
+            try
+            {
+                _im.TryCatnSize(DataTable, dgvPurchase,lbYearList, listBox1);
+            }
+            catch (Exception ex)
+            {
 
+               Console.WriteLine(ex.Message);
+            }
+            
 
         }
     }

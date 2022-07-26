@@ -190,7 +190,7 @@ namespace AKS.Payroll.Ops
                 IWorkbook workbook = application.Workbooks.Open(filename, ExcelOpenType.Automatic);
                 IWorksheet worksheet = workbook.Worksheets[0];
 
-                var x = worksheet.ExportDataTable(fCol, fRow, MaxRow, MaxCol, ExcelExportDataTableOptions.ColumnNames);
+                var x = worksheet.ExportDataTable(fRow, fCol, MaxRow, MaxCol, ExcelExportDataTableOptions.ColumnNames);
                 var s = x.Rows.Count;
                 return x;
             }

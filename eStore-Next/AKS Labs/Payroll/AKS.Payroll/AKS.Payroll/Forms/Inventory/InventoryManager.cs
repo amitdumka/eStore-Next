@@ -331,7 +331,7 @@ namespace AKS.Payroll.Forms.Inventory
             foreach (var item in Stocks)
             {
                 item.CostPrice += (item.PurhcaseQty * 3);
-                item.IsReadOnly = false; 
+                item.IsReadOnly = false;
             }
             azureDb.Stocks.UpdateRange(Stocks);
             azureDb.SaveChangesAsync();
@@ -530,6 +530,56 @@ namespace AKS.Payroll.Forms.Inventory
                 Console.WriteLine(c);
             }
         }
+
+        public void ImportInvoice(DataTable dt)
+        {
+            enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
+            sizeList = Enum.GetNames(typeof(Size)).ToList();
+
+            // Filter Invoice Numbers
+            var invoiceList = dt.AsEnumerable().GroupBy(c => new { Inv = c["Invoice No"].ToString(), Date = c["Invoice Date"] }).Select(c => new { c.Key.Inv, c.Key.Date }).ToList();
+            List<PurchaseProduct> invoice = new List<PurchaseProduct>();
+            foreach (var item in invoiceList)
+            {
+                PurchaseProduct p = new PurchaseProduct
+                {
+                    BasicAmount = 0,
+                    BillQty = 0,
+                    Count = 0,
+                    DiscountAmount = 0,
+                    EntryStatus = EntryStatus.Added,
+                    FreeQty = 0,
+                    InvoiceNo = item.Inv,
+                    InvoiceType = PurchaseInvoiceType.Purchase,
+                    InwardDate = DateTime.Today,
+                    InwardNumber = "",
+                    IsReadOnly = false,
+                    MarkedDeleted = false,
+                    OnDate = (DateTime)item.Date,
+                    Paid = false,
+                    ShippingCost = 0,
+                    StoreId = "ARD",
+                    TaxAmount = 0,
+                    TaxType = TaxType.GST,
+                    TotalAmount = 0,
+                    TotalQty = 0,
+                    UserId = "AUTO",
+                    VendorId = "",
+                    Warehouse = "",
+
+                };
+                invoice.Add(p);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+
+            }
+
+        }
+
+
+
     }
 
     public class Utils

@@ -56,7 +56,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
+            //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -82,9 +82,9 @@ namespace AKS.Payroll.Forms.Inventory
             try
             {
                 //_im.TryCatnSize(DataTable, dgvPurchase,lbYearList, listBox1);
-                dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
+               // dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
                 
-                MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
+               // MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
             }
             catch (Exception ex)
             {

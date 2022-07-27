@@ -1412,7 +1412,13 @@ namespace AKS.Payroll.Database.Migrations
                     b.Property<bool>("IsReadOnly")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("MRP")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("MarkedDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MultiPrice")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("PurhcaseQty")

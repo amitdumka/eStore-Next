@@ -56,6 +56,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

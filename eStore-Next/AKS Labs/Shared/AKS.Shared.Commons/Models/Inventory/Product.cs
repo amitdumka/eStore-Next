@@ -130,6 +130,7 @@ namespace AKS.Shared.Commons.Models.Inventory
     [Table("V1_Vendors")]
     public class Vendor : BaseST
     {
+        [Key]
         public string VendorId { get; set; }
         public string VendorName { get; set; }
         public VendorType VendorType { get; set; }

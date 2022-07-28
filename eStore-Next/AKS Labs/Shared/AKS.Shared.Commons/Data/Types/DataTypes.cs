@@ -24,7 +24,7 @@ public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccount
 public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 public enum HolidayReason { GovertmentHoliday, Bandha, Festivals, WeeklyOff, ApproveHoliday, Other }
 public enum SlipBookType { Payment, Reciept, PaymentRecieptCombo, DailyBook, DebitNote, CreditNote, TailoringBook }
-public enum VendorType { EBO, MBO, Tailoring, NonSalable, OtherSaleable, Others, TempVendor }
+public enum VendorType { EBO, MBO, Tailoring, NonSalable, OtherSaleable, Others, TempVendor,InHouse, Distributor, Brands,BrandAuth }
 public enum NotesType { DebitNote, CreditNote }
 public enum InvoiceType { Sales, SalesReturn, ManualSale, ManualSaleReturn }
 public enum PurchaseInvoiceType { Purchase,PurchaseReturn }

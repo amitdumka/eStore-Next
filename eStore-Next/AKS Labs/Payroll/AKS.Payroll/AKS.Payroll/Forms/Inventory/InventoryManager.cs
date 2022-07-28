@@ -254,6 +254,7 @@ namespace AKS.Payroll.Forms.Inventory
             azureDb.SaveChanges();
             return pList;
         }
+
         /// <summary>
         /// Process Stock Entry
         /// </summary>
@@ -261,7 +262,6 @@ namespace AKS.Payroll.Forms.Inventory
         /// <returns></returns>
         public List<Stock> ProcessStocks(DataTable dt)
         {
-
             List<Stock> stocks = new List<Stock>();
             List<string> barcode = new List<string>();
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -566,20 +566,14 @@ namespace AKS.Payroll.Forms.Inventory
                     UserId = "AUTO",
                     VendorId = "",
                     Warehouse = "",
-
                 };
                 invoice.Add(p);
             }
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-
             }
-
         }
-
-
-
     }
 
     public class Utils
@@ -587,6 +581,193 @@ namespace AKS.Payroll.Forms.Inventory
         public static int ReadInt(TextBox t)
         {
             return Int32.Parse(t.Text.Trim());
+        }
+    }
+
+    public class Inventory
+    {
+        /// <summary>
+        /// Map Vendor from Supplier
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns></returns>
+        public static string VendorMapping(string supplier)
+        {
+            string id = supplier switch
+            {
+                "TAS RMG Warehouse - Bangalore" => "ARD/VIN/0003",
+                "TAS - Warhouse -FOFO" => "ARD/VIN/0003",
+                "Bangalore WH" => "ARD/VIN/0003",
+                "Arvind Brands Limited" => "ARD/VIN/0002",
+                "TAS RTS -Warhouse" => "ARD/VIN/0002",
+                "Arvind Limited" => "ARD/VIN/0001",
+                "Khush" => "ARD/VIN/0005",
+                "Safari Industries India Ltd" => "ARD/VIN/0004",
+                "DTR Packed WH" => "ARD/VIN/0002",
+                "DTR - TAS Warehouse" => "ARD/VIN/0002",
+                "Aprajita Retails - Jamshedpur" => "ARD/VIN/0007",
+                _ => "ARD/VIN/0002",
+            };
+            return id;
+        }
+
+        /// <summary>
+        /// Seeding vendor
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static bool SeedBasicVendor(AzurePayrollDbContext db)
+        {
+            List<Vendor> vendors = new List<Vendor>();
+
+            Vendor v1 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0001",
+                VendorType = VendorType.EBO,
+                VendorName = "Arvind Limited"
+            };
+            Vendor v2 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0002",
+                VendorType = VendorType.EBO,
+                VendorName = "Arvind Brands Limited"
+            };
+            Vendor v3 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0003",
+                VendorType = VendorType.EBO,
+                VendorName = "Arvind Lifestyle Brands Limited"
+            };
+            Vendor v4 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0004",
+                VendorType = VendorType.NonSalable,
+                VendorName = "Safari Industries India Ltd"
+            };
+            Vendor v5 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0005",
+                VendorType = VendorType.NonSalable,
+                VendorName = "Khush"
+            };
+            Vendor v6 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0006",
+                VendorType = VendorType.Distributor,
+                VendorName = "Satish Mandal, Dhandbad"
+            };
+            Vendor v7 = new Vendor
+            {
+                Active = true,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                OnDate = new DateTime(2015, 11, 1),
+                StoreId = "ARD",
+                UserId = "AUTO",
+                VendorId = "ARD/VIN/0007",
+                VendorType = VendorType.InHouse,
+                VendorName = "Aprajita Retails, Jamshedpur"
+            };
+            vendors.Add(v1);
+            vendors.Add(v2);
+            vendors.Add(v3);
+            vendors.Add(v4);
+            vendors.Add(v5);
+            vendors.Add(v6);
+            vendors.Add(v7);
+
+            db.Vendors.AddRange(vendors);
+            return (db.SaveChanges() == 7);
+        }
+
+        public static List<PurchaseProduct> GeneratePurchaseInvoice(AzurePayrollDbContext db, DataTable dt)
+        {
+            var imp = dt.AsEnumerable().Select(c => new
+            {
+                inw = c["GRNNo"].ToString(),
+                ind = c["GRNDate"],
+                inv = c["Invoice No"].ToString(),
+                invd = c["Invoice Date"],
+                bar = c["Barcode"].ToString(),
+                qty = c["Quantity"],
+                tax = c["TaxAmt"].ToString().Trim(),
+                costv = c["CostValue"],
+            }).ToList();
+
+            var d = imp.Select(c => new
+            {
+                c.inw,
+                GD = (DateTime)c.ind,
+                c.inv,
+                iVD = (DateTime)c.invd,
+                c.bar,
+                QTY = (decimal)(c.qty),
+                COSTV = (decimal)c.costv,
+                Tax = string.IsNullOrEmpty(c.tax) ? decimal.Parse("0") : decimal.Parse(c.tax),
+            }).ToList();
+
+            var x = d.GroupBy(c => new { c.inv, c.iVD, c.inw, c.GD, c.bar, c.QTY, c.COSTV, c.COST, c.Tax }).
+                Select(c => new PurchaseProduct
+                {
+                    InwardNumber = c.Key.inw,
+                    InvoiceNo = c.Key.inv,
+                    InwardDate = c.Key.GD,
+                    OnDate = c.Key.iVD,
+                    BillQty = c.Sum(p => p.QTY),
+                    TotalAmount = c.Sum(p => p.COSTV),
+                    TaxAmount = c.Sum(p => p.Tax),
+                    BasicAmount = c.Sum(p => p.COSTV),
+                    Count = c.Count(), TotalQty = c.Sum(p => p.QTY),
+                    DiscountAmount = 0, EntryStatus = EntryStatus.Added,
+                    FreeQty = 0, InvoiceType = PurchaseInvoiceType.Purchase,
+                    IsReadOnly = true, MarkedDeleted = false, Paid = false, ShippingCost = 3 * c.Count(),
+                    StoreId = "ARD", TaxType = TaxType.GST, UserId = "Auto", VendorId = "ARD/VIN/0001",
+                    Warehouse = "", Items = null
+                }).ToList();
+            return x;
         }
     }
 }

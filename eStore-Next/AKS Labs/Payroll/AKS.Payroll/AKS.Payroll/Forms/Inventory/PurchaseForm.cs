@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Ops;
+using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -53,10 +54,12 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (rbStocks.Checked) LoadStock();
         }
-
+        List<List<PurchaseProduct>> x;
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
+            x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
+            dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -76,19 +79,20 @@ namespace AKS.Payroll.Forms.Inventory
                 Console.WriteLine(ex.Message);
             }
         }
-
+        List<PurchaseProduct> pp;
         private void btnCancle_Click(object sender, EventArgs e)
         {
             try
             {
                 //_im.TryCatnSize(DataTable, dgvPurchase,lbYearList, listBox1);
-               // dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
-                
-               // MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
+                // dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
+                // MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
+                dgvPurchase.DataSource = pp= Inventory.GeneratePurchaseInvoice(azureDb, DataTable);
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }

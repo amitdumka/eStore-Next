@@ -728,45 +728,96 @@ namespace AKS.Payroll.Forms.Inventory
             var imp = dt.AsEnumerable().Select(c => new
             {
                 inw = c["GRNNo"].ToString(),
-                ind = c["GRNDate"],
+                ind = DateTime.Parse(c["GRNDate"].ToString()),
                 inv = c["Invoice No"].ToString(),
-                invd = c["Invoice Date"],
+                invd = DateTime.Parse(c["Invoice Date"].ToString()),
                 bar = c["Barcode"].ToString(),
-                qty = c["Quantity"],
-                tax = c["TaxAmt"].ToString().Trim(),
-                costv = c["CostValue"],
+                qty = decimal.Parse(c["Quantity"].ToString().Trim()),
+                tax = string.IsNullOrEmpty(c["TaxAmt"].ToString().Trim()) ? decimal.Parse("0") : decimal.Parse(c["TaxAmt"].ToString().Trim()),
+                costv = decimal.Parse(c["Cost Value"].ToString()),
             }).ToList();
 
-            var d = imp.Select(c => new
-            {
-                c.inw,
-                GD = (DateTime)c.ind,
-                c.inv,
-                iVD = (DateTime)c.invd,
-                c.bar,
-                QTY = (decimal)(c.qty),
-                COSTV = (decimal)c.costv,
-                Tax = string.IsNullOrEmpty(c.tax) ? decimal.Parse("0") : decimal.Parse(c.tax),
-            }).ToList();
-
-            var x = d.GroupBy(c => new { c.inv, c.iVD, c.inw, c.GD, c.bar, c.QTY, c.COSTV, c.COST, c.Tax }).
+            var x = imp.GroupBy(c => new { c.inv, c.inw, c.ind, c.invd }).
                 Select(c => new PurchaseProduct
                 {
                     InwardNumber = c.Key.inw,
                     InvoiceNo = c.Key.inv,
-                    InwardDate = c.Key.GD,
-                    OnDate = c.Key.iVD,
-                    BillQty = c.Sum(p => p.QTY),
-                    TotalAmount = c.Sum(p => p.COSTV),
-                    TaxAmount = c.Sum(p => p.Tax),
-                    BasicAmount = c.Sum(p => p.COSTV),
-                    Count = c.Count(), TotalQty = c.Sum(p => p.QTY),
-                    DiscountAmount = 0, EntryStatus = EntryStatus.Added,
-                    FreeQty = 0, InvoiceType = PurchaseInvoiceType.Purchase,
-                    IsReadOnly = true, MarkedDeleted = false, Paid = false, ShippingCost = 3 * c.Count(),
-                    StoreId = "ARD", TaxType = TaxType.GST, UserId = "Auto", VendorId = "ARD/VIN/0001",
-                    Warehouse = "", Items = null
+                    InwardDate = c.Key.ind,
+                    OnDate = c.Key.invd,
+                    BillQty = c.Sum(p => p.qty),
+                    TotalAmount = c.Sum(p => p.costv)+ c.Sum(p => p.tax),
+                    TaxAmount = c.Sum(p => p.tax),
+                    BasicAmount = c.Sum(p => p.costv),
+                    Count = c.Count(),
+                    TotalQty = c.Sum(p => p.qty),
+                    DiscountAmount = 0,
+                    EntryStatus = EntryStatus.Added,
+                    FreeQty = 0,
+                    InvoiceType = PurchaseInvoiceType.Purchase,
+                    IsReadOnly = true,
+                    MarkedDeleted = false,
+                    Paid = false,
+                    ShippingCost =0,// 3 * c.Count(),
+                    StoreId = "ARD",
+                    TaxType = TaxType.GST,
+                    UserId = "Auto",
+                    VendorId = "ARD/VIN/0001",
+                    Warehouse = "",
+                    Items = null
                 }).ToList();
+            return x;
+        }
+
+        public static List<List<PurchaseProduct>> ValidatePurchaseInvoice(AzurePayrollDbContext db, List<PurchaseProduct> purchases)
+        {
+            var dbPur = db.PurchaseProducts.ToList();
+            List<PurchaseProduct> missing = new List<PurchaseProduct>();
+            List<PurchaseProduct> ok = new List<PurchaseProduct>();
+            List<PurchaseProduct> incrt = new List<PurchaseProduct>();
+
+            foreach (var im in purchases)
+            {
+                var p = dbPur.Where(c => c.InvoiceNo == im.InvoiceNo).First();
+                p.BasicAmount = Decimal.Round(p.BasicAmount, 1);
+                p.TaxAmount = decimal.Round(p.TaxAmount, 1);
+                im.BasicAmount = Decimal.Round(im.BasicAmount, 1);
+                im.TaxAmount = decimal.Round(im.TaxAmount, 1);
+
+
+                if (p != null)
+                {
+                    if (p.BillQty != im.BillQty)
+                    {
+                        im.EntryStatus = EntryStatus.Updated;
+                        incrt.Add(im); }
+                    
+                    else if (  p.TaxAmount !=   im.TaxAmount )
+                    {
+                        im.EntryStatus = EntryStatus.Rejected;
+                        p.EntryStatus = EntryStatus.Rejected;
+                        incrt.Add(im);
+                        incrt.Add(p);
+                    }
+                    else if ( p.BasicAmount  !=  im.BasicAmount)
+                    {
+                        im.EntryStatus = EntryStatus.DeleteApproved;
+                        p.EntryStatus = EntryStatus.DeleteApproved;
+
+                        incrt.Add(im);
+                        incrt.Add(p);
+                    }
+                    //else if (p.ShippingCost != im.ShippingCost) { im.EntryStatus = EntryStatus.Deleted; incrt.Add(im); }
+                    else ok.Add(im);
+                }
+                else
+                {
+                    missing.Add(im);
+                }
+            }
+            List<List<PurchaseProduct>> x = new List<List<PurchaseProduct>>();
+            x.Add(ok);
+            x.Add(incrt);
+            x.Add(missing);
             return x;
         }
     }

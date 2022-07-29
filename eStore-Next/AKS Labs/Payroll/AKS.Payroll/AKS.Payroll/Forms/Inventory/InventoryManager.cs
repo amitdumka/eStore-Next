@@ -820,5 +820,32 @@ namespace AKS.Payroll.Forms.Inventory
             x.Add(missing);
             return x;
         }
+        
+        public static List<PurchaseItem> ProcessPurchaseItem(AzurePayrollDbContext db, DataTable dt)
+        {
+           var enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
+           var sizeList = Enum.GetNames(typeof(Size)).ToList();
+            for(int i = 0; i < dt.Rows.Count; i++)
+            {
+                PurchaseItem item = new PurchaseItem {
+                    Barcode = dt.Rows[i]["Barcode"].ToString(),
+                    CostPrice = decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),
+                    CostValue = decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()),
+                    DiscountValue = 0,
+                    FreeQty = 0,
+                    InwardNumber = dt.Rows[i]["GRRNNo"].ToString().Trim(),
+                    Qty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),
+                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ?0:decimal.Parse( dt.Rows[i]["TaxAmt"].ToString().Trim()),
+                    Unit=Unit.NoUnit,
+                };
+                db.PurchaseItems.Add(item);
+            }
+
+            if (db.SaveChanges() > 0)
+                return db.PurchaseItems.Local.ToList();
+            else return null;
+
+
+        }
     }
 }

@@ -745,7 +745,7 @@ namespace AKS.Payroll.Forms.Inventory
                     InwardDate = c.Key.ind,
                     OnDate = c.Key.invd,
                     BillQty = c.Sum(p => p.qty),
-                    TotalAmount = c.Sum(p => p.costv)+ c.Sum(p => p.tax),
+                    TotalAmount = c.Sum(p => p.costv) + c.Sum(p => p.tax),
                     TaxAmount = c.Sum(p => p.tax),
                     BasicAmount = c.Sum(p => p.costv),
                     Count = c.Count(),
@@ -757,7 +757,7 @@ namespace AKS.Payroll.Forms.Inventory
                     IsReadOnly = true,
                     MarkedDeleted = false,
                     Paid = false,
-                    ShippingCost =0,// 3 * c.Count(),
+                    ShippingCost = 0,// 3 * c.Count(),
                     StoreId = "ARD",
                     TaxType = TaxType.GST,
                     UserId = "Auto",
@@ -789,16 +789,17 @@ namespace AKS.Payroll.Forms.Inventory
                     if (p.BillQty != im.BillQty)
                     {
                         im.EntryStatus = EntryStatus.Updated;
-                        incrt.Add(im); }
-                    
-                    else if (  p.TaxAmount !=   im.TaxAmount )
+                        incrt.Add(im);
+                    }
+
+                    else if (p.TaxAmount != im.TaxAmount)
                     {
                         im.EntryStatus = EntryStatus.Rejected;
                         p.EntryStatus = EntryStatus.Rejected;
                         incrt.Add(im);
                         incrt.Add(p);
                     }
-                    else if ( p.BasicAmount  !=  im.BasicAmount)
+                    else if (p.BasicAmount != im.BasicAmount)
                     {
                         im.EntryStatus = EntryStatus.DeleteApproved;
                         p.EntryStatus = EntryStatus.DeleteApproved;
@@ -820,31 +821,68 @@ namespace AKS.Payroll.Forms.Inventory
             x.Add(missing);
             return x;
         }
-        
-        public static List<PurchaseItem> ProcessPurchaseItem(AzurePayrollDbContext db, DataTable dt)
+
+        public static /*List<PurchaseItem>*/ List<string> ProcessPurchaseItem(AzurePayrollDbContext db, DataTable dt)
         {
-           var enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
-           var sizeList = Enum.GetNames(typeof(Size)).ToList();
-            for(int i = 0; i < dt.Rows.Count; i++)
+            var enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
+            var sizeList = Enum.GetNames(typeof(Size)).ToList();
+            List<string> ErrorList = new List<string>();
+            var pItm = db.PurchaseItems.Select(c => new
             {
-                PurchaseItem item = new PurchaseItem {
+                c.Barcode,
+                c.Qty,
+                c.CostPrice,
+                c.CostValue,
+                c.InwardNumber
+            }).ToList();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                var itm = pItm.Where(c => c.Barcode == dt.Rows[i]["Barcode"].ToString()).FirstOrDefault();
+                PurchaseItem item = new PurchaseItem
+                {
                     Barcode = dt.Rows[i]["Barcode"].ToString(),
                     CostPrice = decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),
                     CostValue = decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()),
                     DiscountValue = 0,
                     FreeQty = 0,
-                    InwardNumber = dt.Rows[i]["GRRNNo"].ToString().Trim(),
+                    InwardNumber = dt.Rows[i]["GRNNo"].ToString().Trim(),
                     Qty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),
-                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ?0:decimal.Parse( dt.Rows[i]["TaxAmt"].ToString().Trim()),
-                    Unit=Unit.NoUnit,
+                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ? 0 : decimal.Parse(dt.Rows[i]["TaxAmt"].ToString().Trim()),
+                    Unit = Unit.NoUnit
                 };
-                db.PurchaseItems.Add(item);
+                if (itm != null)
+                {
+                    if (itm.Qty != item.Qty)
+                    {
+                        ErrorList.Add($"{item.InwardNumber}/{item.Barcode}=> DB.Qty[{itm.Qty}]!=XL.Qty[{item.Qty}]");
+                    }
+                    else if (itm.CostPrice != item.CostPrice)
+                    {
+                        ErrorList.Add($"{item.InwardNumber}/{item.Barcode}=> DB.CostPrice[{itm.CostPrice}]!=XL.CostPrice[{item.CostPrice}]");
+                    }
+                    else if (itm.CostValue != item.CostValue)
+                    {
+                        ErrorList.Add($"{item.InwardNumber}/{item.Barcode}=> DB.CostValue[{itm.CostValue}]!=XL.CostValue[{item.CostValue}]");
+                    }
+                    else
+                    {
+                        // Duplicate
+                    }
+
+                }
+                else
+                {
+
+
+                    db.PurchaseItems.Add(item);
+                }
+
             }
 
-            if (db.SaveChanges() > 0)
-                return db.PurchaseItems.Local.ToList();
-            else return null;
-
+            //if (db.SaveChanges() > 0)
+            //    return db.PurchaseItems.Local.ToList();
+            //else return null;
+            return ErrorList;
 
         }
     }

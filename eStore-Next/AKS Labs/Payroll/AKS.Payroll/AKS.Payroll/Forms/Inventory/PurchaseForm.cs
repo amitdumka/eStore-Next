@@ -87,8 +87,10 @@ namespace AKS.Payroll.Forms.Inventory
                 //_im.TryCatnSize(DataTable, dgvPurchase,lbYearList, listBox1);
                 // dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
                 // MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
-                dgvPurchase.DataSource = pp= Inventory.GeneratePurchaseInvoice(azureDb, DataTable);
-
+                // dgvPurchase.DataSource = pp= Inventory.GeneratePurchaseInvoice(azureDb, DataTable);
+                var data = Inventory.ProcessPurchaseItem(azureDb, DataTable);
+               
+                listBox1.DataSource= data;
             }
             catch (Exception ex)
             {

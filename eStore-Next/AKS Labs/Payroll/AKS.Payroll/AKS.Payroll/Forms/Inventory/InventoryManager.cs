@@ -1,6 +1,7 @@
 using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
+using System.Text.Json;
 
 namespace AKS.Payroll.Forms.Inventory
 {
@@ -582,6 +583,23 @@ namespace AKS.Payroll.Forms.Inventory
         {
             return Int32.Parse(t.Text.Trim());
         }
+        public static decimal ReadDecimal(TextBox t)
+        {
+            return decimal.Parse(t.Text.Trim());
+        }
+
+        public static decimal ToDecimal(string val)
+        {
+            return Decimal.Round(decimal.Parse(val.Trim()), 2);
+        }
+
+        public static async Task ToJsonAsync<T>(string fileName, List<T>ObjList)
+        {
+           // string fileName = "WeatherForecast.json";
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, ObjList);
+            await createStream.DisposeAsync();
+        }
     }
 
     public class Inventory
@@ -841,13 +859,13 @@ namespace AKS.Payroll.Forms.Inventory
                 PurchaseItem item = new PurchaseItem
                 {
                     Barcode = dt.Rows[i]["Barcode"].ToString(),
-                    CostPrice = decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),
-                    CostValue = decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()),
+                    CostPrice =Decimal.Round( decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),2),
+                    CostValue =decimal.Round( decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()),2),
                     DiscountValue = 0,
                     FreeQty = 0,
                     InwardNumber = dt.Rows[i]["GRNNo"].ToString().Trim(),
-                    Qty = decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),
-                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ? 0 : decimal.Parse(dt.Rows[i]["TaxAmt"].ToString().Trim()),
+                    Qty =decimal.Round( decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),2),
+                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ? 0 : decimal.Round( decimal.Parse(dt.Rows[i]["TaxAmt"].ToString().Trim()),2),
                     Unit = Unit.NoUnit
                 };
                 if (itm != null)
@@ -878,6 +896,8 @@ namespace AKS.Payroll.Forms.Inventory
                 }
 
             }
+            string jsonString = JsonSerializer.Serialize(db.PurchaseItems.Local.ToList());
+
 
             //if (db.SaveChanges() > 0)
             //    return db.PurchaseItems.Local.ToList();

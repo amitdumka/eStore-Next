@@ -593,14 +593,20 @@ namespace AKS.Payroll.Forms.Inventory
             return Decimal.Round(decimal.Parse(val.Trim()), 2);
         }
 
-        public static async Task ToJsonAsync<T>(string fileName, List<T>ObjList)
+        public static async Task ToJsonAsync<T>(string fileName, List<T> ObjList)
         {
-           // string fileName = "WeatherForecast.json";
+            // string fileName = "WeatherForecast.json";
             using FileStream createStream = File.Create(fileName);
             await JsonSerializer.SerializeAsync(createStream, ObjList);
             await createStream.DisposeAsync();
         }
+        public static async Task<List<PurchaseItem>?> FromJson<T>(string filename)
+        {
+            using FileStream openStream = File.OpenRead(filename);
+            return await JsonSerializer.DeserializeAsync<List<PurchaseItem>>(openStream);
+        }
     }
+
 
     public class Inventory
     {
@@ -840,11 +846,44 @@ namespace AKS.Payroll.Forms.Inventory
             return x;
         }
 
+        public static async Task<List<string>> ValidatePurchaseItem(AzurePayrollDbContext db)
+        {
+            var dbPI = db.PurchaseItems.OrderBy(c => c.InwardNumber).ThenBy(c => c.Barcode).ToList();
+            var xlPI = await Utils.FromJson<PurchaseItem>("purchaseItem.json");
+            xlPI=xlPI.OrderBy(c => c.InwardNumber).ThenBy(c => c.Barcode).ToList();
+            List<string> error = new List<string>();
+            
+            foreach (var item in dbPI)
+            {
+                var itm = xlPI.Where(c => c.Barcode == item.Barcode && c.InwardNumber == item.InwardNumber).FirstOrDefault(); 
+                if(itm != null)
+                {
+                    if (item.Qty != itm.Qty)
+                    {
+                        error.Add($"{item.InwardNumber}/{item.Barcode}/Qty#{item.Qty}#{itm.Qty}");
+                    }
+                    if (item.CostPrice != itm.CostPrice)
+                    {
+                        error.Add($"{item.InwardNumber}/{item.Barcode}/CostPrice#{item.CostPrice}#{itm.CostPrice}");
+                    }
+                    if(item.CostValue!=itm.CostValue)
+                        error.Add($"{item.InwardNumber}/{item.Barcode}/CostValue#{item.CostValue}#{itm.CostValue}");
+                    if(item.TaxAmount!=itm.TaxAmount)
+                        error.Add($"{item.InwardNumber}/{item.Barcode}/TaxAmount#{item.TaxAmount}#{itm.TaxAmount}");
+                    
+                }
+            }
+            return error; 
+           
+           
+        }
+
         public static /*List<PurchaseItem>*/ List<string> ProcessPurchaseItem(AzurePayrollDbContext db, DataTable dt)
         {
             var enumList = Enum.GetNames(typeof(ProductCategory)).ToList();
             var sizeList = Enum.GetNames(typeof(Size)).ToList();
             List<string> ErrorList = new List<string>();
+            List<PurchaseItem> pp = new List<PurchaseItem>();
             var pItm = db.PurchaseItems.Select(c => new
             {
                 c.Barcode,
@@ -859,15 +898,17 @@ namespace AKS.Payroll.Forms.Inventory
                 PurchaseItem item = new PurchaseItem
                 {
                     Barcode = dt.Rows[i]["Barcode"].ToString(),
-                    CostPrice =Decimal.Round( decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()),2),
-                    CostValue =decimal.Round( decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()),2),
+                    CostPrice = Decimal.Round(decimal.Parse(dt.Rows[i]["Cost"].ToString().Trim()), 2),
+                    CostValue = decimal.Round(decimal.Parse(dt.Rows[i]["Cost Value"].ToString().Trim()), 2),
                     DiscountValue = 0,
                     FreeQty = 0,
                     InwardNumber = dt.Rows[i]["GRNNo"].ToString().Trim(),
-                    Qty =decimal.Round( decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()),2),
-                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ? 0 : decimal.Round( decimal.Parse(dt.Rows[i]["TaxAmt"].ToString().Trim()),2),
+                    Qty = decimal.Round(decimal.Parse(dt.Rows[i]["Quantity"].ToString().Trim()), 2),
+                    TaxAmount = string.IsNullOrEmpty(dt.Rows[i]["TaxAmt"].ToString().Trim()) ? 0 : decimal.Round(decimal.Parse(dt.Rows[i]["TaxAmt"].ToString().Trim()), 2),
                     Unit = Unit.NoUnit
                 };
+                pp.Add(item);
+
                 if (itm != null)
                 {
                     if (itm.Qty != item.Qty)
@@ -896,8 +937,10 @@ namespace AKS.Payroll.Forms.Inventory
                 }
 
             }
-            string jsonString = JsonSerializer.Serialize(db.PurchaseItems.Local.ToList());
-
+            //string jsonString = JsonSerializer.Serialize(db.PurchaseItems.Local.ToList());
+            string fn = $"d:\\apr\\purchase\\{DateTime.Now.ToShortDateString()}\\fn.txt";
+            Directory.CreateDirectory(Path.GetDirectoryName(fn));
+            Utils.ToJsonAsync(fn, pp);
 
             //if (db.SaveChanges() > 0)
             //    return db.PurchaseItems.Local.ToList();

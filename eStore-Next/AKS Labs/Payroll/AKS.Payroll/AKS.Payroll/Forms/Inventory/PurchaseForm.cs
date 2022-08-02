@@ -3,6 +3,7 @@ using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Text.Json;
 
 namespace AKS.Payroll.Forms.Inventory
 {
@@ -58,8 +59,8 @@ namespace AKS.Payroll.Forms.Inventory
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
-            x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
-            dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
+           // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
+           // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -88,9 +89,12 @@ namespace AKS.Payroll.Forms.Inventory
                 // dgvPurchase.DataSource = _im.ProcessStocks(DataTable);
                 // MessageBox.Show("Rows="+dgvPurchase.Rows.Count);
                 // dgvPurchase.DataSource = pp= Inventory.GeneratePurchaseInvoice(azureDb, DataTable);
-                var data = Inventory.ProcessPurchaseItem(azureDb, DataTable);
-               
-                listBox1.DataSource= data;
+                // var data = Inventory.ProcessPurchaseItem(azureDb, DataTable);
+                //
+                // listBox1.DataSource= data;
+
+                ///dgvPurchase.DataSource = data;
+                listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb); 
             }
             catch (Exception ex)
             {

@@ -94,7 +94,9 @@ namespace AKS.Payroll.Forms.Inventory
                 // listBox1.DataSource= data;
 
                 ///dgvPurchase.DataSource = data;
-                listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb); 
+                //listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb).Result; 
+                // Inventory.UpDateStockList(azureDb, dgvPurchase);
+              // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
             }
             catch (Exception ex)
             {

@@ -5,6 +5,26 @@ using System.Text.Json;
 
 namespace AKS.Payroll.Forms.Inventory
 {
+    public class SaleInventory
+    {
+        //Voyger
+        public static void ProcessSaleEntry(AzurePayrollDbContext db, DataTable dt)
+        {
+            for(int i = 0; i < dt.Rows.Count; i++)
+            {
+                SaleItem item = new SaleItem
+                {
+                    Adjusted=false,
+                    Barcode = dt.Rows[i]["Barcode"].ToString(), 
+                    BilledQty=decimal.Parse(dt.Rows[i]["Qty"].ToString()),
+                    DiscountAmount=0, 
+                    FreeQty=0, 
+                    InvoiceCode="", LastPcs=false, TaxAmount=0, 
+                    Unit=Unit.NoUnit, Value=0
+                };
+            }
+        }
+    }
     public class InventoryManager
     {
         public AzurePayrollDbContext azureDb;
@@ -603,7 +623,7 @@ namespace AKS.Payroll.Forms.Inventory
         public static async Task<List<PurchaseItem>?> FromJson<T>(string filename)
         {
             using FileStream openStream = File.OpenRead(filename);
-            return await JsonSerializer.DeserializeAsync<List<PurchaseItem>>(openStream);
+            return JsonSerializer.Deserialize<List<PurchaseItem>>(openStream);
         }
     }
 
@@ -849,33 +869,121 @@ namespace AKS.Payroll.Forms.Inventory
         public static async Task<List<string>> ValidatePurchaseItem(AzurePayrollDbContext db)
         {
             var dbPI = db.PurchaseItems.OrderBy(c => c.InwardNumber).ThenBy(c => c.Barcode).ToList();
-            var xlPI = await Utils.FromJson<PurchaseItem>("purchaseItem.json");
-            xlPI=xlPI.OrderBy(c => c.InwardNumber).ThenBy(c => c.Barcode).ToList();
+            var xlPI = await Utils.FromJson<PurchaseItem>(@"d:\purchaseItem.json");
+            xlPI = xlPI.OrderBy(c => c.InwardNumber).ThenBy(c => c.Barcode).ToList();
             List<string> error = new List<string>();
-            
+
             foreach (var item in dbPI)
             {
-                var itm = xlPI.Where(c => c.Barcode == item.Barcode && c.InwardNumber == item.InwardNumber).FirstOrDefault(); 
-                if(itm != null)
+                var itm = xlPI.Where(c => c.Barcode == item.Barcode && c.InwardNumber == item.InwardNumber).FirstOrDefault();
+
+                if (itm != null)
                 {
                     if (item.Qty != itm.Qty)
                     {
-                        error.Add($"{item.InwardNumber}/{item.Barcode}/Qty#{item.Qty}#{itm.Qty}");
+                        error.Add($"#1#{item.InwardNumber}/{item.Barcode}/Qty#{item.Qty}#{itm.Qty}");
                     }
                     if (item.CostPrice != itm.CostPrice)
                     {
-                        error.Add($"{item.InwardNumber}/{item.Barcode}/CostPrice#{item.CostPrice}#{itm.CostPrice}");
+                        if ((item.CostPrice - itm.CostPrice) > (decimal)0.02)
+                            error.Add($"#2#{item.InwardNumber}/{item.Barcode}/CostPrice#{item.CostPrice}#{itm.CostPrice}");
                     }
-                    if(item.CostValue!=itm.CostValue)
-                        error.Add($"{item.InwardNumber}/{item.Barcode}/CostValue#{item.CostValue}#{itm.CostValue}");
-                    if(item.TaxAmount!=itm.TaxAmount)
-                        error.Add($"{item.InwardNumber}/{item.Barcode}/TaxAmount#{item.TaxAmount}#{itm.TaxAmount}");
-                    
+                    if (item.CostValue != itm.CostValue)
+                    {
+                        if ((item.CostValue - itm.CostValue) > (decimal)0.02)
+                            error.Add($"#3#{item.InwardNumber}/{item.Barcode}/CostValue#{item.CostValue}#{itm.CostValue}");
+                    }
+                    if (item.TaxAmount != itm.TaxAmount)
+                    {
+                        if ((item.TaxAmount - itm.TaxAmount) > (decimal)0.02)
+                            error.Add($"#4#{item.InwardNumber}/{item.Barcode}/TaxAmount#{item.TaxAmount}#{itm.TaxAmount}");
+                    }
+                    xlPI.Remove(itm);
                 }
             }
-            return error; 
-           
-           
+            if (error.Count > 0)
+                return error;
+            else
+            {
+                foreach (var item in xlPI)
+                {
+                    error.Add($"Missing Barcode=>{item.Barcode}/{item.Qty}/{item.CostPrice}/{item.CostValue}");
+                }
+                db.PurchaseItems.AddRange(xlPI);
+                int x = db.SaveChanges();
+                return error;
+            }
+
+
+        }
+
+        public static void UpDateStockList(AzurePayrollDbContext db, DataGridView lb)
+        {
+            var list = db.PurchaseItems.Select(c => new Stock
+            {
+                Barcode = c.Barcode,
+                CostPrice = c.CostPrice,
+                EntryStatus = EntryStatus.Added,
+                HoldQty = 0,
+                IsReadOnly = true,
+                MarkedDeleted = false,
+                MRP = 0,
+                MultiPrice = false,
+                PurhcaseQty = c.Qty,
+                SoldQty = 0,
+                StoreId = "ARD",
+                Unit = Unit.NoUnit,
+                UserId = "Auto"
+            }).ToList();
+
+            var bList = list.GroupBy(c => c.Barcode).Select(c => new { c.Key, ctr = c.Count() })
+                .Where(c => c.ctr > 1)
+                .ToList();
+            foreach (var item in bList)
+            {
+                var pItems = list.Where(c => c.Barcode == item.Key).ToList();
+                var itm = pItems[0];
+                itm.PurhcaseQty = 0;
+
+                for (int i = 0; i < pItems.Count; i++)
+                {
+                    list.Remove(pItems[i]);
+                    itm.PurhcaseQty += pItems[i].PurhcaseQty;
+
+                    if (itm.MRP != pItems[i  ].MRP)
+                    {
+                        if (itm.MRP < pItems[i].MRP)
+                            itm.MRP = pItems[i].MRP;
+                        //else itm.MRP = pItems[i].MRP;
+                        itm.MultiPrice = true;
+                    }
+                    if (itm.CostPrice != pItems[i].CostPrice)
+                    {
+                        var cp = (itm.CostPrice * itm.PurhcaseQty) + (pItems[i].CostPrice * pItems[i].PurhcaseQty);
+                        itm.CostPrice = Math.Round(cp / itm.PurhcaseQty + pItems[i].PurhcaseQty, 2);
+                        itm.MultiPrice = true;
+                    }
+                }
+                list.Add(itm);
+
+            }
+            lb.DataSource = list;
+            db.Stocks.AddRange(list);
+            db.SaveChanges();
+
+        }
+        public static List<Stock> UpdateUnit(AzurePayrollDbContext db)
+        {
+            var stocks = db.Stocks.ToList();
+            var pis = db.ProductItems.Select(c => new {c.Barcode, c.Unit }).ToList();
+            foreach (var stock in stocks)
+            {
+                stock.Unit=pis.Where(c=>c.Barcode==stock.Barcode).First().Unit;
+
+            }
+            db.Stocks.UpdateRange(stocks);
+            db.SaveChanges();
+            return stocks;
         }
 
         public static /*List<PurchaseItem>*/ List<string> ProcessPurchaseItem(AzurePayrollDbContext db, DataTable dt)

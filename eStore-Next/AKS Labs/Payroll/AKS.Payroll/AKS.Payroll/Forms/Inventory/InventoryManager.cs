@@ -7,20 +7,71 @@ namespace AKS.Payroll.Forms.Inventory
 {
     public class SaleInventory
     {
+
+        public static string INCode(int count )
+        {
+            string a = "";
+            if (count < 10) a = $"000{count}";
+            else if (count >= 10 && count < 100) a = $"00{count}";
+            else if (count >= 100 && count < 1000) a = $"0{count}";
+            else a = $"{count}";
+            return a;
+        }
+
+
         //Voyger
+        public static void ProcessSaleInvoice(AzurePayrollDbContext db, DataTable dt)
+        {
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                ProductSale sale = new ProductSale
+                {
+                    Adjusted = false,
+                    EntryStatus = EntryStatus.Added,
+                    FreeQty = 0,
+                    InvoiceType = InvoiceType.Sales,
+                    IsReadOnly = false,
+                    MarkedDeleted = false,
+                    StoreId = "ARD",
+                    OnDate = DateTime.Parse(dt.Rows[i]["Invoice Date"].ToString()),
+                    InvoiceNo = dt.Rows[i]["Invoice No"].ToString(),
+                    BilledQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString()),
+                    TotalDiscountAmount = decimal.Parse(dt.Rows[i]["Discount Amt"].ToString()),
+                    Paid = true,
+                    Tailoring = false,
+                    Taxed = false,
+                    UserId = "Auto",
+                    TotalTaxAmount = decimal.Parse(dt.Rows[i]["Tax Amt"].ToString()),
+                    TotalPrice = decimal.Parse(dt.Rows[i]["Bill Amt"].ToString()),
+                    TotalMRP = decimal.Parse(dt.Rows[i]["MRP"].ToString()),
+                    TotalBasicAmount = decimal.Parse(dt.Rows[i]["Basic Amt"].ToString()),
+                    RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString()),
+                };
+                sale.InvoiceCode = $"ARD/{sale.OnDate.Year}/{INCode(i)}";
+                if (dt.Rows[i]["Invoice Type"].ToString() == "Sales")
+                    sale.InvoiceType = InvoiceType.Sales;
+                else if (dt.Rows[i]["Invoice Type"].ToString()== "Sales Return")
+                    sale.InvoiceType = InvoiceType.SalesReturn;
+                //Process Payment also here.
+            }
+        }
         public static void ProcessSaleEntry(AzurePayrollDbContext db, DataTable dt)
         {
-            for(int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 SaleItem item = new SaleItem
                 {
-                    Adjusted=false,
-                    Barcode = dt.Rows[i]["Barcode"].ToString(), 
-                    BilledQty=decimal.Parse(dt.Rows[i]["Qty"].ToString()),
-                    DiscountAmount=0, 
-                    FreeQty=0, 
-                    InvoiceCode="", LastPcs=false, TaxAmount=0, 
-                    Unit=Unit.NoUnit, Value=0
+                    Adjusted = false,
+                    Barcode = dt.Rows[i]["Barcode"].ToString(),
+                    BilledQty = decimal.Parse(dt.Rows[i]["Qty"].ToString()),
+                    DiscountAmount = 0,
+                    FreeQty = 0,
+                    InvoiceCode = "",
+                    LastPcs = false,
+                    TaxAmount = 0,
+                    Unit = Unit.NoUnit,
+                    Value = 0
                 };
             }
         }
@@ -950,7 +1001,7 @@ namespace AKS.Payroll.Forms.Inventory
                     list.Remove(pItems[i]);
                     itm.PurhcaseQty += pItems[i].PurhcaseQty;
 
-                    if (itm.MRP != pItems[i  ].MRP)
+                    if (itm.MRP != pItems[i].MRP)
                     {
                         if (itm.MRP < pItems[i].MRP)
                             itm.MRP = pItems[i].MRP;
@@ -975,10 +1026,10 @@ namespace AKS.Payroll.Forms.Inventory
         public static List<Stock> UpdateUnit(AzurePayrollDbContext db)
         {
             var stocks = db.Stocks.ToList();
-            var pis = db.ProductItems.Select(c => new {c.Barcode, c.Unit }).ToList();
+            var pis = db.ProductItems.Select(c => new { c.Barcode, c.Unit }).ToList();
             foreach (var stock in stocks)
             {
-                stock.Unit=pis.Where(c=>c.Barcode==stock.Barcode).First().Unit;
+                stock.Unit = pis.Where(c => c.Barcode == stock.Barcode).First().Unit;
 
             }
             db.Stocks.UpdateRange(stocks);

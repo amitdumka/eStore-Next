@@ -153,8 +153,14 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal FreeQty { get; set; }
         public decimal TotalQty { get { return BilledQty + FreeQty; } }
 
+        public decimal TotalMRP { get; set; }
+        
         public decimal TotalDiscountAmount { get; set; }
+
+        public decimal TotalBasicAmount { get; set; }
         public decimal TotalTaxAmount { get; set; }
+
+        public decimal RoundOff { get; set; }
         public decimal TotalPrice { get; set; }
 
         public bool Taxed { get; set; }

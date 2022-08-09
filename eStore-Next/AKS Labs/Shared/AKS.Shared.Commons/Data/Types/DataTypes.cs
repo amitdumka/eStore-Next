@@ -61,7 +61,7 @@ public enum VPayMode { CA, DC, CC, Mix, Wal, CRD, OTH }
 // Aprajita Retails Context
 //public enum WalletType { PayTm, GooglePay, PhonePay, AirtelPay, BhimPay, Others }
 
-public enum PayMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Points, Others, Coupons, MixPayments, UPI };
+public enum PayMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Points, Others, Coupons, MixPayments, UPI,SaleReturn };
 
 public enum PaymentMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Others, UPI };
 

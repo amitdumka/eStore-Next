@@ -215,9 +215,8 @@ namespace AKS.Shared.Commons.Models.Inventory
         public CardType CardType { get; set; }
         public int CardLastDigit { get; set; }
         public int AuthCode { get; set; }
-        public string EDCTerminalId { get; set; }
+        public string? EDCTerminalId { get; set; }
         public virtual EDCTerminal PosMachine { get; set; }
-
     }
 
     [Table("V1_Brands")]

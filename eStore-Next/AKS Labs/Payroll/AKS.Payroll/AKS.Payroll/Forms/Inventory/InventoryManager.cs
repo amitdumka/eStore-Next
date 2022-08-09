@@ -18,11 +18,66 @@ namespace AKS.Payroll.Forms.Inventory
             return a;
         }
 
+        public static PayMode SetPaymentMode(string types)
+        {
+            PayMode mode;
+            switch (types)
+            {
+                case "CRD":
+                    mode = PayMode.Card;
+                    break;
+                case "CAS":
+                    mode = PayMode.Cash;
+                    break;
+                case "SR": mode = PayMode.SaleReturn; break;
+                case "Mix":
+                    mode = PayMode.MixPayments; break;
+                default:
+                    mode = PayMode.Others;
+                    break;
+            }
+            return mode;
+        }
+
+        public static void AddPayment(AzurePayrollDbContext db,string inv, string types, decimal amount)
+        {
+            PayMode mode;
+            switch (types)
+            {
+                case "CRD":
+                    mode = PayMode.Card;
+                    break;
+                case "CAS":
+                    mode = PayMode.Cash;
+                    break;
+                case "SR": mode = PayMode.SaleReturn; break;
+                case "Mix":
+                    mode = PayMode.MixPayments; break;
+                default:
+                    mode= PayMode.Others;
+                    break;
+            }
+            SalePaymentDetail detail = new SalePaymentDetail {
+            InvoiceCode = inv, PayMode=mode, PaidAmount=amount, RefId="#Imported so Missing#",
+            
+            };
+            db.SalePaymentDetails.Add(detail);
+            if(mode == PayMode.Card)
+            {
+                //Need to handle EDCTerminal
+                CardPaymentDetail card = new CardPaymentDetail { 
+                AuthCode=0, CardLastDigit=0, CardType=CardType.Visa, 
+                Card=Card.DebitCard, InvoiceCode=inv, PaidAmount=amount, 
+                EDCTerminalId=String.Empty,
+                };
+                db.CardPaymentDetails.Add(card);
+            }
+        }
 
         //Voyger
-        public static void ProcessSaleInvoice(AzurePayrollDbContext db, DataTable dt)
+        public static List<ProductSale> ProcessSaleInvoice(AzurePayrollDbContext db, DataTable dt)
         {
-
+            List<ProductSale> sales = new List<ProductSale>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 ProductSale sale = new ProductSale
@@ -47,14 +102,48 @@ namespace AKS.Payroll.Forms.Inventory
                     TotalMRP = decimal.Parse(dt.Rows[i]["MRP"].ToString()),
                     TotalBasicAmount = decimal.Parse(dt.Rows[i]["Basic Amt"].ToString()),
                     RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString()),
+                    SalesmanId="SMN/2016/001"
                 };
-                sale.InvoiceCode = $"ARD/{sale.OnDate.Year}/{INCode(i)}";
-                if (dt.Rows[i]["Invoice Type"].ToString() == "Sales")
+                sale.InvoiceCode = $"ARD/{sale.OnDate.Year}/{INCode(i+1)}";
+                
+                if (dt.Rows[i]["Invoice Type"].ToString() == "SALES")
                     sale.InvoiceType = InvoiceType.Sales;
-                else if (dt.Rows[i]["Invoice Type"].ToString()== "Sales Return")
+                else if (dt.Rows[i]["Invoice Type"].ToString()== "SALES RETURN")
                     sale.InvoiceType = InvoiceType.SalesReturn;
-                //Process Payment also here.
+
+                //AddPayment(db, sale.InvoiceCode, dt.Rows[i]["Payment Type"].ToString(), sale.TotalPrice);
+                var mode = SetPaymentMode(dt.Rows[i]["Payment Type"].ToString());
+                SalePaymentDetail detail = new SalePaymentDetail
+                {
+                    InvoiceCode = sale.InvoiceCode,
+                    PayMode = mode,
+                    PaidAmount = sale.TotalPrice,
+                    RefId = "#Imported so Missing#",
+
+                };
+                db.SalePaymentDetails.Add(detail);
+                if (mode == PayMode.Card)
+                {
+                    //Need to handle EDCTerminal
+                    CardPaymentDetail card = new CardPaymentDetail
+                    {
+                        AuthCode = 0,
+                        CardLastDigit = 0,
+                        CardType = CardType.Visa,
+                        Card = Card.DebitCard,
+                        InvoiceCode = sale.InvoiceCode,
+                        PaidAmount = sale.TotalPrice,
+                        EDCTerminalId = "EDC/2016/999",
+                    };
+                    db.CardPaymentDetails.Add(card);
+                }
+                sales.Add(sale);
+                
             }
+
+            db.ProductSales.AddRange(sales);
+            int x = db.SaveChanges();
+            return sales;
         }
         public static void ProcessSaleEntry(AzurePayrollDbContext db, DataTable dt)
         {
@@ -76,6 +165,7 @@ namespace AKS.Payroll.Forms.Inventory
             }
         }
     }
+
     public class InventoryManager
     {
         public AzurePayrollDbContext azureDb;

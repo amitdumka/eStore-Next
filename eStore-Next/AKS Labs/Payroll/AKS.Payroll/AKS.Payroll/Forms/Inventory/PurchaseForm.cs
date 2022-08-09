@@ -71,7 +71,9 @@ namespace AKS.Payroll.Forms.Inventory
                 //    Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem),
                 //    Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
 
-                DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 6, 1, 7037, 16);
+                // DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 6, 1, 7037, 16);
+                //sale summary 
+                DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
 
                 dgvPurchase.DataSource = DataTable;
             }
@@ -96,7 +98,8 @@ namespace AKS.Payroll.Forms.Inventory
                 ///dgvPurchase.DataSource = data;
                 //listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb).Result; 
                 // Inventory.UpDateStockList(azureDb, dgvPurchase);
-              // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
+                // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
+                dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
             }
             catch (Exception ex)
             {

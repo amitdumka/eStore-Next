@@ -103,7 +103,7 @@ namespace AKS.Payroll.Forms.Inventory
                 // dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
                 // MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
                 //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
-                int x = SaleInventory.UpdateHSNCode(azureDb).Result;
+                int x = SaleInventory.UpdateUnit(azureDb);
                 MessageBox.Show("saved:x= "+ x );
                 
             }

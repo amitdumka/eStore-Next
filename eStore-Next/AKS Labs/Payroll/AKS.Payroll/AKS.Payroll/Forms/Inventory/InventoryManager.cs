@@ -349,6 +349,33 @@ namespace AKS.Payroll.Forms.Inventory
             return x;
         }
 
+        public static int UpdateUnit(AzurePayrollDbContext db)
+        {
+            var si = db.SaleItems.ToList();
+            var pi = db.ProductItems.Select(c => new {c.Barcode, c.Unit }).ToList();
+            foreach (var im in si)
+            {
+                try
+                {
+                    im.Unit = pi.First(c => c.Barcode == im.Barcode).Unit;
+                    db.SaleItems.Update(im);
+                }
+                catch (NullReferenceException)
+                {
+                    im.Unit = Unit.Nos;
+                    db.SaleItems.Update(im);
+                }
+                catch (Exception)
+                {
+                    im.Unit = Unit.Nos;
+                    db.SaleItems.Update(im);
+                }
+
+            }
+            return db.SaveChanges();
+
+        }
+
 
 
     }

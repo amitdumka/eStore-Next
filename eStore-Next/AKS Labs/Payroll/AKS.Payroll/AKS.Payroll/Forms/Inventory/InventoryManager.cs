@@ -199,87 +199,160 @@ namespace AKS.Payroll.Forms.Inventory
                 item.BillAmt = decimal.Parse(dt.Rows[i]["Bill Amt"].ToString());
                 item.BrandName = dt.Rows[i]["Brand Name"].ToString();
 
-                item.CAmt = string.IsNullOrEmpty(dt.Rows[i]["CGST Amt"].ToString())?0:decimal.Parse(dt.Rows[i]["CGST Amt"].ToString());
+                item.CAmt = string.IsNullOrEmpty(dt.Rows[i]["CGST Amt"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["CGST Amt"].ToString());
                 item.disc = decimal.Parse(dt.Rows[i]["Discount Amt"].ToString());
-                 item.HSNCode = dt.Rows[i]["HSN Code"].ToString();
-                 item.LineTotal = string.IsNullOrEmpty(dt.Rows[i]["Line Total"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Line Total"].ToString());
-                 item.MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString());
-                 item.RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString());
-                 item.SAmt = decimal.Parse(dt.Rows[i]["SGST Amt"].ToString());
-                 item.Tailoring = dt.Rows[i]["TAILORING FLAG"].ToString();
-                  item.Tax = string.IsNullOrEmpty(dt.Rows[i]["Tax Amt"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Tax Amt"].ToString());
-                  item.SalesManName = dt.Rows[i]["SalesMan Name"].ToString();
-                  item.OnDate = DateTime.Parse(dt.Rows[i]["Invoice Date"].ToString());
-                  item.ProductName = dt.Rows[i]["Product Name"].ToString();
-                  item.InvNo = dt.Rows[i]["Invoice No"].ToString();
-                  item.PaymentMode = dt.Rows[i]["Payment Mode"].ToString();
-                  item.InvType = dt.Rows[i]["Invoice Type"].ToString();
-                  item.LP = dt.Rows[i]["LP Flag"].ToString();
-               // };
+                item.HSNCode = dt.Rows[i]["HSN Code"].ToString();
+                item.LineTotal = string.IsNullOrEmpty(dt.Rows[i]["Line Total"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Line Total"].ToString());
+                item.MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString());
+                item.RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString());
+                item.SAmt = decimal.Parse(dt.Rows[i]["SGST Amt"].ToString());
+                item.Tailoring = dt.Rows[i]["TAILORING FLAG"].ToString();
+                item.Tax = string.IsNullOrEmpty(dt.Rows[i]["Tax Amt"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Tax Amt"].ToString());
+                item.SalesManName = dt.Rows[i]["SalesMan Name"].ToString();
+                item.OnDate = DateTime.Parse(dt.Rows[i]["Invoice Date"].ToString());
+                item.ProductName = dt.Rows[i]["Product Name"].ToString();
+                item.InvNo = dt.Rows[i]["Invoice No"].ToString();
+                item.PaymentMode = dt.Rows[i]["Payment Mode"].ToString();
+                item.InvType = dt.Rows[i]["Invoice Type"].ToString();
+                item.LP = dt.Rows[i]["LP Flag"].ToString();
+                // };
                 svmList.Add(item);
             }
             string filname = @"d:\apr\2022\aug\22\svm";
-            
+
             Directory.CreateDirectory(filname);
-            _ = Utils.ToJsonAsync<SVM>(filname+@"\sale.json", svmList);
+            _ = Utils.ToJsonAsync<SVM>(filname + @"\sale.json", svmList);
             string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
             _ = Utils.ToJsonAsync(filname2, ivList);
             return 101;
         }
 
+        public static async Task<int> UpdateSM(AzurePayrollDbContext db)
+        {
+            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
+            var svmList = await Utils.FromJsonToObject<SVM>(filename);
+            var invList = svmList.GroupBy(c => new { c.InvNo, NAME = c.SalesManName.ToLower() }).ToList();
+            var smList = db.Salesmen.Select(c => new { c.SalesmanId, NAME = c.Name.ToLower() }).ToList();
+            var ivs = db.ProductSales.ToList();
+            foreach (var item in invList)
+            {
+                try
+                {
+                    var smid = smList.Where(c => c.NAME.Contains(item.Key.NAME)).FirstOrDefault().SalesmanId;
+                    var inv = ivs.Where(c => c.InvoiceNo == item.Key.InvNo).First();
+                    inv.SalesmanId = smid;
+                    db.ProductSales.Update(inv);
+                }
+                catch (Exception)
+                {
+
+
+                }
+
+            }
+            return db.SaveChanges();
+        }
+
+
         public static async Task<int> SaleItems(AzurePayrollDbContext db)
         {
             string filename = @"d:\apr\2022\aug\22\svm\sale.json";
-           // string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
+            string filepath = @"d:\apr\2022\aug\22\svm\sale";
+            // Directory.CreateDirectory(filepath);
+            // string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
             //var ivList = Utils.FromJsonToObject<ProductSale>(filname2);
             var ivList = db.ProductSales
                 .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
                 .ToList();
             var svmList = await Utils.FromJsonToObject<SVM>(filename);
-
-            foreach (var item in svmList)
+            string name = "";
+            int z = 0;
+            int y = 0;
+            string fn = "";
+            int x = 0;
+            try
             {
-                SaleItem saleItem = new SaleItem
-                {
-                    Adjusted = false,
-                    Barcode = item.Barcode,
-                    BilledQty = item.Qty,
-                    DiscountAmount = item.disc,
-                    FreeQty = 0,
-                    InvoiceCode = ivList.Where(c => c.InvoiceNo == item.InvNo).First().InvoiceNo,
-                    LastPcs = false,
-                    TaxAmount = item.Tax,
-                    Unit = Unit.NoUnit,
-                    Value = item.LineTotal
-                };
-                db.SaleItems.Add(saleItem);
+
+                //var a = svmList.GroupBy(c => c.InvNo).ToList();
+                //foreach (var item in a)
+                //{
+                //    var list = svmList.Where(c => c.InvNo == item.Key).ToList();
+                //    _ = Utils.ToJsonAsync<SVM>(Path.Combine(filepath,$"{item.Key}.json"), list);
+                //}
+
+                string[] filePaths = Directory.GetFiles(filepath, "*.json",
+                                         SearchOption.TopDirectoryOnly);
+
+
+
+                //foreach (var nm in filePaths)
+                //{
+                //    fn = nm;
+                //    z++;
+                //    var invList = await Utils.FromJsonToObject<SVM>(nm);
+                //    //string ic = ivList.Where(c => c.InvoiceNo == invList[0].InvNo).First().InvoiceCode;
+                //    name = invList[0].InvNo;
+                //    foreach (var item in invList)
+                //    {
+                //        x++;
+                //        name += "#" + item.Barcode;
+                //    //SaleItem saleItem = new SaleItem
+                //    //{
+                //    //    Adjusted = false,
+                //    //    Barcode = item.Barcode,
+                //    //    BilledQty = item.Qty,
+                //    //    DiscountAmount = item.disc,
+                //    //    FreeQty = 0,
+                //    //    InvoiceCode = ic,
+                //    //    LastPcs = false,
+                //    //    TaxAmount = item.Tax,
+                //    //    Unit = Unit.NoUnit,
+                //    //    Value = item.LineTotal
+                //    };
+                //    //db.SaleItems.Add(saleItem);
+                //    //}
+                //    // x += db.SaveChanges();
+                //}
+
+                return x;
             }
-            int x= db.SaveChanges();
-            return x;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(name);
+                Console.WriteLine(x);
+                Console.WriteLine(z);
+                Console.WriteLine(y);
+                Console.WriteLine(fn);
+
+                return x;
+            }
+
         }
 
         public static async Task<int> UpdateHSNCode(AzurePayrollDbContext db)
         {
             string filname = @"d:\apr\2022\aug\22\svm\sale.json";
             var svmList = await Utils.FromJsonToObject<SVM>(filname);
-            var filter = svmList.Where(c => string.IsNullOrEmpty(c.HSNCode) == false).ToList();
-            var filter2 = filter.GroupBy(c => new { c.Barcode, c.HSNCode })
-                .Select(c => new { c.Key.Barcode, c.Key.HSNCode})
+            var filter = svmList.Where(c => string.IsNullOrEmpty(c.HSNCode) == false)
+            .GroupBy(c => new { c.Barcode, c.HSNCode })
+                .Select(c => new { c.Key.Barcode, c.Key.HSNCode })
                 .ToList();
-            foreach (var item in filter2)
+            var pList = db.ProductItems.ToList();
+            foreach (var item in filter)
             {
-                var pi = db.ProductItems.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
-                pi.HSNCode=item.HSNCode;
+                var pi = pList.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
+                pi.HSNCode = item.HSNCode;
                 db.ProductItems.Update(pi);
             }
-          int x=  db.SaveChanges();
+            int x = db.SaveChanges();
             return x;
         }
-   
 
-    
+
+
     }
-    
+
     public class SVM
     {
         //InvoiceNo	InvoiceDate	InvoiceType	BrandName	ProductName	ItemDesc	HSNCode	BARCODE

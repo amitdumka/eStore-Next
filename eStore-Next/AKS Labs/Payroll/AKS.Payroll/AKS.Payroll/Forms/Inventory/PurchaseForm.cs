@@ -61,7 +61,7 @@ namespace AKS.Payroll.Forms.Inventory
             //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
            // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
            // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
-           dgvPurchase.DataSource=
+           dgvPurchase.DataSource= azureDb.SaleItems.ToList();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -102,8 +102,9 @@ namespace AKS.Payroll.Forms.Inventory
                 // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
                 // dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
                 // MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
-                 //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
-                 MessageBox.Show("saved:x= "+  SaleInventory.SaleItems(azureDb));
+                //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
+                int x = SaleInventory.UpdateHSNCode(azureDb).Result;
+                MessageBox.Show("saved:x= "+ x );
                 
             }
             catch (Exception ex)

@@ -61,6 +61,7 @@ namespace AKS.Payroll.Forms.Inventory
             //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
            // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
            // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
+           dgvPurchase.DataSource=
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -73,8 +74,8 @@ namespace AKS.Payroll.Forms.Inventory
 
                 // DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 6, 1, 7037, 16);
                 //sale summary 
-                DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
-
+                //DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
+                DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
                 dgvPurchase.DataSource = DataTable;
             }
             catch (Exception ex)
@@ -99,7 +100,11 @@ namespace AKS.Payroll.Forms.Inventory
                 //listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb).Result; 
                 // Inventory.UpDateStockList(azureDb, dgvPurchase);
                 // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
-                dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
+                // dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
+                // MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
+                 //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
+                 MessageBox.Show("saved:x= "+  SaleInventory.SaleItems(azureDb));
+                
             }
             catch (Exception ex)
             {

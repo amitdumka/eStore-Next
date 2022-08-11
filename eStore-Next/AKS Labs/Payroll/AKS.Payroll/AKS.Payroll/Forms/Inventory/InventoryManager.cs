@@ -178,7 +178,7 @@ namespace AKS.Payroll.Forms.Inventory
                 };
             }
         }
-        public static void JsonSaleEntry(AzurePayrollDbContext db, DataTable dt)
+        public static int JsonSaleEntry(AzurePayrollDbContext db, DataTable dt)
         {
             var ivList = db.ProductSales
                 .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
@@ -191,38 +191,40 @@ namespace AKS.Payroll.Forms.Inventory
                 // 				CESS Amt		Round Off			
                 //	Coupon %	Coupon Amt	SUB TYPE	Bill Discount	 
 
-                SVM item = new SVM
-                {
-                    basic = Utils.ToDecimal(dt.Rows[i]["Basic Amt"].ToString()),
-                    Barcode = dt.Rows[i]["BAR CODE"].ToString(),
-                    Qty = decimal.Parse(dt.Rows[i]["Quantity"].ToString()),
-                    BillAmt = decimal.Parse(dt.Rows[i]["Bill Amt"].ToString()),
-                    BrandName = dt.Rows[i]["Brand Name"].ToString(),
+                SVM item = new SVM();
+                //{
+                item.basic = Utils.ToDecimal(dt.Rows[i]["Basic Amt"].ToString());
+                item.Barcode = dt.Rows[i]["BAR CODE"].ToString();
+                item.Qty = decimal.Parse(dt.Rows[i]["Quantity"].ToString());
+                item.BillAmt = decimal.Parse(dt.Rows[i]["Bill Amt"].ToString());
+                item.BrandName = dt.Rows[i]["Brand Name"].ToString();
 
-                    CAmt = decimal.Parse(dt.Rows[i]["CGST Amt"].ToString()),
-                    disc = decimal.Parse(dt.Rows[i]["Discount Amt"].ToString()),
-                    HSNCode = dt.Rows[i]["HSN Code"].ToString(),
-                    LineTotal = decimal.Parse(dt.Rows[i]["Line Total"].ToString()),
-                    MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString()),
-                    RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString()),
-                    SAmt = decimal.Parse(dt.Rows[i]["SGST Amt"].ToString()),
-                    Tailoring = dt.Rows[i]["TAILORING FLAG"].ToString(),
-                    Tax = decimal.Parse(dt.Rows[i]["Tax Amt"].ToString()),
-                    SalesManName = dt.Rows[i]["SalesMan Name"].ToString(),
-                    OnDate = DateTime.Parse(dt.Rows[i]["Invoice Date"].ToString()),
-                    ProductName = dt.Rows[i]["Product Name"].ToString(),
-                    InvNo = dt.Rows[i]["Invoice No"].ToString(),
-                    PaymentMode = dt.Rows[i]["Payment Mode"].ToString(),
-                    InvType = dt.Rows[i]["Invoice Type"].ToString(),
-                    LP = dt.Rows[i]["LP Flag"].ToString(),
-                };
+                item.CAmt = string.IsNullOrEmpty(dt.Rows[i]["CGST Amt"].ToString())?0:decimal.Parse(dt.Rows[i]["CGST Amt"].ToString());
+                item.disc = decimal.Parse(dt.Rows[i]["Discount Amt"].ToString());
+                 item.HSNCode = dt.Rows[i]["HSN Code"].ToString();
+                 item.LineTotal = string.IsNullOrEmpty(dt.Rows[i]["Line Total"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Line Total"].ToString());
+                 item.MRP = decimal.Parse(dt.Rows[i]["MRP"].ToString());
+                 item.RoundOff = decimal.Parse(dt.Rows[i]["Round Off"].ToString());
+                 item.SAmt = decimal.Parse(dt.Rows[i]["SGST Amt"].ToString());
+                 item.Tailoring = dt.Rows[i]["TAILORING FLAG"].ToString();
+                  item.Tax = string.IsNullOrEmpty(dt.Rows[i]["Tax Amt"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Tax Amt"].ToString());
+                  item.SalesManName = dt.Rows[i]["SalesMan Name"].ToString();
+                  item.OnDate = DateTime.Parse(dt.Rows[i]["Invoice Date"].ToString());
+                  item.ProductName = dt.Rows[i]["Product Name"].ToString();
+                  item.InvNo = dt.Rows[i]["Invoice No"].ToString();
+                  item.PaymentMode = dt.Rows[i]["Payment Mode"].ToString();
+                  item.InvType = dt.Rows[i]["Invoice Type"].ToString();
+                  item.LP = dt.Rows[i]["LP Flag"].ToString();
+               // };
                 svmList.Add(item);
             }
-            string filname = @"d:\apr\2022\aug\22\svm\sale.json";
+            string filname = @"d:\apr\2022\aug\22\svm";
+            
             Directory.CreateDirectory(filname);
-            _ = Utils.ToJsonAsync<SVM>(filname, svmList);
+            _ = Utils.ToJsonAsync<SVM>(filname+@"\sale.json", svmList);
             string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
             _ = Utils.ToJsonAsync(filname2, ivList);
+            return 101;
         }
 
         public static async Task<int> SaleItems(AzurePayrollDbContext db)

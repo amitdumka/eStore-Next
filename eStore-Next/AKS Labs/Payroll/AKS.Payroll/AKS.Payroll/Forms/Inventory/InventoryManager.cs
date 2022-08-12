@@ -1,12 +1,42 @@
 using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
+using System.Linq;
 using System.Text.Json;
 
 namespace AKS.Payroll.Forms.Inventory
 {
     public class SaleInventory
     {
+        public static int StockUpdate(AzurePayrollDbContext db, bool reg=true)
+        {
+            if (reg) {
+                var sale = db.SaleItems.GroupBy(c => new { c.Barcode, c.BilledQty })
+                    .Select(c => new { c.Key.Barcode, Total = c.Sum(x => x.BilledQty) })
+                    .ToList();
+                var stocks = db.Stocks.ToList();
+                foreach (var im in sale)
+                {
+                    var st = stocks.FirstOrDefault(c => c.Barcode == im.Barcode);
+                    st.SoldQty = im.Total;
+                    db.Stocks.Update(st);
+                }
+            }else
+            {
+                var sale = db.SaleItems.GroupBy(c => new { c.Barcode, c.BilledQty })
+                .Select(c => new { c.Key.Barcode, Total = c.Sum(x => x.BilledQty) })
+                .ToList();
+                var stocks = db.Stocks.ToList();
+                foreach (var im in sale)
+                {
+                    var st = stocks.FirstOrDefault(c => c.Barcode == im.Barcode);
+                    st.SoldQty = im.Total;
+                    db.Stocks.Update(st);
+                }
+            }
+            
+            return db.SaveChanges();
+        }
 
         public static string INCode(int count)
         {

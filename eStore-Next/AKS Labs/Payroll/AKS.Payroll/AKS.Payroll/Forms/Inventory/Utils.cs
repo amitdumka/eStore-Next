@@ -7,17 +7,18 @@ namespace AKS.Payroll.Forms.Inventory
     {
         public static DateTime ToDate(string date)
         {
-            char c='-';
-            if(date.Contains('/')) c='/';
+            char c = '-';
+            if (date.Contains('/')) c = '/';
 
             var d = date.Split(c);
-            return new DateTime(Int32.Parse(d[2]), Int32.Parse(d[1]), Int32.Parse(d[0]));
+            return new DateTime(Int32.Parse(d[2].Split(" ")[0]), Int32.Parse(d[1]), Int32.Parse(d[0]));
         }
 
         public static int ReadInt(TextBox t)
         {
             return Int32.Parse(t.Text.Trim());
         }
+
         public static decimal ReadDecimal(TextBox t)
         {
             return decimal.Parse(t.Text.Trim());
@@ -35,11 +36,13 @@ namespace AKS.Payroll.Forms.Inventory
             await JsonSerializer.SerializeAsync(createStream, ObjList);
             await createStream.DisposeAsync();
         }
+
         public static async Task<List<PurchaseItem>?> FromJson<T>(string filename)
         {
             using FileStream openStream = File.OpenRead(filename);
             return JsonSerializer.Deserialize<List<PurchaseItem>>(openStream);
         }
+
         public static async Task<List<T>?> FromJsonToObject<T>(string filename)
         {
             using FileStream openStream = File.OpenRead(filename);

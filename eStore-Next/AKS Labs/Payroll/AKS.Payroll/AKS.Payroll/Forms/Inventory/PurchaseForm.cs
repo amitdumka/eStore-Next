@@ -3,7 +3,6 @@ using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Text.Json;
 
 namespace AKS.Payroll.Forms.Inventory
 {
@@ -55,21 +54,25 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (rbStocks.Checked) LoadStock();
         }
-        List<List<PurchaseProduct>> x;
+
+        private List<List<PurchaseProduct>> x;
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
+            //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge();
             // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
             // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
             //dgvPurchase.DataSource= azureDb.SaleItems.ToList();
-            Histories = StockHistory.AllStockHistory(azureDb,"ARD");
+            Histories = StockHistory.AllStockHistory(azureDb, "ARD");
             foreach (var item in Histories)
             {
                 lbYearList.Items.Add(item.Key);
-                _=Utils.ToJsonAsync(@"d:\arp\his\" + item.Key + ".json", item.Value);
+                _ = Utils.ToJsonAsync(@"d:\arp\his\" + item.Key + ".json", item.Value);
             }
         }
-        SortedDictionary<string, List<StockHistory>> Histories;
+
+        private SortedDictionary<string, List<StockHistory>> Histories;
+
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -79,9 +82,10 @@ namespace AKS.Payroll.Forms.Inventory
                 //    Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
 
                 // DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 6, 1, 7037, 16);
-                //sale summary 
+                //sale summary
                 //DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
-                DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
+                // DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
+                DataTable = ImportData.ReadExcelToDatatable(@"d:\manual.xlsx", 1, 1, 335, 11);
                 dgvPurchase.DataSource = DataTable;
             }
             catch (Exception ex)
@@ -89,7 +93,9 @@ namespace AKS.Payroll.Forms.Inventory
                 Console.WriteLine(ex.Message);
             }
         }
-        List<PurchaseProduct> pp;
+
+        private List<PurchaseProduct> pp;
+
         private void btnCancle_Click(object sender, EventArgs e)
         {
             try
@@ -103,15 +109,15 @@ namespace AKS.Payroll.Forms.Inventory
                 // listBox1.DataSource= data;
 
                 ///dgvPurchase.DataSource = data;
-                //listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb).Result; 
+                //listBox1.DataSource = Inventory.ValidatePurchaseItem(azureDb).Result;
                 // Inventory.UpDateStockList(azureDb, dgvPurchase);
                 // dgvPurchase.DataSource= Inventory.UpdateUnit(azureDb);
                 // dgvPurchase.DataSource = SaleInventory.ProcessSaleInvoice(azureDb, DataTable);
                 // MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
                 //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
-                int x = SaleInventory.StockUpdate(azureDb);
-                MessageBox.Show("saved:x= "+ x );
-                
+                //int x = SaleInventory.StockUpdate(azureDb);
+                //MessageBox.Show("saved:x= " + x);
+                dgvPurchase.DataSource = ManualSale.UploadManual(azureDb, DataTable);
             }
             catch (Exception ex)
             {

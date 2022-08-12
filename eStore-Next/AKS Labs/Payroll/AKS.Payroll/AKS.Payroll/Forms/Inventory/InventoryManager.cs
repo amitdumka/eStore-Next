@@ -14,6 +14,7 @@ namespace AKS.Payroll.Forms.Inventory
         public decimal Rate { get; set; }
         public string Discount { get; set; }
         public decimal Amount { get; set; }
+        public decimal LineTotal { get; set; }
         public decimal BillAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public string Salesman { get; set; }
@@ -43,10 +44,12 @@ namespace AKS.Payroll.Forms.Inventory
                     InvoiceNo = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.InvNo}",
 
                     TotalBasicAmount = 0,
-                    TotalDiscountAmount = 0,
-                    TotalMRP = 0,
-                    TotalPrice = 0,
                     TotalTaxAmount = 0,
+
+                    TotalDiscountAmount = GetDiscount(inv.Discount, inv.Amount),
+
+                    TotalMRP = inv.Amount,
+                    TotalPrice = inv.TotalAmount,
 
                     Paid = false,
                     MarkedDeleted = false,
@@ -73,7 +76,8 @@ namespace AKS.Payroll.Forms.Inventory
                     LastPcs = false,
                     Unit = Unit.NoUnit,
                     DiscountAmount = GetDiscount(inv.Discount, inv.Amount),
-                    Value = 0,
+                    Value = inv.LineTotal,
+                    TaxAmount = 0,
                 };
             }
         }
@@ -84,10 +88,15 @@ namespace AKS.Payroll.Forms.Inventory
             int LastSN = 0;
             string LastInv = "";
             DateTime LastInvDate = DateTime.Now;
+            string LastSM = "";
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (dt.Rows[i]["Barcode"].ToString().Contains("Cancle"))
+                if (i == 105)
+                {
+                    Console.WriteLine(i.ToString());
+                }
+                if (dt.Rows[i]["Barcode"].ToString().Contains("Cancel"))
                 {
                     //Add For Cancel
                     MInv inv = new()
@@ -95,14 +104,15 @@ namespace AKS.Payroll.Forms.Inventory
                         Amount = 0,
                         Barcode = "CANCLE INV",
                         BillAmount = 0,
-                        Discount = "0%",
+                        Discount = "0",
                         InvNo = dt.Rows[i]["Inv No"].ToString(),
                         OnDate = Utils.ToDate(dt.Rows[i]["Date"].ToString()),
                         Qty = 0,
                         Rate = 0,
                         Salesman = "",
                         SNo = string.IsNullOrEmpty(dt.Rows[i]["SN"].ToString()) ? LastSN : Int32.Parse(dt.Rows[i]["SN"].ToString()),
-                        TotalAmount = 0
+                        TotalAmount = 0,
+                        LineTotal = 0
                     };
                     list.Add(inv);
                 }
@@ -110,27 +120,30 @@ namespace AKS.Payroll.Forms.Inventory
                 {
                     MInv inv = new()
                     {
-                        Amount = decimal.Parse(dt.Rows[i]["Amount"].ToString()),
+                        //Amount = decimal.Parse(dt.Rows[i]["Amount"].ToString().Trim()),
                         Barcode = dt.Rows[i]["BarCode"].ToString(),
-                        BillAmount = string.IsNullOrEmpty(dt.Rows[i]["Bill Amount"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Bill Amount"].ToString()),
-                        Discount = dt.Rows[i]["Discount"].ToString(),
                         InvNo = string.IsNullOrEmpty(dt.Rows[i]["Inv No"].ToString()) ? LastInv : dt.Rows[i]["Inv No"].ToString(),
-
+                        LineTotal = 0,
                         SNo = string.IsNullOrEmpty(dt.Rows[i]["SN"].ToString()) ? LastSN : Int32.Parse(dt.Rows[i]["SN"].ToString()),
-
-                        Qty = decimal.Parse(dt.Rows[i]["Qty"].ToString()),
-                        Rate = decimal.Parse(dt.Rows[i]["Rate"].ToString()),
-                        TotalAmount = decimal.Parse(dt.Rows[i]["Total Amount"].ToString()),
-                        Salesman = dt.Rows[i]["Sales Man"].ToString(),
-                        OnDate = string.IsNullOrEmpty(dt.Rows[i]["Date"].ToString()) ? LastInvDate : Utils.ToDate(dt.Rows[i]["Date"].ToString())
+                        Salesman = string.IsNullOrEmpty(dt.Rows[i]["Sales Man"].ToString()) ? LastSM : dt.Rows[i]["Sales Man"].ToString(),
                     };
+                    inv.OnDate = string.IsNullOrEmpty(dt.Rows[i]["Date"].ToString()) ? LastInvDate : Utils.ToDate(dt.Rows[i]["Date"].ToString());
+                    inv.Discount = String.IsNullOrEmpty(dt.Rows[i]["Discount"].ToString()) ? 0 + "" : (100 * decimal.Parse(dt.Rows[i]["Discount"].ToString())) + "";
+                    inv.Qty = decimal.Parse(dt.Rows[i]["Qty"].ToString().Trim());
+                    inv.Rate = decimal.Parse(dt.Rows[i]["Rate"].ToString());
+                    inv.TotalAmount = string.IsNullOrEmpty(dt.Rows[i]["Total Amount"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Total Amount"].ToString());
+
+                    inv.BillAmount = string.IsNullOrEmpty(dt.Rows[i]["Bill Amount"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Bill Amount"].ToString());
+                    inv.Amount = inv.Qty * inv.Rate;
+                    inv.LineTotal = inv.Amount - GetDiscount(inv.Discount, inv.Amount);
                     LastInv = inv.InvNo;
                     LastInvDate = inv.OnDate;
                     LastSN = inv.SNo;
+                    LastSM = inv.Salesman;
                     list.Add(inv);
                 }
             }
-            Directory.CreateDirectory(@"d:\arp\ManualInv\");
+            Directory.CreateDirectory(@"d:\apr2\ManualInv\");
             _ = Utils.ToJsonAsync(@"d:\arp\ManualInv\manual.json", list);
             return list;
         }

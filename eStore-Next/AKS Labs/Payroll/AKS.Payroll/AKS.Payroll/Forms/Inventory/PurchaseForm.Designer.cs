@@ -762,6 +762,7 @@
             this.lbYearList.Name = "lbYearList";
             this.lbYearList.Size = new System.Drawing.Size(123, 348);
             this.lbYearList.TabIndex = 0;
+            this.lbYearList.SelectedIndexChanged += new System.EventHandler(this.lbYearList_SelectedIndexChanged);
             // 
             // groupBox1
             // 

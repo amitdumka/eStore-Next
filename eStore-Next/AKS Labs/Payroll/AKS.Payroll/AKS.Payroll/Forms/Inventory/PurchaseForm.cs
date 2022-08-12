@@ -59,11 +59,17 @@ namespace AKS.Payroll.Forms.Inventory
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             //dgvPurchase.DataSource = _im.UpdateFabricCostPriceWithFreigtCharge(); 
-           // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
-           // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
-           dgvPurchase.DataSource= azureDb.SaleItems.ToList();
+            // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
+            // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
+            //dgvPurchase.DataSource= azureDb.SaleItems.ToList();
+            Histories = StockHistory.AllStockHistory(azureDb,"ARD");
+            foreach (var item in Histories)
+            {
+                lbYearList.Items.Add(item.Key);
+                _=Utils.ToJsonAsync(@"d:\arp\his\" + item.Key + ".json", item.Value);
+            }
         }
-
+        SortedDictionary<string, List<StockHistory>> Histories;
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -111,6 +117,11 @@ namespace AKS.Payroll.Forms.Inventory
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgvPurchase.DataSource = Histories.First(c => c.Key == lbYearList.SelectedValue).Value;
         }
     }
 }

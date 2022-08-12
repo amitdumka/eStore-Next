@@ -5,6 +5,15 @@ namespace AKS.Payroll.Forms.Inventory
 {
     public class Utils
     {
+        public static DateTime ToDate(string date)
+        {
+            char c='-';
+            if(date.Contains('/')) c='/';
+
+            var d = date.Split(c);
+            return new DateTime(Int32.Parse(d[2]), Int32.Parse(d[1]), Int32.Parse(d[0]));
+        }
+
         public static int ReadInt(TextBox t)
         {
             return Int32.Parse(t.Text.Trim());

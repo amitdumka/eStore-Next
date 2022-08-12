@@ -1,60 +1,141 @@
 using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
-using System.Linq;
 
 namespace AKS.Payroll.Forms.Inventory
 {
-
-    public class StockHistory
+    public class MInv
     {
+        public int SNo { get; set; }
         public DateTime OnDate { get; set; }
-        public decimal StockIn { get; set; }
-        public decimal StockOut { get; set; }
-        public decimal StockBalance { get; set; }
+        public string InvNo { get; set; }
+        public string Barcode { get; set; }
+        public decimal Qty { get; set; }
+        public decimal Rate { get; set; }
+        public string Discount { get; set; }
+        public decimal Amount { get; set; }
+        public decimal BillAmount { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Salesman { get; set; }
+    }
 
-        public static List<StockHistory> History(AzurePayrollDbContext db, string barcode)
+    public class ManualSale
+    {
+        //SN	Date	Inv No	BarCode	Qty	Rate	Discount	 Amount	Bill Amount	Total Amount	Sales Man
+
+        public static decimal GetDiscount(string dis, decimal amount)
         {
-            var purchase = db.PurchaseItems.Where(c => c.Barcode == barcode).ToList();
-            var sale = db.SaleItems.Where(c => c.Barcode == barcode).ToList();
-            List<StockHistory> stockHistories = new List<StockHistory>();
-            foreach (var item in purchase)
-            {
-                StockHistory history = new() { StockIn = item.Qty, StockOut = 0, OnDate = db.PurchaseProducts.Where(c => c.InwardNumber == item.InwardNumber).First().OnDate };
-                stockHistories.Add(history);
-            }
-            foreach (var item in sale)
-            {
-                StockHistory history = new() { StockIn = 0, StockOut = item.BilledQty, OnDate = db.ProductSales.Where(c => c.InvoiceCode == item.InvoiceCode).First().OnDate };
-                stockHistories.Add(history);
-            }
-            stockHistories = stockHistories.OrderBy(c => c.OnDate).ToList();
-            decimal bal = 0;
-            foreach (var item in stockHistories)
-            {
-                bal += item.StockIn - item.StockOut;
-                item.StockBalance = bal;
-            }
-            return stockHistories;
+            decimal d = decimal.Parse(dis.Replace("%", "").Trim());
+            var val = amount - (amount * (d / 100));
+            return val;
         }
-        /// <summary>
-        /// All Stock Histories
-        /// </summary>
-        /// <param name="db"></param>
-        /// <param name="storecode"></param>
-        /// <returns></returns>
-        public static SortedDictionary<string, List<StockHistory>> AllStockHistory(AzurePayrollDbContext db, string storecode)
-        {
-            var barcodeList = db.Stocks.Where(c => c.StoreId == storecode && c.SoldQty > 0 || c.HoldQty > 0).Select(c => c.Barcode).ToList();
 
-            SortedDictionary<string, List<StockHistory>> histories = new SortedDictionary<string, List<StockHistory>>();
-            foreach (var item in barcodeList)
+        public static void SaveManual(AzurePayrollDbContext db, List<MInv> invList)
+        {
+            List<SaleItem> saleList = new List<SaleItem>();
+            List<ProductSale> productList = new List<ProductSale>();
+
+            foreach (var inv in invList)
             {
-                histories.Add(item, History(db, item));
+                ProductSale productSale = new()
+                {
+                    InvoiceCode = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.SNo}",
+                    InvoiceNo = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.InvNo}",
+
+                    TotalBasicAmount = 0,
+                    TotalDiscountAmount = 0,
+                    TotalMRP = 0,
+                    TotalPrice = 0,
+                    TotalTaxAmount = 0,
+
+                    Paid = false,
+                    MarkedDeleted = false,
+                    IsReadOnly = false,
+                    RoundOff = 0,
+                    StoreId = "ARD",
+                    Taxed = true,
+                    Adjusted = false,
+                    EntryStatus = EntryStatus.Added,
+                    FreeQty = 0,
+                    BilledQty = inv.Qty,
+                    InvoiceType = InvoiceType.ManualSale,
+                    OnDate = inv.OnDate,
+                    Tailoring = false,
+                    UserId = "Auto",
+                };
+                SaleItem si = new()
+                {
+                    InvoiceCode = productSale.InvoiceCode,
+                    Adjusted = false,
+                    Barcode = inv.Barcode,
+                    BilledQty = inv.Qty,
+                    FreeQty = 0,
+                    LastPcs = false,
+                    Unit = Unit.NoUnit,
+                    DiscountAmount = GetDiscount(inv.Discount, inv.Amount),
+                    Value = 0,
+                };
             }
-            return histories;
+        }
+
+        public static List<MInv> UploadManual(AzurePayrollDbContext db, DataTable dt)
+        {
+            List<MInv> list = new List<MInv>();
+            int LastSN = 0;
+            string LastInv = "";
+            DateTime LastInvDate = DateTime.Now;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i]["Barcode"].ToString().Contains("Cancle"))
+                {
+                    //Add For Cancel
+                    MInv inv = new()
+                    {
+                        Amount = 0,
+                        Barcode = "CANCLE INV",
+                        BillAmount = 0,
+                        Discount = "0%",
+                        InvNo = dt.Rows[i]["Inv No"].ToString(),
+                        OnDate = Utils.ToDate(dt.Rows[i]["Date"].ToString()),
+                        Qty = 0,
+                        Rate = 0,
+                        Salesman = "",
+                        SNo = string.IsNullOrEmpty(dt.Rows[i]["SN"].ToString()) ? LastSN : Int32.Parse(dt.Rows[i]["SN"].ToString()),
+                        TotalAmount = 0
+                    };
+                    list.Add(inv);
+                }
+                else
+                {
+                    MInv inv = new()
+                    {
+                        Amount = decimal.Parse(dt.Rows[i]["Amount"].ToString()),
+                        Barcode = dt.Rows[i]["BarCode"].ToString(),
+                        BillAmount = string.IsNullOrEmpty(dt.Rows[i]["Bill Amount"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Bill Amount"].ToString()),
+                        Discount = dt.Rows[i]["Discount"].ToString(),
+                        InvNo = string.IsNullOrEmpty(dt.Rows[i]["Inv No"].ToString()) ? LastInv : dt.Rows[i]["Inv No"].ToString(),
+
+                        SNo = string.IsNullOrEmpty(dt.Rows[i]["SN"].ToString()) ? LastSN : Int32.Parse(dt.Rows[i]["SN"].ToString()),
+
+                        Qty = decimal.Parse(dt.Rows[i]["Qty"].ToString()),
+                        Rate = decimal.Parse(dt.Rows[i]["Rate"].ToString()),
+                        TotalAmount = decimal.Parse(dt.Rows[i]["Total Amount"].ToString()),
+                        Salesman = dt.Rows[i]["Sales Man"].ToString(),
+                        OnDate = string.IsNullOrEmpty(dt.Rows[i]["Date"].ToString()) ? LastInvDate : Utils.ToDate(dt.Rows[i]["Date"].ToString())
+                    };
+                    LastInv = inv.InvNo;
+                    LastInvDate = inv.OnDate;
+                    LastSN = inv.SNo;
+                    list.Add(inv);
+                }
+            }
+            Directory.CreateDirectory(@"d:\arp\ManualInv\");
+            _ = Utils.ToJsonAsync(@"d:\arp\ManualInv\manual.json", list);
+            return list;
         }
     }
+
     public class InventoryManager
     {
         public AzurePayrollDbContext azureDb;

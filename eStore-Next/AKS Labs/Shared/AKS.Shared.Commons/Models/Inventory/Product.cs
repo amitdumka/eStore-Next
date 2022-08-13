@@ -153,8 +153,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal FreeQty { get; set; }
         public decimal TotalQty { get { return BilledQty + FreeQty; } }
 
-        public decimal TotalMRP { get; set; }
-        
+        public decimal TotalMRP { get; set; }        
         public decimal TotalDiscountAmount { get; set; }
 
         public decimal TotalBasicAmount { get; set; }
@@ -162,9 +161,8 @@ namespace AKS.Shared.Commons.Models.Inventory
 
         public decimal RoundOff { get; set; }
         public decimal TotalPrice { get; set; }
-
+        // Manual Bill which is taxed or it become regular bill
         public bool Taxed { get; set; }
-
         public bool Adjusted { get; set; }
 
         public virtual ICollection<SaleItem> Items { get; set; }
@@ -179,19 +177,35 @@ namespace AKS.Shared.Commons.Models.Inventory
     public class SaleItem
     {
         public int Id { get; set; }
+
         public string InvoiceCode { get; set; }
+
         public string Barcode { get; set; }
+        
         public decimal BilledQty { get; set; }
         public decimal FreeQty { get; set; }
         public Unit Unit { get; set; }
+        
         public decimal DiscountAmount { get; set; }
-        public decimal Value { get; set; }
+        
+        //Amount Without Tax
+        public decimal BasicAmount { get; set; }
+        //Tax on Total Amount(Total Tax {Vat/IGST/CGST+SGST})
         public decimal TaxAmount { get; set; }
+        // Total Amount With Basic+total Tax
+        public decimal Value { get; set; }
+        // Type of Tax , Vat/IGST/ GST in case of local
+        public TaxType TaxType { get; set; }
 
+        // Type of Invoice like Regular or manual  => Sale return 
+        public InvoiceType InvoiceType { get; set; }
+        
         public bool Adjusted { get; set; }
         public bool LastPcs { get; set; }
 
+        [ForeignKey("InvoiceCode")]
         public virtual ProductSale ProductSale { get; set; }
+        [ForeignKey("Barcode")]
         public virtual ProductItem ProductItem { get; set; }
     }
 

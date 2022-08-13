@@ -1,7 +1,7 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using System.Text.Json;
 
-namespace AKS.Payroll.Forms.Inventory
+namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class Utils
     {
@@ -11,12 +11,12 @@ namespace AKS.Payroll.Forms.Inventory
             if (date.Contains('/')) c = '/';
 
             var d = date.Split(c);
-            return new DateTime(Int32.Parse(d[2].Split(" ")[0]), Int32.Parse(d[1]), Int32.Parse(d[0]));
+            return new DateTime(int.Parse(d[2].Split(" ")[0]), int.Parse(d[1]), int.Parse(d[0]));
         }
 
         public static int ReadInt(TextBox t)
         {
-            return Int32.Parse(t.Text.Trim());
+            return int.Parse(t.Text.Trim());
         }
 
         public static decimal ReadDecimal(TextBox t)
@@ -26,7 +26,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         public static decimal ToDecimal(string val)
         {
-            return Decimal.Round(decimal.Parse(val.Trim()), 2);
+            return decimal.Round(decimal.Parse(val.Trim()), 2);
         }
 
         public static async Task ToJsonAsync<T>(string fileName, List<T> ObjList)

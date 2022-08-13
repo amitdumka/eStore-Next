@@ -2,7 +2,7 @@
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
 
-namespace AKS.Payroll.Forms.Inventory
+namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class SaleInventory
     {
@@ -23,12 +23,12 @@ namespace AKS.Payroll.Forms.Inventory
                         var st = stocks.FirstOrDefault(c => c.Barcode == im.Barcode);
                         st.SoldQty = im.Total;
                         db.Stocks.Update(st);
-                        soldqty+=im.Total;
+                        soldqty += im.Total;
                     }
                     catch (NullReferenceException ex)
                     {
                         Console.WriteLine(ex.Message);
-                        tqty+=im.Total;
+                        tqty += im.Total;
                     }
                     catch (Exception ex)
                     {
@@ -118,7 +118,7 @@ namespace AKS.Payroll.Forms.Inventory
                     Card = Card.DebitCard,
                     InvoiceCode = inv,
                     PaidAmount = amount,
-                    EDCTerminalId = String.Empty,
+                    EDCTerminalId = string.Empty,
                 };
                 db.CardPaymentDetails.Add(card);
             }
@@ -196,29 +196,36 @@ namespace AKS.Payroll.Forms.Inventory
             return sales;
         }
 
-        public static void ProcessSaleEntry(AzurePayrollDbContext db, DataTable dt)
-        {
-            var ivList = db.ProductSales
-                .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
-                .ToList();
+        //public static void ProcessSaleEntry(AzurePayrollDbContext db, DataTable dt)
+        //{
+        //    var ivList = db.ProductSales
+        //        .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
+        //        .ToList();
 
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                SaleItem item = new SaleItem
-                {
-                    Adjusted = false,
-                    Barcode = dt.Rows[i]["BARCODE"].ToString(),
-                    BilledQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString()),
-                    DiscountAmount = 0,
-                    FreeQty = 0,
-                    InvoiceCode = ivList.Where(c => c.InvoiceNo == dt.Rows[i]["Barcode"].ToString()).First().InvoiceNo,
-                    LastPcs = false,
-                    TaxAmount = 0,
-                    Unit = Unit.NoUnit,
-                    Value = 0
-                };
-            }
-        }
+        //    for (int i = 0; i < dt.Rows.Count; i++)
+        //    {
+        //        SaleItem item = new SaleItem
+        //        {
+        //            Adjusted = false,
+        //            Barcode = dt.Rows[i]["BARCODE"].ToString(),
+        //            BilledQty = decimal.Parse(dt.Rows[i]["Quantity"].ToString()),
+        //            DiscountAmount = 0,
+        //            FreeQty = 0,
+        //            InvoiceCode = ivList.Where(c => c.InvoiceNo == dt.Rows[i]["Barcode"].ToString()).First().InvoiceNo,
+        //            LastPcs = false,
+        //            TaxAmount = 0,
+        //            Unit = Unit.NoUnit,
+        //            Value = 0
+        //        };
+        //    }
+        //}
+
+        /// <summary>
+        ///  Convert Datatable to JSon File
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         public static int JsonSaleEntry(AzurePayrollDbContext db, DataTable dt)
         {
             var ivList = db.ProductSales
@@ -228,9 +235,6 @@ namespace AKS.Payroll.Forms.Inventory
             List<SVM> svmList = new List<SVM>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                //			 		Item Desc			MRP	
-                // 				CESS Amt		Round Off			
-                //	Coupon %	Coupon Amt	SUB TYPE	Bill Discount	 
 
                 SVM item = new SVM();
                 //{
@@ -262,12 +266,17 @@ namespace AKS.Payroll.Forms.Inventory
             string filname = @"d:\apr\2022\aug\22\svm";
 
             Directory.CreateDirectory(filname);
-            _ = Utils.ToJsonAsync<SVM>(filname + @"\sale.json", svmList);
+            _ = Utils.ToJsonAsync(filname + @"\sale.json", svmList);
             string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
             _ = Utils.ToJsonAsync(filname2, ivList);
             return 101;
         }
 
+        /// <summary>
+        /// Update Salesman
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static async Task<int> UpdateSM(AzurePayrollDbContext db)
         {
             string filename = @"d:\apr\2022\aug\22\svm\sale.json";
@@ -295,13 +304,39 @@ namespace AKS.Payroll.Forms.Inventory
         }
 
 
+        public static async Task ProcessSaleItemFromJsonFileAsync(AzurePayrollDbContext db)
+        {
+            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
+            var ivList = db.ProductSales
+               .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
+               .ToList();
+            var svmList = await Utils.FromJsonToObject<SVM>(filename);
+            var a = svmList.GroupBy(c => c.InvNo).ToList();
+            foreach (var item in a)
+            {
+
+            }
+
+        }
+        public static async void SplitSaleItem()
+        {
+            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
+            string filepath = @"d:\apr\2022\aug\22\svm\sale";
+            Directory.CreateDirectory(filepath);
+            var svmList = await Utils.FromJsonToObject<SVM>(filename);
+            var a = svmList.GroupBy(c => c.InvNo).ToList();
+            foreach (var item in a)
+            {
+                var list = svmList.Where(c => c.InvNo == item.Key).ToList();
+                _ = Utils.ToJsonAsync<SVM>(Path.Combine(filepath, $"{item.Key}.json"), list);
+            }
+        }
+
         public static async Task<int> SaleItems(AzurePayrollDbContext db)
         {
             string filename = @"d:\apr\2022\aug\22\svm\sale.json";
             string filepath = @"d:\apr\2022\aug\22\svm\sale";
-            // Directory.CreateDirectory(filepath);
-            // string filname2 = @"d:\apr\2022\aug\22\svm\invoice.json";
-            //var ivList = Utils.FromJsonToObject<ProductSale>(filname2);
+
             var ivList = db.ProductSales
                 .Select(c => new { c.InvoiceCode, c.InvoiceNo, c.InvoiceType, c.OnDate })
                 .ToList();
@@ -313,47 +348,36 @@ namespace AKS.Payroll.Forms.Inventory
             int x = 0;
             try
             {
-
-                //var a = svmList.GroupBy(c => c.InvNo).ToList();
-                //foreach (var item in a)
-                //{
-                //    var list = svmList.Where(c => c.InvNo == item.Key).ToList();
-                //    _ = Utils.ToJsonAsync<SVM>(Path.Combine(filepath,$"{item.Key}.json"), list);
-                //}
-
                 string[] filePaths = Directory.GetFiles(filepath, "*.json",
                                          SearchOption.TopDirectoryOnly);
-
-
-
-                //foreach (var nm in filePaths)
-                //{
-                //    fn = nm;
-                //    z++;
-                //    var invList = await Utils.FromJsonToObject<SVM>(nm);
-                //    //string ic = ivList.Where(c => c.InvoiceNo == invList[0].InvNo).First().InvoiceCode;
-                //    name = invList[0].InvNo;
-                //    foreach (var item in invList)
-                //    {
-                //        x++;
-                //        name += "#" + item.Barcode;
-                //    //SaleItem saleItem = new SaleItem
-                //    //{
-                //    //    Adjusted = false,
-                //    //    Barcode = item.Barcode,
-                //    //    BilledQty = item.Qty,
-                //    //    DiscountAmount = item.disc,
-                //    //    FreeQty = 0,
-                //    //    InvoiceCode = ic,
-                //    //    LastPcs = false,
-                //    //    TaxAmount = item.Tax,
-                //    //    Unit = Unit.NoUnit,
-                //    //    Value = item.LineTotal
-                //    };
-                //    //db.SaleItems.Add(saleItem);
-                //    //}
-                //    // x += db.SaveChanges();
-                //}
+                foreach (var nm in filePaths)
+                {
+                    fn = nm;
+                    z++;
+                    var invList = await Utils.FromJsonToObject<SVM>(nm);
+                    string ic = ivList.Where(c => c.InvoiceNo == invList[0].InvNo).First().InvoiceCode;
+                    name = invList[0].InvNo;
+                    foreach (var item in invList)
+                    {
+                        x++;
+                        name += "#" + item.Barcode;
+                        SaleItem saleItem = new SaleItem
+                        {
+                            Adjusted = false,
+                            Barcode = item.Barcode,
+                            BilledQty = item.Qty,
+                            DiscountAmount = item.disc,
+                            FreeQty = 0,
+                            InvoiceCode = ic,
+                            LastPcs = false,
+                            TaxAmount = item.Tax,
+                            Unit = Unit.NoUnit,
+                            Value = item.LineTotal
+                        };
+                        db.SaleItems.Add(saleItem);
+                    }
+                    x += db.SaveChanges();
+                }
 
                 return x;
             }
@@ -371,6 +395,11 @@ namespace AKS.Payroll.Forms.Inventory
 
         }
 
+        /// <summary>
+        /// Update HSNCode
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static async Task<int> UpdateHSNCode(AzurePayrollDbContext db)
         {
             string filname = @"d:\apr\2022\aug\22\svm\sale.json";
@@ -390,6 +419,11 @@ namespace AKS.Payroll.Forms.Inventory
             return x;
         }
 
+        /// <summary>
+        /// Update Unit
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static int UpdateUnit(AzurePayrollDbContext db)
         {
             var si = db.SaleItems.ToList();

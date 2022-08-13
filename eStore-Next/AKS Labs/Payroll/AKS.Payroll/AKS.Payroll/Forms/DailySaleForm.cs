@@ -1,7 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
 using AKS.Payroll.Forms.EntryForms;
-using AKS.Payroll.Forms.Inventory;
+using AKS.Payroll.Forms.Inventory.Functions;
 using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Sales;
 using Microsoft.EntityFrameworkCore;

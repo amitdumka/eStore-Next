@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Database;
+using AKS.Payroll.Forms.Inventory.Functions;
 
 namespace AKS.Payroll.Forms.Inventory
 {
@@ -83,6 +84,7 @@ namespace AKS.Payroll.Forms.Inventory
                 txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
                 txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
+               
             }
             else if (btnAdd.Text == "Edit")
             {
@@ -182,7 +184,7 @@ namespace AKS.Payroll.Forms.Inventory
             if (_salesManager.ReturnKey)
                 DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
         }
-
+      
         private void LoadFormData()
         {
             try
@@ -201,7 +203,7 @@ namespace AKS.Payroll.Forms.Inventory
                 MessageBox.Show(e.Message);
             }
         }
-
+        
         private void rbManual_CheckedChanged(object sender, EventArgs e)
         {
             _salesManager.SetRadioButton(false, rbManual.Checked, cbSalesReturn.Checked);
@@ -262,7 +264,6 @@ namespace AKS.Payroll.Forms.Inventory
                 HandleBarcodeEntry();
             }
         }
-
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
             txtValue.Text = SalesManager.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();

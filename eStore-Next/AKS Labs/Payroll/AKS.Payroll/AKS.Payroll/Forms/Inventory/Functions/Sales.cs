@@ -1,6 +1,6 @@
 ﻿using AKS.Payroll.Database;
 
-namespace AKS.Payroll.Forms.Inventory
+namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class Sales
     {

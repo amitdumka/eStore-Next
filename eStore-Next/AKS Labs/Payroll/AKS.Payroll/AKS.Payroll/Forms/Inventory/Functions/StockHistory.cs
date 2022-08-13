@@ -1,7 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using System.Data;
 
-namespace AKS.Payroll.Forms.Inventory
+namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class StockHistory
     {

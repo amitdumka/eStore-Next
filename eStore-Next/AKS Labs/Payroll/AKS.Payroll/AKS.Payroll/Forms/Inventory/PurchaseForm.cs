@@ -86,8 +86,9 @@ namespace AKS.Payroll.Forms.Inventory
                 //sale summary
                 //DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
                 // DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
-                DataTable = ImportData.ReadExcelToDatatable(@"d:\manual.xlsx", 1, 1, 335, 11);
-                dgvPurchase.DataSource = DataTable;
+                //DataTable = ImportData.ReadExcelToDatatable(@"d:\manual.xlsx", 1, 1, 335, 11);
+                //dgvPurchase.DataSource = DataTable;
+                dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
             }
             catch (Exception ex)
             {
@@ -118,7 +119,8 @@ namespace AKS.Payroll.Forms.Inventory
                 //MessageBox.Show("saved:x= "+SaleInventory.JsonSaleEntry(azureDb,DataTable));
                 //int x = SaleInventory.StockUpdate(azureDb);
                 //MessageBox.Show("saved:x= " + x);
-                dgvPurchase.DataSource = ManualSale.UploadManual(azureDb, DataTable);
+                // dgvPurchase.DataSource = ManualSale.UploadManual(azureDb, DataTable);
+                MessageBox.Show("saved:x= " + SaleInventory.ProcessSaleItemFromJsonFileAsync(azureDb));
             }
             catch (Exception ex)
             {

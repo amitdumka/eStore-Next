@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Database;
+using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
 
@@ -6,6 +7,12 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class SaleInventory
     {
+        /// <summary>
+        /// update stock based on type
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="reg"></param>
+        /// <returns></returns>
         public static int StockUpdate(AzurePayrollDbContext db, bool reg = true)
         {
             decimal soldqty = 0;
@@ -34,7 +41,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     {
                         Console.WriteLine(ex.Message);
                     }
-
                 }
             }
             else
@@ -65,6 +71,11 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return db.SaveChanges();
         }
 
+        /// <summary>
+        /// Get Count for id
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static string INCode(int count)
         {
             string a = "";
@@ -75,6 +86,11 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return a;
         }
 
+        /// <summary>
+        /// Set Payment mode
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
         public static PayMode SetPaymentMode(string types)
         {
             var mode = types switch
@@ -88,6 +104,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return mode;
         }
 
+        /// <summary>
+        /// Add payment information
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="inv"></param>
+        /// <param name="types"></param>
+        /// <param name="amount"></param>
         public static void AddPayment(AzurePayrollDbContext db, string inv, string types, decimal amount)
         {
             var mode = types switch
@@ -104,7 +127,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 PayMode = mode,
                 PaidAmount = amount,
                 RefId = "#Imported so Missing#",
-
             };
             db.SalePaymentDetails.Add(detail);
             if (mode == PayMode.Card)
@@ -169,7 +191,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     PayMode = mode,
                     PaidAmount = sale.TotalPrice,
                     RefId = "#Imported so Missing#",
-
                 };
                 db.SalePaymentDetails.Add(detail);
                 if (mode == PayMode.Card)
@@ -188,7 +209,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     db.CardPaymentDetails.Add(card);
                 }
                 sales.Add(sale);
-
             }
 
             db.ProductSales.AddRange(sales);
@@ -221,6 +241,23 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         //}
 
         /// <summary>
+        /// Split invoice json to multiple
+        /// </summary>
+        public static async void SplitSaleItem()
+        {
+            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
+            string filepath = @"d:\apr\2022\aug\22\svm\sale";
+            Directory.CreateDirectory(filepath);
+            var svmList = await Utils.FromJsonToObject<SVM>(filename);
+            var a = svmList.GroupBy(c => c.InvNo).ToList();
+            foreach (var item in a)
+            {
+                var list = svmList.Where(c => c.InvNo == item.Key).ToList();
+                _ = Utils.ToJsonAsync<SVM>(Path.Combine(filepath, $"{item.Key}.json"), list);
+            }
+        }
+
+        /// <summary>
         ///  Convert Datatable to JSon File
         /// </summary>
         /// <param name="db"></param>
@@ -235,7 +272,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             List<SVM> svmList = new List<SVM>();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-
                 SVM item = new SVM();
                 //{
                 item.basic = Utils.ToDecimal(dt.Rows[i]["Basic Amt"].ToString());
@@ -295,16 +331,12 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 }
                 catch (Exception)
                 {
-
-
                 }
-
             }
             return db.SaveChanges();
         }
 
-
-        public static async Task ProcessSaleItemFromJsonFileAsync(AzurePayrollDbContext db)
+        public static async Task<int> ProcessSaleItemFromJsonFileAsync(AzurePayrollDbContext db)
         {
             string filename = @"d:\apr\2022\aug\22\svm\sale.json";
             var ivList = db.ProductSales
@@ -312,23 +344,50 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                .ToList();
             var svmList = await Utils.FromJsonToObject<SVM>(filename);
             var a = svmList.GroupBy(c => c.InvNo).ToList();
-            foreach (var item in a)
+            string name = "";
+            int z = 0;
+            int y = 0;
+            string fn = "";
+            int x = 0;
+            try
             {
+                foreach (var im in a)
+                {
+                    var invList = svmList.Where(c => c.InvNo == im.Key).ToList();
+                    string ic = ivList.Where(c => c.InvoiceNo == invList[0].InvNo).First().InvoiceCode;
+                    name = im.Key;
+                    foreach (var item in invList)
+                    {
+                        x++;
+                        name += "#" + item.Barcode;
+                        SaleItem saleItem = new SaleItem
+                        {
+                            Adjusted = false,
+                            Barcode = item.Barcode,
+                            BilledQty = item.Qty,
+                            DiscountAmount = item.disc,
+                            FreeQty = 0,
+                            InvoiceCode = ic,
+                            LastPcs = false,
+                            TaxAmount = item.Tax,
+                            Unit = Unit.NoUnit,
+                            Value = item.LineTotal,
+                            BasicAmount = item.basic,
+                            InvoiceType = InvoiceType.Sales,
+                            TaxType = item.OnDate < new DateTime(2017, 07, 1) ? TaxType.VAT : TaxType.GST
+                        };
+                        db.SaleItems.Add(saleItem);
+                    }
+                    x += db.SaveChanges();
+                }
 
+                x += db.SaveChanges();
+                return x;
             }
-
-        }
-        public static async void SplitSaleItem()
-        {
-            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
-            string filepath = @"d:\apr\2022\aug\22\svm\sale";
-            Directory.CreateDirectory(filepath);
-            var svmList = await Utils.FromJsonToObject<SVM>(filename);
-            var a = svmList.GroupBy(c => c.InvNo).ToList();
-            foreach (var item in a)
+            catch (Exception e)
             {
-                var list = svmList.Where(c => c.InvNo == item.Key).ToList();
-                _ = Utils.ToJsonAsync<SVM>(Path.Combine(filepath, $"{item.Key}.json"), list);
+                Console.WriteLine(e.Message);
+                return x;
             }
         }
 
@@ -392,7 +451,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
                 return x;
             }
-
         }
 
         /// <summary>
@@ -445,13 +503,98 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     im.Unit = Unit.Nos;
                     db.SaleItems.Update(im);
                 }
-
             }
             return db.SaveChanges();
-
         }
 
+        public static async Task<List<ProductItem>> AddTailoringBarcodeAsync(AzurePayrollDbContext db)
+        {
+            try
+            {
+
+                string filename = @"d:\tail.xlsx";
+
+                var dt = ImportData.ReadExcelToDatatable(filename, 1, 1, 46, 4);
+                List<ProductItem> itemList = new List<ProductItem>();
+                //Product Name	Item Desc	BAR CODE	Style Code	MRP
+
+                var pname = dt.AsEnumerable().GroupBy(c => c["Product Name"]).ToList();
+                int oo = 14;
+                List<ProductType> ptys = new List<ProductType>();
+
+                List<string> a = new List<string>();
+                List<string> b = new List<string>();
+                foreach (var item in pname)
+                {
+                    var names = item.Key.ToString().Split("/");
+                    if (names.Count() > 2)
+                    {
+                        a.Add(names[1]);
+                        b.Add($"{names[1]} {names[2]}");
+                    }
+                }
+                a = a.Distinct().ToList();
+                foreach (var item in a)
+                {
+                    ProductType pt = new ProductType { ProductTypeId = "PT000" + oo, ProductTypeName = item };
+                    oo++;
+                    ptys.Add(pt);
+                }
+                List<ProductSubCategory> catL = new List<ProductSubCategory>();
+                foreach (var item in b)
+                {
+
+                    ProductSubCategory cat = new ProductSubCategory
+                    {
+                        ProductCategory = ProductCategory.Tailoring,
+                        SubCategory = item
+                    };
 
 
+                    catL.Add(cat);
+
+                }
+                catL = catL.Distinct().ToList();
+
+                //catL.Remove(catL.First(c => c.SubCategory == "Casual Jeans"));
+                //db.ProductSubCategories.AddRange(catL); 
+                //db.ProductTypes.AddRange(ptys);
+                //db.SaveChanges();
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    var names = dt.Rows[i]["Product Name"].ToString().Split("/");
+
+                    ProductItem p = new ProductItem
+                    {
+                        Barcode = dt.Rows[i]["BAR CODE"].ToString(),
+                        BrandCode = "SAR",
+                        Description = dt.Rows[i]["Item Desc"].ToString(),
+                        HSNCode = "NA",
+                        MRP = 0,// decimal.Parse(dt.Rows[i]["MRP"].ToString()),
+                        ProductCategory = ProductCategory.Tailoring,
+                        Size = Size.FreeSize,
+                        TaxType = TaxType.GST,
+                        Unit = Unit.Nos,
+                        StyleCode = dt.Rows[i]["Style Code"].ToString(),
+                        Name = dt.Rows[i]["Product Name"].ToString(),
+                        SubCategory = $"{names[1]} {names[2]}",
+                        ProductTypeId = ptys.First(c => c.ProductTypeName == names[1]).ProductTypeId,
+                    };
+                    itemList.Add(p);
+                }
+
+                itemList = itemList.Distinct().ToList();
+                db.ProductItems.AddRange(itemList);
+               int z= db.SaveChanges();
+
+                return itemList;
+            }
+            catch (Exception e)
+            {
+
+                return null;
+            }
+        }
     }
 }

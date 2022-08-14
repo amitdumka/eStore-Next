@@ -98,7 +98,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private List<PurchaseProduct> pp;
 
-        private void btnCancle_Click(object sender, EventArgs e)
+        private async void btnCancle_Click(object sender, EventArgs e)
         {
             try
             {
@@ -120,7 +120,12 @@ namespace AKS.Payroll.Forms.Inventory
                 //int x = SaleInventory.StockUpdate(azureDb);
                 //MessageBox.Show("saved:x= " + x);
                 // dgvPurchase.DataSource = ManualSale.UploadManual(azureDb, DataTable);
-                MessageBox.Show("saved:x= " + SaleInventory.ProcessSaleItemFromJsonFileAsync(azureDb));
+                // MessageBox.Show("saved:x= " + SaleInventory.ProcessSaleItemFromJsonFileAsync(azureDb));
+                //SaleInventory.ReverifyAsync(azureDb, dgvPurchase);   
+               int x= SaleInventory.UpdateUnit(azureDb);
+                MessageBox.Show("UNIT:x= " + x);
+                x = await SaleInventory.UpdateSM(azureDb);
+                MessageBox.Show("SM:x= " + x);
             }
             catch (Exception ex)
             {

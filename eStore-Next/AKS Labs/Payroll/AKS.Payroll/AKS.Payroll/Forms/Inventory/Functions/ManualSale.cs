@@ -8,14 +8,13 @@ namespace AKS.Payroll.Forms.Inventory
 {
     public class ManualSale
     {
-        static DataGridView gridView;
-        static DataTable dt;
+        private static DataGridView gridView;
+        private static DataTable dt;
 
         public static bool IsInt(decimal x)
         {
             return x % 1 == 0;
         }
-
 
         public static async void ProcessManualImport(AzurePayrollDbContext db, DataGridView dv)
         {
@@ -31,10 +30,8 @@ namespace AKS.Payroll.Forms.Inventory
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
             }
-
         }
 
         //SN	Date	Inv No	BarCode	Qty	Rate	Discount	 Amount	Bill Amount	Total Amount	Sales Man
@@ -45,85 +42,12 @@ namespace AKS.Payroll.Forms.Inventory
             var val = amount - (amount * (d / 100));
             return val;
         }
+
         public static decimal GetDiscountValue(string dis, decimal amount)
         {
             decimal d = decimal.Parse(dis.Replace("%", "").Trim());
             var val = (amount * (d / 100));
             return val;
-        }
-
-        public static void SaveManual(AzurePayrollDbContext db, List<MInv> invList)
-        {
-            List<SaleItem> saleList = new List<SaleItem>();
-            List<ProductSale> productList = new List<ProductSale>();
-            var pL = invList.Where(c => c.BillAmount > 0 && c.TotalAmount > 0).ToList();
-            gridView.DataSource = pL;
-            var plQ = invList.GroupBy(c => new { c.InvNo })
-                .Select(c => new { c.Key.InvNo, TQty = c.Sum(x => x.Qty), TAmt=c.Sum(x=>x.Amount) }).ToList();
-          
-            foreach (var inv in pL)
-            {
-                ProductSale productSale = new()
-                {
-                    InvoiceCode = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.SNo}",
-                    InvoiceNo = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.InvNo}",
-                    TotalBasicAmount = 0,
-                    TotalTaxAmount = 0,
-                    TotalDiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
-                    TotalMRP = plQ.Where(c => c.InvNo == inv.InvNo).First().TAmt,
-                    TotalPrice = inv.TotalAmount,
-                    Paid = false,
-                    MarkedDeleted = false,
-                    IsReadOnly = false,
-                    RoundOff = inv.TotalAmount-inv.BillAmount,
-                    StoreId = "ARD",
-                    Taxed = false,
-                    Adjusted = false,
-                    EntryStatus = EntryStatus.Added,
-                    FreeQty = 0,
-                    BilledQty = plQ.Where(c=>c.InvNo==inv.InvNo).First().TQty,
-                    InvoiceType = InvoiceType.ManualSale,
-                    OnDate = inv.OnDate,
-                    Tailoring = false,
-                    UserId = "Auto",
-                };
-
-                productList.Add(productSale);
-            }
-            gridView.DataSource = productList;
-
-            foreach (var inv in invList)
-            {
-                SaleItem si = new()
-                {
-                    InvoiceCode = productSale.InvoiceCode,
-                    Adjusted = false,
-                    Barcode = inv.Barcode,
-                    BilledQty = inv.Qty,
-                    FreeQty = 0,
-                    LastPcs = false,
-                    Unit = Unit.NoUnit,
-                    DiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
-                    Value = inv.LineTotal,
-                    TaxAmount = 0,
-                    InvoiceType= InvoiceType.ManualSale,
-                    TaxType=inv.OnDate<new DateTime(2017,7,1)?TaxType.VAT:TaxType.GST,
-                };
-                if(si.TaxType==TaxType.VAT && IsInt(inv.Qty))
-                {
-                    // 5% vat
-                }else if (si.TaxType == TaxType.VAT && !IsInt(inv.Qty))
-                {
-                    // no tax
-                }
-                else if(si.TaxType == TaxType.GST && IsInt(inv.Qty))
-                {
-                    //5% tax
-                }else if(si.TaxType == TaxType.GST && !IsInt(inv.Qty))
-                {
-                    //5%  below 1000 and 12% above
-                }
-            }
         }
 
         public static async Task<List<MInv>> UploadManual(AzurePayrollDbContext db, DataTable dt)
@@ -190,6 +114,139 @@ namespace AKS.Payroll.Forms.Inventory
             Directory.CreateDirectory(@"d:\apr2\ManualInv\");
             await Utils.ToJsonAsync(@"d:\apr2\ManualInv\manual.json", list);
             return list;
+        }
+        public static async void SaveManual(AzurePayrollDbContext db, List<MInv> invList)
+        {
+            List<SaleItem> saleList = new List<SaleItem>();
+            List<ProductSale> productList = new List<ProductSale>();
+
+            var pL = invList.Where(c => c.TotalAmount > 0).ToList();
+            gridView.DataSource = pL;
+
+            var plQ = invList.GroupBy(c => new { c.InvNo })
+                .Select(c => new { c.Key.InvNo, TQty = c.Sum(x => x.Qty), TAmt = c.Sum(x => x.Amount) }).ToList();
+
+            var sms = db.Salesmen.Select(c => new { c.SalesmanId, c.Name }).ToList();
+            try
+            {
+                foreach (var inv in pL)
+                {
+                    ProductSale productSale = new()
+                    {
+                        InvoiceCode = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.SNo}",
+                        InvoiceNo = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.InvNo}",
+                        TotalBasicAmount = 0,
+                        TotalTaxAmount = 0,
+                        TotalDiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
+                        TotalMRP = plQ.Where(c => c.InvNo == inv.InvNo).First().TAmt,
+                        TotalPrice = inv.TotalAmount,
+                        Paid = false,
+                        MarkedDeleted = true,
+                        IsReadOnly = false,
+                        RoundOff = inv.TotalAmount - inv.BillAmount,
+                        StoreId = "ARD",
+                        Taxed = false,
+                        Adjusted = false,
+                        EntryStatus = EntryStatus.Added,
+                        FreeQty = 0,
+                        BilledQty = plQ.Where(c => c.InvNo == inv.InvNo).First().TQty,
+                        InvoiceType = InvoiceType.ManualSale,
+                        OnDate = inv.OnDate,
+                        Tailoring = false,
+                        UserId = "Auto",
+                    };
+                    if (string.IsNullOrEmpty(inv.Salesman))
+                    {
+                        productSale.SalesmanId = "SMN/2016/001";
+                    }
+                    else if (inv.Salesman.Contains("Claim"))
+                    {
+                        productSale.SalesmanId = "SMN/2016/001";
+                    }
+                    else
+                        productSale.SalesmanId = sms.First(c => c.Name.Contains(inv.Salesman)).SalesmanId;
+
+                    productList.Add(productSale);
+                }
+                gridView.DataSource = productList;
+
+
+
+                foreach (var inv in invList)
+                {
+                    if (inv.Barcode != "CANCLE INV")
+                    {
+                        SaleItem si = new()
+                        {
+
+                            Adjusted = false,
+                            Barcode = inv.Barcode,
+                            BilledQty = inv.Qty,
+                            FreeQty = 0,
+                            LastPcs = false,
+                            Unit = Unit.NoUnit,
+                            DiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
+                            Value = inv.LineTotal,
+                            TaxAmount = 0,
+                            InvoiceType = InvoiceType.ManualSale,
+                            TaxType = inv.OnDate < new DateTime(2017, 7, 1) ? TaxType.VAT : TaxType.GST,
+                        };
+
+                        si.InvoiceCode = productList.First(c => c.InvoiceNo.EndsWith(inv.InvNo)).InvoiceCode;
+                        if (si.TaxType == TaxType.VAT && IsInt(inv.Qty))
+                        {
+                            // 5% vat
+                            si.BasicAmount = GetBasicRate(inv.LineTotal, 5);
+                            si.TaxAmount = inv.LineTotal - si.BasicAmount;
+                            si.Unit = Unit.Pcs;
+                        }
+                        else if (si.TaxType == TaxType.VAT && !IsInt(inv.Qty))
+                        {
+                            // no tax
+                            si.BasicAmount = inv.LineTotal;
+                            si.Unit = Unit.Meters;
+                        }
+                        else if (si.TaxType == TaxType.GST && IsInt(inv.Qty))
+                        {
+                            //5% tax
+                            //si.BasicAmount = (inv.LineTotal * 100) / (100 + 5);
+                            si.BasicAmount = GetBasicRate(inv.LineTotal, 5);
+                            si.TaxAmount = inv.LineTotal - si.BasicAmount;
+                            si.Unit = Unit.Meters;
+                        }
+                        else if (si.TaxType == TaxType.GST && !IsInt(inv.Qty))
+                        {
+                            //5%  below 1000 and 12% above
+                            if (inv.LineTotal < 1000)
+                                si.BasicAmount = GetBasicRate(inv.LineTotal, 5);
+                            else
+                                si.BasicAmount = GetBasicRate(inv.LineTotal, 12);
+                            si.TaxAmount = inv.LineTotal - si.BasicAmount;
+                            si.Unit = Unit.Pcs;
+                        }
+                        saleList.Add(si);
+                    }
+                    else
+                    {
+                        Console.WriteLine(inv.Barcode);
+                    }
+                }
+                gridView.DataSource = saleList;
+
+                await Utils.ToJsonAsync(@"D:\apr2\ManualInv\ManualSaleItem.json", saleList); 
+                await Utils.ToJsonAsync(@"D:\apr2\ManualInv\ManualSaleInvoice.json", productList);
+                
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static decimal GetBasicRate(decimal amount, decimal rate)
+        {
+            return Math.Round((amount * 100) / (100 + rate), 2);
         }
     }
 }

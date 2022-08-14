@@ -81,13 +81,14 @@ namespace AKS.Payroll.Forms.Inventory
                 //    Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem),
                 //    Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
 
-                // DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx", 6, 1, 7037, 16);
-                //sale summary
+                // DataTable =  //sale summary
                 //DataTable = ImportData.ReadExcelToDatatable("d:\\salebill.xlsx", 7, 1, 6900, 12);
                 // DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
                 //DataTable = ImportData.ReadExcelToDatatable(@"d:\manual.xlsx", 1, 1, 335, 11);
                 //dgvPurchase.DataSource = DataTable;
                 //dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
+
+                ManualSale.ProcessManualImport(azureDb, dgvPurchase);
             }
             catch (Exception ex)
             {

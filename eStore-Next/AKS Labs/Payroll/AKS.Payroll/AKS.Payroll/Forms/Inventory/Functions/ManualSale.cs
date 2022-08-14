@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
+using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using System.Data;
 
@@ -7,12 +8,47 @@ namespace AKS.Payroll.Forms.Inventory
 {
     public class ManualSale
     {
+        static DataGridView gridView;
+        static DataTable dt;
+
+        public static bool IsInt(decimal x)
+        {
+            return x % 1 == 0;
+        }
+
+
+        public static async void ProcessManualImport(AzurePayrollDbContext db, DataGridView dv)
+        {
+            try
+            {
+                gridView = dv;
+                string exfile = @"d:\manual.xlsx";
+                dt = ImportData.ReadExcelToDatatable(exfile, 1, 1, 355, 11);
+                dv.DataSource = dt;
+                var mivs = await UploadManual(db, dt);
+                dv.DataSource = mivs;
+                SaveManual(db, mivs);
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+
+        }
+
         //SN	Date	Inv No	BarCode	Qty	Rate	Discount	 Amount	Bill Amount	Total Amount	Sales Man
 
-        public static decimal GetDiscount(string dis, decimal amount)
+        public static decimal GetDiscountAmount(string dis, decimal amount)
         {
             decimal d = decimal.Parse(dis.Replace("%", "").Trim());
             var val = amount - (amount * (d / 100));
+            return val;
+        }
+        public static decimal GetDiscountValue(string dis, decimal amount)
+        {
+            decimal d = decimal.Parse(dis.Replace("%", "").Trim());
+            var val = (amount * (d / 100));
             return val;
         }
 
@@ -20,37 +56,44 @@ namespace AKS.Payroll.Forms.Inventory
         {
             List<SaleItem> saleList = new List<SaleItem>();
             List<ProductSale> productList = new List<ProductSale>();
-
-            foreach (var inv in invList)
+            var pL = invList.Where(c => c.BillAmount > 0 && c.TotalAmount > 0).ToList();
+            gridView.DataSource = pL;
+            var plQ = invList.GroupBy(c => new { c.InvNo })
+                .Select(c => new { c.Key.InvNo, TQty = c.Sum(x => x.Qty), TAmt=c.Sum(x=>x.Amount) }).ToList();
+          
+            foreach (var inv in pL)
             {
                 ProductSale productSale = new()
                 {
                     InvoiceCode = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.SNo}",
                     InvoiceNo = $"ARD/{inv.OnDate.Year}/{inv.OnDate.Month}/{inv.InvNo}",
-
                     TotalBasicAmount = 0,
                     TotalTaxAmount = 0,
-
-                    TotalDiscountAmount = GetDiscount(inv.Discount, inv.Amount),
-
-                    TotalMRP = inv.Amount,
+                    TotalDiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
+                    TotalMRP = plQ.Where(c => c.InvNo == inv.InvNo).First().TAmt,
                     TotalPrice = inv.TotalAmount,
-
                     Paid = false,
                     MarkedDeleted = false,
                     IsReadOnly = false,
-                    RoundOff = 0,
+                    RoundOff = inv.TotalAmount-inv.BillAmount,
                     StoreId = "ARD",
-                    Taxed = true,
+                    Taxed = false,
                     Adjusted = false,
                     EntryStatus = EntryStatus.Added,
                     FreeQty = 0,
-                    BilledQty = inv.Qty,
+                    BilledQty = plQ.Where(c=>c.InvNo==inv.InvNo).First().TQty,
                     InvoiceType = InvoiceType.ManualSale,
                     OnDate = inv.OnDate,
                     Tailoring = false,
                     UserId = "Auto",
                 };
+
+                productList.Add(productSale);
+            }
+            gridView.DataSource = productList;
+
+            foreach (var inv in invList)
+            {
                 SaleItem si = new()
                 {
                     InvoiceCode = productSale.InvoiceCode,
@@ -60,14 +103,30 @@ namespace AKS.Payroll.Forms.Inventory
                     FreeQty = 0,
                     LastPcs = false,
                     Unit = Unit.NoUnit,
-                    DiscountAmount = GetDiscount(inv.Discount, inv.Amount),
+                    DiscountAmount = GetDiscountValue(inv.Discount, inv.Amount),
                     Value = inv.LineTotal,
                     TaxAmount = 0,
+                    InvoiceType= InvoiceType.ManualSale,
+                    TaxType=inv.OnDate<new DateTime(2017,7,1)?TaxType.VAT:TaxType.GST,
                 };
+                if(si.TaxType==TaxType.VAT && IsInt(inv.Qty))
+                {
+                    // 5% vat
+                }else if (si.TaxType == TaxType.VAT && !IsInt(inv.Qty))
+                {
+                    // no tax
+                }
+                else if(si.TaxType == TaxType.GST && IsInt(inv.Qty))
+                {
+                    //5% tax
+                }else if(si.TaxType == TaxType.GST && !IsInt(inv.Qty))
+                {
+                    //5%  below 1000 and 12% above
+                }
             }
         }
 
-        public static List<MInv> UploadManual(AzurePayrollDbContext db, DataTable dt)
+        public static async Task<List<MInv>> UploadManual(AzurePayrollDbContext db, DataTable dt)
         {
             List<MInv> list = new List<MInv>();
             int LastSN = 0;
@@ -120,7 +179,7 @@ namespace AKS.Payroll.Forms.Inventory
 
                     inv.BillAmount = string.IsNullOrEmpty(dt.Rows[i]["Bill Amount"].ToString()) ? 0 : decimal.Parse(dt.Rows[i]["Bill Amount"].ToString());
                     inv.Amount = inv.Qty * inv.Rate;
-                    inv.LineTotal = inv.Amount - GetDiscount(inv.Discount, inv.Amount);
+                    inv.LineTotal = GetDiscountAmount(inv.Discount, inv.Amount);
                     LastInv = inv.InvNo;
                     LastInvDate = inv.OnDate;
                     LastSN = inv.SNo;
@@ -129,7 +188,7 @@ namespace AKS.Payroll.Forms.Inventory
                 }
             }
             Directory.CreateDirectory(@"d:\apr2\ManualInv\");
-            _ = Utils.ToJsonAsync(@"d:\arp\ManualInv\manual.json", list);
+            await Utils.ToJsonAsync(@"d:\apr2\ManualInv\manual.json", list);
             return list;
         }
     }

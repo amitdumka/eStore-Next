@@ -94,4 +94,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Forms\Inventory\Json\apr\ManualInv\" />
+  </ItemGroup>
+
 </Project>

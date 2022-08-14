@@ -88,7 +88,8 @@ namespace AKS.Payroll.Forms.Inventory
                 //dgvPurchase.DataSource = DataTable;
                 //dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
 
-                ManualSale.ProcessManualImport(azureDb, dgvPurchase);
+                // ManualSale.ProcessManualImport(azureDb, dgvPurchase);
+                MSSaleInventory.ReadExcel(azureDb, dgvPurchase);
             }
             catch (Exception ex)
             {
@@ -126,8 +127,8 @@ namespace AKS.Payroll.Forms.Inventory
                 // MessageBox.Show("UNIT:x= " + x);
                 // x = await SaleInventory.UpdateSM(azureDb);
                 // MessageBox.Show("SM:x= " + x);
-                int x = await SaleInventory.UpdateTaxAmount(azureDb);
-                 MessageBox.Show("SM:x= " + x);
+                //int x = await SaleInventory.UpdateTaxAmount(azureDb);
+                // MessageBox.Show("SM:x= " + x);
             }
             catch (Exception ex)
             {

@@ -688,4 +688,68 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return db.SaveChanges();
         }
     }
+
+    public class MISale
+    {
+        public string Barcode { get; set; }//Barcode
+        public string InvType { get; set; }//Bill_Type
+        public decimal CostValue { get; set; }//COST_VALUE
+        public decimal discAmt { get; set; }//DISC_AMT
+        public string HSNCode { get; set; }//HSN_CODE
+        public string InvNo { get; set; } //INVOICE_No
+        public decimal MRPValue { get; set; } //MRP_Value
+        public string SalesManName { get; set; }//NAME
+        public string ProductName { get; set; }//HIER_I+HIER_II+HIER_III
+        public decimal Qty { get; set; }//QTY
+
+
+        public string BrandName { get; set; }//Description
+
+        public DateTime OnDate { get; set; }//Transdate
+
+        public string Size { get; set; } //Size
+        public string Season { get; set; }//Season
+        public string StyleCode { get; set; }//Prinicple Code
+        public string ItemDesc { get; set; }//Sku_description
+        public decimal TaxC { get; set; }//TOT_PER_I
+        public decimal TaxS{get;set; }//TOT_PER_II
+        public decimal Tax { get; set; }//Total_Tax_Amt
+
+        public decimal UnitCost { get; set; }//Unit_Cost
+        public decimal UnitMPR { get; set; }//Unit_MPR
+        public decimal SAmt { get; set; }//Total_AMT_I
+
+        public decimal basic { get; set; }
+       
+       
+        public decimal CAmt { get; set; }
+        public decimal LineTotal { get; set; }
+        public decimal RoundOff { get; set; }
+        public decimal BillAmt { get; set; }
+        public string PaymentMode { get; set; }
+        
+        public string LP { get; set; }
+        public string Tailoring { get; set; }
+    }
+    public class MSSaleInventory
+    {
+        static DataGridView gridview;
+        static DataTable dtS;
+        public static void ReadExcel(AzurePayrollDbContext db, DataGridView gv)
+        {
+            gridview=gv;
+            string exfile = @"d:\tasMSSale.xlsx";
+            dtS = ImportData.ReadExcelToDatatable(exfile, 1, 1, 1062, 64);
+            gridview.DataSource = dtS;
+
+        }
+        public static void ProcessDataTable(AzurePayrollDbContext db)
+        {
+
+            for (int i = 0; i < dtS.Rows.Count; i++)
+            {
+
+            }
+        }
+    }
 }

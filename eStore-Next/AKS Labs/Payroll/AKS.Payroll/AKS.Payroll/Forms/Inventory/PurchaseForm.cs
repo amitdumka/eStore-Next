@@ -126,6 +126,8 @@ namespace AKS.Payroll.Forms.Inventory
                 // MessageBox.Show("UNIT:x= " + x);
                 // x = await SaleInventory.UpdateSM(azureDb);
                 // MessageBox.Show("SM:x= " + x);
+                int x = await SaleInventory.UpdateTaxAmount(azureDb);
+                 MessageBox.Show("SM:x= " + x);
             }
             catch (Exception ex)
             {

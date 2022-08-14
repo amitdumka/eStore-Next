@@ -358,7 +358,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 {
                     var invList = svmList.Where(c => c.InvNo == im.Key).ToList();
                     var ic = ivList.Where(c => c.InvoiceNo == invList[0].InvNo).FirstOrDefault();//.InvoiceCode;
-                    if(ic != null)
+                    if (ic != null)
                     {
                         foreach (var item in invList)
                         {
@@ -383,7 +383,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                         }
                         x += db.SaveChanges();
                     }
-                   
+
                 }
 
                 x += db.SaveChanges();
@@ -650,7 +650,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 return null;
             }
         }
-    
+
         public static async Task ReverifyAsync(AzurePayrollDbContext db, DataGridView dv)
         {
             string filename = @"d:\apr\2022\aug\22\svm\sale.json";
@@ -658,16 +658,34 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                .Select(c => new { c.InvoiceCode, c.InvoiceNo })
                .ToList();
             var svmList = await Utils.FromJsonToObject<SVM>(filename);
-            var itemList = svmList.Select(c => new { INV= c.InvNo,BAR= c.Barcode,QTY= c.Qty })
+            var itemList = svmList.Select(c => new { INV = c.InvNo, BAR = c.Barcode, QTY = c.Qty })
                 .ToList();
-            var dbList = db.SaleItems.Include(c=>c.ProductSale).Select(c => new {INV= c.ProductSale.InvoiceNo, BAR=c.Barcode,QTY= c.BilledQty }).ToList();
+            var dbList = db.SaleItems.Include(c => c.ProductSale).Select(c => new { INV = c.ProductSale.InvoiceNo, BAR = c.Barcode, QTY = c.BilledQty }).ToList();
 
             foreach (var item in itemList)
             {
                 dbList.Remove(item);
             }
-            dv.DataSource=dbList;
+            dv.DataSource = dbList;
         }
-    
+
+        public static async Task<int> UpdateTaxAmount(AzurePayrollDbContext db)
+        {
+            string filename = @"d:\apr\2022\aug\22\svm\sale.json";
+            var svmList = await Utils.FromJsonToObject<SVM>(filename);
+            var filter = svmList.Where(c => c.SAmt > 0).ToList();
+            var sis = db.SaleItems.Include(c => c.ProductSale).ToList();
+            int x = 0;
+            foreach (var item in filter)
+            {
+                var si = sis.First(c => c.ProductSale.InvoiceNo == item.InvNo);
+                if (si.TaxType == TaxType.GST)
+                    si.TaxAmount = item.SAmt * 2;
+                else si.TaxAmount = item.SAmt;
+                db.SaleItems.Update(si);
+                x++;
+            }
+            return db.SaveChanges();
+        }
     }
 }

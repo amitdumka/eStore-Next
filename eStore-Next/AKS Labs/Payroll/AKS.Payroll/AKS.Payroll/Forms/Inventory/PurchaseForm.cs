@@ -1,6 +1,5 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
-using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -64,12 +63,12 @@ namespace AKS.Payroll.Forms.Inventory
             // x=Inventory.ValidatePurchaseInvoice(azureDb, pp);
             // dgvPurchase.DataSource = x[1].OrderBy(c => c.EntryStatus).ThenBy(c=>c.InvoiceNo).ToList();
             //dgvPurchase.DataSource= azureDb.SaleItems.ToList();
-            Histories = StockHistory.AllStockHistory(azureDb, "ARD");
-            foreach (var item in Histories)
-            {
-                lbYearList.Items.Add(item.Key);
-                _ = Utils.ToJsonAsync(@"d:\arp\his\" + item.Key + ".json", item.Value);
-            }
+            //Histories = StockHistory.AllStockHistory(azureDb, "ARD");
+            // foreach (var item in Histories)
+            // {
+            //    lbYearList.Items.Add(item.Key);
+            //    _ = Utils.ToJsonAsync(@"d:\arp\his\" + item.Key + ".json", item.Value);
+            // }
         }
 
         private SortedDictionary<string, List<StockHistory>> Histories;
@@ -88,7 +87,7 @@ namespace AKS.Payroll.Forms.Inventory
                 // DataTable = ImportData.ReadExcelToDatatable(@"d:\saleinv.xlsx", 7, 1, 13767, 29);
                 //DataTable = ImportData.ReadExcelToDatatable(@"d:\manual.xlsx", 1, 1, 335, 11);
                 //dgvPurchase.DataSource = DataTable;
-                dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
+                //dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
             }
             catch (Exception ex)
             {
@@ -121,11 +120,11 @@ namespace AKS.Payroll.Forms.Inventory
                 //MessageBox.Show("saved:x= " + x);
                 // dgvPurchase.DataSource = ManualSale.UploadManual(azureDb, DataTable);
                 // MessageBox.Show("saved:x= " + SaleInventory.ProcessSaleItemFromJsonFileAsync(azureDb));
-                //SaleInventory.ReverifyAsync(azureDb, dgvPurchase);   
-               int x= SaleInventory.UpdateUnit(azureDb);
-                MessageBox.Show("UNIT:x= " + x);
-                x = await SaleInventory.UpdateSM(azureDb);
-                MessageBox.Show("SM:x= " + x);
+                //SaleInventory.ReverifyAsync(azureDb, dgvPurchase);
+                //int x= SaleInventory.UpdateUnit(azureDb);
+                // MessageBox.Show("UNIT:x= " + x);
+                // x = await SaleInventory.UpdateSM(azureDb);
+                // MessageBox.Show("SM:x= " + x);
             }
             catch (Exception ex)
             {
@@ -135,7 +134,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dgvPurchase.DataSource = Histories.First(c => c.Key == lbYearList.SelectedValue).Value;
+            // dgvPurchase.DataSource = Histories.First(c => c.Key == lbYearList.SelectedValue).Value;
         }
     }
 }

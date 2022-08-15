@@ -712,7 +712,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public string StyleCode { get; set; }//Prinicple Code
         public string ItemDesc { get; set; }//Sku_description
         public decimal TaxC { get; set; }//TOT_PER_I
-        public decimal TaxS{get;set; }//TOT_PER_II
+        public decimal TaxS { get; set; }//TOT_PER_II
         public decimal Tax { get; set; }//Total_Tax_Amt
 
         public decimal UnitCost { get; set; }//Unit_Cost
@@ -720,14 +720,14 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public decimal SAmt { get; set; }//Total_AMT_I
 
         public decimal basic { get; set; }
-       
-       
+
+
         public decimal CAmt { get; set; }
         public decimal LineTotal { get; set; }
         public decimal RoundOff { get; set; }
         public decimal BillAmt { get; set; }
         public string PaymentMode { get; set; }
-        
+
         public string LP { get; set; }
         public string Tailoring { get; set; }
     }
@@ -735,15 +735,24 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     {
         static DataGridView gridview;
         static DataTable dtS;
-        public static void ReadExcel(AzurePayrollDbContext db, DataGridView gv)
+        public static void ReadLocalExcel(AzurePayrollDbContext db, DataGridView gv)
         {
-            gridview=gv;
+            gridview = gv;
+            string exfile = @"d:\tasdumka001.xlsm";
+            dtS = ImportData.ReadExcelToDatatable(exfile, 1, 1, 37, 32);
+            gridview.DataSource = dtS;
+            ProcessLocalDataTableToObject(db);
+
+        }
+        public static void ReadWebExcel(AzurePayrollDbContext db, DataGridView gv)
+        {
+            gridview = gv;
             string exfile = @"d:\tasMSSale.xlsx";
             dtS = ImportData.ReadExcelToDatatable(exfile, 1, 1, 1062, 64);
             gridview.DataSource = dtS;
 
         }
-        public static void ProcessDataTable(AzurePayrollDbContext db)
+        public static void ProcessWebDataTable(AzurePayrollDbContext db)
         {
 
             for (int i = 0; i < dtS.Rows.Count; i++)
@@ -751,5 +760,212 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
             }
         }
+
+        public static DateTime ToDateDMY(string ondate)
+        {
+            var dd = ondate.Split("-");
+            if (dd.Count() > 2)
+            {
+                var yt = dd[2].Split(" ");
+                var time = yt[1].Split(":");
+                if (time[0] == "00")
+                {
+
+                    return new DateTime(Int32.Parse(yt[0]), Int32.Parse(dd[1]), Int32.Parse(dd[0]));
+                }
+                else
+                {
+                    return new DateTime(Int32.Parse(yt[0]), Int32.Parse(dd[1]), Int32.Parse(dd[0])
+                           , Int32.Parse(time[0]), Int32.Parse(time[1]), Int32.Parse(time[2])
+                           );
+                }
+            }
+            else return DateTime.Now;
+        }
+
+        public static void ProcessLocalDataTableToObject(AzurePayrollDbContext db)
+        {
+            List<MDSale> saleList = new List<MDSale>();
+            var smList = db.Salesmen.Select(c => new { c.SalesmanId, c.Name }).ToList();
+            for (int i = 0; i < dtS.Rows.Count; i++)
+            {
+                MDSale sale = new MDSale
+                {
+                    BARCODE = dtS.Rows[i]["BARCODE"].ToString(),
+                    BASICAMOUNT = decimal.Parse(dtS.Rows[i]["BASICAMOUNT"].ToString()),
+                    BILLAMOUNT = decimal.Parse(dtS.Rows[i]["BILLAMOUNT"].ToString()),
+                    BRAND = dtS.Rows[i]["BRAND"].ToString(),
+                    CATEGORY = dtS.Rows[i]["CATEGORY"].ToString(),
+                    CGSTAMOUNT = decimal.Parse(dtS.Rows[i]["CGSTAMOUNT"].ToString()),
+                    Discountamount = decimal.Parse(dtS.Rows[i]["Discount amount"].ToString()),
+                    HSNCODE = dtS.Rows[i]["HSNCODE"].ToString(),
+                    COUPONAMOUNT = 0,
+                    COUPONPERCENTAGE = "",
+                    LINETOTAL = decimal.Parse(dtS.Rows[i]["LINETOTAL"].ToString()),
+                    MRP = decimal.Parse(dtS.Rows[i]["MRP"].ToString()),
+                    OnDate = ToDateDMY(dtS.Rows[i]["Date"].ToString()),
+                    PAYMENTMODE = dtS.Rows[i]["PAYMENTMODE"].ToString(),
+                    Product = dtS.Rows[i]["Product"].ToString(),
+                    Productnumber = dtS.Rows[i]["Product number"].ToString(),
+                    Quantity = decimal.Parse(dtS.Rows[i]["Quantity"].ToString()),
+                    Receiptnumber = dtS.Rows[i]["Receipt number"].ToString(),
+                    ROUNDOFFAMT = decimal.Parse(dtS.Rows[i]["ROUNDOFFAMT"].ToString()),
+                    SALESMAN = dtS.Rows[i]["SALESMAN"].ToString(),
+                    SALESTYPE = dtS.Rows[i]["SALESTYPE"].ToString(),
+                    SGSTAMOUNT = decimal.Parse(dtS.Rows[i]["SGSTAMOUNT"].ToString()),
+                    STYLECODE = dtS.Rows[i]["STYLECODE"].ToString(),
+                    TAILORINGFLAG = dtS.Rows[i]["TAILORINGFLAG"].ToString(),
+                    Taxamount = decimal.Parse(dtS.Rows[i]["Tax amount"].ToString()),
+                    TranscationNumber = dtS.Rows[i]["Transaction number"].ToString(),
+
+
+
+
+                };
+
+                saleList.Add(sale);
+            }
+            gridview.DataSource = saleList;
+
+            //Generate ProdSale
+            var pSaleList = saleList.Where(c => c.BILLAMOUNT > 0).ToList();
+            List<ProductSale> products = new List<ProductSale>();
+            List<SaleItem> saleItems = new List<SaleItem>();
+            List <string> missBarcode = new List<string>();
+            foreach (var item in pSaleList)
+            {
+                var stock = db.ProductItems.FirstOrDefault(c => c.Barcode == item.BARCODE);
+                if (stock == null)
+                    missBarcode.Add(item.BARCODE);
+                          
+            }
+
+            gridview.DataSource=pSaleList;
+
+
+
+            // int count = 0;
+            // List<ProductItem> PList = new List<ProductItem>();
+            // foreach (var item in pSaleList)
+            // {
+            //     ProductSale pSale = new ProductSale()
+            //     {
+            //         OnDate=item.OnDate, Paid=true, RoundOff=item.ROUNDOFFAMT, 
+            //         StoreId="ARD", Tailoring=false, Taxed=true, 
+            //         TotalBasicAmount=0, UserId="Auto", TotalDiscountAmount=0, TotalMRP=0,
+            //         TotalTaxAmount=0, TotalPrice=item.BILLAMOUNT,
+            //         Adjusted=false, BilledQty=0, EntryStatus=EntryStatus.Added, 
+            //         FreeQty=0, InvoiceNo=item.Receiptnumber,InvoiceType=InvoiceType.Sales, 
+            //         IsReadOnly=true, MarkedDeleted=false, SalesmanId=smList.First(c=>c.Name.Contains(item.SALESMAN)).SalesmanId,
+            //         InvoiceCode=$"ARD/{item.OnDate.Year}/{item.OnDate.Month}/IN/{SaleInventory.INCode(++count)}",
+            //     };
+
+
+            //     products.Add(pSale);
+            //     pSale.Items = new List<SaleItem>();
+            //     var invs = saleList.Where(c => c.Receiptnumber == pSale.InvoiceNo).ToList();
+            //     foreach (var im in invs)
+            //     {
+            //         SaleItem saleItem = new SaleItem() {
+            //         Adjusted=false,Barcode=im.BARCODE, BilledQty=im.Quantity, 
+            //         DiscountAmount=im.Discountamount, FreeQty=0, InvoiceCode=pSale.InvoiceCode, 
+            //         InvoiceType=InvoiceType.Sales, LastPcs=false, TaxType=TaxType.GST, 
+            //         Unit=Unit.NoUnit, Value=im.LINETOTAL, TaxAmount=im.Taxamount,  
+            //         BasicAmount=im.BASICAMOUNT
+            //         };
+            //         //pSale.Items = new List<SaleItem>();
+            //         pSale.Items.Add(saleItem);
+            //         pSale.BilledQty += saleItem.BilledQty;
+            //         pSale.TotalDiscountAmount += saleItem.DiscountAmount;
+            //         pSale.TotalMRP += im.MRP;
+            //         pSale.TotalBasicAmount += im.BASICAMOUNT;
+            //         pSale.TotalTaxAmount += im.Taxamount;
+
+            //         var stock = db.Stocks.FirstOrDefault(c => c.Barcode == saleItem.Barcode);
+            //         if (stock != null) {
+
+            //             saleItem.Unit = stock.Unit;
+            //             stock.SoldQty = saleItem.BilledQty;
+            //             db.Stocks.Update(stock);
+
+            //         }
+            //         else
+            //         {
+            //             missBarcode.Add(pSale.InvoiceNo ,saleItem.Barcode);
+            //             Stock newStock= new Stock {
+            //             Barcode=saleItem.Barcode, EntryStatus=EntryStatus.Added, HoldQty=0,
+            //             SoldQty=saleItem.BilledQty,IsReadOnly=false, CostPrice=0,
+            //             MRP=item.MRP, MarkedDeleted=true, MultiPrice=false, StoreId="ARD", 
+            //             UserId="Auto", PurhcaseQty=0, Unit=saleItem.Unit,
+            //             };
+
+            //             ProductItem pi = new ProductItem {
+            //             Unit=saleItem.Unit,HSNCode=item.HSNCODE, 
+            //             MRP=item.MRP, Barcode=item.BARCODE, 
+            //             Name=item.Product, 
+            //             Size=Size.NS,
+            //             TaxType=TaxType.GST, StyleCode=item.STYLECODE, 
+            //             BrandCode="ARD", Description=item.CATEGORY, 
+            //             ProductCategory=ProductCategory.Fabric, 
+
+            //             }; 
+            //             db.ProductItems.Add(pi);
+            //             db.Stocks.Add(newStock);
+            //             PList.Add(pi);
+
+            //         }
+            //         //saleItem.Unit = stock.Unit;
+            //         saleItems.Add(saleItem);
+            //     }
+
+            // }
+
+            // gridview.DataSource = saleItems ;
+            //// db.ProductSales.AddRange(products);
+            //// int s = db.SaveChanges();
+            // //Console.WriteLine("Saved " + s);
+
+        }
     }
+
+    public class MDSale
+    {
+        //Date	Transaction number	Receipt number	SALESTYPE	SALESMAN	BRAND	CATEGORY	
+        //Product number	Product	HSNCODE	BARCODE	STYLECODE	Quantity	MRP	Discount amount	
+        //BASICAMOUNT	Tax amount	SGSTAMOUNT	CGSTAMOUNT	CESSAMOUNT	CHARGES	LINETOTAL	
+        //ROUNDOFFAMT	BILLAMOUNT	PAYMENTMODE	COUPONPERCENTAGE	COUPONAMOUNT	TAILORINGFLAG
+
+        public DateTime OnDate { get; set; }
+        public string TranscationNumber { get; set; }
+        public string Receiptnumber { get; set; }
+        public string SALESTYPE { get; set; }
+
+        public string SALESMAN { get; set; }
+        public string BRAND { get; set; }
+        public string CATEGORY { get; set; }
+
+        public string Productnumber { get; set; }
+        public string Product { get; set; }
+        public string HSNCODE { get; set; }
+        public string BARCODE { get; set; }
+        public string STYLECODE { get; set; }
+
+        public decimal Quantity { get; set; }
+        public decimal MRP { get; set; }
+        public decimal Discountamount { get; set; }
+        public decimal BASICAMOUNT { get; set; }
+        public decimal Taxamount { get; set; }
+        public decimal SGSTAMOUNT { get; set; }
+        public decimal CGSTAMOUNT { get; set; }
+        public decimal LINETOTAL { get; set; }
+        public decimal ROUNDOFFAMT { get; set; }
+        public decimal BILLAMOUNT { get; set; }
+        public string PAYMENTMODE { get; set; }
+        public string COUPONPERCENTAGE { get; set; }
+        public decimal COUPONAMOUNT { get; set; }
+        public string TAILORINGFLAG { get; set; }
+
+    }
+
+
 }

@@ -89,7 +89,8 @@ namespace AKS.Payroll.Forms.Inventory
                 //dgvPurchase.DataSource = SaleInventory.AddTailoringBarcodeAsync(azureDb);
 
                 // ManualSale.ProcessManualImport(azureDb, dgvPurchase);
-                MSSaleInventory.ReadExcel(azureDb, dgvPurchase);
+                // MSSaleInventory.ReadWebExcel(azureDb, dgvPurchase);
+                MSSaleInventory.ReadLocalExcel(azureDb, dgvPurchase);
             }
             catch (Exception ex)
             {

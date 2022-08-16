@@ -738,8 +738,8 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public static void ReadLocalExcel(AzurePayrollDbContext db, DataGridView gv)
         {
             gridview = gv;
-            string exfile = @"d:\tasdumka001.xlsm";
-            dtS = ImportData.ReadExcelToDatatable(exfile, 1, 1, 37, 32);
+            string exfile = @"d:\restbills.xlsx";
+            dtS = ImportData.ReadExcelToDatatable(exfile, 1, 1, 129, 32);
             gridview.DataSource = dtS;
             ProcessLocalDataTableToObject(db);
 
@@ -763,7 +763,9 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
         public static DateTime ToDateDMY(string ondate)
         {
-            var dd = ondate.Split("-");
+            char c = '-';
+            if(ondate.Contains("/")) c= '/';
+            var dd = ondate.Split(c);
             if (dd.Count() > 2)
             {
                 var yt = dd[2].Split(" ");
@@ -786,6 +788,30 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public static void ProcessLocalDataTableToObject(AzurePayrollDbContext db)
         {
             List<MDSale> saleList = new List<MDSale>();
+
+            List<string> inv00 = new List<string>           {
+"JHC000601IN0000309","JHC000601IN0000310","JHC000601IN0000311","JHC000601IN0000312","JHC000601IN0000313","JHC000601IN0000314","JHC000601IN0000315","JHC000601IN0000316","JHC000601IN0000317","JHC000601IN0000318","JHC000601IN0000319","JHC000601IN0000320","JHC000601IN0000321","JHC000601IN0000332","JHC000601IN0000333","JHC000601IN0000334","JHC000601IN0000335","JHC000601IN0000336","JHC000601IN0000337","JHC000601IN0000338","JHC000601IN0000339","JHC000601IN0000340","JHC000601IN0000341","JHC000601IN0000342","JHC000601IN0000343","JHC000601IN0000344","JHC000601IN0000345","JHC000601IN0000346","JHC000601IN0000347"};
+
+
+            foreach (var item in inv00)
+            {
+
+                var p = db.ProductSales.Where(c => c.InvoiceNo == item).FirstOrDefault();
+                if (p != null)
+                {
+                    var sales = db.SaleItems.Where(c => c.InvoiceCode == p.InvoiceCode).ToList();
+                    foreach (var ios in sales)
+                    {
+                        var stock = db.Stocks.FirstOrDefault(c => c.Barcode == ios.Barcode);
+                        stock.SoldQty -= ios.BilledQty; 
+                        db.Stocks.Update(stock);
+                    }
+                    db.SaleItems.RemoveRange(sales);
+                    db.ProductSales.Remove(p);
+                }
+            }
+            db.SaveChanges();
+
             var smList = db.Salesmen.Select(c => new { c.SalesmanId, c.Name }).ToList();
             for (int i = 0; i < dtS.Rows.Count; i++)
             {
@@ -939,19 +965,19 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                             ProductItem pi = new ProductItem
                             {
                                 Unit = saleItem.Unit,
-                                HSNCode = item.HSNCODE,
-                                MRP = item.MRP,
-                                Barcode = item.BARCODE,
-                                Name = item.Product,
+                                HSNCode = im.HSNCODE,
+                                MRP = im.MRP,
+                                Barcode = saleItem.Barcode,
+                                Name = im.Product,
                                 Size = Size.NS,
                                 TaxType = TaxType.GST,
-                                StyleCode = item.STYLECODE,
+                                StyleCode = im.STYLECODE,
                                 BrandCode = "ARD",
-                                Description = item.CATEGORY,
+                                Description = im.CATEGORY,
                                 ProductCategory = ProductCategory.Fabric,
 
                             };
-                            var p = item.CATEGORY.Split("/").Distinct().ToList();
+                            var p = im.CATEGORY.Split("/").Distinct().ToList();
                             foreach (var k in p)
                             {
 
@@ -980,6 +1006,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             gridview.DataSource = saleItems;
             db.ProductSales.AddRange(products);
             int s = db.SaveChanges();
+            Console.WriteLine(PList.Count + "");
             Console.WriteLine("Saved " + s);
 
         }

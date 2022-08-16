@@ -831,99 +831,156 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             var pSaleList = saleList.Where(c => c.BILLAMOUNT > 0).ToList();
             List<ProductSale> products = new List<ProductSale>();
             List<SaleItem> saleItems = new List<SaleItem>();
-            List <string> missBarcode = new List<string>();
+            List<string> missBarcode = new List<string>();
+            //foreach (var item in pSaleList)
+            //{
+            //    var stock = db.ProductItems.FirstOrDefault(c => c.Barcode == item.BARCODE);
+            //    if (stock == null)
+            //        missBarcode.Add(item.BARCODE);
+
+            //}
+
+            //gridview.DataSource=pSaleList;
+
+
+
+            int count = 0;
+            List<ProductItem> PList = new List<ProductItem>();
             foreach (var item in pSaleList)
             {
-                var stock = db.ProductItems.FirstOrDefault(c => c.Barcode == item.BARCODE);
-                if (stock == null)
-                    missBarcode.Add(item.BARCODE);
-                          
+                ProductSale pSale = new ProductSale()
+                {
+                    OnDate = item.OnDate,
+                    Paid = true,
+                    RoundOff = item.ROUNDOFFAMT,
+                    StoreId = "ARD",
+                    Tailoring = false,
+                    Taxed = true,
+                    TotalBasicAmount = 0,
+                    UserId = "Auto",
+                    TotalDiscountAmount = 0,
+                    TotalMRP = 0,
+                    TotalTaxAmount = 0,
+                    TotalPrice = item.BILLAMOUNT,
+                    Adjusted = false,
+                    BilledQty = 0,
+                    EntryStatus = EntryStatus.Added,
+                    FreeQty = 0,
+                    InvoiceNo = item.Receiptnumber,
+                    InvoiceType = InvoiceType.Sales,
+                    IsReadOnly = true,
+                    MarkedDeleted = false,
+                    SalesmanId = smList.First(c => c.Name.Contains(item.SALESMAN)).SalesmanId,
+                    InvoiceCode = $"ARD/{item.OnDate.Year}/{item.OnDate.Month}/IN/{SaleInventory.INCode(++count)}",
+                };
+
+
+                products.Add(pSale);
+                pSale.Items = new List<SaleItem>();
+                var invs = saleList.Where(c => c.Receiptnumber == pSale.InvoiceNo).ToList();
+                foreach (var im in invs)
+                {
+                    SaleItem saleItem = new SaleItem()
+                    {
+                        Adjusted = false,
+                        Barcode = im.BARCODE,
+                        BilledQty = im.Quantity,
+                        DiscountAmount = im.Discountamount,
+                        FreeQty = 0,
+                        InvoiceCode = pSale.InvoiceCode,
+                        InvoiceType = InvoiceType.Sales,
+                        LastPcs = false,
+                        TaxType = TaxType.GST,
+                        Unit = Unit.NoUnit,
+                        Value = im.LINETOTAL,
+                        TaxAmount = im.Taxamount,
+                        BasicAmount = im.BASICAMOUNT
+                    };
+                    //pSale.Items = new List<SaleItem>();
+                    pSale.Items.Add(saleItem);
+                    pSale.BilledQty += saleItem.BilledQty;
+                    pSale.TotalDiscountAmount += saleItem.DiscountAmount;
+                    pSale.TotalMRP += im.MRP;
+                    pSale.TotalBasicAmount += im.BASICAMOUNT;
+                    pSale.TotalTaxAmount += im.Taxamount;
+
+                    var stock = db.Stocks.FirstOrDefault(c => c.Barcode == saleItem.Barcode);
+                    if (stock != null)
+                    {
+
+                        saleItem.Unit = stock.Unit;
+                        stock.SoldQty = saleItem.BilledQty;
+                        db.Stocks.Update(stock);
+
+                    }
+                    else
+                    {
+                        missBarcode.Add(saleItem.Barcode);
+                        Stock newStock = new Stock
+                        {
+                            Barcode = saleItem.Barcode,
+                            EntryStatus = EntryStatus.Added,
+                            HoldQty = 0,
+                            SoldQty = saleItem.BilledQty,
+                            IsReadOnly = false,
+                            CostPrice = 0,
+                            MRP = item.MRP,
+                            MarkedDeleted = true,
+                            MultiPrice = false,
+                            StoreId = "ARD",
+                            UserId = "Auto",
+                            PurhcaseQty = 0,
+                            Unit = saleItem.Unit,
+                        };
+
+                        var pp = db.ProductItems.Where(c => c.Barcode == saleItem.Barcode).FirstOrDefault();
+                        if (pp == null)
+                        {
+                            ProductItem pi = new ProductItem
+                            {
+                                Unit = saleItem.Unit,
+                                HSNCode = item.HSNCODE,
+                                MRP = item.MRP,
+                                Barcode = item.BARCODE,
+                                Name = item.Product,
+                                Size = Size.NS,
+                                TaxType = TaxType.GST,
+                                StyleCode = item.STYLECODE,
+                                BrandCode = "ARD",
+                                Description = item.CATEGORY,
+                                ProductCategory = ProductCategory.Fabric,
+
+                            };
+                            var p = item.CATEGORY.Split("/").Distinct().ToList();
+                            foreach (var k in p)
+                            {
+
+                                var x = db.ProductSubCategories.Find(k);
+                                if (x != null)
+                                {
+                                    pi.SubCategory = x.SubCategory;
+                                    pi.ProductCategory = (ProductCategory)x.ProductCategory;
+                                    break;
+                                }
+                            }
+                            db.ProductItems.Add(pi);
+                            PList.Add(pi);
+                        }
+
+                        db.Stocks.Add(newStock);
+
+
+                    }
+                    //saleItem.Unit = stock.Unit;
+                    saleItems.Add(saleItem);
+                }
+
             }
 
-            gridview.DataSource=pSaleList;
-
-
-
-            // int count = 0;
-            // List<ProductItem> PList = new List<ProductItem>();
-            // foreach (var item in pSaleList)
-            // {
-            //     ProductSale pSale = new ProductSale()
-            //     {
-            //         OnDate=item.OnDate, Paid=true, RoundOff=item.ROUNDOFFAMT, 
-            //         StoreId="ARD", Tailoring=false, Taxed=true, 
-            //         TotalBasicAmount=0, UserId="Auto", TotalDiscountAmount=0, TotalMRP=0,
-            //         TotalTaxAmount=0, TotalPrice=item.BILLAMOUNT,
-            //         Adjusted=false, BilledQty=0, EntryStatus=EntryStatus.Added, 
-            //         FreeQty=0, InvoiceNo=item.Receiptnumber,InvoiceType=InvoiceType.Sales, 
-            //         IsReadOnly=true, MarkedDeleted=false, SalesmanId=smList.First(c=>c.Name.Contains(item.SALESMAN)).SalesmanId,
-            //         InvoiceCode=$"ARD/{item.OnDate.Year}/{item.OnDate.Month}/IN/{SaleInventory.INCode(++count)}",
-            //     };
-
-
-            //     products.Add(pSale);
-            //     pSale.Items = new List<SaleItem>();
-            //     var invs = saleList.Where(c => c.Receiptnumber == pSale.InvoiceNo).ToList();
-            //     foreach (var im in invs)
-            //     {
-            //         SaleItem saleItem = new SaleItem() {
-            //         Adjusted=false,Barcode=im.BARCODE, BilledQty=im.Quantity, 
-            //         DiscountAmount=im.Discountamount, FreeQty=0, InvoiceCode=pSale.InvoiceCode, 
-            //         InvoiceType=InvoiceType.Sales, LastPcs=false, TaxType=TaxType.GST, 
-            //         Unit=Unit.NoUnit, Value=im.LINETOTAL, TaxAmount=im.Taxamount,  
-            //         BasicAmount=im.BASICAMOUNT
-            //         };
-            //         //pSale.Items = new List<SaleItem>();
-            //         pSale.Items.Add(saleItem);
-            //         pSale.BilledQty += saleItem.BilledQty;
-            //         pSale.TotalDiscountAmount += saleItem.DiscountAmount;
-            //         pSale.TotalMRP += im.MRP;
-            //         pSale.TotalBasicAmount += im.BASICAMOUNT;
-            //         pSale.TotalTaxAmount += im.Taxamount;
-
-            //         var stock = db.Stocks.FirstOrDefault(c => c.Barcode == saleItem.Barcode);
-            //         if (stock != null) {
-
-            //             saleItem.Unit = stock.Unit;
-            //             stock.SoldQty = saleItem.BilledQty;
-            //             db.Stocks.Update(stock);
-
-            //         }
-            //         else
-            //         {
-            //             missBarcode.Add(pSale.InvoiceNo ,saleItem.Barcode);
-            //             Stock newStock= new Stock {
-            //             Barcode=saleItem.Barcode, EntryStatus=EntryStatus.Added, HoldQty=0,
-            //             SoldQty=saleItem.BilledQty,IsReadOnly=false, CostPrice=0,
-            //             MRP=item.MRP, MarkedDeleted=true, MultiPrice=false, StoreId="ARD", 
-            //             UserId="Auto", PurhcaseQty=0, Unit=saleItem.Unit,
-            //             };
-
-            //             ProductItem pi = new ProductItem {
-            //             Unit=saleItem.Unit,HSNCode=item.HSNCODE, 
-            //             MRP=item.MRP, Barcode=item.BARCODE, 
-            //             Name=item.Product, 
-            //             Size=Size.NS,
-            //             TaxType=TaxType.GST, StyleCode=item.STYLECODE, 
-            //             BrandCode="ARD", Description=item.CATEGORY, 
-            //             ProductCategory=ProductCategory.Fabric, 
-
-            //             }; 
-            //             db.ProductItems.Add(pi);
-            //             db.Stocks.Add(newStock);
-            //             PList.Add(pi);
-
-            //         }
-            //         //saleItem.Unit = stock.Unit;
-            //         saleItems.Add(saleItem);
-            //     }
-
-            // }
-
-            // gridview.DataSource = saleItems ;
-            //// db.ProductSales.AddRange(products);
-            //// int s = db.SaveChanges();
-            // //Console.WriteLine("Saved " + s);
+            gridview.DataSource = saleItems;
+            db.ProductSales.AddRange(products);
+            int s = db.SaveChanges();
+            Console.WriteLine("Saved " + s);
 
         }
     }

@@ -318,6 +318,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             List<Stock> stockList = new List<Stock>();
             List<ProductItem> productItemList = new List<ProductItem>();
             List<ProductSale> productSales = new List<ProductSale>();
+            var sizeList = Enum.GetNames(typeof(Size)).ToList();
 
             for (int i = 0; i < dtS.Rows.Count; i++)
             {
@@ -346,14 +347,37 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     Size = dtS.Rows[i]["Size"].ToString(),
                     Category = dtS.Rows[i]["Category"].ToString(),
                     SubCategory = dtS.Rows[i]["SubCate"].ToString(),
-                    ProductType = dtS.Rows[i]["ProductTye"].ToString(),
+                    ProductType = dtS.Rows[i]["ProductType"].ToString(),
                     StyleCode = dtS.Rows[i]["PRINCIPALCODE"].ToString(),
                 };
                 mISales.Add(sale);
             }
+            var plist = dtS.AsEnumerable().GroupBy(c => c["ProductType"]).Select(c => c.Key.ToString()).ToList();
 
             var invNoList = mISales.Select(c => c.InvNo).Distinct().ToList();
             int ic = 0;
+            var productTypes = db.ProductTypes.ToList();
+
+            foreach (var item in productTypes)
+            {
+                plist.Remove(item.ProductTypeName);
+            }
+            var ctr = productTypes.Count + 1;
+            foreach (var item in plist)
+            {
+                var pts = new ProductType
+                {
+                    ProductTypeId = $"PT000" + ctr,
+                    ProductTypeName = item
+                };
+                ctr++;
+                productTypes.Add(pts);
+                db.ProductTypes.Add(pts);
+            }
+            int polp = db.SaveChanges();
+            gridview.DataSource = mISales;
+             
+
             foreach (var inv in invNoList)
             {
                 var sales = mISales.Where(c => c.InvNo == inv).ToList();
@@ -407,7 +431,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     pSale.TotalPrice += si.Value;
                     pSale.TotalBasicAmount += si.BasicAmount;
                     pSale.BilledQty += si.BilledQty;
-                    
+
                     var stock = db.Stocks.Where(c => c.Barcode == si.Barcode).FirstOrDefault();
                     if (stock != null)
                     {
@@ -450,8 +474,43 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                                 MRP = sale.UnitMRP,
                                 Size = Size.NS,
                                 TaxType = TaxType.GST,
+                                StyleCode = sale.StyleCode,
+                                BrandCode = sale.Brand,
+                                Description = sale.ItemDesc,
+                                SubCategory = sale.SubCategory,
+                                ProductTypeId = "",
                             };
-                            stockList.Add(newstock);
+
+                            var pt = productTypes.Where(c => c.ProductTypeName == sale.ProductType).FirstOrDefault();
+                            if (pt != null)
+                            { newPI.ProductTypeId = pt.ProductTypeId; }
+
+                            switch (sale.Category)
+                            {
+                                case "Shirting":
+                                case "Suiting":
+                                    newPI.Size = Size.NS;
+                                    newPI.Unit = Unit.Meters;
+                                    newstock.Unit = Unit.Meters;
+                                    break;
+                                case "Apparel":
+                                    newstock.Unit = Unit.Pcs;
+                                    newPI.Unit = Unit.Pcs;
+                                    newPI.Size = (Size)GetSize(sale.Size);
+                                    break;
+                                case "Tailoring":
+                                    newPI.Size = Size.NS;
+                                    newPI.Unit = Unit.Nos;
+                                    newstock.Unit = Unit.Nos;
+                                    pSale.Tailoring = true;
+                                    break;
+                                default:
+                                    newPI.Size = Size.NS;
+                                    newPI.Unit = Unit.Meters;
+                                    break;
+                            }
+                            if(newstock.Unit!=Unit.Nos)
+                                stockList.Add(newstock);
                             productItemList.Add(newPI);
                         }
 
@@ -514,5 +573,16 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             }
             else return DateTime.Now;
         }
+
+        public static int GetSize(string size)
+        {
+            var sizes = Enum.GetNames(typeof(Size)).ToList();
+            var d = sizes.Where(c => c.Contains(size)).FirstOrDefault();
+            if (d != null)
+                return sizes.IndexOf(d);
+            else return -1;
+
+        }
+
     }
 }

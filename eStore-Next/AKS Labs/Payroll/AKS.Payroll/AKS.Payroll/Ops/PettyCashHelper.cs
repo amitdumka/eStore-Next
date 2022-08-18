@@ -9,6 +9,14 @@ using System.Data;
 
 namespace AKS.Payroll.Ops
 {
+    internal class RowData
+    {
+        public string Name1 { get; set; }
+        public string Name2 { get; set; }
+        public string Value1 { get; set; }
+        public string Value2 { get; set; }
+    }
+
     public class PettyCashHelper
     {
         public string GenReport(AzurePayrollDbContext db)
@@ -905,13 +913,5 @@ namespace AKS.Payroll.Ops
                 return null;
             }
         }
-    }
-
-    internal class RowData
-    {
-        public string Name1 { get; set; }
-        public string Name2 { get; set; }
-        public string Value1 { get; set; }
-        public string Value2 { get; set; }
     }
 }

@@ -316,5 +316,63 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foreach (var item in sales)
                     Items.Add(item);
         }
+
+        private List<SaleReport> SaleReports(string storeCode, int year, int month)
+        {
+            var x= azureDb.ProductSales.Where(c => c.StoreId == storeCode
+            && c.MarkedDeleted == false && !c.Adjusted
+            && c.OnDate.Year == year && c.OnDate.Month == month)
+           .GroupBy(c => new { c.OnDate.Year, c.InvoiceType, c.Tailoring })
+            .Select(c => new SaleReport
+            {
+                Year=year,Month=month,
+                InvoiceType = c.Key.InvoiceType,
+                Tailoing = c.Key.Tailoring,
+                BillQty = c.Sum(x => x.BilledQty),
+                FreeQty = c.Sum(x => x.FreeQty),
+                TotalMRP = c.Sum(x => x.TotalMRP),
+                TotalDiscount = c.Sum(x => x.TotalDiscountAmount),
+                TotalTax = c.Sum(x => x.TotalTaxAmount),
+                TotalPrice = c.Sum(x => x.TotalPrice),
+
+            })
+               .ToList();
+            return x;
+
+
+        }
+        private List<List<SaleReport>> SaleReports(string storeCode, int year)
+        {
+            List<List<SaleReport>> saleReports = new List<List<SaleReport>>();
+            for (int i = 1; i <= 12; i++)
+            {
+                saleReports.Add(SaleReports(storeCode, year, i));
+            }
+            return saleReports;
+        }
+        public SortedDictionary<int, List<List<SaleReport>>> SaleReports(string storeCode)
+        {
+            SortedDictionary<int, List<List<SaleReport>>> report = new SortedDictionary<int, List<List<SaleReport>>>();
+            var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
+            foreach (var year in YearList)
+            {
+               report.Add(year,  SaleReports(storeCode, year));
+            }
+            return report;
+
+        }
+    }
+    public class SaleReport
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public InvoiceType InvoiceType { get; set; }
+        public bool Tailoing { get; set; }
+        public decimal BillQty { get; set; }
+        public decimal FreeQty { get; set; }
+        public decimal TotalMRP { get; set; }
+        public decimal TotalDiscount { get; set; }
+        public decimal TotalTax { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

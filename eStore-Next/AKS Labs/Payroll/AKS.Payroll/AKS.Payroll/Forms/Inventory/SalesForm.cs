@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
+using System.Data;
 
 namespace AKS.Payroll.Forms.Inventory
 {
@@ -84,7 +85,7 @@ namespace AKS.Payroll.Forms.Inventory
                 txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
 
                 txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
-               
+
             }
             else if (btnAdd.Text == "Edit")
             {
@@ -184,7 +185,7 @@ namespace AKS.Payroll.Forms.Inventory
             if (_salesManager.ReturnKey)
                 DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
         }
-      
+
         private void LoadFormData()
         {
             try
@@ -203,7 +204,7 @@ namespace AKS.Payroll.Forms.Inventory
                 MessageBox.Show(e.Message);
             }
         }
-        
+
         private void rbManual_CheckedChanged(object sender, EventArgs e)
         {
             _salesManager.SetRadioButton(false, rbManual.Checked, cbSalesReturn.Checked);
@@ -286,6 +287,55 @@ namespace AKS.Payroll.Forms.Inventory
             if (txtRate.Text.Trim().Length <= 0) flag = false;
             if (txtValue.Text.Trim().Length <= 0) flag = false;
             return flag;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            if (SaleReports == null || SaleReports.Count == 0)
+            {
+                SaleReports = _salesManager.SaleReports("ARD");
+            }
+            tabControl1.SelectedTab = tpView;
+            DisplaySaleReport();
+        }
+        private SortedDictionary<int, List<List<SaleReport>>> SaleReports;
+        List<SaleReport> SaleReportsList;
+        private void DisplaySaleReport()
+        {
+            DataGridView gv = new DataGridView();
+            gv.AllowUserToAddRows = false;
+            if (SaleReportsList == null || SaleReports.Count == 0)
+            {
+
+                SaleReportsList = new List<SaleReport>();
+                foreach (var item in SaleReports)
+                {
+                    if (item.Value != null && item.Value.Count > 0)
+                    {
+
+
+                        foreach (var item1 in item.Value)
+                        {
+                            if (item1 != null && item1.Count > 0)
+                            {
+                                foreach (var item2 in item1)
+                                {
+                                    if (item2 != null)
+                                        SaleReportsList.Add(item2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            gv.DataSource = SaleReportsList;
+            gv.Dock= DockStyle.Fill;
+            pdfViewer.Hide();
+            pdfViewer.Visible = false;
+            tpView.Controls.Add(gv);
+            gv.Show();
+            gv.Visible = true;
+
         }
     }
 }

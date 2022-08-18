@@ -72,7 +72,6 @@
             this.lbPd = new System.Windows.Forms.Label();
             this.cbCashBill = new System.Windows.Forms.CheckBox();
             this.tpView = new System.Windows.Forms.TabPage();
-            this.label16 = new System.Windows.Forms.Label();
             this.pdfViewer = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
@@ -518,7 +517,6 @@
             // 
             // tpView
             // 
-            this.tpView.Controls.Add(this.label16);
             this.tpView.Controls.Add(this.pdfViewer);
             this.tpView.Location = new System.Drawing.Point(4, 24);
             this.tpView.Name = "tpView";
@@ -527,15 +525,6 @@
             this.tpView.TabIndex = 2;
             this.tpView.Text = "View";
             this.tpView.UseVisualStyleBackColor = true;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(27, 26);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(44, 15);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "label16";
             // 
             // pdfViewer
             // 
@@ -617,6 +606,7 @@
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // panel3
             // 
@@ -742,7 +732,6 @@
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSaleItems)).EndInit();
             this.tpView.ResumeLayout(false);
-            this.tpView.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -804,7 +793,6 @@
         private TextBox txtCustomerName;
         private CheckBox cbSalesReturn;
         private Button btnAddCustomer;
-        private Label label16;
         private Button btnPayment;
         private Label label17;
         private Label lbPd;

@@ -122,29 +122,29 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 {
                     BARCODE = dtS.Rows[i]["BARCODE"].ToString(),
                     BASICAMOUNT = decimal.Parse(dtS.Rows[i]["BASICAMOUNT"].ToString()),
-                    BILLAMOUNT = decimal.Parse(dtS.Rows[i]["BILLAMOUNT"].ToString()),
+                    BILLAMOUNT = Math.Round(decimal.Parse(dtS.Rows[i]["BILLAMOUNT"].ToString()),2),
                     BRAND = dtS.Rows[i]["BRAND"].ToString(),
                     CATEGORY = dtS.Rows[i]["CATEGORY"].ToString(),
-                    CGSTAMOUNT = decimal.Parse(dtS.Rows[i]["CGSTAMOUNT"].ToString()),
-                    Discountamount = decimal.Parse(dtS.Rows[i]["Discount amount"].ToString()),
+                    CGSTAMOUNT = Math.Round(decimal.Parse(dtS.Rows[i]["CGSTAMOUNT"].ToString()),2),
+                    Discountamount = Math.Round(decimal.Parse(dtS.Rows[i]["Discount amount"].ToString()),2),
                     HSNCODE = dtS.Rows[i]["HSNCODE"].ToString(),
                     COUPONAMOUNT = 0,
                     COUPONPERCENTAGE = "",
-                    LINETOTAL = decimal.Parse(dtS.Rows[i]["LINETOTAL"].ToString()),
-                    MRP = decimal.Parse(dtS.Rows[i]["MRP"].ToString()),
+                    LINETOTAL = Math.Round(decimal.Parse(dtS.Rows[i]["LINETOTAL"].ToString()),2),
+                    MRP = Math.Round(decimal.Parse(dtS.Rows[i]["MRP"].ToString())),
                     OnDate = ToDateDMY(dtS.Rows[i]["Date"].ToString()),
                     PAYMENTMODE = dtS.Rows[i]["PAYMENTMODE"].ToString(),
                     Product = dtS.Rows[i]["Product"].ToString(),
                     Productnumber = dtS.Rows[i]["Product number"].ToString(),
-                    Quantity = decimal.Parse(dtS.Rows[i]["Quantity"].ToString()),
+                    Quantity = Math.Round(decimal.Parse(dtS.Rows[i]["Quantity"].ToString()),2),
                     Receiptnumber = dtS.Rows[i]["Receipt number"].ToString(),
-                    ROUNDOFFAMT = decimal.Parse(dtS.Rows[i]["ROUNDOFFAMT"].ToString()),
+                    ROUNDOFFAMT = Math.Round(decimal.Parse(dtS.Rows[i]["ROUNDOFFAMT"].ToString()),2),
                     SALESMAN = dtS.Rows[i]["SALESMAN"].ToString(),
                     SALESTYPE = dtS.Rows[i]["SALESTYPE"].ToString(),
-                    SGSTAMOUNT = decimal.Parse(dtS.Rows[i]["SGSTAMOUNT"].ToString()),
+                    SGSTAMOUNT = Math.Round(decimal.Parse(dtS.Rows[i]["SGSTAMOUNT"].ToString()),2),
                     STYLECODE = dtS.Rows[i]["STYLECODE"].ToString(),
                     TAILORINGFLAG = dtS.Rows[i]["TAILORINGFLAG"].ToString(),
-                    Taxamount = decimal.Parse(dtS.Rows[i]["Tax amount"].ToString()),
+                    Taxamount = Math.Round(decimal.Parse(dtS.Rows[i]["Tax amount"].ToString()),2),
                     TranscationNumber = dtS.Rows[i]["Transaction number"].ToString(),
                 };
 
@@ -206,31 +206,31 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     {
                         Adjusted = false,
                         Barcode = im.BARCODE,
-                        BilledQty = im.Quantity,
-                        DiscountAmount = im.Discountamount,
+                        BilledQty =Math.Round( im.Quantity,2),
+                        DiscountAmount = Math.Round(im.Discountamount,2),
                         FreeQty = 0,
                         InvoiceCode = pSale.InvoiceCode,
                         InvoiceType = InvoiceType.Sales,
                         LastPcs = false,
                         TaxType = TaxType.GST,
                         Unit = Unit.NoUnit,
-                        Value = im.LINETOTAL,
-                        TaxAmount = im.Taxamount,
-                        BasicAmount = im.BASICAMOUNT
+                        Value =Math.Round( im.LINETOTAL,2),
+                        TaxAmount = Math.Round(im.Taxamount,2),
+                        BasicAmount =Math.Round( im.BASICAMOUNT,2)
                     };
                     //pSale.Items = new List<SaleItem>();
                     pSale.Items.Add(saleItem);
-                    pSale.BilledQty += saleItem.BilledQty;
+                    pSale.BilledQty +=Math.Round( saleItem.BilledQty,2);
                     pSale.TotalDiscountAmount += saleItem.DiscountAmount;
-                    pSale.TotalMRP += im.MRP;
-                    pSale.TotalBasicAmount += im.BASICAMOUNT;
-                    pSale.TotalTaxAmount += im.Taxamount;
+                    pSale.TotalMRP += Math.Round(im.MRP,2);
+                    pSale.TotalBasicAmount += Math.Round(im.BASICAMOUNT,2);
+                    pSale.TotalTaxAmount += Math.Round(im.Taxamount,2);
 
                     var stock = db.Stocks.FirstOrDefault(c => c.Barcode == saleItem.Barcode);
                     if (stock != null)
                     {
                         saleItem.Unit = stock.Unit;
-                        stock.SoldQty = saleItem.BilledQty;
+                        stock.SoldQty = Math.Round(saleItem.BilledQty,2);
                         db.Stocks.Update(stock);
                     }
                     else
@@ -239,7 +239,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                         {
                             var ss = pxStocks.First(c => c.Barcode == saleItem.Barcode);
                             pxStocks.Remove(ss);
-                            ss.SoldQty += saleItem.BilledQty;
+                            ss.SoldQty += Math.Round(saleItem.BilledQty,2);
                             pxStocks.Add(ss);
                         }
                         else
@@ -358,23 +358,23 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             int ic = 0;
             var productTypes = db.ProductTypes.ToList();
 
-            foreach (var item in productTypes)
-            {
-                plist.Remove(item.ProductTypeName);
-            }
-            var ctr = productTypes.Count + 1;
-            foreach (var item in plist)
-            {
-                var pts = new ProductType
-                {
-                    ProductTypeId = $"PT000" + ctr,
-                    ProductTypeName = item
-                };
-                ctr++;
-                productTypes.Add(pts);
-                db.ProductTypes.Add(pts);
-            }
-            int polp = db.SaveChanges();
+            //foreach (var item in productTypes)
+            //{
+             //   plist.Remove(item.ProductTypeName);
+            //}
+            //var ctr = productTypes.Count + 1;
+            //foreach (var item in plist)
+            //{
+             //   var pts = new ProductType
+              //  {
+               //     ProductTypeId = $"PT000" + ctr,
+                //    ProductTypeName = item
+               // };
+               // ctr++;
+               // productTypes.Add(pts);
+               // db.ProductTypes.Add(pts);
+            //}
+           // int polp = db.SaveChanges();
             gridview.DataSource = mISales;
              
 
@@ -431,6 +431,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     pSale.TotalPrice += si.Value;
                     pSale.TotalBasicAmount += si.BasicAmount;
                     pSale.BilledQty += si.BilledQty;
+                    pSale.TotalDiscountAmount += si.DiscountAmount;
 
                     var stock = db.Stocks.Where(c => c.Barcode == si.Barcode).FirstOrDefault();
                     if (stock != null)
@@ -477,8 +478,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                                 StyleCode = sale.StyleCode,
                                 BrandCode = sale.Brand,
                                 Description = sale.ItemDesc,
-                                SubCategory = sale.SubCategory,
-                                ProductTypeId = "",
+                                SubCategory = sale.SubCategory+" "+sale.ProductType,
+                                Name=sale.Category+"/"+sale.SubCategory+"/"+sale.ProductType,
+
+                                ProductTypeId = ""
                             };
 
                             var pt = productTypes.Where(c => c.ProductTypeName == sale.ProductType).FirstOrDefault();
@@ -521,6 +524,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 productSales.Add(pSale);
             }
             gridview.DataSource = productSales;
+            db.ProductItems.AddRange(productItemList);
+            db.ProductSales.AddRange(productSales);
+            int lol = db.SaveChanges();
+            Console.WriteLine("sav" + lol);
         }
 
         public static string Saleid(string name)

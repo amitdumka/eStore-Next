@@ -90,7 +90,7 @@ namespace AKS.Payroll.Forms.Inventory
 
                 // ManualSale.ProcessManualImport(azureDb, dgvPurchase);
                 // MSSaleInventory.ReadWebExcel(azureDb, dgvPurchase);
-                MSSaleInventory.ReadWebExcel(azureDb, dgvPurchase);
+               // MSSaleInventory.ReadWebExcel(azureDb, dgvPurchase);
             }
             catch (Exception ex)
             {

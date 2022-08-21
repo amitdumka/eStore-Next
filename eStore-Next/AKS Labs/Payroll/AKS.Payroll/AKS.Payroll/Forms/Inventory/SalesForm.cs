@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
+using AKS.Payroll.Ops;
 using System.Data;
 
 namespace AKS.Payroll.Forms.Inventory
@@ -220,7 +221,7 @@ namespace AKS.Payroll.Forms.Inventory
             _salesManager.InitManager();
             SetupForm();
             lbYearList.DataSource = _salesManager.YearList;
-            dataGridView1.DataSource = _salesManager.SetGridView();
+            dgvSales.DataSource = _salesManager.SetGridView();
         }
 
         private void SetupForm()
@@ -300,9 +301,10 @@ namespace AKS.Payroll.Forms.Inventory
         }
         private SortedDictionary<int, List<List<SaleReport>>> SaleReports;
         List<SaleReport> SaleReportsList;
+        DataGridView gv = new DataGridView();
         private void DisplaySaleReport()
         {
-            DataGridView gv = new DataGridView();
+            
             gv.AllowUserToAddRows = false;
             if (SaleReportsList == null || SaleReports.Count == 0)
             {
@@ -335,6 +337,20 @@ namespace AKS.Payroll.Forms.Inventory
             tpView.Controls.Add(gv);
             gv.Show();
             gv.Visible = true;
+
+        }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            string fn = new SaleHelper().ToPdf(SaleReportsList);
+            if (!string.IsNullOrEmpty(fn))
+            {
+                gv.Visible=false;
+                pdfViewer.Load(fn);
+                pdfViewer.Visible=true;
+                this.tabControl1.SelectedTab = tpView;
+            }
+
 
         }
     }

@@ -69,25 +69,29 @@ namespace AKS.Payroll.Ops
                 //then total  total
                 var reps = saleReports.GroupBy(c => new { c.Year, c.Month }).ToList();
 
-                int curYear= reps[0].Key.Year;
+                int curYear = reps[0].Key.Year;
                 foreach (var item in reps)
                 {
                     if (curYear != item.Key.Year)
                     {
-                        var yrData= saleReports.Where(c =>  c.Year == curYear).
-                          GroupBy(c=>c.Year)  
-                         .Select(c=>new {c.Key, Tax=c.Sum(x=>x.TotalTax),
+                        var yrData = saleReports.Where(c => c.Year == curYear).
+                          GroupBy(c => c.Year)
+                         .Select(c => new
+                         {
+                             c.Key,
+                             Tax = c.Sum(x => x.TotalTax),
                              MRP = c.Sum(x => x.TotalMRP),
                              Discount = c.Sum(x => x.TotalDiscount),
                              Qty = c.Sum(x => x.BillQty),
                              Value = c.Sum(x => x.TotalPrice),
                              Free = c.Sum(x => x.FreeQty),
-                         })  
-                          .  FirstOrDefault();
+                         })
+                          .FirstOrDefault();
+
                         dataTable.Rows.Add(new object[] {curYear, "Yearly Total", "Sale",
                             yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
                         // Add a blank if needed
-                        curYear=item.Key.Year;
+                        curYear = item.Key.Year;
 
                     }
                     var datas = saleReports.Where(c => c.Month == item.Key.Month && c.Year == item.Key.Year).ToList();
@@ -103,9 +107,12 @@ namespace AKS.Payroll.Ops
                             datas.Sum(c=>c.BillQty),  datas.Sum(c=>c.FreeQty),datas.Sum(c=>c.TotalMRP), datas.Sum(c=>c.TotalDiscount),
                              datas.Sum(c=>c.TotalTax),  datas.Sum(c=>c.TotalPrice) });
                     }
-                    
+
                 }
 
+
+                dataTable.Rows.Add(new object[] {curYear, "Total", "Sale",
+                            saleReports.Sum(x => x.BillQty), saleReports.Sum(x => x.FreeQty), saleReports.Sum(x => x.TotalMRP),saleReports.Sum(x => x.TotalDiscount), saleReports.Sum(x => x.TotalTax), saleReports.Sum(x => x.TotalPrice)    });
 
                 return dataTable;
             }

@@ -51,8 +51,8 @@ namespace AKS.Payroll.Ops
             //Create a PdfGrid
             PdfGrid pdfGrid = new PdfGrid();
 
-            List<int> monthlyTotal;// = new List<int>();
-            List<int> yearlyTotal;// = new List<int>();
+            List<int> monthlyTotal = new List<int>();
+            List<int> yearlyTotal  = new List<int>();
 
             pdfGrid.DataSource = ToDataTable(saleReports, out yearlyTotal, out monthlyTotal);
 
@@ -64,8 +64,11 @@ namespace AKS.Payroll.Ops
             cellStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 12f);
             cellStyle.TextBrush = new PdfSolidBrush(new PdfColor(131, 130, 136));
 
-            pdfGrid.Style.Font = new PdfStandardFont(PdfFontFamily.Helvetica, 11f, PdfFontStyle.Bold); ;
-            pdfGrid.Style.TextBrush = PdfBrushes.DarkSlateBlue;
+            pdfGrid.Style.Font = new PdfStandardFont(PdfFontFamily.Courier, 10f, PdfFontStyle.Italic); ;
+            //pdfGrid.Style.TextBrush = PdfBrushes.DarkSlateBlue;
+            //pdfGrid.Style.BorderOverlapStyle = PdfBorderOverlapStyle.Overlap;
+            //pdfGrid.Style.CellPadding.All = 0.7f;
+            
 
             PdfGridRow header = pdfGrid.Headers[0];
 
@@ -99,7 +102,7 @@ namespace AKS.Payroll.Ops
             PdfGridCellStyle firstRowStyle = new PdfGridCellStyle();
             firstRowStyle.TextBrush = PdfBrushes.OrangeRed;
             firstRowStyle.BackgroundBrush = PdfBrushes.Azure;
-            firstRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
+            firstRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 11f, PdfFontStyle.Bold);
             firstRowStyle.Borders.All = PdfPens.White;// new PdfPen(new PdfColor(126, 151, 173));
             firstRowStyle.StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
             firstRowStyle.Borders.Right = PdfPens.Black;// new PdfPen(new PdfColor(126, 151, 173));
@@ -187,7 +190,7 @@ namespace AKS.Payroll.Ops
                 int curYear = reps[0].Key.Year;
                 dataTable.Rows.Add(new object[] {
                             curYear,"", "","","","","","","",""  });
-                yearlyTotal.Add(curYear);
+                yearlyTotal.Add(RowNo);
                 foreach (var item in reps)
                 {
                     if (curYear != item.Key.Year)
@@ -205,19 +208,26 @@ namespace AKS.Payroll.Ops
                              Free = c.Sum(x => x.FreeQty),
                          })
                           .FirstOrDefault();
-                        RowNo++;
-                        yearlyTotal.Add(RowNo);
+                        
                         dataTable.Rows.Add(new object[] {curYear, "Yearly Total", "Sale"," ",
                             yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
+                        RowNo++;
+                        yearlyTotal.Add(RowNo);
                         // Add a blank if needed
                         curYear = item.Key.Year;
                         dataTable.Rows.Add(new object[] {
                             "","", "","","","","","","",""  });
+                        RowNo++;
+                        yearlyTotal.Add(RowNo);
                         dataTable.Rows.Add(new object[] {
                             curYear,"", "","","","","","","",""  });
+                        RowNo++;
+                        yearlyTotal.Add(RowNo);
 
 
                     }
+                    
+                    
                     var datas = saleReports.Where(c => c.Month == item.Key.Month && c.Year == item.Key.Year).ToList();
 
                     foreach (var sale in datas)
@@ -233,6 +243,28 @@ namespace AKS.Payroll.Ops
                             datas.Sum(c=>c.BillQty),  datas.Sum(c=>c.FreeQty),datas.Sum(c=>c.TotalMRP), datas.Sum(c=>c.TotalDiscount),
                              datas.Sum(c=>c.TotalTax),  datas.Sum(c=>c.TotalPrice) });
                         monthlyTotal.Add(++RowNo);
+                    }
+                    if (reps.IndexOf(item) == reps.Count - 1)
+                    {
+                        var yrData = saleReports.Where(c => c.Year == curYear).
+                          GroupBy(c => c.Year)
+                         .Select(c => new
+                         {
+                             c.Key,
+                             Tax = c.Sum(x => x.TotalTax),
+                             MRP = c.Sum(x => x.TotalMRP),
+                             Discount = c.Sum(x => x.TotalDiscount),
+                             Qty = c.Sum(x => x.BillQty),
+                             Value = c.Sum(x => x.TotalPrice),
+                             Free = c.Sum(x => x.FreeQty),
+                         })
+                          .FirstOrDefault();
+
+                        dataTable.Rows.Add(new object[] {curYear, "Yearly Total", "Sale"," ",
+                            yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
+                        RowNo++;
+                        yearlyTotal.Add(RowNo);
+                         
                     }
 
                 }

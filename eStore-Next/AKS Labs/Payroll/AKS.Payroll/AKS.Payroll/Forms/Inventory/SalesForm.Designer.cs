@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -76,6 +76,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbYearList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnPrint = new System.Windows.Forms.Button();
             this.btnView = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -538,16 +539,16 @@
             this.pdfViewer.IsTextSearchEnabled = true;
             this.pdfViewer.IsTextSelectionEnabled = true;
             this.pdfViewer.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfViewer.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfViewer.MessageBoxSettings = messageBoxSettings1;
             this.pdfViewer.MinimumZoomPercentage = 50;
             this.pdfViewer.Name = "pdfViewer";
             this.pdfViewer.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfViewer.ReferencePath = null;
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
@@ -555,10 +556,10 @@
             this.pdfViewer.Size = new System.Drawing.Size(891, 333);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfViewer.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfViewer.TextSearchSettings = textSearchSettings1;
             this.pdfViewer.ThemeName = "Default";
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -587,6 +588,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnPrint);
             this.groupBox1.Controls.Add(this.btnView);
             this.groupBox1.Controls.Add(this.btnRefresh);
             this.groupBox1.Controls.Add(this.panel3);
@@ -598,6 +600,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Controls";
+            // 
+            // btnPrint
+            // 
+            this.btnPrint.Location = new System.Drawing.Point(390, 26);
+            this.btnPrint.Name = "btnPrint";
+            this.btnPrint.Size = new System.Drawing.Size(75, 23);
+            this.btnPrint.TabIndex = 4;
+            this.btnPrint.Text = "Print";
+            this.btnPrint.UseVisualStyleBackColor = true;
+            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // btnView
             // 
@@ -811,5 +823,6 @@
         private CheckBox cbCashBill;
         private Button btnRefresh;
         private Button btnView;
+        private Button btnPrint;
     }
 }

@@ -8,14 +8,14 @@ namespace AKS.Payroll.Ops
 {
     public class SaleHelper
     {
-         string[]Months = {"","Jan","Feb","Mar","April","May","June","July",
+        string[] Months = {"","Jan","Feb","Mar","April","May","June","July",
         "Aug","Sept","Oct","Nov","Dec"};
         private PdfPage AddPage(PdfPage page, List<SaleReport> saleReports)
         {
-            
+
             PdfGraphics graphics = page.Graphics;
-           // PdfPageNumberField pdfPageNumberField = new PdfPageNumberField();
-           // pdfPageNumberField.NumberStyle = PdfNumberStyle.Numeric;
+            // PdfPageNumberField pdfPageNumberField = new PdfPageNumberField();
+            // pdfPageNumberField.NumberStyle = PdfNumberStyle.Numeric;
 
             PdfFont font = new PdfStandardFont(PdfFontFamily.TimesRoman, 16);
             //Draw the text.
@@ -50,7 +50,12 @@ namespace AKS.Payroll.Ops
 
             //Create a PdfGrid
             PdfGrid pdfGrid = new PdfGrid();
-            pdfGrid.DataSource = ToDataTable(saleReports);
+
+            List<int> monthlyTotal;// = new List<int>();
+            List<int> yearlyTotal;// = new List<int>();
+
+            pdfGrid.DataSource = ToDataTable(saleReports, out yearlyTotal, out monthlyTotal);
+
 
             //Creates the grid cell styles
             PdfGridCellStyle cellStyle = new PdfGridCellStyle();
@@ -61,41 +66,41 @@ namespace AKS.Payroll.Ops
 
             pdfGrid.Style.Font = new PdfStandardFont(PdfFontFamily.Helvetica, 11f, PdfFontStyle.Bold); ;
             pdfGrid.Style.TextBrush = PdfBrushes.DarkSlateBlue;
-            
+
             PdfGridRow header = pdfGrid.Headers[0];
-            
+
             //Creates the header style
             PdfGridCellStyle headerStyle = new PdfGridCellStyle();
             headerStyle.Borders.All = new PdfPen(new PdfColor(126, 151, 173));
             headerStyle.BackgroundBrush = new PdfSolidBrush(new PdfColor(126, 151, 173)); ;
             headerStyle.TextBrush = PdfBrushes.White;
             headerStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 13f, PdfFontStyle.Bold);
-            
+
             //Adds cell customizations
             for (int i = 0; i < header.Cells.Count; i++)
             {
-               // if (i == 2 || i == 3)
-                 //  header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
+                // if (i == 2 || i == 3)
+                //  header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
                 //else
-                    header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
+                header.Cells[i].StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
             }
 
             //Applies the header style
             header.ApplyStyle(headerStyle);
 
-            
+
             //Creates the layout format for grid
             PdfGridLayoutFormat layoutFormat = new PdfGridLayoutFormat();
 
             // Creates layout format settings to allow the table pagination
             layoutFormat.Layout = PdfLayoutType.Paginate;
-            
+
 
             PdfGridCellStyle firstRowStyle = new PdfGridCellStyle();
             firstRowStyle.TextBrush = PdfBrushes.OrangeRed;
             firstRowStyle.BackgroundBrush = PdfBrushes.Azure;
             firstRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
-            firstRowStyle.Borders.All= PdfPens.White;// new PdfPen(new PdfColor(126, 151, 173));
+            firstRowStyle.Borders.All = PdfPens.White;// new PdfPen(new PdfColor(126, 151, 173));
             firstRowStyle.StringFormat = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
             firstRowStyle.Borders.Right = PdfPens.Black;// new PdfPen(new PdfColor(126, 151, 173));
             firstRowStyle.Borders.Left = PdfPens.Black;// new PdfPen(new PdfColor(126, 151, 173));
@@ -105,8 +110,26 @@ namespace AKS.Payroll.Ops
 
             PdfGridCellStyle totalRowStyle = new PdfGridCellStyle();
             totalRowStyle.TextBrush = PdfBrushes.DarkBlue;
-            totalRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
+            totalRowStyle.BackgroundBrush = PdfBrushes.Azure;
+            totalRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 11f, PdfFontStyle.Bold);
 
+            PdfGridCellStyle monthlyRowStyle = new PdfGridCellStyle();
+            monthlyRowStyle.TextBrush = PdfBrushes.Blue;
+            monthlyRowStyle.BackgroundBrush = PdfBrushes.White;
+            monthlyRowStyle.Borders.All = PdfPens.White;
+            monthlyRowStyle.Borders.Right = PdfPens.Black;
+            monthlyRowStyle.Borders.Left = PdfPens.Black;
+            monthlyRowStyle.Font = new PdfStandardFont(PdfFontFamily.TimesRoman, 10f, PdfFontStyle.Bold);
+
+
+            foreach (var row in yearlyTotal)
+            {
+                pdfGrid.Rows[row].ApplyStyle(totalRowStyle);
+            }
+            foreach (var row in monthlyTotal)
+            {
+                pdfGrid.Rows[row].ApplyStyle(monthlyRowStyle);
+            }
             // if (dI > 0) pdfGrid.Rows[dI].ApplyStyle(totalRowStyle);
             //if (rI > 0) pdfGrid.Rows[rI].ApplyStyle(totalRowStyle);
             //pdfGrid.Rows[5].ApplyStyle(firstRowStyle);
@@ -135,9 +158,13 @@ namespace AKS.Payroll.Ops
             return page;
         }
 
-        private DataTable ToDataTable(List<SaleReport> saleReports)
+        private DataTable ToDataTable(List<SaleReport> saleReports, out List<int> yearlyTotal, out List<int> monthlyTotal)
         {
             DataTable dataTable = new DataTable();
+            yearlyTotal = new List<int>();
+            monthlyTotal = new List<int>();
+            int RowNo = 0;
+
             try
             {
                 //Add columns to the DataTable
@@ -160,7 +187,7 @@ namespace AKS.Payroll.Ops
                 int curYear = reps[0].Key.Year;
                 dataTable.Rows.Add(new object[] {
                             curYear,"", "","","","","","","",""  });
-
+                yearlyTotal.Add(curYear);
                 foreach (var item in reps)
                 {
                     if (curYear != item.Key.Year)
@@ -178,7 +205,8 @@ namespace AKS.Payroll.Ops
                              Free = c.Sum(x => x.FreeQty),
                          })
                           .FirstOrDefault();
-
+                        RowNo++;
+                        yearlyTotal.Add(RowNo);
                         dataTable.Rows.Add(new object[] {curYear, "Yearly Total", "Sale"," ",
                             yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
                         // Add a blank if needed
@@ -187,7 +215,7 @@ namespace AKS.Payroll.Ops
                             "","", "","","","","","","",""  });
                         dataTable.Rows.Add(new object[] {
                             curYear,"", "","","","","","","",""  });
-                       
+
 
                     }
                     var datas = saleReports.Where(c => c.Month == item.Key.Month && c.Year == item.Key.Year).ToList();
@@ -197,12 +225,14 @@ namespace AKS.Payroll.Ops
                         dataTable.Rows.Add(new object[] {
                             " "/*sale.Year*/,"" /*sale.Month*/, sale.InvoiceType,sale.Tailoing?"Service":"Goods",
                             sale.BillQty, sale.FreeQty, sale.TotalMRP,sale.TotalDiscount, sale.TotalTax, sale.TotalPrice });
+                        RowNo++;
                     }
                     if (datas.Count() > 0)
                     {
                         dataTable.Rows.Add(new object[] {item.Key.Year, Months[ item.Key.Month], "Monthly Sale"," ",
                             datas.Sum(c=>c.BillQty),  datas.Sum(c=>c.FreeQty),datas.Sum(c=>c.TotalMRP), datas.Sum(c=>c.TotalDiscount),
                              datas.Sum(c=>c.TotalTax),  datas.Sum(c=>c.TotalPrice) });
+                        monthlyTotal.Add(++RowNo);
                     }
 
                 }
@@ -236,8 +266,8 @@ namespace AKS.Payroll.Ops
                 document.PageSettings.Margins.All = 50;
 
                 PdfPage pdfPage = document.Pages.Add();
-               
-                AddPage(pdfPage,saleReports);
+
+                AddPage(pdfPage, saleReports);
                 //Save the document.
                 document.Save(fileName);
                 //Close the document.

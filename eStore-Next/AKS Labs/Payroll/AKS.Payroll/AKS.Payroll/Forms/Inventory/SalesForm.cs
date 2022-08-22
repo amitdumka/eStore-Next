@@ -349,9 +349,21 @@ namespace AKS.Payroll.Forms.Inventory
                 pdfViewer.Load(fn);
                 pdfViewer.Visible=true;
                 this.tabControl1.SelectedTab = tpView;
+                btnPrint.Enabled = true;
             }
 
 
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            var printDialog1 = new PrintDialog();
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDialog1.AllowPrintToFile = true;
+
+                pdfViewer.Print(printDialog1.PrinterSettings.PrinterName);
+            }
         }
     }
 }

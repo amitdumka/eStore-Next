@@ -21,6 +21,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     {
         protected static AzurePayrollDbContext azureDb;
         protected static LocalPayrollDbContext localDb;
+        protected static string StoreCode = "ARD";//TODO: Need to Assign
 
         /// <summary>
         /// Helper function if missing
@@ -51,7 +52,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public List<PaymentDetail> PaymentDetails;
         public AutoCompleteStringCollection barcodeList = new AutoCompleteStringCollection();
         public bool ReturnKey = false;
-
+        
         //private List<SaleItem> SalesItems;
         public ObservableListSource<SaleItemVM> SaleItem;
 
@@ -233,7 +234,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         {
             SaleItem = new ObservableListSource<SaleItemVM>();
             PaymentDetails = null;
-
+            
             return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
         }
 
@@ -317,7 +318,33 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foreach (var item in sales)
                     Items.Add(item);
         }
+        public void SaveInvoice(string mobileNo, string smId)
+        {
+            ProductSale sale = new ProductSale { 
+            Adjusted=false,BilledQty=TotalQty, EntryStatus=EntryStatus.Added, 
+            FreeQty=TotalFreeQty, IsReadOnly=false, OnDate=DateTime.Now,
+            Paid=false, StoreId=StoreCode, MarkedDeleted=false, TotalPrice=TotalAmount, 
+            TotalDiscountAmount=TotalDiscount, TotalTaxAmount=TotalTax, 
+            UserId="WinUI", Tailoring=false, Taxed=false,
+            Items= new List<SaleItem>(), InvoiceType=InvoiceType,  SalesmanId=smId,
+            };
+            sale.TotalMRP = sale.TotalDiscountAmount + sale.TotalPrice;
+            sale.TotalBasicAmount = sale.TotalPrice-sale.TotalTaxAmount;
+            sale.RoundOff=Math.Round(sale.TotalPrice)-sale.TotalPrice;
+            //TODO:handle customer addidtion
 
+            // Adding sale item 
+            foreach (var si in SaleItem)
+            {
+                SaleItem item = new SaleItem {
+                Adjusted=false,Barcode=si.Barcode, BilledQty=si.Qty, 
+                DiscountAmount=si.Discount, FreeQty=0 
+                };
+            }
+
+        }
+
+        //TODO: Move to SaleReport class
         private List<SaleReport> SaleReports(string storeCode, int year, int month)
         {
             var x= azureDb.ProductSales.Where(c => c.StoreId == storeCode

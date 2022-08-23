@@ -131,12 +131,14 @@ namespace AKS.Payroll.Forms.Inventory
             lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
             lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
         }
+      
         private void ReadSaleData()
         {
-
+            
         }
         private bool SaveSaleData()
         {
+            _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(),cbxSalesman.SelectedValue);
             return true;
         }
 
@@ -243,6 +245,9 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
                 _salesManager.LoadBarcodeList();
+                cbxSalesman.DataSource= azureDb.Salesmen.Where(c=>c.IsActive).Select(c => new {c.SalesmanId, c.Name});
+                cbxSalesman.DisplayMember = "Name";
+                cbxSalesman.ValueMember = "SalesmanId";
             }
             catch (Exception e)
             {

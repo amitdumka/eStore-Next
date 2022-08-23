@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings2 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
-            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings2 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
+            Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings messageBoxSettings1 = new Syncfusion.Windows.Forms.PdfViewer.MessageBoxSettings();
+            Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings pdfViewerPrinterSettings1 = new Syncfusion.Windows.PdfViewer.PdfViewerPrinterSettings();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalesForm));
-            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings2 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
+            Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -88,6 +88,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.cbxSalesman = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -214,6 +215,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label17, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.lbPd, 2, 5);
             this.tableLayoutPanel1.Controls.Add(this.cbCashBill, 3, 5);
+            this.tableLayoutPanel1.Controls.Add(this.cbxSalesman, 6, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -343,7 +345,7 @@
             // 
             // txtBarcode
             // 
-            this.txtBarcode.Location = new System.Drawing.Point(3, 72);
+            this.txtBarcode.Location = new System.Drawing.Point(3, 86);
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Size = new System.Drawing.Size(100, 23);
             this.txtBarcode.TabIndex = 4;
@@ -351,7 +353,7 @@
             // 
             // txtQty
             // 
-            this.txtQty.Location = new System.Drawing.Point(109, 72);
+            this.txtQty.Location = new System.Drawing.Point(109, 86);
             this.txtQty.Name = "txtQty";
             this.txtQty.Size = new System.Drawing.Size(100, 23);
             this.txtQty.TabIndex = 5;
@@ -359,21 +361,21 @@
             // 
             // txtProductItem
             // 
-            this.txtProductItem.Location = new System.Drawing.Point(236, 72);
+            this.txtProductItem.Location = new System.Drawing.Point(236, 86);
             this.txtProductItem.Name = "txtProductItem";
             this.txtProductItem.Size = new System.Drawing.Size(100, 23);
             this.txtProductItem.TabIndex = 6;
             // 
             // txtRate
             // 
-            this.txtRate.Location = new System.Drawing.Point(342, 72);
+            this.txtRate.Location = new System.Drawing.Point(342, 86);
             this.txtRate.Name = "txtRate";
             this.txtRate.Size = new System.Drawing.Size(100, 23);
             this.txtRate.TabIndex = 7;
             // 
             // txtDiscount
             // 
-            this.txtDiscount.Location = new System.Drawing.Point(448, 72);
+            this.txtDiscount.Location = new System.Drawing.Point(448, 86);
             this.txtDiscount.Name = "txtDiscount";
             this.txtDiscount.Size = new System.Drawing.Size(100, 23);
             this.txtDiscount.TabIndex = 8;
@@ -381,7 +383,7 @@
             // 
             // txtValue
             // 
-            this.txtValue.Location = new System.Drawing.Point(554, 72);
+            this.txtValue.Location = new System.Drawing.Point(554, 86);
             this.txtValue.Name = "txtValue";
             this.txtValue.Size = new System.Drawing.Size(100, 23);
             this.txtValue.TabIndex = 9;
@@ -415,7 +417,7 @@
             // 
             // btnAddToCart
             // 
-            this.btnAddToCart.Location = new System.Drawing.Point(660, 72);
+            this.btnAddToCart.Location = new System.Drawing.Point(660, 86);
             this.btnAddToCart.Name = "btnAddToCart";
             this.btnAddToCart.Size = new System.Drawing.Size(75, 23);
             this.btnAddToCart.TabIndex = 10;
@@ -428,7 +430,7 @@
             this.dgvSaleItems.AllowUserToOrderColumns = true;
             this.dgvSaleItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableLayoutPanel1.SetColumnSpan(this.dgvSaleItems, 7);
-            this.dgvSaleItems.Location = new System.Drawing.Point(3, 101);
+            this.dgvSaleItems.Location = new System.Drawing.Point(3, 115);
             this.dgvSaleItems.MinimumSize = new System.Drawing.Size(0, 250);
             this.dgvSaleItems.Name = "dgvSaleItems";
             this.dgvSaleItems.RowTemplate.Height = 25;
@@ -482,7 +484,7 @@
             // 
             // btnPayment
             // 
-            this.btnPayment.Location = new System.Drawing.Point(3, 357);
+            this.btnPayment.Location = new System.Drawing.Point(3, 371);
             this.btnPayment.Name = "btnPayment";
             this.btnPayment.Size = new System.Drawing.Size(75, 23);
             this.btnPayment.TabIndex = 26;
@@ -493,7 +495,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(109, 354);
+            this.label17.Location = new System.Drawing.Point(109, 368);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(92, 15);
             this.label17.TabIndex = 27;
@@ -502,7 +504,7 @@
             // lbPd
             // 
             this.lbPd.AutoSize = true;
-            this.lbPd.Location = new System.Drawing.Point(236, 354);
+            this.lbPd.Location = new System.Drawing.Point(236, 368);
             this.lbPd.Name = "lbPd";
             this.lbPd.Size = new System.Drawing.Size(0, 15);
             this.lbPd.TabIndex = 28;
@@ -510,7 +512,7 @@
             // cbCashBill
             // 
             this.cbCashBill.AutoSize = true;
-            this.cbCashBill.Location = new System.Drawing.Point(342, 357);
+            this.cbCashBill.Location = new System.Drawing.Point(342, 371);
             this.cbCashBill.Name = "cbCashBill";
             this.cbCashBill.Size = new System.Drawing.Size(78, 19);
             this.cbCashBill.TabIndex = 29;
@@ -539,16 +541,16 @@
             this.pdfViewer.IsTextSearchEnabled = true;
             this.pdfViewer.IsTextSelectionEnabled = true;
             this.pdfViewer.Location = new System.Drawing.Point(3, 3);
-            messageBoxSettings2.EnableNotification = true;
-            this.pdfViewer.MessageBoxSettings = messageBoxSettings2;
+            messageBoxSettings1.EnableNotification = true;
+            this.pdfViewer.MessageBoxSettings = messageBoxSettings1;
             this.pdfViewer.MinimumZoomPercentage = 50;
             this.pdfViewer.Name = "pdfViewer";
             this.pdfViewer.PageBorderThickness = 1;
-            pdfViewerPrinterSettings2.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings2.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings2.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings2.PrintLocation")));
-            pdfViewerPrinterSettings2.ShowPrintStatusDialog = true;
-            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings2;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.pdfViewer.PrinterSettings = pdfViewerPrinterSettings1;
             this.pdfViewer.ReferencePath = null;
             this.pdfViewer.ScrollDisplacementValue = 0;
             this.pdfViewer.ShowHorizontalScrollBar = true;
@@ -556,10 +558,10 @@
             this.pdfViewer.Size = new System.Drawing.Size(891, 333);
             this.pdfViewer.SpaceBetweenPages = 8;
             this.pdfViewer.TabIndex = 0;
-            textSearchSettings2.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings2.HighlightAllInstance = true;
-            textSearchSettings2.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.pdfViewer.TextSearchSettings = textSearchSettings2;
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.pdfViewer.TextSearchSettings = textSearchSettings1;
             this.pdfViewer.ThemeName = "Default";
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
@@ -734,6 +736,14 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // cbxSalesman
+            // 
+            this.cbxSalesman.FormattingEnabled = true;
+            this.cbxSalesman.Location = new System.Drawing.Point(660, 57);
+            this.cbxSalesman.Name = "cbxSalesman";
+            this.cbxSalesman.Size = new System.Drawing.Size(121, 23);
+            this.cbxSalesman.TabIndex = 30;
+            // 
             // SalesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -824,5 +834,6 @@
         private Button btnRefresh;
         private Button btnView;
         private Button btnPrint;
+        private ComboBox cbxSalesman;
     }
 }

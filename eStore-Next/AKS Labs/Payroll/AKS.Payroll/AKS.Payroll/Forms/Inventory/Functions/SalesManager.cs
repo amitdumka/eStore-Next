@@ -61,7 +61,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         //        private bool IsNew;        private ProductSale Sale;
 
         // Cart Information
-        private decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount;
+        public decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount,TotalItem;
 
         public SalesManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, InvoiceType? iType)
         {
@@ -72,6 +72,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
         public void LoadBarcodeList()
         {
+            // For using in autocomplete text box, not enabled . 
             if (barcodeList.Count > 0) return;
             var l = azureDb.Stocks.Where(c => c.PurhcaseQty > 0).Select(c => new { c.Barcode, c.CurrentQty, c.CurrentQtyWH }).ToList();
             var x = l.Where(c => c.CurrentQty > 0).Select(c => c.Barcode).ToList();
@@ -157,7 +158,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         /// <returns></returns>
         public StockInfo? GetItemDetail(string barcode)
         {
-            if (barcode.Length < 10)
+            if (barcode.Length < 7)
             {
                 return null;
             }
@@ -203,7 +204,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
         public void ResetCart()
         {
-            TotalAmount = TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
+            TotalAmount =TotalItem= TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
             TotalCount = 0;
             //dgvSaleItems.Rows.Clear();
         }

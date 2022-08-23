@@ -47,7 +47,20 @@ namespace AKS.Payroll.Forms.Inventory
 
                 si.Amount = (si.Rate * si.Qty) - si.Discount;
 
+                //Adding to List 
                 _salesManager.SaleItem.Add(si);
+                //Update Cart total
+
+                //TOD:Count based on unit if fabric then 1 and if rmz then stock unit
+                _salesManager.TotalItem++;
+                //TODO: 100% discount
+
+                _salesManager.TotalFreeQty += 0;
+                _salesManager.TotalQty += si.Qty;
+                _salesManager.TotalDiscount += si.Discount;
+                _salesManager.TotalTax += si.Tax;
+                _salesManager.TotalAmount += si.Amount;
+                UpdateCartTotal();
                 txtBarcode.Text = "";
                 txtQty.Text = "0";
                 txtRate.Text = "0";
@@ -65,9 +78,10 @@ namespace AKS.Payroll.Forms.Inventory
             if (btnAdd.Text == "Add")
             {
                 btnAdd.Text = "Save";
-                btnAdd.Text = "Save";
                 tabControl1.SelectedTab = tpEntry;
+
                 LoadFormData();
+
                 if (rbManual.Checked)
                 {
                     if (cbSalesReturn.Checked)
@@ -82,14 +96,15 @@ namespace AKS.Payroll.Forms.Inventory
                     else cbxInvType.SelectedIndex = (int)InvoiceType.Sales;
                 }
                 _salesManager.ResetCart();
+
                 txtBarcode.AutoCompleteMode = AutoCompleteMode.Suggest;
                 txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
-
                 txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
 
             }
             else if (btnAdd.Text == "Edit")
             {
+                //TODO: Not implement whole. 
                 LoadFormData();
                 btnAdd.Text = "Save";
                 tabControl1.SelectedTab = tpEntry;
@@ -97,11 +112,37 @@ namespace AKS.Payroll.Forms.Inventory
             else if (btnAdd.Text == "Save")
             {
                 tabControl1.SelectedTab = tpView;
+                //TODO: Read Data and Store in object as requried and save;
+                ReadSaleData();
+                if (SaveSaleData())
+                {
+                    MessageBox.Show("Invoice is Saved! and Invoice No is {sale.InvoiceNo}");
+                    //TODO:Reset Form to save New Invoice
+                }
             }
+        }
+
+        private void UpdateCartTotal()
+        {
+            lbTotalAmount.Text = $"Total Amount: Rs {_salesManager.TotalAmount} ";
+            lbTotalDiscount.Text = $"Discount Amount: Rs {_salesManager.TotalDiscount} ";
+            lbTotalFree.Text = $"Free Qty(s): Rs {_salesManager.TotalFreeQty} ";
+            lbTotalQty.Text = $"Total Qty(s): Rs {_salesManager.TotalFreeQty} ";
+            lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
+            lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
+        }
+        private void ReadSaleData()
+        {
+
+        }
+        private bool SaveSaleData()
+        {
+            return true;
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
+            //TODO: Implement a Form or Dialog to take customer details 
             _salesManager.AddNewCustomer(txtCustomerName.Text.Trim(), cbxMmobile.Text.Trim());
         }
 
@@ -196,6 +237,9 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxInvType.Items.AddRange(Enum.GetNames(typeof(InvoiceType)));
                 cbxMmobile.DisplayMember = "MobileNo";
                 cbxMmobile.ValueMember = "CustomerName";
+
+                //TODO: make static data or use json and store in a file and read it once a day.
+                //make less database use on remote machine
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
                 _salesManager.LoadBarcodeList();
@@ -304,7 +348,7 @@ namespace AKS.Payroll.Forms.Inventory
         DataGridView gv = new DataGridView();
         private void DisplaySaleReport()
         {
-            
+
             gv.AllowUserToAddRows = false;
             if (SaleReportsList == null || SaleReports.Count == 0)
             {
@@ -331,7 +375,7 @@ namespace AKS.Payroll.Forms.Inventory
                 }
             }
             gv.DataSource = SaleReportsList;
-            gv.Dock= DockStyle.Fill;
+            gv.Dock = DockStyle.Fill;
             pdfViewer.Hide();
             pdfViewer.Visible = false;
             tpView.Controls.Add(gv);
@@ -345,9 +389,9 @@ namespace AKS.Payroll.Forms.Inventory
             string fn = new SaleHelper().ToPdf(SaleReportsList);
             if (!string.IsNullOrEmpty(fn))
             {
-                gv.Visible=false;
+                gv.Visible = false;
                 pdfViewer.Load(fn);
-                pdfViewer.Visible=true;
+                pdfViewer.Visible = true;
                 this.tabControl1.SelectedTab = tpView;
                 btnPrint.Enabled = true;
             }
@@ -367,3 +411,34 @@ namespace AKS.Payroll.Forms.Inventory
         }
     }
 }
+
+//000000887H 16.00   3.20
+//101002  62.00   0.00
+//2599625 10.00   2.00
+//2608389 10.00   10.00
+//2609377 10.00   3.00
+//2686388 2.00    0.00
+//2700322 10.00   17.00
+//2700323 10.00   12.00
+//2700324 10.00   6.00
+//3635160 16.00   2.90
+//3635175 16.00   3.40
+//3635177 16.00   3.20
+//3635182 90.00   36.00
+//3635186 16.00   1.80
+//3635193 15.00   4.80
+//510000000472    1.00    0.00
+//510000000473    2.00    4.00
+//510000000474    1.00    1.00
+//510000000475    1.00    1.00
+//510000000482    1.00    0.00
+//510000000483    2.00    1.00
+//510000000484    2.00    1.00
+//510000000485    1.00    0.00
+//510000000486    1.00    0.00
+//510000000786    1.00    1.00
+//510000000787    2.00    4.00
+//510000000788    2.00    0.00
+//510000000789    1.00    1.00
+//510000001054    1.00    1.00
+//510000001055    3.00    7.00

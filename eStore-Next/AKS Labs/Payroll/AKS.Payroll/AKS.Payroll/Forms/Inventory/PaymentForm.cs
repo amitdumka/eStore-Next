@@ -89,11 +89,11 @@ namespace AKS.Payroll.Forms.Inventory
                 {
                     Amount = decimal.Parse(txtAmount.Text.Trim()),
                     InvoiceNumber = Invoice,
-                    Mode = (PaymentMode)cbxPaymentMode.SelectedIndex,
+                    Mode = (PayMode)cbxPaymentMode.SelectedIndex,
                     RefNumber = txtRefNumber.Text.Trim(),
                     Id = $"ARD/INP/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{new Random().NextInt64(DateTime.Now.ToFileTime())}"
                 };
-                if (Pd.Mode == PaymentMode.Card)
+                if (Pd.Mode == PayMode.Card)
                 {
                     Pd.AuthCode = txtAuthCode.Text.Trim();
                     Pd.Card = (Card)cbxCard.SelectedIndex;
@@ -101,7 +101,7 @@ namespace AKS.Payroll.Forms.Inventory
                     Pd.LastFour = int.Parse(txtLastFour.Text.Trim());
                    
                 }
-                else if(Pd.Mode==PaymentMode.UPI)
+                else if(Pd.Mode==PayMode.UPI)
                     Pd.PosMachineId = cbxPOSMachine.SelectedValue.ToString();
                 return Pd;
             }

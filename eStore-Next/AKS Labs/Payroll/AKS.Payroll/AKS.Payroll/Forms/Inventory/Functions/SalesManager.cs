@@ -374,27 +374,40 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
             if (!isCashPaid)
             {
-
                 sale.Paid = true;
-                PaymentDetail payment = new PaymentDetail
-                {
-                    Amount = sale.TotalPrice - sale.RoundOff,
-                    InvoiceNumber = sale.InvoiceNo,
-                    Mode = PaymentMode.Cash
-                };
-
                 SalePaymentDetail spd = new SalePaymentDetail
                 {
                     InvoiceCode = sale.InvoiceCode,
                     PaidAmount = sale.TotalPrice - sale.RoundOff,
                     PayMode = PayMode.Cash,
-                    RefId = "Cash"
+                    RefId = "Cash Paid"
                 };
-                //azureDb.SalePaymentDetails.Add(payment);
+                azureDb.SalePaymentDetails.Add(spd);
             }
             else
             {
-                //TODO: Payment details
+                sale.Paid = true;
+                foreach (var pds in PaymentDetails)
+                {
+                    SalePaymentDetail spd = new SalePaymentDetail
+                    {
+                        InvoiceCode = sale.InvoiceCode,
+                        PaidAmount = pds.Amount,
+                        PayMode = pds.Mode,
+                        RefId = pds.RefNumber,
+                    };
+                    azureDb.SalePaymentDetails.Add(spd);
+                    if(spd.PayMode == PayMode.Card)
+                    {
+                        CardPaymentDetail card = new CardPaymentDetail {
+                        AuthCode=Int32.Parse( pds.AuthCode), EDCTerminalId=pds.PosMachineId, 
+                        InvoiceCode=sale.InvoiceCode, PaidAmount=pds.Amount, 
+                        CardLastDigit=pds.LastFour, CardType=pds.CardType.Value, 
+                        Card=pds.Card.Value
+                        };
+                        azureDb.CardPaymentDetails.Add(card);
+                    }
+                }
 
             }
 

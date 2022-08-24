@@ -48,6 +48,8 @@
             this.txtAuthCode = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancle = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbxPOSMachine = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -86,17 +88,20 @@
             this.tableLayoutPanel1.Controls.Add(this.cbxCard, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtLastFour, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtAuthCode, 3, 3);
-            this.tableLayoutPanel1.Controls.Add(this.btnAdd, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.btnCancle, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.btnCancle, 3, 4);
+            this.tableLayoutPanel1.Controls.Add(this.btnAdd, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.cbxPOSMachine, 1, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(473, 159);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -235,7 +240,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(97, 119);
+            this.btnAdd.Location = new System.Drawing.Point(224, 119);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 16;
@@ -245,13 +250,30 @@
             // 
             // btnCancle
             // 
-            this.btnCancle.Location = new System.Drawing.Point(224, 119);
+            this.btnCancle.Location = new System.Drawing.Point(319, 119);
             this.btnCancle.Name = "btnCancle";
             this.btnCancle.Size = new System.Drawing.Size(75, 23);
             this.btnCancle.TabIndex = 17;
             this.btnCancle.Text = "Cancle";
             this.btnCancle.UseVisualStyleBackColor = true;
             this.btnCancle.Click += new System.EventHandler(this.btnCancle_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 116);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 15);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "POS";
+            // 
+            // cbxPOSMachine
+            // 
+            this.cbxPOSMachine.FormattingEnabled = true;
+            this.cbxPOSMachine.Location = new System.Drawing.Point(97, 119);
+            this.cbxPOSMachine.Name = "cbxPOSMachine";
+            this.cbxPOSMachine.Size = new System.Drawing.Size(121, 23);
+            this.cbxPOSMachine.TabIndex = 19;
             // 
             // PaymentForm
             // 
@@ -299,5 +321,7 @@
         private TextBox txtAuthCode;
         private Button btnAdd;
         private Button btnCancle;
+        private Label label2;
+        private ComboBox cbxPOSMachine;
     }
 }

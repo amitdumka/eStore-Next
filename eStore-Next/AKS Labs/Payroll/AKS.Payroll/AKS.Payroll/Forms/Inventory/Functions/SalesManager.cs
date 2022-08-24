@@ -52,17 +52,19 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public List<PaymentDetail> PaymentDetails;
         public AutoCompleteStringCollection barcodeList = new AutoCompleteStringCollection();
         public bool ReturnKey = false;
-        
+
+        private List<StockInfo> SearchedStockedList;
+
         //private List<SaleItem> SalesItems;
         public ObservableListSource<SaleItemVM> SaleItem;
 
         public List<int> YearList;
         private int SeletedYear;
         private int TotalCount;
-        //        private bool IsNew;        private ProductSale Sale;
+        //private bool IsNew;        private ProductSale Sale;
 
         // Cart Information
-        public decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount,TotalItem;
+        public decimal TotalQty, TotalFreeQty, TotalTax, TotalDiscount, TotalAmount, TotalItem;
 
         public SalesManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, InvoiceType? iType)
         {
@@ -177,37 +179,33 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                Category = item.Product.ProductCategory,
                TaxRate = SetTaxRate(item.Product.ProductCategory, item.Product.MRP)
            }).FirstOrDefault();
+            if (SearchedStockedList == null) SearchedStockedList = new List<StockInfo>();
+            SearchedStockedList.Add(item);
             return item;
         }
 
         /// <summary>
         /// Init the manager Class
-        /// </summary>
-        /// <param name="type"></param>
+        /// </summary>        
         public void InitManager()
         {
             if (azureDb == null) azureDb = new AzurePayrollDbContext();
             if (localDb == null) localDb = new LocalPayrollDbContext();
             if (Items == null)
                 Items = new ObservableListSource<ProductSale>();
-
             SeletedYear = DateTime.Today.Year;
             YearList = azureDb.ProductSales.Select(c => c.OnDate.Year).Distinct().OrderByDescending(c => c).ToList();
-
             UpdateSaleList(azureDb.ProductSales.Include(c => c.Items)
                 .Where(c => c.OnDate.Year == SeletedYear).OrderByDescending(c => c.OnDate)
                 .ToList());
-
             //lbYearList.DataSource = YearList;
-
             //dataGridView1.DataSource = Items.Where(c => c.InvoiceType == InvoiceType).ToList();
         }
 
         public void ResetCart()
         {
-            TotalAmount =TotalItem= TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
+            TotalAmount = TotalItem = TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
             TotalCount = 0;
-            //dgvSaleItems.Rows.Clear();
         }
 
         public List<ProductSale> SetGridView() => Items.Where(c => c.InvoiceType == InvoiceType).ToList();
@@ -234,17 +232,20 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         {
             SaleItem = new ObservableListSource<SaleItemVM>();
             PaymentDetails = null;
-            
             return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
         }
 
-        protected static void BasicRateCalucaltion(decimal mrp, decimal taxRate)
+        public static decimal TaxCalculation(decimal mrp, decimal taxRate)
         {
-            decimal price = 100 * mrp / (100 + taxRate);
-            decimal taxAmount = mrp - price;
+            return mrp - (100 * mrp / (100 + taxRate));
         }
 
-        protected static int SetTaxRate(ProductCategory category, decimal Price)
+        public static decimal BasicRateCalucaltion(decimal mrp, decimal taxRate)
+        {
+            return (100 * mrp / (100 + taxRate));
+        }
+
+        public static int SetTaxRate(ProductCategory category, decimal Price)
         {
             int rate = 0;
             switch (category)
@@ -318,28 +319,83 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foreach (var item in sales)
                     Items.Add(item);
         }
-        public void SaveInvoice(string mobileNo, string smId)
+        public void SaveInvoice(string mobileNo, string smId, InvoiceType iType, bool isCashPaid)
         {
-            ProductSale sale = new ProductSale { 
-            Adjusted=false,BilledQty=TotalQty, EntryStatus=EntryStatus.Added, 
-            FreeQty=TotalFreeQty, IsReadOnly=false, OnDate=DateTime.Now,
-            Paid=false, StoreId=StoreCode, MarkedDeleted=false, TotalPrice=TotalAmount, 
-            TotalDiscountAmount=TotalDiscount, TotalTaxAmount=TotalTax, 
-            UserId="WinUI", Tailoring=false, Taxed=false,
-            Items= new List<SaleItem>(), InvoiceType=InvoiceType,  SalesmanId=smId,
+            var count = azureDb.ProductSales.Where(c => c.StoreId == StoreCode && c.InvoiceType == iType
+            && c.OnDate.Year == DateTime.Now.Year && c.OnDate.Month == DateTime.Now.Month).Count();
+            ProductSale sale = new ProductSale
+            {
+                Adjusted = false,
+                BilledQty = TotalQty,
+                EntryStatus = EntryStatus.Added,
+                FreeQty = TotalFreeQty,
+                IsReadOnly = false,
+                OnDate = DateTime.Now,
+                Paid = false,
+                StoreId = StoreCode,
+                MarkedDeleted = false,
+                TotalPrice = TotalAmount,
+                TotalDiscountAmount = TotalDiscount,
+                TotalTaxAmount = TotalTax,
+                UserId = "WinUI",
+                Tailoring = false,
+                Taxed = false,
+                Items = new List<SaleItem>(),
+                InvoiceType = iType,
+                SalesmanId = smId,
             };
             sale.TotalMRP = sale.TotalDiscountAmount + sale.TotalPrice;
-            sale.TotalBasicAmount = sale.TotalPrice-sale.TotalTaxAmount;
-            sale.RoundOff=Math.Round(sale.TotalPrice)-sale.TotalPrice;
+            sale.TotalBasicAmount = sale.TotalPrice - sale.TotalTaxAmount;
+            sale.RoundOff = Math.Round(sale.TotalPrice) - sale.TotalPrice;
             //TODO:handle customer addidtion
-
+            sale.InvoiceNo = $"{StoreCode}/{DateTime.Now.Year}/{DateTime.Now.Month}/{++count}";
             // Adding sale item 
             foreach (var si in SaleItem)
             {
-                SaleItem item = new SaleItem {
-                Adjusted=false,Barcode=si.Barcode, BilledQty=si.Qty, 
-                DiscountAmount=si.Discount, FreeQty=0 
+                var info = SearchedStockedList.Find(c => c.Barcode == si.Barcode);
+                SaleItem item = new SaleItem
+                {
+                    Adjusted = false,
+                    Barcode = si.Barcode,
+                    BilledQty = si.Qty,
+                    DiscountAmount = si.Discount,
+                    FreeQty = 0,
+                    LastPcs = false,
+                    TaxType = info.TaxType,
+                    Value = si.Amount,
+                    InvoiceCode = sale.InvoiceCode,
+                    InvoiceType = iType,
+                    Unit = info.Unit,
+                    BasicAmount = BasicRateCalucaltion(si.Amount, info.TaxRate),
+                    TaxAmount = TaxCalculation(si.Amount, info.TaxRate)
                 };
+                sale.Items.Add(item);
+            }
+
+            if (!isCashPaid)
+            {
+
+                sale.Paid = true;
+                PaymentDetail payment = new PaymentDetail
+                {
+                    Amount = sale.TotalPrice - sale.RoundOff,
+                    InvoiceNumber = sale.InvoiceNo,
+                    Mode = PaymentMode.Cash
+                };
+
+                SalePaymentDetail spd = new SalePaymentDetail
+                {
+                    InvoiceCode = sale.InvoiceCode,
+                    PaidAmount = sale.TotalPrice - sale.RoundOff,
+                    PayMode = PayMode.Cash,
+                    RefId = "Cash"
+                };
+                //azureDb.SalePaymentDetails.Add(payment);
+            }
+            else
+            {
+                //TODO: Payment details
+
             }
 
         }
@@ -347,13 +403,14 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         //TODO: Move to SaleReport class
         private List<SaleReport> SaleReports(string storeCode, int year, int month)
         {
-            var x= azureDb.ProductSales.Where(c => c.StoreId == storeCode
+            var x = azureDb.ProductSales.Where(c => c.StoreId == storeCode
             && c.MarkedDeleted == false && !c.Adjusted
             && c.OnDate.Year == year && c.OnDate.Month == month)
            .GroupBy(c => new { c.OnDate.Year, c.InvoiceType, c.Tailoring })
             .Select(c => new SaleReport
             {
-                Year=year,Month=month,
+                Year = year,
+                Month = month,
                 InvoiceType = c.Key.InvoiceType,
                 Tailoing = c.Key.Tailoring,
                 BillQty = c.Sum(x => x.BilledQty),
@@ -384,7 +441,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
             foreach (var year in YearList)
             {
-               report.Add(year,  SaleReports(storeCode, year));
+                report.Add(year, SaleReports(storeCode, year));
             }
             return report;
 

@@ -35,7 +35,7 @@ namespace AKS.Payroll.Forms.Inventory
                     ProductItem = txtProductItem.Text.Trim(),
                     Qty = decimal.Parse(txtQty.Text.Trim()),
                     Amount = 0,
-                    Tax = 0,
+                    Discount = 0
                 };
 
                 if (txtDiscount.Text.Contains('%'))
@@ -58,7 +58,7 @@ namespace AKS.Payroll.Forms.Inventory
                 _salesManager.TotalFreeQty += 0;
                 _salesManager.TotalQty += si.Qty;
                 _salesManager.TotalDiscount += si.Discount;
-                _salesManager.TotalTax += si.Tax;
+                //_salesManager.TotalTax += si.Tax;
                 _salesManager.TotalAmount += si.Amount;
                 UpdateCartTotal();
                 txtBarcode.Text = "";
@@ -131,14 +131,14 @@ namespace AKS.Payroll.Forms.Inventory
             lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
             lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
         }
-      
+
         private void ReadSaleData()
         {
-            
+
         }
         private bool SaveSaleData()
         {
-            _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(),cbxSalesman.SelectedValue);
+            _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);
             return true;
         }
 
@@ -166,7 +166,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
-            PaymentForm payForm = new PaymentForm();
+            PaymentForm payForm = new PaymentForm(azureDb);
 
             if (payForm.ShowDialog() == DialogResult.OK)
             {
@@ -245,7 +245,7 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
                 _salesManager.LoadBarcodeList();
-                cbxSalesman.DataSource= azureDb.Salesmen.Where(c=>c.IsActive).Select(c => new {c.SalesmanId, c.Name});
+                cbxSalesman.DataSource = azureDb.Salesmen.Where(c => c.IsActive).Select(c => new { c.SalesmanId, c.Name });
                 cbxSalesman.DisplayMember = "Name";
                 cbxSalesman.ValueMember = "SalesmanId";
             }

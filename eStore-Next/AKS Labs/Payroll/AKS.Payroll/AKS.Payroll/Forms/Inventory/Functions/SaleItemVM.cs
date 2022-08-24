@@ -2,13 +2,12 @@
 {
     public class SaleItemVM
     {
-        public decimal Amount { get; set; }
         public string Barcode { get; set; }
-        public decimal Discount { get; set; }
         public string ProductItem { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Discount { get; set; }
         public decimal Qty { get; set; }
-        public decimal Rate { get; set; }
-        public decimal Tax { get; set; }
+        public decimal Rate { get; set; }        
     }
     public class PaymentDetail
     {
@@ -21,6 +20,7 @@
         public CardType? CardType { get; set; }
         public string AuthCode { get; set; }
         public int LastFour { get; set; }
+        public string? PosMachineId { get; set; }
     }
     public class StockInfo
     {

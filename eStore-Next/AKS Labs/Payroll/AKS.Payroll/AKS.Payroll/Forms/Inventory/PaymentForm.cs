@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Forms.Inventory.Functions;
+﻿using AKS.Payroll.Database;
+using AKS.Payroll.Forms.Inventory.Functions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +17,13 @@ namespace AKS.Payroll.Forms.Inventory
         string Invoice;
         decimal Amount;
         public PaymentDetail Pd;
-        public PaymentForm()
+        AzurePayrollDbContext _db;
+        public PaymentForm(AzurePayrollDbContext db)
         {
             InitializeComponent();
             Invoice = "";
             Amount = 0;
+            _db = db;
         }
         public PaymentForm(string invNo, decimal amt)
         {
@@ -38,6 +41,10 @@ namespace AKS.Payroll.Forms.Inventory
             cbxCardType.Items.AddRange(Enum.GetNames(typeof(CardType)));
             lbInv.Text = "Invoice No.: " + Invoice;
             lbAmount.Text = $"Amount: Rs. {Amount}";
+            cbxPOSMachine.DataSource = _db.EDCTerminals.Where(c => c.Active).Select(c => new
+            {   c.EDCTerminalId,c.Name}).ToList();
+            cbxPOSMachine.DisplayMember = "Name";
+            cbxPOSMachine.ValueMember = "EDCTerminalId";
 
         }
 
@@ -92,7 +99,10 @@ namespace AKS.Payroll.Forms.Inventory
                     Pd.Card = (Card)cbxCard.SelectedIndex;
                     Pd.CardType = (CardType)cbxCardType.SelectedIndex;
                     Pd.LastFour = int.Parse(txtLastFour.Text.Trim());
+                   
                 }
+                else if(Pd.Mode==PaymentMode.UPI)
+                    Pd.PosMachineId = cbxPOSMachine.SelectedValue.ToString();
                 return Pd;
             }
             catch (Exception e)

@@ -2,8 +2,6 @@
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.Pdf;
-using Syncfusion.Windows.Forms.PdfViewer;
 using System.ComponentModel.DataAnnotations;
 
 namespace AKS.Payroll.Forms.Inventory.Functions
@@ -34,20 +32,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         protected abstract void GetList();
 
         protected abstract void Save();
-    }
-
-    public class SaleReport
-    {
-        public decimal BillQty { get; set; }
-        public decimal FreeQty { get; set; }
-        public InvoiceType InvoiceType { get; set; }
-        public int Month { get; set; }
-        public bool Tailoing { get; set; }
-        public decimal TotalDiscount { get; set; }
-        public decimal TotalMRP { get; set; }
-        public decimal TotalPrice { get; set; }
-        public decimal TotalTax { get; set; }
-        public int Year { get; set; }
     }
 
     /// <summary>
@@ -445,126 +429,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     break;
             }
             return ino;
-        }
-    }
-
-    public class SaleUtils
-    {
-        /// <summary>
-        /// Get Count for id
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public static string INCode(int count)
-        {
-            string a = "";
-            if (count < 10) a = $"000{count}";
-            else if (count >= 10 && count < 100) a = $"00{count}";
-            else if (count >= 100 && count < 1000) a = $"0{count}";
-            else a = $"{count}";
-            return a;
-        }
-        public static decimal BasicRateCalucaltion(decimal mrp, decimal taxRate)
-        {
-            return (100 * mrp / (100 + taxRate));
-        }
-
-        /// <summary>
-        /// Helper function if missing
-        /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        public static string[] EnumList(Type t)
-        {
-            return Enum.GetNames(t);
-        }
-
-        public static int SetTaxRate(ProductCategory category, decimal Price)
-        {
-            int rate = 0;
-            switch (category)
-            {
-                case ProductCategory.Fabric:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.Apparel:
-                    rate = Price > 999 ? 12 : 5;
-                    break;
-
-                case ProductCategory.Accessiories:
-                    rate = 12;
-                    break;
-
-                case ProductCategory.Tailoring:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.Trims:
-                    rate = 5;
-                    break;
-
-                case ProductCategory.PromoItems:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.Coupons:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.GiftVouchers:
-                    rate = 0;
-                    break;
-
-                case ProductCategory.Others:
-                    rate = 18;
-                    break;
-
-                default:
-                    rate = 5;
-                    break;
-            }
-            return rate;
-        }
-
-        public static decimal TaxCalculation(decimal mrp, decimal taxRate)
-        {
-            return mrp - (100 * mrp / (100 + taxRate));
-        }
-    }
-
-
-    public class SaleTest
-    {
-        public static string TestPrint(AzurePayrollDbContext db)
-        {
-            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.InvoiceCode== "ARD/2019/2163").First();
-            //var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == 4 && c.OnDate.Year == 2022).First();
-            inv.Items = db.SaleItems.Include(c => c.ProductItem).Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
-            
-           
-            InvoicePrint print = new InvoicePrint
-            {
-                FontSize = 12, Page2Inch=false, InvoiceSet=true, PageWith=240,
-                PageHeight=1170,
-                InvoicePath = "",
-                CustomerName = "Cash Sale",
-                City = "Dumka",FileName="", MobileNumber="1234567890", NoOfCopy=1, Address="Bhagalpur Road, Dumka", PathName="", 
-                Phone="06434-224461", Reprint=true, ProductSale=inv,
-                StoreName = "Aprajita Retails",
-                TaxNo = "20AJHPA7396P1ZV",CardDetails=db.CardPaymentDetails.Where(c=>c.InvoiceCode==inv.InvoiceCode).FirstOrDefault(),
-                PaymentDetails = db.SalePaymentDetails.Where(c => c.InvoiceCode == inv.InvoiceCode).ToList(),
-            };
-
-           return print.InvoicePdf();
-            //var printDialog1 = new PrintDialog();
-            //if (printDialog1.ShowDialog() == DialogResult.OK)
-            //{
-            //    printDialog1.AllowPrintToFile = true;
-            //    PdfDocumentView pdfview = new PdfDocumentView();
-            //    pdfview.Load(filename);
-            //    pdfview.Print(printDialog1.PrinterSettings.PrinterName);
-            //}
         }
     }
 

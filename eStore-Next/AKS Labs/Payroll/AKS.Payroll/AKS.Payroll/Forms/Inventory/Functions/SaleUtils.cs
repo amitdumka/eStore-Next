@@ -6,10 +6,19 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     {
         public static GeneratedBarcode GenerateBarCode(string invNo)
         {
-            Directory.CreateDirectory(@"d:\arp\barcode\");
-            GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.Code128);
-            barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
-            return barcode;
+            try
+            {
+                Directory.CreateDirectory(@"d:\arp\barcode\");
+                GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.QRCode);
+                barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+                return barcode;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
         }
         public static GeneratedBarcode GenerateQRCode(string invNo, DateTime onDate, decimal value)
         {

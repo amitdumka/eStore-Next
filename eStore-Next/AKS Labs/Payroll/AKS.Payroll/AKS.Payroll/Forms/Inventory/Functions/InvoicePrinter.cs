@@ -1,10 +1,12 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
+using iText.IO.Image;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using System.ComponentModel.DataAnnotations;
+using Image = iText.Layout.Element.Image;
 
 //using PDFtoPrinter;
 using Path = System.IO.Path;
@@ -106,7 +108,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 //Details
                 Paragraph ip = new Paragraph().SetFontSize(FontSize);
                 ip.AddStyle(code);
-                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
                 if (!Page2Inch) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
                 ip.AddTabStops(new TabStop(50));
@@ -219,10 +221,18 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
                 foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
                 foot.Add("\n" + DotedLine + "\n\n\n\n");
-                pdfDoc.Add(foot);
 
-                var barcode = SaleUtils.GenerateBarCode(ProductSale.InvoiceNo);
-                pdfDoc.Add((IBlockElement)barcode.Image);
+
+                // var barcode = SaleUtils.GenerateQRCode(ProductSale.InvoiceNo,ProductSale.OnDate,ProductSale.TotalPrice);
+                var barcode = SaleUtils.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
+               
+                var img= ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
+                var imges = new Image(img);
+                imges.Scale((float)0.09, (float)0.09);
+                imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                pdfDoc.Add(imges);
+                pdfDoc.Add(foot);
                 pdfDoc.Close();
                 return FileName;
             }

@@ -9,7 +9,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             try
             {
                 Directory.CreateDirectory(@"d:\arp\barcode\");
-                GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.QRCode);
+                GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.Code93);
                 barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
                 return barcode;
             }

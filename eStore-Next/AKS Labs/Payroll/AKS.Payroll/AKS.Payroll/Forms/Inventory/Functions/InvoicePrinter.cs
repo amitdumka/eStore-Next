@@ -228,7 +228,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                
                 var img= ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
                 var imges = new Image(img);
-                imges.Scale((float)0.09, (float)0.09);
+                imges.Scale((float)0.5, (float)0.1);
                 imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                 imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
                 pdfDoc.Add(imges);

@@ -69,9 +69,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 PathName = @"d:\apr\invoices";
                 string fileName = Path.Combine(PathName, $"{ProductSale.InvoiceNo}.pdf");
                 FileName = fileName;
+                Directory.CreateDirectory(PathName);
             }
-
-            Directory.CreateDirectory(PathName);
+            var x =FileName.Replace( Path.GetFileName(FileName),"");
+            Directory.CreateDirectory(x);
 
             if (!Page2Inch)
             {

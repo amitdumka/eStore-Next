@@ -114,16 +114,28 @@ namespace AKS.Payroll.Forms.Inventory
                 tabControl1.SelectedTab = tpView;
                 if (SaveSaleData())
                 {
-                    MessageBox.Show("Invoice is Saved! and Invoice No is {sale.InvoiceNo}");
+                    MessageBox.Show($"Invoice is Saved! and Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
                     tabControl1.SelectedTab = tpView;
                     pdfViewer.Load(_salesManager.LastInvoicePath);
                     pdfViewer.Visible = true;
                     filename = _salesManager.LastInvoicePath;
-                    //TODO:Reset Form to save New Invoice
+                    btnAdd.Text = "Add";
+                    PostPreFormReset();
+                    cbxMmobile.SelectedIndex = 0;
                     // Ask to print or email
                 }
             }
         }
+
+        private void PostPreFormReset()
+        {
+            _salesManager.ResetCart();
+            UpdateCartTotal();
+            dgvSaleItems.DataSource = null;
+
+            //TODO:Reset Form to save New Invoice
+        }
+
 
         private void UpdateCartTotal()
         {
@@ -140,7 +152,7 @@ namespace AKS.Payroll.Forms.Inventory
         /// <returns></returns>
         private bool SaveSaleData()
         {
-           return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(),txtCustomerName.Text.Trim(),  "SMN/2016/001", (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);            
+            return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(), txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -246,8 +258,8 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
                 _salesManager.LoadBarcodeList();
-                
-                cbxSalesman.DataSource = azureDb.Salesmen.Where(c => c.IsActive).Select(c => new { c.SalesmanId, c.Name });
+
+                cbxSalesman.DataSource = azureDb.Salesmen.Where(c => c.IsActive).Select(c => new { c.SalesmanId, c.Name }).ToList();
                 cbxSalesman.DisplayMember = "Name";
                 cbxSalesman.ValueMember = "SalesmanId";
             }
@@ -427,7 +439,7 @@ namespace AKS.Payroll.Forms.Inventory
                     printDialog1.AllowPrintToFile = true;
                     pdfViewer.Print(printDialog1.PrinterSettings.PrinterName);
                     count++;
-                    if(count>2) { count = 0; filename = ""; }
+                    if (count > 2) { count = 0; filename = ""; }
                 }
             }
 

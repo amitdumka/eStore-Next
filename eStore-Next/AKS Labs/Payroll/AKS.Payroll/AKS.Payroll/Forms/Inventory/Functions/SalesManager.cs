@@ -44,7 +44,9 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public ObservableListSource<ProductSale> Items;
         public List<PaymentDetail> PaymentDetails;
         public bool ReturnKey = false;
+        
         public string LastInvoicePath = "";
+        public ProductSale LastInvoice = null;
 
         //private List<SaleItem> SalesItems;
         public ObservableListSource<SaleItemVM> SaleItem;
@@ -389,6 +391,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     PaymentDetails = spds,
                 };
                 LastInvoicePath = print.InvoicePdf();
+                LastInvoice = sale;
+
+            }
+            else
+            {
+                LastInvoicePath = null;
+                LastInvoice = null;
             }
             return x > 0;
         }
@@ -417,6 +426,8 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         {
             SaleItem = new ObservableListSource<SaleItemVM>();
             PaymentDetails = null;
+            LastInvoice = null;
+            LastInvoicePath = null;
             return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
         }
 

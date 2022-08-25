@@ -71,6 +71,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.lbPd = new System.Windows.Forms.Label();
             this.cbCashBill = new System.Windows.Forms.CheckBox();
+            this.cbxSalesman = new System.Windows.Forms.ComboBox();
             this.tpView = new System.Windows.Forms.TabPage();
             this.pdfViewer = new Syncfusion.Windows.Forms.PdfViewer.PdfDocumentView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -88,7 +89,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.cbxSalesman = new System.Windows.Forms.ComboBox();
+            this.lbLastInvoice = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -519,6 +520,14 @@
             this.cbCashBill.Text = "Cash Paid";
             this.cbCashBill.UseVisualStyleBackColor = true;
             // 
+            // cbxSalesman
+            // 
+            this.cbxSalesman.FormattingEnabled = true;
+            this.cbxSalesman.Location = new System.Drawing.Point(660, 57);
+            this.cbxSalesman.Name = "cbxSalesman";
+            this.cbxSalesman.Size = new System.Drawing.Size(121, 23);
+            this.cbxSalesman.TabIndex = 30;
+            // 
             // tpView
             // 
             this.tpView.Controls.Add(this.pdfViewer);
@@ -590,6 +599,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lbLastInvoice);
             this.groupBox1.Controls.Add(this.btnPrint);
             this.groupBox1.Controls.Add(this.btnView);
             this.groupBox1.Controls.Add(this.btnRefresh);
@@ -736,13 +746,14 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // cbxSalesman
+            // lbLastInvoice
             // 
-            this.cbxSalesman.FormattingEnabled = true;
-            this.cbxSalesman.Location = new System.Drawing.Point(660, 57);
-            this.cbxSalesman.Name = "cbxSalesman";
-            this.cbxSalesman.Size = new System.Drawing.Size(121, 23);
-            this.cbxSalesman.TabIndex = 30;
+            this.lbLastInvoice.AutoSize = true;
+            this.lbLastInvoice.Location = new System.Drawing.Point(519, 27);
+            this.lbLastInvoice.Name = "lbLastInvoice";
+            this.lbLastInvoice.Size = new System.Drawing.Size(64, 15);
+            this.lbLastInvoice.TabIndex = 5;
+            this.lbLastInvoice.Text = "No Invoice";
             // 
             // SalesForm
             // 
@@ -835,5 +846,6 @@
         private Button btnView;
         private Button btnPrint;
         private ComboBox cbxSalesman;
+        private Label lbLastInvoice;
     }
 }

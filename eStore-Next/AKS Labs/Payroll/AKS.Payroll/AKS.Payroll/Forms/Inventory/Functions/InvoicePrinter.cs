@@ -140,8 +140,8 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     if (itemDetails != null)
                     {
                         ip.Add($"{itemDetails.Barcode} / {itemDetails.ProductItem.Description}/{itemDetails.ProductItem.HSNCode} /\n");
-                        ip.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString() + tab + tab);
-                        ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount + tab + tab + itemDetails.Value);
+                        ip.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString("0.##") + tab + tab);
+                        ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##"));
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + "\n");
                         gstPrice += itemDetails.TaxAmount;
@@ -152,13 +152,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     ip.Add("\n" + DotedLineLong);
                 else ip.Add("\n" + DotedLine);
 
-                ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
-                ip.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
+                ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
+                ip.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
 
                 if (!Page2Inch) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
 
-                ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString());
+                ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##"));
 
                 ip.Add("\n" + DotedLine);
                 ip.Add("Basic Price:\t\t" + basicPrice.ToString("0.##"));
@@ -171,7 +171,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     ip.Add(DotedLine);
                     foreach (var pd in PaymentDetails)
                     {
-                        ip.Add($"Paid Rs. {pd.PaidAmount} in {pd.PayMode}\n ");
+                        ip.Add($"Paid Rs. {pd.PaidAmount.ToString("0.##")} in {pd.PayMode}\n ");
                         if (pd.PayMode == PayMode.Card)
                         {
                             if (CardDetails != null)
@@ -202,6 +202,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 if (Reprint)
                 {
                     foot.Add("(Reprinted Duplicate)\n");
+                }
+                else
+                {
+                    foot.Add("(Customer Copy)\n");
                 }
 
                 foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");

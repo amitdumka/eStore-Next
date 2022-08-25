@@ -114,13 +114,15 @@ namespace AKS.Payroll.Forms.Inventory
                 tabControl1.SelectedTab = tpView;
                 if (SaveSaleData())
                 {
-                    MessageBox.Show($"Invoice is Saved! and Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
+                    MessageBox.Show($"Invoice is Saved! \n Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
                     tabControl1.SelectedTab = tpView;
                     pdfViewer.Load(_salesManager.LastInvoicePath);
                     pdfViewer.Visible = true;
                     filename = _salesManager.LastInvoicePath;
+                    lbLastInvoice.Text = _salesManager.LastInvoice.InvoiceNo;
                     btnAdd.Text = "Add";
                     PostPreFormReset();
+                    
                     cbxMmobile.SelectedIndex = 0;
                     // Ask to print or email
                 }

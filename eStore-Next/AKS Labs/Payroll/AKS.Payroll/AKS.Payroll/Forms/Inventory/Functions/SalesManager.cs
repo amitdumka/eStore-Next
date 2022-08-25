@@ -44,7 +44,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public ObservableListSource<ProductSale> Items;
         public List<PaymentDetail> PaymentDetails;
         public bool ReturnKey = false;
-        
+
         public string LastInvoicePath = "";
         public ProductSale LastInvoice = null;
 
@@ -372,7 +372,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     //PageWith = 240,
                     //PageHeight = 1170,
 
-                     FileName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}\{sale.InvoiceNo}.pdf",
+                    FileName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}\{sale.InvoiceNo}.pdf",
                     //FileName = $"{sale.InvoiceNo}.pdf",
                     PathName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}",
                     CustomerName = customerName,
@@ -392,6 +392,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 };
                 LastInvoicePath = print.InvoicePdf();
                 LastInvoice = sale;
+                Items.Add(sale);
 
             }
             else
@@ -493,6 +494,11 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             if (sales != null)
                 foreach (var item in sales)
                     Items.Add(item);
+        }
+        private void UpdateSaleList(ProductSale sale)
+        {
+            if (sale != null)
+                Items.Add(sale);
         }
 
         public static string GenerateInvoiceNumber(InvoiceType iType, int count, string scode)

@@ -1020,6 +1020,22 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                     b.ToTable("V1_CardPaymentDetails");
                 });
 
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CustomerSale", b =>
+                {
+                    b.Property<string>("InvoiceCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MobileNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InvoiceCode");
+
+                    b.HasIndex("MobileNo");
+
+                    b.ToTable("CustomerSales");
+                });
+
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductItem", b =>
                 {
                     b.Property<string>("Barcode")
@@ -2673,6 +2689,25 @@ namespace AKS.Payroll.Database.Migrations.AzurePayrollDb
                         .HasForeignKey("EDCTerminalId");
 
                     b.Navigation("PosMachine");
+                });
+
+            modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.CustomerSale", b =>
+                {
+                    b.HasOne("AKS.Shared.Commons.Models.Inventory.ProductSale", "Sale")
+                        .WithMany()
+                        .HasForeignKey("InvoiceCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AKS.Shared.Commons.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("MobileNo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("AKS.Shared.Commons.Models.Inventory.ProductItem", b =>

@@ -268,6 +268,8 @@ namespace AKS.Payroll.Forms.Inventory
         private void SalesForm_Load(object sender, EventArgs e)
         {
             _salesManager.InitManager();
+            if (azureDb == null) azureDb = new AzurePayrollDbContext();
+            if (localDb == null) localDb = new LocalPayrollDbContext();
             SetupForm();
             lbYearList.DataSource = _salesManager.YearList;
             dgvSales.DataSource = _salesManager.SetGridView();
@@ -403,16 +405,26 @@ namespace AKS.Payroll.Forms.Inventory
 
 
         }
-
+        string filename = "";
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            var printDialog1 = new PrintDialog();
-            if (printDialog1.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrEmpty(filename))
             {
-                printDialog1.AllowPrintToFile = true;
-
-                pdfViewer.Print(printDialog1.PrinterSettings.PrinterName);
+                filename = SaleTest.TestPrint(azureDb);
             }
+            pdfViewer.Load(filename);
+            pdfViewer.Visible = true;
+            var result = MessageBox.Show("Want to Print", "Invoic", MessageBoxButtons.YesNoCancel);
+            if (result == DialogResult.Yes)
+            {
+                var printDialog1 = new PrintDialog();
+                if (printDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    printDialog1.AllowPrintToFile = true;
+                    pdfViewer.Print(printDialog1.PrinterSettings.PrinterName);
+                }
+            }
+
         }
     }
 }

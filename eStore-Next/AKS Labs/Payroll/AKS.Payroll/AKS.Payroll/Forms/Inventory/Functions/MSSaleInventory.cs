@@ -194,7 +194,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     IsReadOnly = true,
                     MarkedDeleted = false,
                     SalesmanId = smList.First(c => c.Name.Contains(item.SALESMAN)).SalesmanId,
-                    InvoiceCode = $"ARD/{item.OnDate.Year}/{item.OnDate.Month}/IN/{SaleInventory.INCode(++count)}",
+                    InvoiceCode = $"ARD/{item.OnDate.Year}/{item.OnDate.Month}/IN/{SaleUtils.INCode(++count)}",
                 };
 
                 products.Add(pSale);
@@ -404,7 +404,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     FreeQty = 0,
                     InvoiceType = sales[0].InvType == "Sales" ? InvoiceType.Sales : InvoiceType.SalesReturn,
                     IsReadOnly = true,
-                    InvoiceCode = $"ARD/{sales[0].OnDate.Year}/{sales[0].OnDate.Month}/IN/{SaleInventory.INCode(++ic)}",
+                    InvoiceCode = $"ARD/{sales[0].OnDate.Year}/{sales[0].OnDate.Month}/IN/{SaleUtils.INCode(++ic)}",
                     Items = new List<SaleItem>()
                 };
                 foreach (var sale in sales)

@@ -3,6 +3,7 @@ using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Pdf;
+using Syncfusion.Windows.Forms.PdfViewer;
 using System.ComponentModel.DataAnnotations;
 
 namespace AKS.Payroll.Forms.Inventory.Functions
@@ -533,6 +534,36 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     }
 
 
-    
+    public class SaleTest
+    {
+        public static string TestPrint(AzurePayrollDbContext db)
+        {
+            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == 5 && c.OnDate.Year == 2022).First();
+            inv.Items = db.SaleItems.Include(c => c.ProductItem).Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
+            
+           
+            InvoicePrint print = new InvoicePrint
+            {
+                InvoicePath = "",
+                CustomerName = "Cash Sale",
+                City = "Dumka",FileName="", MobileNumber="1234567890", NoOfCopy=1, Address="Bhagalpur Road, Dumka", PathName="", 
+                Phone="06434-224461", Reprint=true, ProductSale=inv,
+                StoreName = "Aprajita Retails",
+                TaxNo = "20AJHPA7396P1ZV",CardDetails=db.CardPaymentDetails.Where(c=>c.InvoiceCode==inv.InvoiceCode).FirstOrDefault(),
+                PaymentDetails = db.SalePaymentDetails.Where(c => c.InvoiceCode == inv.InvoiceCode).ToList(),
+            };
+
+           return print.InvoicePdf();
+            //var printDialog1 = new PrintDialog();
+            //if (printDialog1.ShowDialog() == DialogResult.OK)
+            //{
+            //    printDialog1.AllowPrintToFile = true;
+            //    PdfDocumentView pdfview = new PdfDocumentView();
+            //    pdfview.Load(filename);
+            //    pdfview.Print(printDialog1.PrinterSettings.PrinterName);
+            //}
+        }
+    }
+
 
 }

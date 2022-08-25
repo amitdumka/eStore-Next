@@ -12,7 +12,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class InvoicePrint
     {
-        public const string DotedLine = "-----------------------------------\n";
+        public const string DotedLine = "---------------------------------\n";
         public const string DotedLineLong = "--------------------------------------------------\n";
         public string StoreName { get; set; }
         public string Address { get; set; }
@@ -42,75 +42,84 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public const string FooterFirstMessage = "** Amount Inclusive GST **";
         public const string FooterThanksMessage = "Thank You";
         public const string FooterLastMessage = "Visit Again";
+       
         public const string Employee = "Cashier: M0001      Name: Manager";
-          // BillNo = "Bill No: " + invNo;
-           
-         
-           
+        // BillNo = "Bill No: " + invNo;
 
-        public string SetPdf()
+
+
+
+        //public string SetPdf()
+        //{
+        //    string pathName = @"d:\apr\salereports";
+        //    string fileName = Path.Combine(pathName, "salereport.pdf");
+        //    Directory.CreateDirectory(pathName);
+        //    return fileName;
+
+
+        //}
+        public string InvoicePdf()
         {
-            string pathName = @"d:\apr\salereports";
-            string fileName = Path.Combine(pathName, "salereport.pdf");
-            Directory.CreateDirectory(pathName);
-            return fileName;
-
-
-        }
-        public void InvoicePdf()
-        {
-
-            PathName = @"d:\apr\salereports";
+            int PageWith = 150;
+            int FontSize = 8;
+            int PageInch = 2;//3;
+            PathName = @"d:\apr\invoices";
             string fileName = Path.Combine(PathName, $"{ProductSale.InvoiceNo}.pdf");
+            this.FileName = fileName;
+
             Directory.CreateDirectory(PathName);
             try
             {
                 using PdfWriter pdfWriter = new PdfWriter(fileName);
                 using PdfDocument pdf = new PdfDocument(pdfWriter);
 
-                Document pdfDoc = new Document(pdf, new PageSize(240, 1170));
-
-                pdfDoc.SetMargins(10, 5, 10, 5);
-
+                Document pdfDoc = new Document(pdf, new PageSize(PageWith, 1170));
+                
+                pdfDoc.SetMargins(90, 15, 90, 8);
+                
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
-                code.SetFont(timesRoman).SetFontSize(12);
+                code.SetFont(timesRoman).SetFontSize(FontSize);
 
                 //Header
-                Paragraph p = new Paragraph(StoreName + "\n").SetFontSize(12);
+                Paragraph p = new Paragraph(StoreName + "\n").SetFontSize(FontSize);
                 p.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                 p.Add(Address + "\n");
                 p.Add(City + "\n");
                 p.Add("Ph No: " + Phone + "\n");
                 p.Add(TaxNo + "\n");
+                p.AddStyle(code);
 
                 pdfDoc.Add(p);
+
                 //Details
-                Paragraph ip = new Paragraph().SetFontSize(12);
-
-                ip.Add(DotedLine);
+                Paragraph ip = new Paragraph().SetFontSize(FontSize);
+                ip.AddStyle(code);
+                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
+                if (PageInch > 2) ip.Add(DotedLineLong);
+                else ip.Add(DotedLine);
                 ip.AddTabStops(new TabStop(50));
-                ip.Add(" " + InvoiceTitle + "\n");
-                ip.Add(DotedLineLong);
+                ip.Add("  " + InvoiceTitle + "\n");
+                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
-                ip.Add( Employee + "\n");
+                ip.Add(Employee + "\n");
                 ip.Add("Bill No: " + ProductSale.InvoiceNo + "\n");
                 ip.AddTabStops(new TabStop(30));
-                ip.Add("  " +  "                  Date: " + ProductSale.OnDate.ToShortDateString() + "\n");
+                ip.Add("  " + "                  Date: " + ProductSale.OnDate.ToString() + "\n");
                 ip.AddTabStops(new TabStop(30));
-                ip.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
-
+                //ip.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
+                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
                 ip.Add("Customer Name: " + CustomerName + "\n");
                 ip.Add("Customer Mobile: " + MobileNumber + "\n");
-                ip.Add(DotedLineLong);
+                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
                 ip.Add(ItemLineHeader1 + "\n");
                 ip.Add(ItemLineHeader2 + "\n");
 
-                ip.Add(DotedLineLong);
+                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
-                decimal gstPrice = 0 ;
-                decimal basicPrice = 0 ;
+                decimal gstPrice = 0;
+                decimal basicPrice = 0;
                 string tab = "    ";
 
                 foreach (var itemDetails in ProductSale.Items)
@@ -118,54 +127,81 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     //TODO: Need to implement HSNCode.
                     if (itemDetails != null)
                     {
-                        ip.Add(itemDetails.Barcode + "itemDetails.HSN" + "/\n");
-                        ip.Add((itemDetails.Value+itemDetails.DiscountAmount).ToString() + tab + tab);
+                        ip.Add($"{itemDetails.Barcode} / {itemDetails.ProductItem.Description}/{itemDetails.ProductItem.HSNCode} /\n");
+                        ip.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString() + tab + tab);
                         ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount + tab + tab + itemDetails.Value);
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + "\n");
-                        gstPrice +=  itemDetails.TaxAmount;
-                        basicPrice +=  itemDetails.BasicAmount;
+                        gstPrice += itemDetails.TaxAmount;
+                        basicPrice += itemDetails.BasicAmount;
                     }
                 }
-                ip.Add("\n" + DotedLineLong);
+                if (PageInch > 2)
+                    ip.Add("\n" + DotedLineLong);
+                else ip.Add("\n" + DotedLine);
 
-                ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice-ProductSale.RoundOff).ToString() + "\n");
+                ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
                 ip.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
-                ip.Add(DotedLineLong);
 
-                ip.Add("Tender(s)\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString()); 
-                //TODO: cash/Card option can be changed here
+                if (PageInch > 2) ip.Add(DotedLineLong);
+                else ip.Add(DotedLine);
 
-                // ip.Add("\n" + PrintInvoiceLine.DotedLine);
-                //ip.Add("Basic Price:\t\t" + basicPrice.ToString("0.##"));
-                //ip.Add("\nCGST:\t\t" + gstPrice.ToString("0.##"));
-                //ip.Add("\nSGST:\t\t" + gstPrice.ToString("0.##") + "\n");
-                //ip.Add (PrintLine.DotedLine);
+                ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString());
+
+
+
+                ip.Add("\n" + DotedLine);
+                ip.Add("Basic Price:\t\t" + basicPrice.ToString("0.##"));
+                ip.Add("\nCGST:\t\t" + gstPrice.ToString("0.##"));
+                ip.Add("\nSGST:\t\t" + gstPrice.ToString("0.##") + "\n");
+                ip.Add(DotedLine);
+
+                if (PaymentDetails.Count > 0)
+                {
+                    ip.Add(DotedLine);
+                    foreach (var pd in PaymentDetails)
+                    {
+                        ip.Add($"Paid Rs. {pd.PaidAmount} in {pd.PayMode}\n ");
+                        if (pd.PayMode == PayMode.Card)
+                        {
+                            if (CardDetails != null)
+                                ip.Add($"{CardDetails.CardType}/{CardDetails.CardLastDigit}");
+                        }
+                        else if (pd.PayMode == PayMode.UPI || pd.PayMode == PayMode.Wallets)
+                        {
+                            ip.Add($"RefNo:{pd.RefId}\n ");
+                        }
+                    }
+                    ip.Add(DotedLine);
+                }
+
                 pdfDoc.Add(ip);
 
                 //Footer
-                Paragraph foot = new Paragraph().SetFontSize(12);
-                //foot.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                foot.Add( FooterFirstMessage + "\n");
-                foot.Add( DotedLineLong);
+                Paragraph foot = new Paragraph().SetFontSize(FontSize);
+                foot.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                foot.AddStyle(code);
+                foot.Add(FooterFirstMessage + "\n");
+                foot.Add(DotedLineLong);
                 foot.Add(FooterThanksMessage + "\n");
                 foot.Add(FooterLastMessage + "\n");
                 foot.Add(DotedLineLong);
                 foot.Add("\n");// Just to Check;
                 if (Reprint)
                 {
-                    foot.Add("(Reprinted)\n");
+                    foot.Add("(Reprinted Duplicate)\n");
                 }
-                foot.Add("Printed on: " + DateTime.Now + "\n");
+                foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
+                foot.Add("\n"+DotedLine+"\n\n\n\n");
                 pdfDoc.Add(foot);
                 pdfDoc.Close();
-
+                return fileName;
 
             }
             catch (Exception e)
             {
 
-                throw;
+                return null;
             }
 
         }
@@ -207,13 +243,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         //   // PrintPDFLocal(fileName);
         //}
 
-       
+
     }
 
-    
-   
 
-    
+
+
+
     //public class ReceiptItemDetails
     //{
     //    public string BasicPrice { get; set; }
@@ -226,7 +262,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     //    public string GSTAmount { get; set; }
     //    public string Amount { get; set; }
     //}
-   
+
 
 }
 

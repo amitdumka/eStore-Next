@@ -95,7 +95,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 //Details
                 Paragraph ip = new Paragraph().SetFontSize(FontSize);
                 ip.AddStyle(code);
-                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
+               // ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
                 if (PageInch > 2) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
                 ip.AddTabStops(new TabStop(50));

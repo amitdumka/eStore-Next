@@ -533,63 +533,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     }
 
 
-    public class InvoicePrint
-    {
-        public string StoreName { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string TaxNo { get; set; }
-
-        public string CustomerName { get; set; }
-        public string MobileNumber { get; set; }
-
-        public ProductSale ProductSale { get; set; }
-        public List<SalePaymentDetail> PaymentDetails { get; set; }
-        public CardPaymentDetail CardDetails { get; set; }
-        public string InvoicePath { get; set; }
-        public int NoOfCopy { get; set; }
-        public bool Reprint { get; set; }
-        public string SetPdf()
-        {
-            string pathName = @"d:\apr\salereports";
-            string fileName = Path.Combine(pathName, "salereport.pdf");
-            Directory.CreateDirectory(pathName);
-            try
-            {
-                PdfDocument document = new PdfDocument();
-                //Adds page settings
-                document.PageSettings.Orientation = PdfPageOrientation.Landscape;
-                document.PageSettings.Margins.All = 50;
-
-                PdfPage pdfPage = document.Pages.Add();
-
-               // AddPage(pdfPage, saleReports);
-                //Save the document.
-                document.Save(fileName);
-                //Close the document.
-                document.Close(true);
-                return fileName;
-
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-
-
-        }
-        public void PrintPdf() { }
-
-
-        //Helper links
-        //https://www.syncfusion.com/blogs/post/create-zugferd-compliant-pdf-invoices-in-c.aspx
-        //https://help.syncfusion.com/file-formats/pdf/working-with-zugferd-invoice
-        //https://www.aspsnippets.com/Articles/Generate-Invoice-Bill-Receipt-PDF-from-database-in-ASPNet-using-C-and-VBNet.aspx
-        //https://docs.microsoft.com/en-us/samples/microsoft/windows-universal-samples/posprinter/
-        //https://www.tillpoint.com/gb/how-to-create-print-templates--1
-
-    }
+    
 
 }

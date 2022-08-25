@@ -379,7 +379,7 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (SaleReports == null || SaleReports.Count == 0)
             {
-                SaleReports = _salesManager.SaleReports("ARD");
+                SaleReports = _salesManager.SaleReports("ARD",_salesManager.InvoiceType);
             }
             tabControl1.SelectedTab = tpView;
             DisplaySaleReport();

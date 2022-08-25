@@ -174,13 +174,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             TotalCount = 0;
         }
 
-        public SortedDictionary<int, List<List<SaleReport>>> SaleReports(string storeCode)
+        public SortedDictionary<int, List<List<SaleReport>>> SaleReports(string storeCode, InvoiceType iType)
         {
             SortedDictionary<int, List<List<SaleReport>>> report = new SortedDictionary<int, List<List<SaleReport>>>();
-            var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
+            var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode && c.InvoiceType== iType).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
             foreach (var year in YearList)
             {
-                report.Add(year, SaleReports(storeCode, year));
+                report.Add(year, SaleReports(storeCode, year,iType));
             }
             return report;
         }
@@ -435,9 +435,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         }
 
         //TODO: Move to SaleReport class
-        private List<SaleReport> SaleReports(string storeCode, int year, int month)
+        private List<SaleReport> SaleReports(string storeCode, int year, int month, InvoiceType iType)
         {
             var x = azureDb.ProductSales.Where(c => c.StoreId == storeCode
+            && c.InvoiceType==iType
             && c.MarkedDeleted == false && !c.Adjusted
             && c.OnDate.Year == year && c.OnDate.Month == month)
            .GroupBy(c => new { c.OnDate.Year, c.InvoiceType, c.Tailoring })
@@ -458,12 +459,12 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return x;
         }
 
-        private List<List<SaleReport>> SaleReports(string storeCode, int year)
+        private List<List<SaleReport>> SaleReports(string storeCode, int year,InvoiceType iType)
         {
             List<List<SaleReport>> saleReports = new List<List<SaleReport>>();
             for (int i = 1; i <= 12; i++)
             {
-                saleReports.Add(SaleReports(storeCode, year, i));
+                saleReports.Add(SaleReports(storeCode, year, i,iType));
             }
             return saleReports;
         }

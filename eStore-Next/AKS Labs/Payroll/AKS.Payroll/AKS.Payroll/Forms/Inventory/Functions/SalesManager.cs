@@ -2,35 +2,9 @@
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace AKS.Payroll.Forms.Inventory.Functions
 {
-    public class CustomerListVM
-    {
-        public string CustomerName { get; set; }
-
-        [Key]
-        public string MobileNo { get; set; }
-    }
-
-    /// <summary>
-    /// Model/Temeplete class to make manager/VM class
-    /// </summary>
-    public abstract class Manager
-    {
-        protected static AzurePayrollDbContext azureDb;
-        protected static LocalPayrollDbContext localDb;
-        protected static string StoreCode = "ARD";//TODO: Need to Assign
-
-        protected abstract void Delete();
-
-        protected abstract void Get(string id);
-
-        protected abstract void GetList();
-
-        protected abstract void Save();
-    }
 
     /// <summary>
     /// Helps and Manages Sales
@@ -233,23 +207,27 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             ProductSale sale = new ProductSale
             {
                 Adjusted = false,
-                BilledQty = TotalQty,
-                EntryStatus = EntryStatus.Added,
-                FreeQty = TotalFreeQty,
                 IsReadOnly = false,
-                OnDate = DateTime.Now,
-                Paid = false,
-                StoreId = StoreCode,
                 MarkedDeleted = false,
-                TotalPrice = TotalAmount,
-                TotalDiscountAmount = TotalDiscount,
-                TotalTaxAmount = TotalTax,
+                EntryStatus = EntryStatus.Added,
+                Paid = false,
                 UserId = "WinUI",
                 Tailoring = false,
                 Taxed = false,
                 Items = new List<SaleItem>(),
                 InvoiceType = iType,
                 SalesmanId = smId,
+                OnDate = DateTime.Now,
+                StoreId = StoreCode,
+
+
+                BilledQty = TotalQty,
+                FreeQty = TotalFreeQty,
+
+                TotalPrice = TotalAmount,
+                TotalDiscountAmount = TotalDiscount,
+                TotalTaxAmount = TotalTax,
+              
             };
             sale.TotalMRP = sale.TotalDiscountAmount + sale.TotalPrice;
             sale.TotalBasicAmount = sale.TotalPrice - sale.TotalTaxAmount;
@@ -262,7 +240,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             // Adding sale item
             foreach (var si in SaleItem)
             {
-                //TODO: Tailoring sale is not implemented till yet
+                //TODO: Tailoring sale is not implemented till yet and free;
                 var info = SearchedStockedList.Find(c => c.Barcode == si.Barcode);
                 SaleItem item = new SaleItem
                 {
@@ -280,6 +258,15 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     BasicAmount = SaleUtils.BasicRateCalucaltion(si.Amount, info.TaxRate),
                     TaxAmount = SaleUtils.TaxCalculation(si.Amount, info.TaxRate)
                 };
+                //Handling Free Item
+                if (item.Value == 0)
+                {
+                    item.FreeQty = item.BilledQty=0;
+                    item.BilledQty = 0;
+                    sale.FreeQty += item.FreeQty;
+                    sale.BilledQty -= item.FreeQty;
+                }
+
                 if (item.InvoiceType == InvoiceType.ManualSaleReturn || item.InvoiceType == InvoiceType.SalesReturn)
                 {
                     item.BilledQty = 0 - item.BilledQty;

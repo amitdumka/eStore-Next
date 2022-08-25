@@ -141,7 +141,16 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     {
                         ip.Add($"{itemDetails.Barcode} / {itemDetails.ProductItem.Description}/{itemDetails.ProductItem.HSNCode} /\n");
                         ip.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString("0.##") + tab + tab);
-                        ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##"));
+                        if (itemDetails.Value == 0)
+                        {
+                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + "Free\n");
+
+                        }
+                        else
+                        {
+                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##")+"\n");
+
+                        }
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + "\n");
                         gstPrice += itemDetails.TaxAmount;

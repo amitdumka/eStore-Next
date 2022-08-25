@@ -295,6 +295,7 @@ namespace AKS.Payroll.Ops
                 PdfDocument document = new PdfDocument();
                 //Adds page settings
                 document.PageSettings.Orientation = PdfPageOrientation.Landscape;
+                
                 document.PageSettings.Margins.All = 50;
 
                 PdfPage pdfPage = document.Pages.Add();

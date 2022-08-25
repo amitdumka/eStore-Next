@@ -538,12 +538,15 @@ namespace AKS.Payroll.Forms.Inventory.Functions
     {
         public static string TestPrint(AzurePayrollDbContext db)
         {
-            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == 5 && c.OnDate.Year == 2022).First();
+            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.InvoiceCode== "ARD/2019/2163").First();
+            //var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == 4 && c.OnDate.Year == 2022).First();
             inv.Items = db.SaleItems.Include(c => c.ProductItem).Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
             
            
             InvoicePrint print = new InvoicePrint
             {
+                FontSize = 12, Page2Inch=false, InvoiceSet=true, PageWith=240,
+                PageHeight=1170,
                 InvoicePath = "",
                 CustomerName = "Cash Sale",
                 City = "Dumka",FileName="", MobileNumber="1234567890", NoOfCopy=1, Address="Bhagalpur Road, Dumka", PathName="", 

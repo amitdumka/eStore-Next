@@ -5,6 +5,7 @@ using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
+using System.ComponentModel.DataAnnotations;
 //using PDFtoPrinter;
 using Path = System.IO.Path;
 
@@ -12,6 +13,14 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class InvoicePrint
     {
+        [Required]
+        public bool InvoiceSet { get; set; }
+
+        public  int PageWith { get; set; } = 150;
+        public int PageHeight { get; set; } = 1170;
+        public  int FontSize { get; set; } = 8;
+        public  bool Page2Inch { get; set; }= true;
+
         public const string DotedLine = "---------------------------------\n";
         public const string DotedLineLong = "--------------------------------------------------\n";
         public string StoreName { get; set; }
@@ -34,35 +43,20 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public string PathName { get; set; }
         public string FileName { get; set; }
 
-        public const string InvoiceTitle = "                 RETAIL INVOICE";
-        public const string ItemLineHeader1 = "SKU Code/Description/ HSN";
-        public const string ItemLineHeader2 = "MRP     Qty     Disc     Amount";
-        public const string ItemLineHeader3 = "CGST%    AMT     SGST%   AMT";
+        private const string InvoiceTitle = "                 RETAIL INVOICE";
+        private const string ItemLineHeader1 = "SKU Code/Description/ HSN";
+        private const string ItemLineHeader2 = "MRP     Qty     Disc     Amount";
+        private const string ItemLineHeader3 = "CGST%    AMT     SGST%   AMT";
 
-        public const string FooterFirstMessage = "** Amount Inclusive GST **";
-        public const string FooterThanksMessage = "Thank You";
-        public const string FooterLastMessage = "Visit Again";
+        private const string FooterFirstMessage = "** Amount Inclusive GST **";
+        private const string FooterThanksMessage = "Thank You";
+        private const string FooterLastMessage = "Visit Again";
        
-        public const string Employee = "Cashier: M0001      Name: Manager";
-        // BillNo = "Bill No: " + invNo;
-
-
-
-
-        //public string SetPdf()
-        //{
-        //    string pathName = @"d:\apr\salereports";
-        //    string fileName = Path.Combine(pathName, "salereport.pdf");
-        //    Directory.CreateDirectory(pathName);
-        //    return fileName;
-
-
-        //}
+        private const string Employee = "Cashier: M0001      Name: Manager";
+        
         public string InvoicePdf()
         {
-            int PageWith = 150;
-            int FontSize = 8;
-            int PageInch = 2;//3;
+           
             PathName = @"d:\apr\invoices";
             string fileName = Path.Combine(PathName, $"{ProductSale.InvoiceNo}.pdf");
             this.FileName = fileName;
@@ -73,9 +67,9 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 using PdfWriter pdfWriter = new PdfWriter(fileName);
                 using PdfDocument pdf = new PdfDocument(pdfWriter);
 
-                Document pdfDoc = new Document(pdf, new PageSize(PageWith, 1170));
+                Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
                 
-                pdfDoc.SetMargins(90, 15, 90, 8);
+                pdfDoc.SetMargins(90, 25, 90, 8);
                 
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
@@ -95,12 +89,12 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 //Details
                 Paragraph ip = new Paragraph().SetFontSize(FontSize);
                 ip.AddStyle(code);
-               // ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
-                if (PageInch > 2) ip.Add(DotedLineLong);
+               ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                if (!Page2Inch) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
                 ip.AddTabStops(new TabStop(50));
                 ip.Add("  " + InvoiceTitle + "\n");
-                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
                 ip.Add(Employee + "\n");
                 ip.Add("Bill No: " + ProductSale.InvoiceNo + "\n");
@@ -108,15 +102,15 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 ip.Add("  " + "                  Date: " + ProductSale.OnDate.ToString() + "\n");
                 ip.AddTabStops(new TabStop(30));
                 //ip.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
-                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
                 ip.Add("Customer Name: " + CustomerName + "\n");
                 ip.Add("Customer Mobile: " + MobileNumber + "\n");
-                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
                 ip.Add(ItemLineHeader1 + "\n");
                 ip.Add(ItemLineHeader2 + "\n");
 
-                if (PageInch > 2) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
 
                 decimal gstPrice = 0;
                 decimal basicPrice = 0;
@@ -136,14 +130,14 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                         basicPrice += itemDetails.BasicAmount;
                     }
                 }
-                if (PageInch > 2)
+                if (!Page2Inch)
                     ip.Add("\n" + DotedLineLong);
                 else ip.Add("\n" + DotedLine);
 
                 ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
                 ip.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString() + "\n");
 
-                if (PageInch > 2) ip.Add(DotedLineLong);
+                if (!Page2Inch) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
 
                 ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString());

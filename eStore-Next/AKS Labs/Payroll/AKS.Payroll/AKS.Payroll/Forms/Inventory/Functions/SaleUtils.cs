@@ -18,7 +18,7 @@
         }
         public static decimal BasicRateCalucaltion(decimal mrp, decimal taxRate)
         {
-            return Math.Round((100 * mrp / (100 + taxRate)),2);
+            return Math.Round((100 * mrp / (100 + taxRate)), 2);
         }
 
         /// <summary>
@@ -81,9 +81,7 @@
 
         public static decimal TaxCalculation(decimal mrp, decimal taxRate)
         {
-            return Math.Round(mrp - (100 * mrp / (100 + taxRate)),2);
+            return Math.Round(mrp - (100 * mrp / (100 + taxRate)), 2);
         }
     }
-
-
 }

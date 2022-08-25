@@ -47,7 +47,7 @@ namespace AKS.Payroll.Forms.Inventory
 
                 si.Amount = (si.Rate * si.Qty) - si.Discount;
 
-                //Adding to List 
+                //Adding to List
                 _salesManager.SaleItem.Add(si);
                 //Update Cart total
 
@@ -100,32 +100,48 @@ namespace AKS.Payroll.Forms.Inventory
                 txtBarcode.AutoCompleteMode = AutoCompleteMode.Suggest;
                 txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
                 txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
-
             }
             else if (btnAdd.Text == "Edit")
             {
-                //TODO: Not implement whole. 
+                //TODO: Not implement whole.
                 LoadFormData();
                 btnAdd.Text = "Save";
                 tabControl1.SelectedTab = tpEntry;
             }
             else if (btnAdd.Text == "Save")
             {
-                tabControl1.SelectedTab = tpView;
-                if (SaveSaleData())
+                //Check for Payment
+                if (CheckPayment())
                 {
-                    MessageBox.Show($"Invoice is Saved! \n Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
-                    tabControl1.SelectedTab = tpView;
-                    pdfViewer.Load(_salesManager.LastInvoicePath);
-                    pdfViewer.Visible = true;
-                    filename = _salesManager.LastInvoicePath;
-                    lbLastInvoice.Text = _salesManager.LastInvoice.InvoiceNo;
-                    btnAdd.Text = "Add";
-                    PostPreFormReset();
-                    
-                    cbxMmobile.SelectedIndex = 0;
-                    // Ask to print or email
+                    if (SaveSaleData())
+                    {
+                        MessageBox.Show($"Invoice is Saved! \n Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
+                        pdfViewer.Load(_salesManager.LastInvoicePath);
+                        pdfViewer.Visible = true;
+                        tabControl1.SelectedTab = tpView;
+                        filename = _salesManager.LastInvoicePath;
+                        lbLastInvoice.Text = _salesManager.LastInvoice.InvoiceNo;
+                        btnAdd.Text = "Add";
+                        PostPreFormReset();
+
+                        // Ask to print or email
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("Payment Details is not added! Add payment details or select cash paid if cash bill", "Payment Error");
+                }
+            }
+        }
+
+        private bool CheckPayment()
+        {
+            if (cbCashBill.Checked) return true;
+            else
+            {
+                if (_salesManager.PaymentDetails == null || _salesManager.PaymentDetails.Count == 0)
+                    return false;
+                else return true;
             }
         }
 
@@ -134,10 +150,10 @@ namespace AKS.Payroll.Forms.Inventory
             _salesManager.ResetCart();
             UpdateCartTotal();
             dgvSaleItems.DataSource = null;
+            cbxMmobile.SelectedIndex = 0;
 
             //TODO:Reset Form to save New Invoice
         }
-
 
         private void UpdateCartTotal()
         {
@@ -148,6 +164,7 @@ namespace AKS.Payroll.Forms.Inventory
             lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
             lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
         }
+
         /// <summary>
         /// Save Invoice
         /// </summary>
@@ -159,7 +176,7 @@ namespace AKS.Payroll.Forms.Inventory
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
-            //TODO: Implement a Form or Dialog to take customer details 
+            //TODO: Implement a Form or Dialog to take customer details
             _salesManager.AddNewCustomer(txtCustomerName.Text.Trim(), cbxMmobile.Text.Trim());
         }
 
@@ -333,6 +350,7 @@ namespace AKS.Payroll.Forms.Inventory
                 HandleBarcodeEntry();
             }
         }
+
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
             txtValue.Text = SalesManager.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();
@@ -366,23 +384,21 @@ namespace AKS.Payroll.Forms.Inventory
             tabControl1.SelectedTab = tpView;
             DisplaySaleReport();
         }
+
         private SortedDictionary<int, List<List<SaleReport>>> SaleReports;
-        List<SaleReport> SaleReportsList;
-        DataGridView gv = new DataGridView();
+        private List<SaleReport> SaleReportsList;
+        private DataGridView gv = new DataGridView();
+
         private void DisplaySaleReport()
         {
-
             gv.AllowUserToAddRows = false;
             if (SaleReportsList == null || SaleReports.Count == 0)
             {
-
                 SaleReportsList = new List<SaleReport>();
                 foreach (var item in SaleReports)
                 {
                     if (item.Value != null && item.Value.Count > 0)
                     {
-
-
                         foreach (var item1 in item.Value)
                         {
                             if (item1 != null && item1.Count > 0)
@@ -404,7 +420,6 @@ namespace AKS.Payroll.Forms.Inventory
             tpView.Controls.Add(gv);
             gv.Show();
             gv.Visible = true;
-
         }
 
         private void btnView_Click(object sender, EventArgs e)
@@ -418,11 +433,11 @@ namespace AKS.Payroll.Forms.Inventory
                 this.tabControl1.SelectedTab = tpView;
                 btnPrint.Enabled = true;
             }
-
-
         }
-        string filename = "";
-        int count = 0;
+
+        private string filename = "";
+        private int count = 0;
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(filename))
@@ -444,7 +459,6 @@ namespace AKS.Payroll.Forms.Inventory
                     if (count > 2) { count = 0; filename = ""; }
                 }
             }
-
         }
     }
 }

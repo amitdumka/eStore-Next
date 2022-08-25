@@ -57,7 +57,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         private const string Employee = "Cashier: M0001      Name: Manager";
 
         /// <summary>
-        /// Invoice Printing to PDF 
+        /// Invoice Printing to PDF
         /// </summary>
         /// <returns></returns>
         public string InvoicePdf()
@@ -71,7 +71,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 FileName = fileName;
                 Directory.CreateDirectory(PathName);
             }
-            var x =FileName.Replace( Path.GetFileName(FileName),"");
+            var x = FileName.Replace(Path.GetFileName(FileName), "");
             Directory.CreateDirectory(x);
 
             if (!Page2Inch)

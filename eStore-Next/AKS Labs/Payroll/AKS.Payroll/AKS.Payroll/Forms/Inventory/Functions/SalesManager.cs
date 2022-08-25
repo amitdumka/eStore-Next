@@ -23,8 +23,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         protected static LocalPayrollDbContext localDb;
         protected static string StoreCode = "ARD";//TODO: Need to Assign
 
-
-
         protected abstract void Delete();
 
         protected abstract void Get(string id);
@@ -58,6 +56,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         private List<StockInfo> SearchedStockedList;
         private int SeletedYear;
         private int TotalCount;
+
         //private bool IsNew;        private ProductSale Sale;
         public SalesManager(AzurePayrollDbContext db, LocalPayrollDbContext ldb, InvoiceType? iType)
         {
@@ -167,7 +166,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
         /// <summary>
         /// Init the manager Class
-        /// </summary>        
+        /// </summary>
         public void InitManager()
         {
             if (azureDb == null) azureDb = new AzurePayrollDbContext();
@@ -185,7 +184,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
         public void LoadBarcodeList()
         {
-            // For using in autocomplete text box, not enabled . 
+            // For using in autocomplete text box, not enabled .
             if (barcodeList.Count > 0) return;
             var l = azureDb.Stocks.Where(c => c.PurhcaseQty > 0).Select(c => new { c.Barcode, c.CurrentQty, c.CurrentQtyWH }).ToList();
             var x = l.Where(c => c.CurrentQty > 0).Select(c => c.Barcode).ToList();
@@ -194,6 +193,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 barcodeList.Add(item);
             }
         }
+
         public void ResetCart()
         {
             TotalAmount = TotalItem = TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
@@ -209,14 +209,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 report.Add(year, SaleReports(storeCode, year));
             }
             return report;
-
         }
 
         public void PrintInvoice(string invoice, ProductSale sale)
         {
             //TODO: Impletement
-
         }
+
         // CheckList
         // ProductSale
         // SaleItem
@@ -260,7 +259,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             sale.InvoiceNo = GenerateInvoiceNumber(iType, ++count, StoreCode);
             sale.InvoiceCode = $"{StoreCode}/{DateTime.Now.Year}/{DateTime.Now.Month}/{SaleUtils.INCode(count)}";
 
-            // Adding sale item 
+            // Adding sale item
             foreach (var si in SaleItem)
             {
                 //TODO: Tailoring sale is not implemented till yet
@@ -298,14 +297,12 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     {
                         stock.SoldQty += item.BilledQty + item.FreeQty;
                     }
-
                     else if (item.InvoiceType == InvoiceType.ManualSale || item.InvoiceType == InvoiceType.ManualSaleReturn)
                     {
                         stock.HoldQty += item.BilledQty + item.FreeQty;
                     }
 
                     azureDb.Stocks.Update(stock);
-
                 }
             }
             List<SalePaymentDetail> spds = new List<SalePaymentDetail>();
@@ -352,7 +349,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                         azureDb.CardPaymentDetails.Add(card);
                     }
                 }
-
             }
 
             CustomerSale cs = new CustomerSale { MobileNo = mobileNo, InvoiceCode = sale.InvoiceCode };
@@ -393,7 +389,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 LastInvoicePath = print.InvoicePdf();
                 LastInvoice = sale;
                 Items.Add(sale);
-
             }
             else
             {
@@ -471,12 +466,9 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 TotalDiscount = c.Sum(x => x.TotalDiscountAmount),
                 TotalTax = c.Sum(x => x.TotalTaxAmount),
                 TotalPrice = c.Sum(x => x.TotalPrice),
-
             })
                .ToList();
             return x;
-
-
         }
 
         private List<List<SaleReport>> SaleReports(string storeCode, int year)
@@ -495,6 +487,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foreach (var item in sales)
                     Items.Add(item);
         }
+
         private void UpdateSaleList(ProductSale sale)
         {
             if (sale != null)
@@ -509,15 +502,19 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 case InvoiceType.Sales:
                     ino += $"IN/{SaleUtils.INCode(count)}";
                     break;
+
                 case InvoiceType.SalesReturn:
                     ino += $"SR/{SaleUtils.INCode(count)}";
                     break;
+
                 case InvoiceType.ManualSale:
                     ino += $"MIN/{SaleUtils.INCode(count)}";
                     break;
+
                 case InvoiceType.ManualSaleReturn:
                     ino += $"SRM/{SaleUtils.INCode(count)}";
                     break;
+
                 default:
                     ino += $"IN/{SaleUtils.INCode(count)}";
                     break;
@@ -525,6 +522,4 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             return ino;
         }
     }
-
-
 }

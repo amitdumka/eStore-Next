@@ -1,7 +1,40 @@
-﻿namespace AKS.Payroll.Forms.Inventory.Functions
+﻿using IronBarCode;
+
+namespace AKS.Payroll.Forms.Inventory.Functions
 {
     public class SaleUtils
     {
+        public static GeneratedBarcode GenerateBarCode(string invNo)
+        {
+            Directory.CreateDirectory(@"d:\arp\barcode\");
+            GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.Code128);
+            barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+            return barcode;
+        }
+        public static GeneratedBarcode GenerateQRCode(string invNo, DateTime onDate, decimal value)
+        {
+            Directory.CreateDirectory(@"d:\arp\QRCode\");
+            GeneratedBarcode Qrcode = IronBarCode.QRCodeWriter
+                .CreateQrCode($"InvNo:{invNo} On {onDate.ToString()} of Rs. {value}/-");
+            Qrcode.SaveAsPng($@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+            return Qrcode;
+        }
+        public static string BarCodePNG(string invNo)
+        {
+            Directory.CreateDirectory(@"d:\arp\barcode\");
+            GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.Code128);
+            barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+            return $@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png";
+        }
+        public static string QRCodePng(string invNo, DateTime onDate, decimal value)
+        {
+            Directory.CreateDirectory(@"d:\arp\QRCode\");
+            GeneratedBarcode Qrcode = IronBarCode.QRCodeWriter
+                .CreateQrCode($"InvNo:{invNo} On {onDate.ToString()} of Rs. {value}/-");
+            Qrcode.SaveAsPng($@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+            
+            return $@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png";
+        }
         /// <summary>
         /// Get Count for id
         /// </summary>

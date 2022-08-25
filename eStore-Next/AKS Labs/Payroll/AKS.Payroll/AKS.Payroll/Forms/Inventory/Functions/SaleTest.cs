@@ -13,9 +13,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
             InvoicePrint print = new InvoicePrint
             {
-                //FontSize = 12,  PageWith=240,
-                //PageHeight=1170,
-                //InvoicePath = "",
+                 
                 InvoiceSet = true,
                 Page2Inch = false,
                 CustomerName = "Cash Sale",

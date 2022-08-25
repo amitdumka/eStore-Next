@@ -442,8 +442,8 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (string.IsNullOrEmpty(filename))
             {
-                //filename = SaleTest.TestPrint(azureDb);
-                MessageBox.Show("Last Invoice is not generated");
+                filename = SaleTest.TestPrint(azureDb);
+                //MessageBox.Show("Last Invoice is not generated");
             }
             //pdfViewer.Load(filename);
             pdfViewer.Visible = true;

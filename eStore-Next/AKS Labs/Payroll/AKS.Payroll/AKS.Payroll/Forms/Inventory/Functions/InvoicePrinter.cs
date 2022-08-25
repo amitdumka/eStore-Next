@@ -221,6 +221,8 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foot.Add("\n" + DotedLine + "\n\n\n\n");
                 pdfDoc.Add(foot);
 
+                var barcode = SaleUtils.GenerateBarCode(ProductSale.InvoiceNo);
+                pdfDoc.Add((IBlockElement)barcode.Image);
                 pdfDoc.Close();
                 return FileName;
             }

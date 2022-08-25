@@ -1,6 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
+using IronBarCode;
 using Microsoft.EntityFrameworkCore;
 
 namespace AKS.Payroll.Forms.Inventory.Functions
@@ -184,7 +185,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             }
             return report;
         }
-
+        
         public void PrintInvoice(string invoice, ProductSale sale)
         {
             //TODO: Impletement

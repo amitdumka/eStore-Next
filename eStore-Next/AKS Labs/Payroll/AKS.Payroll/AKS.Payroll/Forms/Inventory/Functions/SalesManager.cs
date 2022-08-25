@@ -44,6 +44,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public ObservableListSource<ProductSale> Items;
         public List<PaymentDetail> PaymentDetails;
         public bool ReturnKey = false;
+        public string LastInvoicePath = "";
 
         //private List<SaleItem> SalesItems;
         public ObservableListSource<SaleItemVM> SaleItem;
@@ -214,10 +215,20 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             //TODO: Impletement
 
         }
-        public bool SaveInvoice(string mobileNo, string smId, InvoiceType iType, bool isCashPaid)
+        // CheckList
+        // ProductSale
+        // SaleItem
+        //Invoice Number and code generated
+        // Payment
+        // card payment
+        // Stock update
+        // Sale return
+
+        public bool SaveInvoice(string mobileNo, string customerName, string smId, InvoiceType iType, bool isCashPaid)
         {
             var count = azureDb.ProductSales.Where(c => c.StoreId == StoreCode && c.InvoiceType == iType
             && c.OnDate.Year == DateTime.Now.Year && c.OnDate.Month == DateTime.Now.Month).Count();
+
             ProductSale sale = new ProductSale
             {
                 Adjusted = false,
@@ -242,6 +253,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             sale.TotalMRP = sale.TotalDiscountAmount + sale.TotalPrice;
             sale.TotalBasicAmount = sale.TotalPrice - sale.TotalTaxAmount;
             sale.RoundOff = Math.Round(sale.TotalPrice) - sale.TotalPrice;
+
             //TODO:handle customer addidtion
             sale.InvoiceNo = GenerateInvoiceNumber(iType, ++count, StoreCode);
             sale.InvoiceCode = $"{StoreCode}/{DateTime.Now.Year}/{DateTime.Now.Month}/{SaleUtils.INCode(count)}";
@@ -249,6 +261,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             // Adding sale item 
             foreach (var si in SaleItem)
             {
+                //TODO: Tailoring sale is not implemented till yet
                 var info = SearchedStockedList.Find(c => c.Barcode == si.Barcode);
                 SaleItem item = new SaleItem
                 {
@@ -266,9 +279,35 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     BasicAmount = SaleUtils.BasicRateCalucaltion(si.Amount, info.TaxRate),
                     TaxAmount = SaleUtils.TaxCalculation(si.Amount, info.TaxRate)
                 };
+                if (item.InvoiceType == InvoiceType.ManualSaleReturn || item.InvoiceType == InvoiceType.SalesReturn)
+                {
+                    item.BilledQty = 0 - item.BilledQty;
+                    item.FreeQty = 0 - item.FreeQty;
+                    item.BasicAmount = 0 - item.BasicAmount;
+                    item.DiscountAmount = 0 - item.DiscountAmount;
+                    item.TaxAmount = 0 - item.TaxAmount;
+                    item.Value = 0 - item.Value;
+                }
                 sale.Items.Add(item);
-            }
+                var stock = azureDb.Stocks.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
+                if (stock != null)
+                {
+                    if (item.InvoiceType == InvoiceType.Sales || item.InvoiceType == InvoiceType.SalesReturn)
+                    {
+                        stock.SoldQty += item.BilledQty + item.FreeQty;
+                    }
 
+                    else if (item.InvoiceType == InvoiceType.ManualSale || item.InvoiceType == InvoiceType.ManualSaleReturn)
+                    {
+                        stock.HoldQty += item.BilledQty + item.FreeQty;
+                    }
+
+                    azureDb.Stocks.Update(stock);
+
+                }
+            }
+            List<SalePaymentDetail> spds = new List<SalePaymentDetail>();
+            CardPaymentDetail card = null; ;
             if (!isCashPaid)
             {
                 sale.Paid = true;
@@ -280,6 +319,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     RefId = "Cash Paid"
                 };
                 azureDb.SalePaymentDetails.Add(spd);
+                spds.Add(spd);
             }
             else
             {
@@ -294,9 +334,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                         RefId = pds.RefNumber,
                     };
                     azureDb.SalePaymentDetails.Add(spd);
+                    spds.Add(spd);
                     if (spd.PayMode == PayMode.Card)
                     {
-                        CardPaymentDetail card = new CardPaymentDetail
+                        card = new CardPaymentDetail
                         {
                             AuthCode = Int32.Parse(pds.AuthCode),
                             EDCTerminalId = pds.PosMachineId,
@@ -311,8 +352,44 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 }
 
             }
+
+            CustomerSale cs = new CustomerSale { MobileNo = mobileNo, InvoiceCode = sale.InvoiceCode };
+            azureDb.CustomerSales.Add(cs);
             azureDb.ProductSales.Add(sale);
             int x = azureDb.SaveChanges();
+            if (x > 0)
+            {
+                string fn = "MIN";
+                if (sale.InvoiceType == InvoiceType.Sales || sale.InvoiceType == InvoiceType.SalesReturn)
+                    fn = "IN";
+                InvoicePrint print = new InvoicePrint
+                {
+                    FontSize = 12,
+                    Page2Inch = false,
+                    InvoiceSet = true,
+                    PageWith = 240,
+                    PageHeight = 1170,
+
+                    InvoicePath = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}\{sale.InvoiceNo}.pdf",
+                    FileName = $"{sale.InvoiceNo}.pdf",
+                    PathName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}",
+                    CustomerName = customerName,
+                    MobileNumber = mobileNo,
+                    NoOfCopy = 1,
+                    // Use Static session class this info
+                    StoreName = "Aprajita Retails",
+                    Address = "Bhagalpur Road, Dumka",
+                    City = "Dumka",
+                    Phone = "06434-224461",
+                    TaxNo = "20AJHPA7396P1ZV",
+
+                    Reprint = false,
+                    ProductSale = sale,
+                    CardDetails = card ?? null,
+                    PaymentDetails = spds,
+                };
+                LastInvoicePath = print.InvoicePdf();
+            }
             return x > 0;
         }
 

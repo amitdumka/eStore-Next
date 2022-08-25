@@ -112,12 +112,11 @@ namespace AKS.Payroll.Forms.Inventory
             else if (btnAdd.Text == "Save")
             {
                 tabControl1.SelectedTab = tpView;
-                //TODO: Read Data and Store in object as requried and save;
-                ReadSaleData();
                 if (SaveSaleData())
                 {
                     MessageBox.Show("Invoice is Saved! and Invoice No is {sale.InvoiceNo}");
                     //TODO:Reset Form to save New Invoice
+                    // Ask to print or email
                 }
             }
         }
@@ -131,15 +130,13 @@ namespace AKS.Payroll.Forms.Inventory
             lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
             lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
         }
-
-        private void ReadSaleData()
-        {
-
-        }
+        /// <summary>
+        /// Save Invoice
+        /// </summary>
+        /// <returns></returns>
         private bool SaveSaleData()
         {
-            _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);
-            return true;
+           return _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(),txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);            
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)

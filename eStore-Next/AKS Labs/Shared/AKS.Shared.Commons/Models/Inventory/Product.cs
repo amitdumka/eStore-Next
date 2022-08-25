@@ -1,11 +1,8 @@
 ﻿using AKS.Shared.Commons.Models.Base;
 using AKS.Shared.Commons.Models.Sales;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace AKS.Shared.Commons.Models.Inventory
 {
@@ -249,6 +246,16 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string Warehouse { get; set; }
     }
 
+    public class CustomerSale
+    {
+        [Key]
+        public string InvoiceCode { get; set; }
+        public string MobileNo { get; set; }
+        [ForeignKey("MobileNo")]
+        public virtual Customer Customer { get; set; }
+        [ForeignKey("InvoiceCode")]
+        public virtual ProductSale Sale { get; set; }
 
+    }
 
 }

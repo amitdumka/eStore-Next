@@ -1,25 +1,28 @@
-﻿
-using AKS.Shared.Commons.Models.Inventory;
+﻿using AKS.Shared.Commons.Models.Inventory;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using System.ComponentModel.DataAnnotations;
+
 //using PDFtoPrinter;
 using Path = System.IO.Path;
 
 namespace AKS.Payroll.Forms.Inventory.Functions
 {
+    /// <summary>
+    /// Invoice Printer : It generate invoice for thermal printer 2/3/4 inch
+    /// </summary>
     public class InvoicePrint
     {
         [Required]
         public bool InvoiceSet { get; set; }
 
-        public  int PageWith { get; set; } = 150;
-        public int PageHeight { get; set; } = 1170;
-        public  int FontSize { get; set; } = 8;
-        public  bool Page2Inch { get; set; }= true;
+        private int PageWith = 150;
+        private int PageHeight = 1170;
+        private int FontSize = 8;
+        public bool Page2Inch { get; set; } = false;
 
         public const string DotedLine = "---------------------------------\n";
         public const string DotedLineLong = "--------------------------------------------------\n";
@@ -29,14 +32,13 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public string Phone { get; set; }
         public string TaxNo { get; set; }
 
-
         public string CustomerName { get; set; }
         public string MobileNumber { get; set; }
 
         public ProductSale ProductSale { get; set; }
         public List<SalePaymentDetail> PaymentDetails { get; set; }
         public CardPaymentDetail CardDetails { get; set; }
-        public string InvoicePath { get; set; }
+
         public int NoOfCopy { get; set; }
         public bool Reprint { get; set; }
 
@@ -51,26 +53,40 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         private const string FooterFirstMessage = "** Amount Inclusive GST **";
         private const string FooterThanksMessage = "Thank You";
         private const string FooterLastMessage = "Visit Again";
-       
+
         private const string Employee = "Cashier: M0001      Name: Manager";
-        
+
+        /// <summary>
+        /// Invoice Printing to PDF 
+        /// </summary>
+        /// <returns></returns>
         public string InvoicePdf()
         {
-           
-            PathName = @"d:\apr\invoices";
-            string fileName = Path.Combine(PathName, $"{ProductSale.InvoiceNo}.pdf");
-            this.FileName = fileName;
+            if (!InvoiceSet) return null;
+
+            if (string.IsNullOrEmpty(PathName))
+            {
+                PathName = @"d:\apr\invoices";
+                string fileName = Path.Combine(PathName, $"{ProductSale.InvoiceNo}.pdf");
+                FileName = fileName;
+            }
 
             Directory.CreateDirectory(PathName);
+
+            if (!Page2Inch)
+            {
+                PageWith = 240;
+                FontSize = 12;
+            }
             try
             {
-                using PdfWriter pdfWriter = new PdfWriter(fileName);
+                using PdfWriter pdfWriter = new PdfWriter(FileName);
                 using PdfDocument pdf = new PdfDocument(pdfWriter);
 
                 Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
-                
+
                 pdfDoc.SetMargins(90, 25, 90, 8);
-                
+
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                 code.SetFont(timesRoman).SetFontSize(FontSize);
@@ -89,7 +105,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 //Details
                 Paragraph ip = new Paragraph().SetFontSize(FontSize);
                 ip.AddStyle(code);
-               ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                 if (!Page2Inch) ip.Add(DotedLineLong);
                 else ip.Add(DotedLine);
                 ip.AddTabStops(new TabStop(50));
@@ -102,6 +118,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 ip.Add("  " + "                  Date: " + ProductSale.OnDate.ToString() + "\n");
                 ip.AddTabStops(new TabStop(30));
                 //ip.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
+
                 if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
                 ip.Add("Customer Name: " + CustomerName + "\n");
                 ip.Add("Customer Mobile: " + MobileNumber + "\n");
@@ -142,8 +159,6 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
                 ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString());
 
-
-
                 ip.Add("\n" + DotedLine);
                 ip.Add("Basic Price:\t\t" + basicPrice.ToString("0.##"));
                 ip.Add("\nCGST:\t\t" + gstPrice.ToString("0.##"));
@@ -180,84 +195,27 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                 foot.Add(FooterThanksMessage + "\n");
                 foot.Add(FooterLastMessage + "\n");
                 foot.Add(DotedLineLong);
+
                 foot.Add("\n");// Just to Check;
+
                 if (Reprint)
                 {
                     foot.Add("(Reprinted Duplicate)\n");
                 }
-                foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
-                foot.Add("\n"+DotedLine+"\n\n\n\n");
-                pdfDoc.Add(foot);
-                pdfDoc.Close();
-                return fileName;
 
+                foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
+                foot.Add("\n" + DotedLine + "\n\n\n\n");
+                pdfDoc.Add(foot);
+
+                pdfDoc.Close();
+                return FileName;
             }
             catch (Exception e)
             {
-
                 return null;
             }
-
         }
-
-
-
     }
-
-    public class InvoicePrinter
-    {
-
-        //public static void PrintPDFLocal(string filePath)
-        //{
-        //    PrinterSettings settings = new PrinterSettings();
-
-        //    string printerName = "Microsoft Print to PDF";
-
-        //    if (!String.IsNullOrEmpty(settings.PrinterName)) printerName = settings.PrinterName;
-
-        //    var printer = new PDFtoPrinterPrinter();
-        //    printer.Print(new PrintingOptions(printerName, filePath));
-
-        //}
-
-        //public static void TestPrint()
-        //{
-
-        //    string fileName = Path.GetTempPath() + "testprint.pdf";
-
-        //    using PdfWriter pdfWriter = new PdfWriter(fileName);
-        //    using PdfDocument pdf = new PdfDocument(pdfWriter);
-        //    Document pdfDoc = new Document(pdf);
-        //    //Header
-        //    Paragraph p = new Paragraph("Hello! \n This is Test Print for testing default printer!. \n\n Aprajita Retails Dev. Team.");
-        //    pdfDoc.Add(p);
-        //    pdf.AddNewPage();
-        //    pdfDoc.Close();
-
-        //   // PrintPDFLocal(fileName);
-        //}
-
-
-    }
-
-
-
-
-
-    //public class ReceiptItemDetails
-    //{
-    //    public string BasicPrice { get; set; }
-    //    public string HSN { get; set; }
-    //    public string SKUDescription { get; set; }
-    //    public string MRP { get; set; }
-    //    public string QTY { get; set; }
-    //    public string Discount { get; set; }
-    //    public string GSTPercentage { get; set; }
-    //    public string GSTAmount { get; set; }
-    //    public string Amount { get; set; }
-    //}
-
-
 }
 
 //Helper links

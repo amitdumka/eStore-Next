@@ -308,7 +308,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             }
             List<SalePaymentDetail> spds = new List<SalePaymentDetail>();
             CardPaymentDetail card = null; ;
-            if (!isCashPaid)
+            if (isCashPaid)
             {
                 sale.Paid = true;
                 SalePaymentDetail spd = new SalePaymentDetail
@@ -364,14 +364,14 @@ namespace AKS.Payroll.Forms.Inventory.Functions
                     fn = "IN";
                 InvoicePrint print = new InvoicePrint
                 {
-                    FontSize = 12,
+                    //FontSize = 12,
                     Page2Inch = false,
                     InvoiceSet = true,
-                    PageWith = 240,
-                    PageHeight = 1170,
+                    //PageWith = 240,
+                    //PageHeight = 1170,
 
-                    InvoicePath = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}\{sale.InvoiceNo}.pdf",
-                    FileName = $"{sale.InvoiceNo}.pdf",
+                     FileName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}\{sale.InvoiceNo}.pdf",
+                    //FileName = $"{sale.InvoiceNo}.pdf",
                     PathName = $@"d:\AksLabs\{StoreCode}\SaleInvoices\{fn}",
                     CustomerName = customerName,
                     MobileNumber = mobileNo,

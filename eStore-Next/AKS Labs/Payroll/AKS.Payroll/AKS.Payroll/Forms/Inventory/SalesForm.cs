@@ -115,6 +115,10 @@ namespace AKS.Payroll.Forms.Inventory
                 if (SaveSaleData())
                 {
                     MessageBox.Show("Invoice is Saved! and Invoice No is {sale.InvoiceNo}");
+                    tabControl1.SelectedTab = tpView;
+                    pdfViewer.Load(_salesManager.LastInvoicePath);
+                    pdfViewer.Visible = true;
+                    filename = _salesManager.LastInvoicePath;
                     //TODO:Reset Form to save New Invoice
                     // Ask to print or email
                 }
@@ -136,7 +140,7 @@ namespace AKS.Payroll.Forms.Inventory
         /// <returns></returns>
         private bool SaveSaleData()
         {
-           return _salesManager.SaveInvoice(cbxMmobile.SelectedText.Trim(),txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);            
+           return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(),txtCustomerName.Text.Trim(),  "SMN/2016/001", (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);            
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -242,6 +246,7 @@ namespace AKS.Payroll.Forms.Inventory
                 cbxMmobile.DataSource = _salesManager.SetupFormData();
                 dgvSaleItems.DataSource = _salesManager.SaleItem;
                 _salesManager.LoadBarcodeList();
+                
                 cbxSalesman.DataSource = azureDb.Salesmen.Where(c => c.IsActive).Select(c => new { c.SalesmanId, c.Name });
                 cbxSalesman.DisplayMember = "Name";
                 cbxSalesman.ValueMember = "SalesmanId";
@@ -403,15 +408,17 @@ namespace AKS.Payroll.Forms.Inventory
 
         }
         string filename = "";
+        int count = 0;
         private void btnPrint_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(filename))
             {
-                filename = SaleTest.TestPrint(azureDb);
+                //filename = SaleTest.TestPrint(azureDb);
+                MessageBox.Show("Last Invoice is not generated");
             }
-            pdfViewer.Load(filename);
+            //pdfViewer.Load(filename);
             pdfViewer.Visible = true;
-            var result = MessageBox.Show("Want to Print", "Invoic", MessageBoxButtons.YesNoCancel);
+            var result = MessageBox.Show("Want to Print", "Invoice", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 var printDialog1 = new PrintDialog();
@@ -419,6 +426,8 @@ namespace AKS.Payroll.Forms.Inventory
                 {
                     printDialog1.AllowPrintToFile = true;
                     pdfViewer.Print(printDialog1.PrinterSettings.PrinterName);
+                    count++;
+                    if(count>2) { count = 0; filename = ""; }
                 }
             }
 

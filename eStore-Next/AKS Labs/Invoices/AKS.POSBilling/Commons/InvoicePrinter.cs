@@ -80,7 +80,7 @@ namespace AKS.POSBilling.Functions
             if (!Page2Inch)
             {
                 PageWith = 240;
-                FontSize = 12;
+                FontSize = 10;
             }
             try
             {
@@ -89,8 +89,10 @@ namespace AKS.POSBilling.Functions
 
                 Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
 
-                pdfDoc.SetMargins(90, 25, 90, 8);
-
+                if (Page2Inch)
+                    pdfDoc.SetMargins(90, 25, 90, 8);
+                else
+                    pdfDoc.SetMargins(170, 25, 90, 35);
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                 code.SetFont(timesRoman).SetFontSize(FontSize);
@@ -151,7 +153,7 @@ namespace AKS.POSBilling.Functions
                         }
                         else
                         {
-                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##")+"\n");
+                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##") + "\n");
 
                         }
                         //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
@@ -226,13 +228,16 @@ namespace AKS.POSBilling.Functions
 
                 // var barcode = SaleUtils.GenerateQRCode(ProductSale.InvoiceNo,ProductSale.OnDate,ProductSale.TotalPrice);
                 var barcode = SaleUtils.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
-               
-                var img= ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
-                var imges = new Image(img);
-                imges.Scale((float)0.5, (float)0.1);
-                imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                pdfDoc.Add(imges);
+                if (barcode != null)
+                {
+                    var img = ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
+                    var imges = new Image(img);
+                    imges.Scale((float)0.5, (float)0.1);
+                    imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                    imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    pdfDoc.Add(imges);
+                }
+
                 pdfDoc.Add(foot);
                 pdfDoc.Close();
                 return FileName;

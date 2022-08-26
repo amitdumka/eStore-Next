@@ -79,7 +79,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             if (!Page2Inch)
             {
                 PageWith = 240;
-                FontSize = 12;
+                FontSize = 10;
             }
             try
             {
@@ -88,8 +88,10 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
                 Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
 
+                if(Page2Inch)
                 pdfDoc.SetMargins(90, 25, 90, 8);
-
+                else
+                    pdfDoc.SetMargins(170, 25, 90, 35);
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                 code.SetFont(timesRoman).SetFontSize(FontSize);

@@ -477,7 +477,7 @@ namespace AKS.Payroll.Forms.Inventory
            // filename = SaleTest.TestPrint(azureDb);
             //MessageBox.Show("Last Invoice is not generated");
             // }
-            //pdfViewer.Load(filename);
+           // pdfViewer.Load(filename);
             pdfViewer.Visible = true;
             var result = MessageBox.Show("Want to Print", "Invoice", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)

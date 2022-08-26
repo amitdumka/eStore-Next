@@ -8,7 +8,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
         public static string TestPrint(AzurePayrollDbContext db)
         {
            // var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.InvoiceCode == "ARD/2019/2163").First();
-            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == DateTime.Today.Month-4 && c.OnDate.Year == 2022).First();
+            var inv = db.ProductSales.Include(c => c.Salesman).Where(c => c.OnDate.Month == DateTime.Today.Month && c.OnDate.Year == 2022).First();
             inv.Items = db.SaleItems.Include(c => c.ProductItem).Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
 
             InvoicePrint print = new InvoicePrint

@@ -119,15 +119,8 @@
             Application.Exit();
         }
 
-        private void paymentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalaryPaymentForm());
-        }
-
-        private void recieptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalaryPaymentForm(true));
-        }
+         
+        
 
         private void addEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -139,64 +132,18 @@
 
         }
 
-        private void testFormToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            LoadForm(new TestForm());
-        }
+         
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new AboutBox1());
+            //LoadForm(new AboutBox1());
         }
 
-        private void paToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new PaySlipForm());
-        }
+         
 
-        private void printCurrentPaySlipToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Call From Ops then print.
-            //var form = new PdfForm();
-            //LoadForm(form);
-            new BasicOperations().PayrollReport();
-        }
+         
 
-        private void bankLetterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new PayslipBankLetterForm());
-        }
-
-        private void bankToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new BankForm());
-        }
-
-        private void expensesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new VochersForm(VoucherType.Expense));
-        }
-
-        private void paymentsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new VochersForm(VoucherType.Payment));
-        }
-
-        private void receiptsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new VochersForm(VoucherType.Receipt));
-        }
-
-        private void cashPaymentsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new VochersForm(VoucherType.CashPayment));
-        }
-
-        private void cashReceiptsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new VochersForm(VoucherType.CashReceipt));
-        }
-
+       
         private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new DailySaleForm());
@@ -207,10 +154,7 @@
             LoadForm(new PettyCashSheetForm());
         }
 
-        private void timeSheetToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new TimeSheetForm());
-        }
+         
 
         private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
         {

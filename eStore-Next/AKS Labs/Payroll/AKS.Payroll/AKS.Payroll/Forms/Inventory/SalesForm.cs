@@ -160,9 +160,9 @@ namespace AKS.Payroll.Forms.Inventory
         {
             lbTotalAmount.Text = $"Total Amount: Rs {_salesManager.TotalAmount} ";
             lbTotalDiscount.Text = $"Discount Amount: Rs {_salesManager.TotalDiscount} ";
-            lbTotalFree.Text = $"Free Qty(s): Rs {_salesManager.TotalFreeQty} ";
-            lbTotalQty.Text = $"Total Qty(s): Rs {_salesManager.TotalFreeQty} ";
-            lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
+            lbTotalFree.Text = $"Free Qty(s):  {_salesManager.TotalFreeQty} ";
+            lbTotalQty.Text = $"Total Qty(s):  {_salesManager.TotalQty} ";
+            lbTotalItem.Text = $"Total Items(s): {_salesManager.TotalItem} ";
             lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
         }
 
@@ -474,10 +474,10 @@ namespace AKS.Payroll.Forms.Inventory
         {
             //if (string.IsNullOrEmpty(filename))
             // {
-            filename = SaleTest.TestPrint(azureDb);
+           // filename = SaleTest.TestPrint(azureDb);
             //MessageBox.Show("Last Invoice is not generated");
             // }
-            pdfViewer.Load(filename);
+            //pdfViewer.Load(filename);
             pdfViewer.Visible = true;
             var result = MessageBox.Show("Want to Print", "Invoice", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)

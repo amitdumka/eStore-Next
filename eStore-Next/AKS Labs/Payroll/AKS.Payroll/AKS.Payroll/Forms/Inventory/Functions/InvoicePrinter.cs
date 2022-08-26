@@ -225,13 +225,16 @@ namespace AKS.Payroll.Forms.Inventory.Functions
 
                 // var barcode = SaleUtils.GenerateQRCode(ProductSale.InvoiceNo,ProductSale.OnDate,ProductSale.TotalPrice);
                 var barcode = SaleUtils.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
+               if(barcode != null)
+                {
+                    var img = ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
+                    var imges = new Image(img);
+                    imges.Scale((float)0.5, (float)0.1);
+                    imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                    imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    pdfDoc.Add(imges);
+                }
                
-                var img= ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
-                var imges = new Image(img);
-                imges.Scale((float)0.5, (float)0.1);
-                imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                pdfDoc.Add(imges);
                 pdfDoc.Add(foot);
                 pdfDoc.Close();
                 return FileName;

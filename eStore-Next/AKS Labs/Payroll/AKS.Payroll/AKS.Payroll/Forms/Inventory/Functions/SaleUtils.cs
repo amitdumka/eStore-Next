@@ -10,22 +10,22 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             {
                 Directory.CreateDirectory(@"d:\arp\barcode\");
                 GeneratedBarcode barcode = IronBarCode.BarcodeWriter.CreateBarcode(invNo, BarcodeEncoding.Code93);
-                barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+                barcode.SaveAsPng($@"d:\arp\barcode\{invNo.Replace("\\", "_").Replace("/", "_").ToString()}.png");
                 return barcode;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return null;
             }
-            
+
         }
         public static GeneratedBarcode GenerateQRCode(string invNo, DateTime onDate, decimal value)
         {
             Directory.CreateDirectory(@"d:\arp\QRCode\");
             GeneratedBarcode Qrcode = IronBarCode.QRCodeWriter
                 .CreateQrCode($"InvNo:{invNo} On {onDate.ToString()} of Rs. {value}/-");
-            Qrcode.SaveAsPng($@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
+            Qrcode.SaveAsPng($@"d:\arp\QRCode\{invNo.Replace("\\", "_").Replace("/", "_").ToString()}.png");
             return Qrcode;
         }
         public static string BarCodePNG(string invNo)
@@ -41,7 +41,7 @@ namespace AKS.Payroll.Forms.Inventory.Functions
             GeneratedBarcode Qrcode = IronBarCode.QRCodeWriter
                 .CreateQrCode($"InvNo:{invNo} On {onDate.ToString()} of Rs. {value}/-");
             Qrcode.SaveAsPng($@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png");
-            
+
             return $@"d:\arp\QRCode\{invNo.Replace("\\", "-").Replace("/", "-").ToString()}.png";
         }
         /// <summary>

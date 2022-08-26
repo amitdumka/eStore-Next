@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems" Label="Shared" />
+
+  <Import Project="..\..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems" Label="Shared" />
+
+</Project>

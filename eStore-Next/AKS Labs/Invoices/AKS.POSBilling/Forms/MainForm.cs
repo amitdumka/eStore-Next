@@ -146,12 +146,12 @@
        
         private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new DailySaleForm());
+           // LoadForm(new DailySaleForm());
         }
 
         private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new PettyCashSheetForm());
+            //LoadForm(new PettyCashSheetForm());
         }
 
          

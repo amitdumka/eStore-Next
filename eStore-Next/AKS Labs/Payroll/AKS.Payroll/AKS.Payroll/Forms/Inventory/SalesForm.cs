@@ -1,6 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
 using AKS.Payroll.Ops;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace AKS.Payroll.Forms.Inventory
@@ -379,10 +380,41 @@ namespace AKS.Payroll.Forms.Inventory
         {
             if (SaleReports == null || SaleReports.Count == 0)
             {
-                SaleReports = _salesManager.SaleReports("ARD",_salesManager.InvoiceType);
+                SaleReports = _salesManager.SaleReports("ARD", _salesManager.InvoiceType);
             }
             tabControl1.SelectedTab = tpView;
             DisplaySaleReport();
+
+        }
+        private void RemoveTestInv()
+        {
+
+            var invs = azureDb.ProductSales
+                .Where(c => c.InvoiceType == InvoiceType.ManualSale
+            && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month
+            ).ToList();
+
+            foreach (var inv in invs)
+            {
+                var items = azureDb.SaleItems.Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
+                //foreach (var item in items)
+                //{
+                //    var stock = azureDb.Stocks.Find(item.Barcode);
+                //    stock.HoldQty -= item.BilledQty + item.FreeQty;
+                //    azureDb.Stocks.Update(stock);
+                //}
+                azureDb.SaleItems.RemoveRange(items);
+                var pay = azureDb.SalePaymentDetails.Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
+                azureDb.SalePaymentDetails.RemoveRange(pay);
+                var card = azureDb.CardPaymentDetails.Where(c => c.InvoiceCode == inv.InvoiceCode).ToList();
+                if (card != null)
+                    azureDb.CardPaymentDetails.RemoveRange(card);
+                azureDb.ProductSales.Remove(inv);
+
+            }
+
+            int x = azureDb.SaveChanges();
+            MessageBox.Show("Removed " + x);
         }
 
         private SortedDictionary<int, List<List<SaleReport>>> SaleReports;
@@ -441,10 +473,10 @@ namespace AKS.Payroll.Forms.Inventory
         private void btnPrint_Click(object sender, EventArgs e)
         {
             //if (string.IsNullOrEmpty(filename))
-           // {
-                filename = SaleTest.TestPrint(azureDb);
-                //MessageBox.Show("Last Invoice is not generated");
-           // }
+            // {
+            filename = SaleTest.TestPrint(azureDb);
+            //MessageBox.Show("Last Invoice is not generated");
+            // }
             pdfViewer.Load(filename);
             pdfViewer.Visible = true;
             var result = MessageBox.Show("Want to Print", "Invoice", MessageBoxButtons.YesNo);

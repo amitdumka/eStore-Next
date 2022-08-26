@@ -1,4 +1,5 @@
 ﻿using AKS.Payroll.Database;
+using AKS.POSBilling.ViewModels;
 using System.Data;
 
 namespace AKS.POSBilling.Forms

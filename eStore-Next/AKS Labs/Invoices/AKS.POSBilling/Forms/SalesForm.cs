@@ -473,14 +473,8 @@ namespace AKS.POSBilling.Forms
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            //if (string.IsNullOrEmpty(filename))
-            // {
-            filename = SaleTest.TestPrint(azureDb);
-            //MessageBox.Show("Last Invoice is not generated");
-            // }
-            pdfViewer.Load(filename);
             pdfViewer.Visible = true;
-            var result = MessageBox.Show("Want to Print", "Invoice", MessageBoxButtons.YesNo);
+            var result = MessageBox.Show("Want to Print", "Print PDF", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 var printDialog1 = new PrintDialog();

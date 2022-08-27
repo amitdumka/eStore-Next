@@ -173,7 +173,7 @@ namespace AKS.POSBilling.Forms
         /// <returns></returns>
         private bool SaveSaleData()
         {
-            return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(), txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked);
+            return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(), txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked, rbTailoring.Checked);
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -260,8 +260,12 @@ namespace AKS.POSBilling.Forms
 
         private void HandleBarcodeEntry()
         {
+            //Implementing Tailoring bill
             if (_salesManager.ReturnKey)
-                DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
+                if(rbTailoring.Checked)
+                    DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim(),true));
+                else
+                    DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
         }
 
         private void LoadFormData()

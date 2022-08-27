@@ -27,6 +27,8 @@ namespace AKS.POSBilling.Functions
         private int FontSize = 8;
         public bool Page2Inch { get; set; } = false;
 
+        public bool ServiceBill { get; set; } = false;
+
         public const string DotedLine = "---------------------------------\n";
         public const string DotedLineLong = "--------------------------------------------------\n";
         public string StoreName { get; set; }
@@ -117,6 +119,12 @@ namespace AKS.POSBilling.Functions
                 ip.AddTabStops(new TabStop(50));
                 ip.Add("  " + InvoiceTitle + "\n");
                 if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (ServiceBill)
+                {
+                    ip.Add("  Service Invoice\n");
+                    if (!Page2Inch) ip.Add(DotedLineLong);
+                    else ip.Add(DotedLine);
+                }
 
                 ip.Add(Employee + "\n");
                 ip.Add("Bill No: " + ProductSale.InvoiceNo + "\n");
@@ -206,6 +214,7 @@ namespace AKS.POSBilling.Functions
                 foot.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                 foot.AddStyle(code);
                 foot.Add(FooterFirstMessage + "\n");
+                if (ServiceBill) foot.Add("** Tailoring Service Invoice **");
                 foot.Add(DotedLineLong);
                 foot.Add(FooterThanksMessage + "\n");
                 foot.Add(FooterLastMessage + "\n");

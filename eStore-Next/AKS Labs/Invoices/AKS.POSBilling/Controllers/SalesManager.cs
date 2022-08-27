@@ -302,6 +302,21 @@ namespace AKS.POSBilling.Controllers
             return azureDb.Customers.Select(c => new CustomerListVM { MobileNo = c.MobileNo, CustomerName = c.CustomerName }).OrderBy(c => c.MobileNo).ToList();
         }
 
+        public StockInfo? GetItemDetail(string barcode , bool Tailoring)
+        {
+            if (barcode.Length < 7) return null;
+            if (Tailoring)
+            {
+                var item = azureDb.ProductItems.Where(c => c.Barcode == barcode)
+                    .Select(c=> new StockInfo { Barcode=c.Barcode, HoldQty=1, Qty=1, Unit=Unit.Nos, TaxRate=5, TaxType=c.TaxType,Rate=c.MRP,Category=c.ProductCategory})
+                    .FirstOrDefault();
+                if (SearchedStockedList == null) SearchedStockedList = new List<StockInfo>();
+                SearchedStockedList.Add(item);
+                return item;
+            }
+            else return GetItemDetail(barcode);
+        }
+
         /// <summary>
         /// return stock info. Add to API/DataModel
         /// </summary>
@@ -327,6 +342,7 @@ namespace AKS.POSBilling.Controllers
                Category = item.Product.ProductCategory,
                TaxRate = SaleUtils.SetTaxRate(item.Product.ProductCategory, item.Product.MRP)
            }).FirstOrDefault();
+           
             if (SearchedStockedList == null) SearchedStockedList = new List<StockInfo>();
             SearchedStockedList.Add(item);
             return item;
@@ -393,7 +409,7 @@ namespace AKS.POSBilling.Controllers
         // Stock update
         // Sale return
 
-        public bool SaveInvoice(string mobileNo, string customerName, string smId, InvoiceType iType, bool isCashPaid)
+        public bool SaveInvoice(string mobileNo, string customerName, string smId, InvoiceType iType, bool isCashPaid, bool serviceBill)
         {
             var count = azureDb.ProductSales.Where(c => c.StoreId == StoreCode && c.InvoiceType == iType
             && c.OnDate.Year == DateTime.Now.Year && c.OnDate.Month == DateTime.Now.Month).Count();
@@ -406,7 +422,7 @@ namespace AKS.POSBilling.Controllers
                 EntryStatus = EntryStatus.Added,
                 Paid = false,
                 UserId = "WinUI",
-                Tailoring = false,
+                Tailoring = serviceBill,
                 Taxed = false,
                 Items = new List<SaleItem>(),
                 InvoiceType = iType,
@@ -472,19 +488,23 @@ namespace AKS.POSBilling.Controllers
                     item.Value = 0 - item.Value;
                 }
                 sale.Items.Add(item);
-                var stock = azureDb.Stocks.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
-                if (stock != null)
+                //Handling service bill
+                if (!serviceBill)
                 {
-                    if (item.InvoiceType == InvoiceType.Sales || item.InvoiceType == InvoiceType.SalesReturn)
+                    var stock = azureDb.Stocks.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
+                    if (stock != null)
                     {
-                        stock.SoldQty += item.BilledQty + item.FreeQty;
-                    }
-                    else if (item.InvoiceType == InvoiceType.ManualSale || item.InvoiceType == InvoiceType.ManualSaleReturn)
-                    {
-                        stock.HoldQty += item.BilledQty + item.FreeQty;
-                    }
+                        if (item.InvoiceType == InvoiceType.Sales || item.InvoiceType == InvoiceType.SalesReturn)
+                        {
+                            stock.SoldQty += item.BilledQty + item.FreeQty;
+                        }
+                        else if (item.InvoiceType == InvoiceType.ManualSale || item.InvoiceType == InvoiceType.ManualSaleReturn)
+                        {
+                            stock.HoldQty += item.BilledQty + item.FreeQty;
+                        }
 
-                    azureDb.Stocks.Update(stock);
+                        azureDb.Stocks.Update(stock);
+                    }
                 }
             }
             List<SalePaymentDetail> spds = new List<SalePaymentDetail>();
@@ -544,6 +564,7 @@ namespace AKS.POSBilling.Controllers
                     fn = "IN";
                 InvoicePrint print = new InvoicePrint
                 {
+                    ServiceBill=serviceBill,
                     //FontSize = 12,
                     Page2Inch = false,
                     InvoiceSet = true,

@@ -371,14 +371,14 @@ namespace AKS.POSBilling.Controllers
         public SortedDictionary<int, List<List<SaleReport>>> SaleReports(string storeCode, InvoiceType iType)
         {
             SortedDictionary<int, List<List<SaleReport>>> report = new SortedDictionary<int, List<List<SaleReport>>>();
-            var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode && c.InvoiceType== iType).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
+            var yearList = azureDb.ProductSales.Where(c => c.StoreId == storeCode && c.InvoiceType == iType).GroupBy(c => c.OnDate.Year).Select(c => c.Key).ToList();
             foreach (var year in YearList)
             {
-                report.Add(year, SaleReports(storeCode, year,iType));
+                report.Add(year, SaleReports(storeCode, year, iType));
             }
             return report;
         }
-        
+
         public void PrintInvoice(string invoice, ProductSale sale)
         {
             //TODO: Impletement
@@ -421,7 +421,7 @@ namespace AKS.POSBilling.Controllers
                 TotalPrice = TotalAmount,
                 TotalDiscountAmount = TotalDiscount,
                 TotalTaxAmount = TotalTax,
-              
+
             };
             sale.TotalMRP = sale.TotalDiscountAmount + sale.TotalPrice;
             sale.TotalBasicAmount = sale.TotalPrice - sale.TotalTaxAmount;
@@ -430,7 +430,8 @@ namespace AKS.POSBilling.Controllers
             //TODO:handle customer addidtion
             sale.InvoiceNo = GenerateInvoiceNumber(iType, ++count, StoreCode);
             sale.InvoiceCode = $"{StoreCode}/{DateTime.Now.Year}/{DateTime.Now.Month}/{SaleUtils.INCode(count)}";
-
+            if (sale.InvoiceType == InvoiceType.Sales || sale.InvoiceType == InvoiceType.SalesReturn)
+                sale.Taxed = true;
             // Adding sale item
             foreach (var si in SaleItem)
             {
@@ -455,7 +456,7 @@ namespace AKS.POSBilling.Controllers
                 //Handling Free Item
                 if (item.Value == 0)
                 {
-                    item.FreeQty = item.BilledQty=0;
+                    item.FreeQty = item.BilledQty = 0;
                     item.BilledQty = 0;
                     sale.FreeQty += item.FreeQty;
                     sale.BilledQty -= item.FreeQty;
@@ -632,7 +633,7 @@ namespace AKS.POSBilling.Controllers
         private List<SaleReport> SaleReports(string storeCode, int year, int month, InvoiceType iType)
         {
             var x = azureDb.ProductSales.Where(c => c.StoreId == storeCode
-            && c.InvoiceType==iType
+            && c.InvoiceType == iType
             && c.MarkedDeleted == false && !c.Adjusted
             && c.OnDate.Year == year && c.OnDate.Month == month)
            .GroupBy(c => new { c.OnDate.Year, c.InvoiceType, c.Tailoring })
@@ -653,12 +654,12 @@ namespace AKS.POSBilling.Controllers
             return x;
         }
 
-        private List<List<SaleReport>> SaleReports(string storeCode, int year,InvoiceType iType)
+        private List<List<SaleReport>> SaleReports(string storeCode, int year, InvoiceType iType)
         {
             List<List<SaleReport>> saleReports = new List<List<SaleReport>>();
             for (int i = 1; i <= 12; i++)
             {
-                saleReports.Add(SaleReports(storeCode, year, i,iType));
+                saleReports.Add(SaleReports(storeCode, year, i, iType));
             }
             return saleReports;
         }

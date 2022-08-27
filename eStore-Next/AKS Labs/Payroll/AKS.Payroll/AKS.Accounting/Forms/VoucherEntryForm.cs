@@ -2,7 +2,7 @@
 using AKS.Shared.Commons.Models.Accounts;
 using System.Data;
 
-namespace AKS.Payroll.Forms.Vouchers
+namespace AKS.Accounting.Forms.Vouchers
 {
     public partial class VoucherEntryForm : Form
     {

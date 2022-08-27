@@ -1,9 +1,8 @@
-﻿using AKS.DatabaseMigrator;
-using AKS.Payroll.Database;
+﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Banking;
 using Microsoft.EntityFrameworkCore;
 
-namespace AKS.Payroll.Forms.Banking
+namespace AKS.Accounting.Forms.Banking
 {
     public partial class BankForm : Form
     {

@@ -1,7 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Banking;
 
-namespace AKS.Payroll.Forms.Banking
+namespace AKS.Accounting.Forms.Banking
 {
     //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.backgroundworker?redirectedfrom=MSDN&view=net-6.0
     // Backgroud worker doc

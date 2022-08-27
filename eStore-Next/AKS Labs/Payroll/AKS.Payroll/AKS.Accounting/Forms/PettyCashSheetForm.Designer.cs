@@ -1,4 +1,4 @@
-﻿namespace AKS.Payroll.Forms
+﻿namespace AKS.Accounting.Forms
 {
     partial class PettyCashSheetForm
     {

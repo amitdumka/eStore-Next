@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace AKS.Payroll.Forms
+namespace AKS.Accounting.Forms
 {
     partial class AboutBox1 : Form
     {
@@ -98,6 +98,11 @@ namespace AKS.Payroll.Forms
         private void okButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void AboutBox1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

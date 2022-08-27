@@ -5,7 +5,7 @@ using AKS.Shared.Commons.ViewModels.Accounts;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace AKS.Payroll.Forms.Vouchers
+namespace AKS.Accounting.Forms.Vouchers
 {
     public partial class VochersForm : Form
     {

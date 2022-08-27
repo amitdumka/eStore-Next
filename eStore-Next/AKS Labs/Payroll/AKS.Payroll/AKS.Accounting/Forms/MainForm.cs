@@ -1,7 +1,7 @@
-﻿using AKS.Payroll.Forms;
-using AKS.Payroll.Forms.Banking;
-using AKS.Payroll.Forms.Inventory;
-using AKS.Payroll.Forms.Vouchers;
+﻿using AKS.Accounting.Forms;
+using AKS.Accounting.Forms.Banking;
+using AKS.Accounting.Forms.Inventory;
+using AKS.Accounting.Forms.Vouchers;
 using AKS.Payroll.Ops;
 
 namespace AKS.Payroll

@@ -7,7 +7,7 @@ using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
 using System.Data;
 
-namespace AKS.Payroll.Forms
+namespace AKS.Accounting.Forms
 {
     public partial class PettyCashSheetForm : Form
     {

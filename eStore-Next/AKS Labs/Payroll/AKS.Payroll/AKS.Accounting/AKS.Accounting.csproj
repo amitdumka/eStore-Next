@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>

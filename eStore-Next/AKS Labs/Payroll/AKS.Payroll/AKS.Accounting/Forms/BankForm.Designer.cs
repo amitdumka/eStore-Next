@@ -1,4 +1,4 @@
-﻿namespace AKS.Payroll.Forms.Banking
+﻿namespace AKS.Accounting.Forms.Banking
 {
     partial class BankForm
     {

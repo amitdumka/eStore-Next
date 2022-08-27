@@ -1,4 +1,4 @@
-﻿namespace AKS.Payroll.Forms.Vouchers
+﻿namespace AKS.Accounting.Forms.Vouchers
 {
     partial class VoucherEntryForm
     {

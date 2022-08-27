@@ -249,26 +249,6 @@ namespace AKS.Payroll
             LoadForm(new TimeSheetForm());
         }
 
-        private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.Sales));
-        }
-
-        private void manualSalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.ManualSale));
-        }
-
-        private void saleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.SalesReturn));
-        }
-
-        private void manulSaleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
-        }
-
         private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new PurchaseForm( ));

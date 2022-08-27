@@ -1,5 +1,7 @@
 using AKS.Payroll.Database;
 using AKS.Payroll.Ops;
+using AKS.Shared.Commons.Ops;
+using InternetStatus = AKS.Shared.Commons.Ops.InternetStatus;
 
 namespace AKS.Payroll
 {

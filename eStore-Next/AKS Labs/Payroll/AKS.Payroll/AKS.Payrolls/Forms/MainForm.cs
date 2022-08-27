@@ -1,8 +1,4 @@
 ﻿using AKS.Payroll.Forms;
-using AKS.Payroll.Forms.Banking;
-using AKS.Payroll.Forms.Inventory;
-using AKS.Payroll.Forms.Vouchers;
-using AKS.Payroll.Ops;
 
 namespace AKS.Payroll
 {
@@ -178,7 +174,7 @@ namespace AKS.Payroll
 
         private void testFormToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            LoadForm(new TestForm());
+           // LoadForm(new TestForm());
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -196,7 +192,7 @@ namespace AKS.Payroll
             // Call From Ops then print.
             //var form = new PdfForm();
             //LoadForm(form);
-            new BasicOperations().PayrollReport();
+           // new BasicOperations().PayrollReport();
         }
 
         private void bankLetterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -206,42 +202,42 @@ namespace AKS.Payroll
 
         private void bankToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new BankForm());
+            //LoadForm(new BankForm());
         }
 
         private void expensesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new VochersForm(VoucherType.Expense));
+            //LoadForm(new VochersForm(VoucherType.Expense));
         }
 
         private void paymentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new VochersForm(VoucherType.Payment));
+           // LoadForm(new VochersForm(VoucherType.Payment));
         }
 
         private void receiptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new VochersForm(VoucherType.Receipt));
+           // LoadForm(new VochersForm(VoucherType.Receipt));
         }
 
         private void cashPaymentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new VochersForm(VoucherType.CashPayment));
+           // LoadForm(new VochersForm(VoucherType.CashPayment));
         }
 
         private void cashReceiptsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new VochersForm(VoucherType.CashReceipt));
+           // LoadForm(new VochersForm(VoucherType.CashReceipt));
         }
 
         private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new DailySaleForm());
+           // LoadForm(new DailySaleForm());
         }
 
         private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new PettyCashSheetForm());
+           // LoadForm(new PettyCashSheetForm());
         }
 
         private void timeSheetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -251,27 +247,27 @@ namespace AKS.Payroll
 
         private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new SalesForm(InvoiceType.Sales));
+           // LoadForm(new SalesForm(InvoiceType.Sales));
         }
 
         private void manualSalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new SalesForm(InvoiceType.ManualSale));
+            //LoadForm(new SalesForm(InvoiceType.ManualSale));
         }
 
         private void saleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new SalesForm(InvoiceType.SalesReturn));
+           // LoadForm(new SalesForm(InvoiceType.SalesReturn));
         }
 
         private void manulSaleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
+           // LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
         }
 
         private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new PurchaseForm( ));
+           // LoadForm(new PurchaseForm( ));
         }
     }
 }

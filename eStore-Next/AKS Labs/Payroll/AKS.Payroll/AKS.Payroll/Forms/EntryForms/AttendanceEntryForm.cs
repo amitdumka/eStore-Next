@@ -1,5 +1,6 @@
 ﻿using AKS.ParyollSystem;
 using AKS.Payroll.Database;
+using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using System.Data;
 

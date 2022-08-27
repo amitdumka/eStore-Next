@@ -1,6 +1,5 @@
-using AKS.Accounting.Common;
 using AKS.Payroll.Database;
-using AKS.Payroll.Ops;
+using AKS.Shared.Commons.Ops;
 
 namespace AKS.Payroll
 {

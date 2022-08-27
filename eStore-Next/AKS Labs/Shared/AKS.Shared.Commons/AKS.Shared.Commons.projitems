@@ -20,6 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Inventory\Product.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Sales\DailySale.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Store.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ops\CurrentSession.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ops\InternetStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Accounts\VoucherVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Widgets\FirstPageVM.cs" />
   </ItemGroup>

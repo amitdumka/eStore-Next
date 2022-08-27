@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace AKS.Accounting.Common
+namespace AKS.Shared.Commons.Ops
 {
     public static class CurrentSession
     {
@@ -19,4 +15,5 @@ namespace AKS.Accounting.Common
 
 
     }
+    
 }

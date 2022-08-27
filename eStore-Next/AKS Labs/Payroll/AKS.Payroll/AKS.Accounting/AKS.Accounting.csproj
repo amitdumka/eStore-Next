@@ -47,4 +47,29 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+		<PackageReference Include="BarCode" Version="2022.8.8024" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+		
+		<PackageReference Include="Syncfusion.SfBarcode.Windows" Version="20.2.0.45" />
+		<PackageReference Include="Syncfusion.Shared.Base" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.Tools.Windows" Version="19.4.0.56" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+		<PackageReference Include="Syncfusion.Spreadsheet.Windows" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.Shared.Windows" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.DocIO.WinForms" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.Pdf.WinForms" Version="20.2.0.45" />
+		<PackageReference Include="Syncfusion.PdfViewer.Windows" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56" />
+	</ItemGroup>
 </Project>

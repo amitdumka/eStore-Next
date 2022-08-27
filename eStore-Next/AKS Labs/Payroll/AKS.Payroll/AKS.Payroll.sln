@@ -32,6 +32,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.Accounting", "AKS.Accou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.Payrolls", "AKS.Payrolls\AKS.Payrolls.csproj", "{6EB45C53-0CEC-432E-9CF9-27233BC5EBEE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shareds", "Shareds", "{58EB1D91-5E69-4D22-B8D0-F34D88EC1EEB}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Accounting", "AKS.Shared.Accounting\AKS.Shared.Accounting.shproj", "{D540EA0B-62F2-4582-8FE1-0A2D381C29CC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.PosBilling", "AKS.Shared.PosBilling\AKS.Shared.PosBilling.shproj", "{642F8409-F94E-404C-8D3A-CB1F801A1396}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,13 +84,21 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{062A8AC3-2766-4147-8809-9E46C9C71B34} = {58EB1D91-5E69-4D22-B8D0-F34D88EC1EEB}
+		{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C} = {58EB1D91-5E69-4D22-B8D0-F34D88EC1EEB}
+		{D540EA0B-62F2-4582-8FE1-0A2D381C29CC} = {58EB1D91-5E69-4D22-B8D0-F34D88EC1EEB}
+		{642F8409-F94E-404C-8D3A-CB1F801A1396} = {58EB1D91-5E69-4D22-B8D0-F34D88EC1EEB}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E330ACB7-D840-4475-B428-7A550A69C68A}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
 		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{2147e9df-8118-4daa-8611-40dd72c259f9}*SharedItemsImports = 13
+		AKS.Shared.PosBilling\AKS.Shared.PosBilling.projitems*{642f8409-f94e-404c-8d3a-cb1f801a1396}*SharedItemsImports = 13
 		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
+		AKS.Shared.Accounting\AKS.Shared.Accounting.projitems*{d540ea0b-62f2-4582-8fe1-0a2d381c29cc}*SharedItemsImports = 13
 		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
 		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
 		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{e7d3a8b8-6511-49dc-8f9f-f64eede437cf}*SharedItemsImports = 5

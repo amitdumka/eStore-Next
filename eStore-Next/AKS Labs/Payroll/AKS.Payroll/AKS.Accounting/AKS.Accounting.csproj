@@ -20,6 +20,12 @@
     <Compile Update="Forms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\BankAccountEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\BankForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

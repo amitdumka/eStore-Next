@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Forms\AprajitaRetails03.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AprajitaRetails03.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\AboutBox1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AttendanceEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AttendanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\EmployeeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MonthlyAttendanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\PayslipBankLetterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\PaySlipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\PdfForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SalaryEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SalaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SalaryPaymentEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SalaryPaymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\StaffAdvanceRecieptEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\TimeSheetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

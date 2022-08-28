@@ -32,6 +32,9 @@
 		<Compile Update="Forms\AttendanceForm.cs">
 			<SubType>Form</SubType>
 		</Compile>
+		<Compile Update="Forms\EmployeeBankDetailsForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Forms\EmployeeForm.cs">
 			<SubType>Form</SubType>
 		</Compile>

@@ -1,8 +1,10 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.DTOMapping;
+using AKS.Printers.Thermals;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Windows.Forms.PdfViewer;
 using System.Data;
 
 namespace AKS.Accounting.Forms.Vouchers
@@ -269,11 +271,13 @@ namespace AKS.Accounting.Forms.Vouchers
                 {
                     // Add to list voucherEntryForm.cashVoucher
                     cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(voucherEntryForm.SavedCashVoucher));
+                    PrintCashVoucher(voucherEntryForm.SavedCashVoucher);
                 }
                 else
                 {
                     // Add to voucherEntryForm.voucher
                     voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(voucherEntryForm.SavedVoucher));
+                    PrintVoucher(voucherEntryForm.SavedVoucher);
                 }
                 RefreshDataView(voucherEntryForm.voucherType);
             }
@@ -506,6 +510,105 @@ namespace AKS.Accounting.Forms.Vouchers
             }
             else
             {
+            }
+        }
+
+        private void PrintCashVoucher(CashVoucher voucher)
+        {
+            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
+            if (dlg == DialogResult.Yes)
+            {
+                if (voucher.VoucherType == VoucherType.CashReceipt || voucher.VoucherType == VoucherType.CashPayment)
+                {
+                    if (voucher.PartyId != null)
+                    {
+                        voucher.Partys = azureDb.Parties.Find(voucher.PartyId);
+                    }
+                    voucher.TranscationMode = azureDb.TranscationModes.Find(voucher.TranscationId);
+                    voucher.Employee = azureDb.Employees.Find(voucher.EmployeeId);
+
+                    VoucherPrint print = new VoucherPrint
+                    {
+                        Amount = voucher.Amount,
+                        IsVoucherSet = true,
+                        NoOfCopy = 1,
+                        Page2Inch = false,
+                        OnDate = voucher.OnDate,
+                        Particulars = voucher.Particulars,
+                        PartyName = voucher.PartyName,
+                        LedgerName = voucher.Partys.PartyName,
+                        Reprint = false,
+                        PaymentMode = PaymentMode.Cash,
+                        Voucher = voucher.VoucherType,
+                        VoucherNo = voucher.VoucherNumber,
+                        TranscationMode = null,
+                        PaymentDetails = voucher.TranscationMode.TranscationName,
+                        StoreCode = voucher.StoreId,
+                        Remarks = voucher.Remarks + " SlipNo:" + voucher.SlipNumber,
+                        IssuedBy = voucher.Employee.StaffName,
+                        PrintType = PrintType.PaymentVoucher
+                    };
+
+                    var fileName = (print.PrintPdf());
+                    ShowPrintDialog(fileName);
+                }
+            }
+        }
+
+        private void ShowPrintDialog(string filename)
+        {
+            Form printForm = new Form();
+            PdfDocumentView docView = new PdfDocumentView();
+            docView.Load(filename);
+            docView.Dock = DockStyle.Fill;
+            printForm.Controls.Add(docView);
+
+            var result = printForm.ShowDialog();
+            var printDialog1 = new PrintDialog();
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDialog1.AllowPrintToFile = true;
+                docView.Print(printDialog1.PrinterSettings.PrinterName);
+            }
+        }
+
+        private void PrintVoucher(Voucher voucher)
+        {
+            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
+            if (dlg == DialogResult.Yes)
+            {
+                if (voucher.VoucherType == VoucherType.Receipt || voucher.VoucherType == VoucherType.Expense || voucher.VoucherType == VoucherType.Payment)
+                {
+                    if (voucher.PartyId != null)
+                    {
+                        voucher.Partys = azureDb.Parties.Find(voucher.PartyId);
+                    }
+                    voucher.Employee = azureDb.Employees.Find(voucher.EmployeeId);
+
+                    VoucherPrint print = new VoucherPrint
+                    {
+                        Amount = voucher.Amount,
+                        IsVoucherSet = true,
+                        NoOfCopy = 1,
+                        Page2Inch = false,
+                        OnDate = voucher.OnDate,
+                        Particulars = voucher.Particulars,
+                        PartyName = voucher.PartyName,
+                        LedgerName = voucher.Partys.PartyName,
+                        Reprint = false,
+                        PaymentMode = voucher.PaymentMode,
+                        Voucher = VoucherType.Payment,
+                        VoucherNo = voucher.VoucherNumber,
+                        TranscationMode = null,
+                        PaymentDetails = voucher.PaymentDetails,
+                        StoreCode = voucher.StoreId,
+                        Remarks = voucher.Remarks + " SlipNo:" + voucher.SlipNumber,
+                        IssuedBy = voucher.Employee.StaffName,
+                        PrintType = PrintType.PaymentVoucher
+                    };
+                    var fileName = (print.PrintPdf());
+                    ShowPrintDialog(fileName);
+                }
             }
         }
     }

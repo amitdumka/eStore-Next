@@ -107,16 +107,6 @@ namespace AKS.Payroll
             }
         }
 
-        private void employeeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new EmployeeForm());
-        }
-
-        private void attendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new AttendanceForm());
-        }
-
         private void LoadForm(Form frm)
         {
             frm.MdiParent = this;
@@ -129,19 +119,8 @@ namespace AKS.Payroll
             LoadForm(new SalaryForm());
         }
 
-        private void monthlyAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new MonthlyAttendanceForm());
-        }
-
-        private void addAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new Forms.EntryForms.AttendanceEntryForm());
-        }
-
         private void addSalaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void addPaymentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -168,12 +147,10 @@ namespace AKS.Payroll
 
         private void addEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void addReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void testFormToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -251,7 +228,7 @@ namespace AKS.Payroll
 
         private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new PurchaseForm( ));
+            LoadForm(new PurchaseForm());
         }
     }
 }

@@ -70,34 +70,12 @@
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.payrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.employeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.attendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.salaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.paymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recieptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monthlyAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addAttendanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addSalaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPaymentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addReceiptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testFormToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testFormToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.paToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printCurrentPaySlipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bankLetterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dailySaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pettyCashSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timeSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vouchersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.expensesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.paymentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.receiptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.cashPaymentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cashReceiptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.debitNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.creditNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
@@ -123,6 +101,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.pettyCashSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -138,7 +117,6 @@
             this.toolsMenu,
             this.windowsMenu,
             this.helpMenu,
-            this.payrollToolStripMenuItem,
             this.testFormToolStripMenuItem,
             this.vouchersToolStripMenuItem,
             this.bankingToolStripMenuItem,
@@ -484,104 +462,6 @@
             this.aboutToolStripMenuItem.Text = "&About ... ...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // payrollToolStripMenuItem
-            // 
-            this.payrollToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.employeeToolStripMenuItem,
-            this.attendanceToolStripMenuItem,
-            this.salaryToolStripMenuItem,
-            this.paymentToolStripMenuItem,
-            this.recieptToolStripMenuItem,
-            this.monthlyAttendanceToolStripMenuItem,
-            this.addAttendanceToolStripMenuItem,
-            this.addEmployeeToolStripMenuItem,
-            this.addSalaryToolStripMenuItem,
-            this.addPaymentToolStripMenuItem,
-            this.addReceiptToolStripMenuItem});
-            this.payrollToolStripMenuItem.Name = "payrollToolStripMenuItem";
-            this.payrollToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-            this.payrollToolStripMenuItem.Text = "Payroll";
-            // 
-            // employeeToolStripMenuItem
-            // 
-            this.employeeToolStripMenuItem.Name = "employeeToolStripMenuItem";
-            this.employeeToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.employeeToolStripMenuItem.Text = "Employee";
-            this.employeeToolStripMenuItem.Click += new System.EventHandler(this.employeeToolStripMenuItem_Click);
-            // 
-            // attendanceToolStripMenuItem
-            // 
-            this.attendanceToolStripMenuItem.Name = "attendanceToolStripMenuItem";
-            this.attendanceToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.attendanceToolStripMenuItem.Text = "Attendance";
-            this.attendanceToolStripMenuItem.Click += new System.EventHandler(this.attendanceToolStripMenuItem_Click);
-            // 
-            // salaryToolStripMenuItem
-            // 
-            this.salaryToolStripMenuItem.Name = "salaryToolStripMenuItem";
-            this.salaryToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.salaryToolStripMenuItem.Text = "Salary";
-            this.salaryToolStripMenuItem.Click += new System.EventHandler(this.salaryToolStripMenuItem_Click);
-            // 
-            // paymentToolStripMenuItem
-            // 
-            this.paymentToolStripMenuItem.Name = "paymentToolStripMenuItem";
-            this.paymentToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.paymentToolStripMenuItem.Text = "Payment";
-            this.paymentToolStripMenuItem.Click += new System.EventHandler(this.paymentToolStripMenuItem_Click);
-            // 
-            // recieptToolStripMenuItem
-            // 
-            this.recieptToolStripMenuItem.Name = "recieptToolStripMenuItem";
-            this.recieptToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.recieptToolStripMenuItem.Text = "Reciept";
-            this.recieptToolStripMenuItem.Click += new System.EventHandler(this.recieptToolStripMenuItem_Click);
-            // 
-            // monthlyAttendanceToolStripMenuItem
-            // 
-            this.monthlyAttendanceToolStripMenuItem.Name = "monthlyAttendanceToolStripMenuItem";
-            this.monthlyAttendanceToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.monthlyAttendanceToolStripMenuItem.Text = "Monthly Attendance";
-            this.monthlyAttendanceToolStripMenuItem.Click += new System.EventHandler(this.monthlyAttendanceToolStripMenuItem_Click);
-            // 
-            // addAttendanceToolStripMenuItem
-            // 
-            this.addAttendanceToolStripMenuItem.Name = "addAttendanceToolStripMenuItem";
-            this.addAttendanceToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addAttendanceToolStripMenuItem.Text = "Add Attendance";
-            this.addAttendanceToolStripMenuItem.Click += new System.EventHandler(this.addAttendanceToolStripMenuItem_Click);
-            // 
-            // addEmployeeToolStripMenuItem
-            // 
-            this.addEmployeeToolStripMenuItem.Name = "addEmployeeToolStripMenuItem";
-            this.addEmployeeToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addEmployeeToolStripMenuItem.Text = "Add Employee";
-            this.addEmployeeToolStripMenuItem.Click += new System.EventHandler(this.addEmployeeToolStripMenuItem_Click);
-            // 
-            // addSalaryToolStripMenuItem
-            // 
-            this.addSalaryToolStripMenuItem.Name = "addSalaryToolStripMenuItem";
-            this.addSalaryToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addSalaryToolStripMenuItem.Text = "Add Salary";
-            this.addSalaryToolStripMenuItem.Visible = false;
-            this.addSalaryToolStripMenuItem.Click += new System.EventHandler(this.addSalaryToolStripMenuItem_Click);
-            // 
-            // addPaymentToolStripMenuItem
-            // 
-            this.addPaymentToolStripMenuItem.Name = "addPaymentToolStripMenuItem";
-            this.addPaymentToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addPaymentToolStripMenuItem.Text = "Add Payment";
-            this.addPaymentToolStripMenuItem.Visible = false;
-            this.addPaymentToolStripMenuItem.Click += new System.EventHandler(this.addPaymentToolStripMenuItem_Click);
-            // 
-            // addReceiptToolStripMenuItem
-            // 
-            this.addReceiptToolStripMenuItem.Name = "addReceiptToolStripMenuItem";
-            this.addReceiptToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addReceiptToolStripMenuItem.Text = "Add Receipt";
-            this.addReceiptToolStripMenuItem.Visible = false;
-            this.addReceiptToolStripMenuItem.Click += new System.EventHandler(this.addReceiptToolStripMenuItem_Click);
-            // 
             // testFormToolStripMenuItem
             // 
             this.testFormToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -589,9 +469,7 @@
             this.paToolStripMenuItem,
             this.printCurrentPaySlipToolStripMenuItem,
             this.bankLetterToolStripMenuItem,
-            this.dailySaleToolStripMenuItem,
-            this.pettyCashSheetToolStripMenuItem,
-            this.timeSheetToolStripMenuItem});
+            this.pettyCashSheetToolStripMenuItem});
             this.testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
             this.testFormToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.testFormToolStripMenuItem.Text = "Operations";
@@ -624,37 +502,9 @@
             this.bankLetterToolStripMenuItem.Text = "Bank Letter";
             this.bankLetterToolStripMenuItem.Click += new System.EventHandler(this.bankLetterToolStripMenuItem_Click);
             // 
-            // dailySaleToolStripMenuItem
-            // 
-            this.dailySaleToolStripMenuItem.Name = "dailySaleToolStripMenuItem";
-            this.dailySaleToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.dailySaleToolStripMenuItem.Text = "Daily Sale";
-            this.dailySaleToolStripMenuItem.Click += new System.EventHandler(this.dailySaleToolStripMenuItem_Click);
-            // 
-            // pettyCashSheetToolStripMenuItem
-            // 
-            this.pettyCashSheetToolStripMenuItem.Name = "pettyCashSheetToolStripMenuItem";
-            this.pettyCashSheetToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.pettyCashSheetToolStripMenuItem.Text = "Petty Cash Sheet";
-            this.pettyCashSheetToolStripMenuItem.Click += new System.EventHandler(this.pettyCashSheetToolStripMenuItem_Click);
-            // 
-            // timeSheetToolStripMenuItem
-            // 
-            this.timeSheetToolStripMenuItem.Name = "timeSheetToolStripMenuItem";
-            this.timeSheetToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.timeSheetToolStripMenuItem.Text = "Time Sheet";
-            this.timeSheetToolStripMenuItem.Click += new System.EventHandler(this.timeSheetToolStripMenuItem_Click);
-            // 
             // vouchersToolStripMenuItem
             // 
             this.vouchersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.expensesToolStripMenuItem,
-            this.paymentsToolStripMenuItem,
-            this.receiptsToolStripMenuItem,
-            this.toolStripSeparator9,
-            this.cashPaymentsToolStripMenuItem,
-            this.cashReceiptsToolStripMenuItem,
-            this.toolStripSeparator10,
             this.debitNotesToolStripMenuItem,
             this.creditNotesToolStripMenuItem,
             this.toolStripSeparator11,
@@ -663,51 +513,6 @@
             this.vouchersToolStripMenuItem.Name = "vouchersToolStripMenuItem";
             this.vouchersToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.vouchersToolStripMenuItem.Text = "Vouchers ";
-            // 
-            // expensesToolStripMenuItem
-            // 
-            this.expensesToolStripMenuItem.Name = "expensesToolStripMenuItem";
-            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.expensesToolStripMenuItem.Text = "Expenses";
-            this.expensesToolStripMenuItem.Click += new System.EventHandler(this.expensesToolStripMenuItem_Click);
-            // 
-            // paymentsToolStripMenuItem
-            // 
-            this.paymentsToolStripMenuItem.Name = "paymentsToolStripMenuItem";
-            this.paymentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.paymentsToolStripMenuItem.Text = "Payments";
-            this.paymentsToolStripMenuItem.Click += new System.EventHandler(this.paymentsToolStripMenuItem_Click);
-            // 
-            // receiptsToolStripMenuItem
-            // 
-            this.receiptsToolStripMenuItem.Name = "receiptsToolStripMenuItem";
-            this.receiptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.receiptsToolStripMenuItem.Text = "Receipts";
-            this.receiptsToolStripMenuItem.Click += new System.EventHandler(this.receiptsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
-            // 
-            // cashPaymentsToolStripMenuItem
-            // 
-            this.cashPaymentsToolStripMenuItem.Name = "cashPaymentsToolStripMenuItem";
-            this.cashPaymentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.cashPaymentsToolStripMenuItem.Text = "Cash Payments";
-            this.cashPaymentsToolStripMenuItem.Click += new System.EventHandler(this.cashPaymentsToolStripMenuItem_Click);
-            // 
-            // cashReceiptsToolStripMenuItem
-            // 
-            this.cashReceiptsToolStripMenuItem.Name = "cashReceiptsToolStripMenuItem";
-            this.cashReceiptsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.cashReceiptsToolStripMenuItem.Text = "Cash Receipts";
-            this.cashReceiptsToolStripMenuItem.Click += new System.EventHandler(this.cashReceiptsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(177, 6);
             // 
             // debitNotesToolStripMenuItem
             // 
@@ -785,7 +590,7 @@
             // purchaseToolStripMenuItem
             // 
             this.purchaseToolStripMenuItem.Name = "purchaseToolStripMenuItem";
-            this.purchaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.purchaseToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.purchaseToolStripMenuItem.Text = "Purchase";
             this.purchaseToolStripMenuItem.Click += new System.EventHandler(this.purchaseToolStripMenuItem_Click);
             // 
@@ -899,6 +704,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // pettyCashSheetToolStripMenuItem
+            // 
+            this.pettyCashSheetToolStripMenuItem.Name = "pettyCashSheetToolStripMenuItem";
+            this.pettyCashSheetToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.pettyCashSheetToolStripMenuItem.Text = "Petty Cash Sheet";
+            this.pettyCashSheetToolStripMenuItem.Click += new System.EventHandler(this.pettyCashSheetToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -981,18 +793,6 @@
         private System.Windows.Forms.ToolStripButton printPreviewToolStripButton;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
         private System.Windows.Forms.ToolTip toolTip;
-        private ToolStripMenuItem payrollToolStripMenuItem;
-        private ToolStripMenuItem employeeToolStripMenuItem;
-        private ToolStripMenuItem attendanceToolStripMenuItem;
-        private ToolStripMenuItem salaryToolStripMenuItem;
-        private ToolStripMenuItem paymentToolStripMenuItem;
-        private ToolStripMenuItem recieptToolStripMenuItem;
-        private ToolStripMenuItem monthlyAttendanceToolStripMenuItem;
-        private ToolStripMenuItem addAttendanceToolStripMenuItem;
-        private ToolStripMenuItem addEmployeeToolStripMenuItem;
-        private ToolStripMenuItem addSalaryToolStripMenuItem;
-        private ToolStripMenuItem addPaymentToolStripMenuItem;
-        private ToolStripMenuItem addReceiptToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem1;
         private ToolStripMenuItem testFormToolStripMenuItem;
         private ToolStripMenuItem testFormToolStripMenuItem1;
@@ -1006,23 +806,14 @@
         private ToolStripMenuItem vendorAccountToolStripMenuItem;
         private ToolStripMenuItem accountListToolStripMenuItem;
         private ToolStripMenuItem vouchersToolStripMenuItem;
-        private ToolStripMenuItem expensesToolStripMenuItem;
-        private ToolStripMenuItem paymentsToolStripMenuItem;
-        private ToolStripMenuItem receiptsToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator9;
-        private ToolStripMenuItem cashPaymentsToolStripMenuItem;
-        private ToolStripMenuItem cashReceiptsToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator10;
         private ToolStripMenuItem debitNotesToolStripMenuItem;
         private ToolStripMenuItem creditNotesToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator11;
         private ToolStripMenuItem vendorDebitNotesToolStripMenuItem;
         private ToolStripMenuItem vendorCreditNotesToolStripMenuItem;
-        private ToolStripMenuItem dailySaleToolStripMenuItem;
-        private ToolStripMenuItem pettyCashSheetToolStripMenuItem;
-        private ToolStripMenuItem timeSheetToolStripMenuItem;
         private ToolStripMenuItem salesToolStripMenuItem;
         private ToolStripMenuItem purchaseToolStripMenuItem;
+        private ToolStripMenuItem pettyCashSheetToolStripMenuItem;
     }
 }
 

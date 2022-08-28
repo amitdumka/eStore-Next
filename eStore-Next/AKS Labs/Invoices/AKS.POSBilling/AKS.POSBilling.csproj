@@ -19,6 +19,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Payroll\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
 		<ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.Auths\AKS.Auths.csproj" />
+		<ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.Printers\AKS.Printers.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

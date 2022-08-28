@@ -37,6 +37,7 @@
     <ProjectReference Include="..\AKS.DatabaseMigrator\AKS.DatabaseMigrator.csproj">
       <ReferenceSourceTarget></ReferenceSourceTarget>
     </ProjectReference>
+    <ProjectReference Include="..\AKS.Printers\AKS.Printers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

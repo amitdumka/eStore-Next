@@ -5,7 +5,7 @@ using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
 
-namespace AKS.Payroll.DTOMapping
+namespace AKS.Accounting.Forms.DTOMapping
 {
     public class DMMapper
     {

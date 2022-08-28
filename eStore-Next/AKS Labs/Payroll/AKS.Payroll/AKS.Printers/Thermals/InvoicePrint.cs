@@ -74,27 +74,27 @@ namespace AKS.Printers.Thermals
                 Style code = new Style();
                 PdfFont timesRoman = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.TIMES_ROMAN);
                 code.SetFont(timesRoman).SetFontSize(FontSize);
-                
+
                 //Details
-                Paragraph ip = new Paragraph().SetFontSize(FontSize);
-                ip.AddStyle(code);
-                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
-                ip.Add(Employee + "\n");
-                ip.Add("Bill No: " + ProductSale.InvoiceNo + "\n");
-                ip.AddTabStops(new TabStop(30));
-                ip.Add("  " + "                  Date: " + ProductSale.OnDate.ToString() + "\n");
-                ip.AddTabStops(new TabStop(30));
-                //ip.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
+                 _content = new Paragraph().SetFontSize(FontSize);
+                _content.AddStyle(code);
+                _content.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
+                _content.Add(Employee + "\n");
+                _content.Add("Bill No: " + ProductSale.InvoiceNo + "\n");
+                _content.AddTabStops(new TabStop(30));
+                _content.Add("  " + "                  Date: " + ProductSale.OnDate.ToString() + "\n");
+                _content.AddTabStops(new TabStop(30));
+                //_content.Add("  " + "                  Time: " + ProductSale.OnDate.ToShortTimeString() + "\n");
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add("Customer Name: " + CustomerName + "\n");
-                ip.Add("Customer Mobile: " + MobileNumber + "\n");
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add("Customer Name: " + CustomerName + "\n");
+                _content.Add("Customer Mobile: " + MobileNumber + "\n");
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
 
-                ip.Add(ItemLineHeader1 + "\n");
-                ip.Add(ItemLineHeader2 + "\n");
+                _content.Add(ItemLineHeader1 + "\n");
+                _content.Add(ItemLineHeader2 + "\n");
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
 
                 decimal gstPrice = 0;
                 decimal basicPrice = 0;
@@ -105,103 +105,102 @@ namespace AKS.Printers.Thermals
                     //TODO: Need to implement HSNCode.
                     if (itemDetails != null)
                     {
-                        ip.Add($"{itemDetails.Barcode} / {itemDetails.ProductItem.Description}/{itemDetails.ProductItem.HSNCode} /\n");
-                        ip.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString("0.##") + tab + tab);
+                        _content.Add($"{itemDetails.Barcode} / {itemDetails.ProductItem.Description}/{itemDetails.ProductItem.HSNCode} /\n");
+                        _content.Add((itemDetails.Value + itemDetails.DiscountAmount).ToString("0.##") + tab + tab);
                         if (itemDetails.Value == 0)
                         {
-                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + "Free\n");
+                            _content.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + "Free\n");
                         }
                         else
                         {
-                            ip.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##") + "\n");
+                            _content.Add(itemDetails.BilledQty + tab + tab + itemDetails.DiscountAmount.ToString("0.##") + tab + tab + itemDetails.Value.ToString("0.##") + "\n");
                         }
-                        //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
-                        //ip.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + "\n");
+                        //_content.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + tab + tab);
+                        //_content.Add(itemDetails.GSTPercentage + "%" + tab + tab + itemDetails.GSTAmount + "\n");
                         gstPrice += itemDetails.TaxAmount;
                         basicPrice += itemDetails.BasicAmount;
                     }
                 }
                 if (!Page2Inch)
-                    ip.Add("\n" + DotedLineLong);
-                else ip.Add("\n" + DotedLine);
+                    _content.Add("\n" + DotedLineLong);
+                else _content.Add("\n" + DotedLine);
 
-                ip.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
-                ip.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
+                _content.Add("Total: " + ProductSale.BilledQty + tab + tab + tab + tab + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
+                _content.Add("item(s): " + ProductSale.TotalQty + tab + "Net Amount:" + tab + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##") + "\n");
 
-                if (!Page2Inch) ip.Add(DotedLineLong);
-                else ip.Add(DotedLine);
+                if (!Page2Inch) _content.Add(DotedLineLong);
+                else _content.Add(DotedLine);
 
-                ip.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##"));
+                _content.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##"));
 
-                ip.Add("\n" + DotedLine);
-                ip.Add("Basic Price: " + basicPrice.ToString("0.##")+"\n");
-                ip.Add("CGST: " + gstPrice.ToString("0.##")+"\n");
-                ip.Add("SGST: " + gstPrice.ToString("0.##") + "\n");
-                ip.Add(DotedLine);
+                _content.Add("\n" + DotedLine);
+                _content.Add("Basic Price: " + basicPrice.ToString("0.##")+"\n");
+                _content.Add("CGST: " + gstPrice.ToString("0.##")+"\n");
+                _content.Add("SGST: " + gstPrice.ToString("0.##") + "\n");
+                _content.Add(DotedLine);
 
                 if (PaymentDetails.Count > 0)
                 {
-                    ip.Add(DotedLine);
+                    _content.Add(DotedLine);
                     foreach (var pd in PaymentDetails)
                     {
-                        ip.Add($"Paid Rs. {pd.PaidAmount.ToString("0.##")} in {pd.PayMode}\n ");
+                        _content.Add($"Paid Rs. {pd.PaidAmount.ToString("0.##")} in {pd.PayMode}\n ");
                         if (pd.PayMode == PayMode.Card)
                         {
                             if (CardDetails != null)
-                                ip.Add($"{CardDetails.CardType}/{CardDetails.CardLastDigit}");
+                                _content.Add($"{CardDetails.CardType}/{CardDetails.CardLastDigit}");
                         }
                         else if (pd.PayMode == PayMode.UPI || pd.PayMode == PayMode.Wallets)
                         {
-                            ip.Add($"RefNo:{pd.RefId}\n ");
+                            _content.Add($"RefNo:{pd.RefId}\n ");
                         }
                     }
-                    ip.Add(DotedLine);
+                    _content.Add(DotedLine);
                 }
 
-                
+
 
                 //Footer
-                Paragraph foot = new Paragraph().SetFontSize(FontSize);
-                foot.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                foot.AddStyle(code);
-                foot.Add(FooterFirstMessage + "\n");
-                if (ServiceBill) foot.Add("** Tailoring Service Invoice **");
-                foot.Add(DotedLineLong);
-                foot.Add(FooterThanksMessage + "\n");
-                foot.Add(FooterLastMessage + "\n");
-                foot.Add(DotedLineLong);
+                _footer = new Paragraph().SetFontSize(FontSize);
+                _footer.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                _footer.AddStyle(code);
+                _footer.Add(FooterFirstMessage + "\n");
+                if (ServiceBill) _footer.Add("** Tailoring Service Invoice **");
+                _footer.Add(DotedLineLong);
+                _footer.Add(FooterThanksMessage + "\n");
+                _footer.Add(FooterLastMessage + "\n");
+                _footer.Add(DotedLineLong);
 
-                foot.Add("\n");// Just to Check;
+                _footer.Add("\n");// Just to Check;
 
                 if (Reprint)
                 {
-                    foot.Add("(Reprinted Duplicate)\n");
+                    _footer.Add("(Reprinted Duplicate)\n");
                 }
                 else
                 {
-                    foot.Add("(Customer Copy)\n");
+                    _footer.Add("(Customer Copy)\n");
                 }
 
-                foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
-                foot.Add("\n" + DotedLine + "\n\n\n\n");
+                _footer.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
+                _footer.Add("\n" + DotedLine + "\n\n\n\n");
               
-                using var pdfDoc = CreateDocument();
-
                 var barcode = Barcodes.QRBarcode.GenerateQRCode(ProductSale.InvoiceNo, ProductSale.OnDate, ProductSale.TotalPrice);
                 //var barcode = Barcodes.QRBarcode.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
                 if (barcode != null)
                 {
                     var img = ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
-                    var imges = new Image(img);
-                    imges.Scale((float)0.1, (float)0.1);
-                    imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                    imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                    pdfDoc.Add(imges);
+                     _qrBarcode = new Image(img);
+                    _qrBarcode.Scale((float)0.1, (float)0.1);
+                    _qrBarcode.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                    _qrBarcode.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    //pdfDoc.Add(imges);
                 }
-                pdfDoc.Add(ip);
-                pdfDoc.Add(foot);
-                pdfDoc.Close();
-                return FileName;
+                //pdfDoc.Add(ip);
+                //pdfDoc.Add(foot);
+                //pdfDoc.Close();
+                //return FileName;
+                return CreateDocument();
             }
             catch (Exception e)
             {

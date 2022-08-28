@@ -1,5 +1,6 @@
-﻿using AKS.Payroll.Database;
-using AKS.Payroll.DTOMapping;
+﻿ 
+using AKS.Accounting.Forms.DTOMapping;
+using AKS.Payroll.Database;
 using AKS.Printers.Thermals;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
@@ -489,9 +490,9 @@ namespace AKS.Accounting.Forms.Vouchers
         {
             try
             {
-                SelectedYear = (int)lbYearList.SelectedValue;
+                SelectedYear =  lbYearList.SelectedValue!=null?(int)lbYearList.SelectedValue:DateTime.Today.Year;
             }
-            catch (Exception ex)
+            catch (Exception  )
             {
                 SelectedYear = DateTime.Today.Year;
             }
@@ -536,7 +537,7 @@ namespace AKS.Accounting.Forms.Vouchers
                         OnDate = voucher.OnDate,
                         Particulars = voucher.Particulars,
                         PartyName = voucher.PartyName,
-                        LedgerName = voucher.Partys.PartyName,
+                        LedgerName =voucher.Partys!=null?voucher.Partys.PartyName:"",
                         Reprint = false,
                         PaymentMode = PaymentMode.Cash,
                         Voucher = voucher.VoucherType,
@@ -558,6 +559,7 @@ namespace AKS.Accounting.Forms.Vouchers
         private void ShowPrintDialog(string filename)
         {
             Form printForm = new Form();
+            printForm.WindowState= FormWindowState.Maximized;
             PdfDocumentView docView = new PdfDocumentView();
             docView.Load(filename);
             docView.Dock = DockStyle.Fill;
@@ -594,7 +596,7 @@ namespace AKS.Accounting.Forms.Vouchers
                         OnDate = voucher.OnDate,
                         Particulars = voucher.Particulars,
                         PartyName = voucher.PartyName,
-                        LedgerName = voucher.Partys.PartyName,
+                        LedgerName = voucher.Partys != null ? voucher.Partys.PartyName : "",
                         Reprint = false,
                         PaymentMode = voucher.PaymentMode,
                         Voucher = VoucherType.Payment,

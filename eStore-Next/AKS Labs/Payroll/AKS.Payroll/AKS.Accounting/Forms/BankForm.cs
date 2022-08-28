@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿
+using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Banking;
 using Microsoft.EntityFrameworkCore;
 

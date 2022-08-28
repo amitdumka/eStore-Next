@@ -5,6 +5,9 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 
+using iText.IO.Image;
+
+
 //using PDFtoPrinter;
 using Path = System.IO.Path;
 
@@ -25,9 +28,9 @@ namespace AKS.Printers.Thermals
         protected int PageWith = 150;
         protected int PageHeight = 1170;
         protected int FontSize = 8;
-        
+
         public bool Page2Inch { get; set; } = false;
-        
+
         protected const string DotedLine = "---------------------------------\n";
         protected const string DotedLineLong = "--------------------------------------------------\n";
 
@@ -48,6 +51,12 @@ namespace AKS.Printers.Thermals
         protected string TitleName { get; set; }
         protected bool SubTitle { get; set; }
         protected string SubTitleName { get; set; }
+
+        protected Paragraph _header;
+        protected Paragraph _title;
+        protected Paragraph _content;
+        protected Paragraph _footer;
+        protected Image _qrBarcode;
 
         protected void GenrateFileName(string number)
         {
@@ -96,7 +105,7 @@ namespace AKS.Printers.Thermals
                         PathName = Path.Combine(PathName, "Others\\UnSorted");
                         break;
                 }
-               // Directory.CreateDirectory(PathName);
+                // Directory.CreateDirectory(PathName);
                 FileName = Path.Combine(PathName, $"{number}.pdf");
                 Directory.CreateDirectory(FileName.Replace(Path.GetFileName(FileName), ""));
             }
@@ -115,7 +124,7 @@ namespace AKS.Printers.Thermals
             this.StoreName = CurrentSession.StoreName;
             this.TaxNo = CurrentSession.TaxNumber;
         }
-        protected Document CreateDocument()
+        public string CreateDocument()
         {
             if (!Page2Inch)
             {
@@ -126,7 +135,7 @@ namespace AKS.Printers.Thermals
             PdfDocument pdf = new PdfDocument(pdfWriter);
 
             Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
-        
+
             this.StoreCode = CurrentSession.StoreCode;
             this.Address = CurrentSession.Address;
             this.City = CurrentSession.CityName;
@@ -143,36 +152,43 @@ namespace AKS.Printers.Thermals
             code.SetFont(timesRoman).SetFontSize(FontSize);
 
             //Header
-            Paragraph header = new Paragraph(StoreName + "\n").SetFontSize(FontSize);
-            header.AddStyle(code);
-            header.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-            header.Add(Address + "\n");
-            header.Add(City + "\n");
-            header.Add("Ph No: " + Phone + "\n");
-            header.Add(TaxNo + "\n");
-            
-            pdfDoc.Add(header);
+            _header = new Paragraph(StoreName + "\n").SetFontSize(FontSize);
+            _header.AddStyle(code);
+            _header.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+            _header.Add(Address + "\n");
+            _header.Add(City + "\n");
+            _header.Add("Ph No: " + Phone + "\n");
+            _header.Add(TaxNo + "\n");
 
-            Paragraph title = new Paragraph().SetFontSize(FontSize);
-            title.AddStyle(code);
-            title.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
+            pdfDoc.Add(_header);
 
-            if (!Page2Inch) title.Add(DotedLineLong);
-            else title.Add(DotedLine);
-            
-            title.Add("  " + TitleName + "\n");
-            
-            if (!Page2Inch) title.Add(DotedLineLong);
-            else title.Add(DotedLine);
-            
+            _title = new Paragraph().SetFontSize(FontSize);
+            _title.AddStyle(code);
+            _title.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
+
+            if (!Page2Inch) _title.Add(DotedLineLong);
+            else _title.Add(DotedLine);
+
+            _title.Add("  " + TitleName + "\n");
+
+            if (!Page2Inch) _title.Add(DotedLineLong);
+            else _title.Add(DotedLine);
+
             if (SubTitle)
             {
-                title.Add($"  {SubTitleName}\n");
-                if (!Page2Inch) title.Add(DotedLineLong);
-                else title.Add(DotedLine);
+                _title.Add($"  {SubTitleName}\n");
+                if (!Page2Inch) _title.Add(DotedLineLong);
+                else _title.Add(DotedLine);
             }
-            pdfDoc.Add(title);
-            return pdfDoc;
+            pdfDoc.Add(_title);
+            if (_qrBarcode != null) 
+                pdfDoc.Add(_qrBarcode);
+            if (_content != null)
+                pdfDoc.Add(_content);
+            if (_footer != null) pdfDoc.Add(_footer);
+            
+            pdfDoc.Close();
+            return FileName;
         }
     }
 }

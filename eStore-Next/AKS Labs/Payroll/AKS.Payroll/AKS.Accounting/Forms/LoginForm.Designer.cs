@@ -1,4 +1,4 @@
-﻿namespace AKS.Payroll
+﻿namespace AKS.Accounting.Forms
 {
     partial class LoginForm
     {

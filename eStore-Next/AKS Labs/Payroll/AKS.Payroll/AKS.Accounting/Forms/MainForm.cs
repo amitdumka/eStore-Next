@@ -2,7 +2,7 @@
 using AKS.Accounting.Forms.Banking;
 using AKS.Accounting.Forms.Vouchers;
 
-namespace AKS.Payroll
+namespace AKS.Accounting.Forms
 {
     public partial class MainForm : Form
     {
@@ -55,18 +55,6 @@ namespace AKS.Payroll
             Application.Exit();
         }
 
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
         private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolStrip.Visible = toolBarToolStripMenuItem.Checked;
@@ -105,47 +93,10 @@ namespace AKS.Payroll
             }
         }
 
-        private void employeeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new EmployeeForm());
-        }
-
-        private void attendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new AttendanceForm());
-        }
-
         private void LoadForm(Form frm)
         {
             frm.MdiParent = this;
             frm.Show();
-        }
-
-        private void salaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //LoadForm(new )
-            LoadForm(new SalaryForm());
-        }
-
-        private void monthlyAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new MonthlyAttendanceForm());
-        }
-
-        private void addAttendanceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new Forms.EntryForms.AttendanceEntryForm());
-        }
-
-        private void addSalaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void addPaymentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //PayrollMigration pm = new PayrollMigration();
-            //pm.Migrate();
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -154,52 +105,13 @@ namespace AKS.Payroll
             Application.Exit();
         }
 
-        private void paymentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalaryPaymentForm());
-        }
-
-        private void recieptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalaryPaymentForm(true));
-        }
-
-        private void addEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void addReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void testFormToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            LoadForm(new TestForm());
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new AboutBox1());
-        }
-
-        private void paToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new PaySlipForm());
-        }
-
-        private void printCurrentPaySlipToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Call From Ops then print.
-            //var form = new PdfForm();
-            //LoadForm(form);
-            new BasicOperations().PayrollReport();
-        }
-
-        private void bankLetterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new PayslipBankLetterForm());
         }
 
         private void bankToolStripMenuItem_Click(object sender, EventArgs e)
@@ -232,44 +144,13 @@ namespace AKS.Payroll
             LoadForm(new VochersForm(VoucherType.CashReceipt));
         }
 
-        private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new DailySaleForm());
-        }
-
         private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadForm(new PettyCashSheetForm());
         }
 
-        private void timeSheetToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadForm(new TimeSheetForm());
-        }
-
-        private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.Sales));
-        }
-
-        private void manualSalesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.ManualSale));
-        }
-
-        private void saleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.SalesReturn));
-        }
-
-        private void manulSaleReturnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new SalesForm(InvoiceType.ManualSaleReturn));
-        }
-
-        private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadForm(new PurchaseForm( ));
         }
     }
 }

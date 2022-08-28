@@ -7,8 +7,6 @@ using iText.Layout.Element;
 
 namespace AKS.Printers.Thermals
 {
-
-
     public class VoucherPrint : ThermalPrinter
     {
         public bool IsVoucherSet { get; set; }
@@ -81,9 +79,9 @@ namespace AKS.Printers.Thermals
 
                     case VoucherType.CashReceipt:
                         PrintType = PrintType.CashReceiptVocucher;
-                        TitleName =     "RECEIPT VOUCHER";
-                        SubTitleName =  "      Cash Voucher     ";
-                        SubTitle = true; 
+                        TitleName = "RECEIPT VOUCHER";
+                        SubTitleName = "      Cash Voucher     ";
+                        SubTitle = true;
                         break;
 
                     case VoucherType.CashPayment:
@@ -105,113 +103,112 @@ namespace AKS.Printers.Thermals
                 code.SetFont(timesRoman).SetFontSize(FontSize);
 
                 //Details
-                Paragraph ip = new Paragraph().SetFontSize(FontSize);
-                ip.AddStyle(code);
-                ip.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL );
+                _content = new Paragraph().SetFontSize(FontSize);
+                _content.AddStyle(code);
+                _content.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
                 //Footer
-                Paragraph foot = new Paragraph().SetFontSize(FontSize);
-                foot.AddStyle(code);
-                foot.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER );
-                
+                  _footer = new Paragraph().SetFontSize(FontSize);
+                _footer.AddStyle(code);
+                _footer.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add("Voucher No: " + VoucherNo + "\n");
-                ip.AddTabStops(new TabStop(30));
-                ip.Add("  " + "                  Date: " + OnDate.ToString() + "\n");
-                ip.AddTabStops(new TabStop(30));
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add("Voucher No: " + VoucherNo + "\n");
+                _content.AddTabStops(new TabStop(30));
+                _content.Add("  " + "                  Date: " + OnDate.ToString() + "\n");
+                _content.AddTabStops(new TabStop(30));
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add("Party Name: " + PartyName + "\n");
-                ip.Add($"Address: {City}\n");
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add("Party Name: " + PartyName + "\n");
+                _content.Add($"Address: {City}\n");
+                if (!string.IsNullOrEmpty(LedgerName))
+                    _content.Add($"Ledger: {LedgerName}\n");
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
 
                 if (Voucher == VoucherType.CashPayment || Voucher == VoucherType.CashReceipt)
                 {
-                    ip.Add($"Category: {PaymentDetails}\n");//Transcation Mode
+                    _content.Add($"Category: {PaymentDetails}\n");//Transcation Mode
                 }
 
-                ip.Add($"Particulars: {Particulars} \n\n Amount: Rs. {Amount.ToString("0.##")}");
-                ip.AddTabStops(new TabStop(30));
+                _content.Add($"Particulars: {Particulars} \n\n Amount: Rs. {Amount.ToString("0.##")}");
+                _content.AddTabStops(new TabStop(30));
 
                 if (PaymentMode == PaymentMode.Cash)
                 {
-                    ip.Add(" Paid in cash.");
+                    _content.Add(" Paid in cash.");
                 }
                 else if (PaymentMode == PaymentMode.Card)
                 {
-                    ip.Add($"Paid by Card. Last Four Digit:{PaymentDetails}");
+                    _content.Add($"Paid by Card. Last Four Digit:{PaymentDetails}");
                 }
                 else if (PaymentMode == PaymentMode.RTGS || PaymentMode == PaymentMode.NEFT || PaymentMode == PaymentMode.IMPS)
                 {
-                    ip.Add($"Paid through Bank transfer. Ref Id:{PaymentDetails}");
+                    _content.Add($"Paid through Bank transfer. Ref Id:{PaymentDetails}");
                 }
                 else if (PaymentMode == PaymentMode.Cheques)
                 {
-                    ip.Add($"Paid through Cheque(s). Details: {PaymentDetails}");
+                    _content.Add($"Paid through Cheque(s). Details: {PaymentDetails}");
                 }
                 else if (PaymentMode == PaymentMode.UPI)
                 {
-                    ip.Add($"Paid through UPI/QRCode. Ref Id: {PaymentDetails}");
+                    _content.Add($"Paid through UPI/QRCode. Ref Id: {PaymentDetails}");
                 }
                 else
                 {
-                    ip.Add($"Payment Mode: {PaymentMode.ToString()} Details: {PaymentDetails}");
+                    _content.Add($"Payment Mode: {PaymentMode.ToString()} Details: {PaymentDetails}");
                 }
-                ip.Add("\n");
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add($"Remarks: {Remarks}\n");
+                _content.Add("\n");
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add($"Remarks: {Remarks}\n");
 
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add($"Issued By: {IssuedBy} \n");
-               // if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add("\n");
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add($"Issued By: {IssuedBy} \n");
+                // if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add("\n");
 
-                using var pdfDoc = CreateDocument();
+              
                 //Footer
-                if (!Page2Inch) ip.Add(DotedLineLong); else ip.Add(DotedLine);
-                ip.Add(FooterFirstMessage + "\n");
-                foot.Add(DotedLineLong);
-                foot.Add($"For {StoreName}\n\n_______________\n({IssuedBy})\n Signature" + "\n");
-                foot.Add("\n_______________\nParty Signature" + "\n");
-                if (!Page2Inch) foot.Add(DotedLineLong); else foot.Add(DotedLine);
-                foot.Add("\n");// Just to Check;
+                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
+                _content.Add(FooterFirstMessage + "\n");
+                _footer.Add(DotedLineLong);
+                _footer.Add($"For {StoreName}\n\n_______________\n({IssuedBy})\n Signature" + "\n");
+                _footer.Add("\n_______________\nParty Signature" + "\n");
+                if (!Page2Inch) _footer.Add(DotedLineLong); else _footer.Add(DotedLine);
+                _footer.Add("\n");// Just to Check;
 
                 if (Reprint)
                 {
-                    foot.Add("(Reprinted Duplicate)\n");
+                    _footer.Add("(Reprinted Duplicate)\n");
                 }
                 else
                 {
-                    foot.Add("(Orignal Copy)\n");
+                    _footer.Add("(Orignal Copy)\n");
                 }
 
-                foot.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
-                foot.Add("\n" + DotedLine + "\n\n\n\n");
-
-
+                _footer.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
+                _footer.Add("\n" + DotedLine + "\n\n\n\n");
 
                 var barcode = Barcodes.QRBarcode.GenerateQRCode(VoucherNo, OnDate, Amount);
                 //var barcode = Barcodes.QRBarcode.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
                 if (barcode != null)
                 {
                     var img = ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
-                    var imges = new Image(img);
-                    imges.Scale((float)0.1, (float)0.1);
-                    imges.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
-                    imges.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                    pdfDoc.Add(imges);
+                    _qrBarcode = new Image(img);
+                    _qrBarcode.Scale((float)0.1, (float)0.1);
+                    _qrBarcode.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                    _qrBarcode.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    //pdfDoc.Add(imges);
                 }
 
                 //Set data first;
-                pdfDoc.Add(ip);
-                pdfDoc.Add(foot);
-                pdfDoc.Close();
-                return FileName;
+                //pdfDoc.Add(ip);
+                //pdfDoc.Add(foot);
+                // pdfDoc.Close();
+                // return FileName;
+                return CreateDocument();
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.Message);
                 return null;
             }

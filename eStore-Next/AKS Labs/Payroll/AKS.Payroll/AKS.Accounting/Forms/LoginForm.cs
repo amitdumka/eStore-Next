@@ -1,8 +1,9 @@
+
 using AKS.Auths;
 using AKS.Payroll.Database;
 using AKS.Shared.Commons.Ops;
 
-namespace AKS.Payroll
+namespace AKS.Accounting.Forms
 {
     public partial class LoginForm : Form
     {

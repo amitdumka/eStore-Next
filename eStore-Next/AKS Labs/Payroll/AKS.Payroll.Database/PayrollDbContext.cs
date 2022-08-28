@@ -130,6 +130,8 @@ namespace AKS.Payroll.Database
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<CustomerSale> CustomerSales { get; set; }
+
+        public DbSet<BankTranscation> BankTranscations { get; set; }
  
     }
 

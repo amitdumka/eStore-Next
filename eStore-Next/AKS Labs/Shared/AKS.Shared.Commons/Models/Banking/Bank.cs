@@ -4,6 +4,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKS.Shared.Commons.Models.Banking
 {
+    public enum DebitCredit { In, Out }
+    public class BankTranscation : BaseST
+    {
+        [Key]
+        public int BankTranscationId { get; set; }
+        public string AccountNumber { get; set; }
+        public DateTime OnDate { get; set; }
+        public string Naration { get; set; }
+        public string RefNumber { get; set; }
+        public decimal Amount { get; set; }//In is postive and Out is Negative.
+        public decimal Balance { get; set; }
+        public DebitCredit DebitCredit { get; set; }
+        public DateTime? BankDate { get; set; }
+        public bool Verified { get; set; }
+
+        [ForeignKey("AccountNumber")]
+        public virtual BankAccount BankAccount { get; set; }
+    }
     [Table("V1_Banks")]
     public class Bank
     {

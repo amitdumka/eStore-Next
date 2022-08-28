@@ -11,5 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\Accounts\Voucher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Banking\Bank.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Banking\BankTrans.cs" />
   </ItemGroup>
 </Project>

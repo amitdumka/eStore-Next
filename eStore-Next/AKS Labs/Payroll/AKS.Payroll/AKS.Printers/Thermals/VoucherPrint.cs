@@ -38,6 +38,8 @@ namespace AKS.Printers.Thermals
                 {
                     PageWith = 240;
                     FontSize = 10;
+                    PageHeight = 1170*2;
+
                 }
                 if (!IsVoucherSet) return null;
                 switch (Voucher)
@@ -107,9 +109,13 @@ namespace AKS.Printers.Thermals
                 _content.AddStyle(code);
                 _content.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
                 //Footer
-                  _footer = new Paragraph().SetFontSize(FontSize);
+                _footer = new Paragraph().SetFontSize(FontSize);
                 _footer.AddStyle(code);
                 _footer.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+
+                _dupFooter = new Paragraph().SetFontSize(FontSize);
+                _dupFooter.AddStyle(code);
+                _dupFooter.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
 
                 if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
                 _content.Add("Voucher No: " + VoucherNo + "\n");
@@ -166,10 +172,10 @@ namespace AKS.Printers.Thermals
                 // if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
                 _content.Add("\n");
 
-              
+
                 //Footer
-                if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
-                _content.Add(FooterFirstMessage + "\n");
+                if (!Page2Inch) _footer.Add(DotedLineLong); else _footer.Add(DotedLine);
+                _footer.Add(FooterFirstMessage + "\n");
                 _footer.Add(DotedLineLong);
                 _footer.Add($"For {StoreName}\n\n_______________\n({IssuedBy})\n Signature" + "\n");
                 _footer.Add("\n_______________\nParty Signature" + "\n");
@@ -178,7 +184,7 @@ namespace AKS.Printers.Thermals
 
                 if (Reprint)
                 {
-                    _footer.Add("(Reprinted Duplicate)\n");
+                    _footer.Add("(Reprinted Orginal)\n");
                 }
                 else
                 {
@@ -200,12 +206,33 @@ namespace AKS.Printers.Thermals
                     //pdfDoc.Add(imges);
                 }
 
+                if (!Page2Inch) _dupFooter.Add(DotedLineLong); else _dupFooter.Add(DotedLine);
+                _dupFooter.Add(FooterFirstMessage + "\n");
+                _dupFooter.Add(DotedLineLong);
+                _dupFooter.Add($"For {StoreName}\n\n_______________\n({IssuedBy})\n Signature" + "\n");
+                _dupFooter.Add("\n_______________\nParty Signature" + "\n");
+                if (!Page2Inch) _dupFooter.Add(DotedLineLong); else _dupFooter.Add(DotedLine);
+                _dupFooter.Add("\n");// Just to Check;
+
+                if (Reprint)
+                {
+                    _dupFooter.Add("(Reprinted Duplicate)\n");
+                }
+                else
+                {
+                    _dupFooter.Add("(Duplicate Copy)\n");
+                }
+
+                _dupFooter.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
+                _dupFooter.Add("\n" + DotedLine + "\n\n\n\n");
+
+
                 //Set data first;
                 //pdfDoc.Add(ip);
                 //pdfDoc.Add(foot);
                 // pdfDoc.Close();
                 // return FileName;
-                return CreateDocument();
+                return CreateDocument(true);
             }
             catch (Exception e)
             {

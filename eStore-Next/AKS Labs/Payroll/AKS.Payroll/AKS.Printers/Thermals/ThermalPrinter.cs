@@ -56,6 +56,7 @@ namespace AKS.Printers.Thermals
         protected Paragraph _title;
         protected Paragraph _content;
         protected Paragraph _footer;
+        protected Paragraph _dupFooter;
         protected Image _qrBarcode;
 
         protected void GenrateFileName(string number)
@@ -124,12 +125,16 @@ namespace AKS.Printers.Thermals
             this.StoreName = CurrentSession.StoreName;
             this.TaxNo = CurrentSession.TaxNumber;
         }
-        public string CreateDocument()
+        public string CreateDocument(bool duplicate=false)
         {
             if (!Page2Inch)
             {
                 PageWith = 240;
                 FontSize = 10;
+                if (duplicate)
+                {
+                    PageHeight = 1170 * 2;
+                }
             }
             PdfWriter pdfWriter = new PdfWriter(FileName);
             PdfDocument pdf = new PdfDocument(pdfWriter);
@@ -186,7 +191,16 @@ namespace AKS.Printers.Thermals
             if (_content != null)
                 pdfDoc.Add(_content);
             if (_footer != null) pdfDoc.Add(_footer);
-            
+            if (duplicate)
+            {
+                pdfDoc.Add(_header);
+                pdfDoc.Add(_title);
+                if (_qrBarcode != null)
+                    pdfDoc.Add(_qrBarcode);
+                if (_content != null)
+                    pdfDoc.Add(_content);
+                if (_dupFooter != null) pdfDoc.Add(_dupFooter);
+            }
             pdfDoc.Close();
             return FileName;
         }

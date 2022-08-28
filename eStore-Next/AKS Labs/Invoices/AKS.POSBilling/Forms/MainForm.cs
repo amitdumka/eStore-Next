@@ -101,17 +101,11 @@
             }
         }
 
-        
-
         private void LoadForm(Form frm)
         {
             frm.MdiParent = this;
             frm.Show();
         }
-
-        
-
-         
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -119,42 +113,18 @@
             Application.Exit();
         }
 
-         
-        
-
         private void addEmployeeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         private void addReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
-
-         
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //LoadForm(new AboutBox1());
         }
-
-         
-
-         
-
-       
-        private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-           // LoadForm(new DailySaleForm());
-        }
-
-        private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //LoadForm(new PettyCashSheetForm());
-        }
-
-         
 
         private void regularSalesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -178,12 +148,11 @@
 
         private void purchaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadForm(new PurchaseForm( ));
+            LoadForm(new PurchaseForm());
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -1,5 +1,6 @@
 
 
+using AKS.Auths;
 using AKS.Payroll.Database;
 using AKS.POSBilling.Commons;
 using AKS.Shared.Commons.Ops;
@@ -35,19 +36,20 @@ namespace AKS.POSBilling.Forms
         /// <returns></returns>
         private bool DoLoin(string u, string p)
         {
-            var f = azureDb.Users.Where(c => c.UserName == u && c.Password == p && c.Enabled).FirstOrDefault();
-            if (f != null)
-            {
-                CurrentSession.StoreName = "Aprajita Retails";
-                CurrentSession.StoreCode = "ARD";
-                CurrentSession.UserName = u;
-                CurrentSession.GuestName = f.GuestName;
-                CurrentSession.UserType = f.UserType;
-                CurrentSession.LoggedTime=DateTime.Now;
+            //var f = azureDb.Users.Where(c => c.UserName == u && c.Password == p && c.Enabled).FirstOrDefault();
+            //if (f != null)
+            //{
+            //    CurrentSession.StoreName = "Aprajita Retails";
+            //    CurrentSession.StoreCode = "ARD";
+            //    CurrentSession.UserName = u;
+            //    CurrentSession.GuestName = f.GuestName;
+            //    CurrentSession.UserType = f.UserType;
+            //    CurrentSession.LoggedTime=DateTime.Now;
 
-                return true;
-            }
-            return false;
+            //    return true;
+            //}
+            //return false;
+           return Auth.DoLogin(u, p, azureDb);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Payroll\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+		<ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.Auths\AKS.Auths.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

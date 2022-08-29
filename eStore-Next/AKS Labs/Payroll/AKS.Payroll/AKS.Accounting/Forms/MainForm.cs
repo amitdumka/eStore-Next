@@ -152,5 +152,10 @@ namespace AKS.Accounting.Forms
         private void MainForm_Load(object sender, EventArgs e)
         {
         }
+
+        private void depositWithdrawalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new BankTranscationForm());
+        }
     }
 }

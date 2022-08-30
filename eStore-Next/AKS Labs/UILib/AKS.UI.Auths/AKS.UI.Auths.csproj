@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Payroll\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+    <ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.Auths\AKS.Auths.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

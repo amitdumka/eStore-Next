@@ -13,6 +13,8 @@ namespace AKS.PosSystem.Reports
     public class SaleReports
     {
         private static SaleDataModel DataModel;
+        public SaleReports(SaleDataModel dm) { DataModel = dm; }
+
         public SortedDictionary<int, List<List<SaleReportVM>>> SaleReport(string storeCode, InvoiceType iType)
         {
             if (DataModel == null) DataModel = new SaleDataModel();

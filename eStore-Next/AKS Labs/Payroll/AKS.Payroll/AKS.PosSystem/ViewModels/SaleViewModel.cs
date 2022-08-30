@@ -17,64 +17,6 @@ using AKS.Shared.Commons.Ops;
 
 namespace AKS.PosSystem.ViewModels
 {
-    #region Helpers
-
-    public static class SaleStatic
-    {
-        public static string GenerateInvoiceNumber(InvoiceType iType, int count, string scode)
-        {
-            string ino = $"{scode}/{DateTime.Now.Year}/{DateTime.Now.Month}/";
-            switch (iType)
-            {
-                case InvoiceType.Sales:
-                    ino += $"IN/{SaleUtils.INCode(count)}";
-                    break;
-
-                case InvoiceType.SalesReturn:
-                    ino += $"SR/{SaleUtils.INCode(count)}";
-                    break;
-
-                case InvoiceType.ManualSale:
-                    ino += $"MIN/{SaleUtils.INCode(count)}";
-                    break;
-
-                case InvoiceType.ManualSaleReturn:
-                    ino += $"SRM/{SaleUtils.INCode(count)}";
-                    break;
-
-                default:
-                    ino += $"IN/{SaleUtils.INCode(count)}";
-                    break;
-            }
-            return ino;
-        }
-
-        public static decimal CalculateRate(string dis, string qty, string rate)
-        {
-            try
-            {
-                if (dis.Contains('%'))
-                {
-                    var x = decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim());
-                    x -= x * decimal.Parse(dis.Replace('%', ' ').Trim()) / 100;
-                    return x;
-                }
-                else
-                {
-                    var x = decimal.Parse(qty.Trim()) * decimal.Parse(rate.Trim())
-                        - decimal.Parse(dis.Trim());
-                    return x;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-    }
-
-    #endregion Helpers
-
     #region SaleModel
 
     public class SalesViewModel : ViewModel<ProductSale, SaleItem, SaleVM, SaleDataModel>
@@ -93,7 +35,8 @@ namespace AKS.PosSystem.ViewModels
 
         #region DeclartionSection
 
-        static Action<string, AlertType> AlertCallBack = null;
+        private static Action<string, AlertType> AlertCallBack = null;
+
         #region DataModels
 
         private ProductStockDataModel _stockDataModel;
@@ -150,21 +93,19 @@ namespace AKS.PosSystem.ViewModels
         /// <summary>
         /// Load Barcode List for use for AutoComplete
         /// </summary>
-        public void LoadBarcodeList()
+        public List<string> LoadBarcodeList()
         {
             // For using in autocomplete text box, not enabled .
-            if (_barcodeList.Count > 0) return;
-            _barcodeList = _stockDataModel.GetBarcodeList();
-            //foreach (var item in x)
-            //{
-            //    _barcodeList.Add(item);
-            //}
+            if (_barcodeList.Count <= 0)
+                _barcodeList = _stockDataModel.GetBarcodeList();
+            return _barcodeList;
+            
         }
 
         /// <summary>
         /// Reset Cart to zero
         /// </summary>
-        private void ResetCart()
+        public void ResetCart()
         {
             TotalAmount = TotalItem = TotalDiscount = TotalTax = TotalQty = TotalFreeQty = 0;
             TotalCount = 0;
@@ -371,6 +312,7 @@ namespace AKS.PosSystem.ViewModels
         #endregion Methods
 
         #region OpsMethod
+
         /// <summary>
         /// return Product Sale of Particular type for GridView  Datasources
         /// </summary>
@@ -389,6 +331,7 @@ namespace AKS.PosSystem.ViewModels
             LastInvoicePath = null;
             return DataModel.GetCustomerList();
         }
+
         /// <summary>
         /// Add Payment to Payment List for new/edit Invoices
         /// </summary>
@@ -399,6 +342,7 @@ namespace AKS.PosSystem.ViewModels
                 PaymentDetails = new List<PaymentDetail>();
             PaymentDetails.Add(pd);
         }
+
         public StockInfo? GetItemDetail(string barcode, bool Tailoring)
         {
             if (Tailoring)
@@ -458,6 +402,7 @@ namespace AKS.PosSystem.ViewModels
         #endregion OpsMethod
 
         #region NonModel
+
         public List<CustomerListVM> GetCustomerList()
         {
             return DataModel.GetCustomerList();
@@ -502,165 +447,10 @@ namespace AKS.PosSystem.ViewModels
                 else
                     Alert("Customer Not added", AlertType.Warning, AlertCallBack);
             }
-
         }
-        #endregion
 
+        #endregion NonModel
     }
 
     #endregion SaleModel
-
-    #region NotImplemented
-
-    public class SaleVM
-    { }
-
-    public class SaleViewModel
-    {
-    }
-
-    public class ProductSaleViewModel : ViewModel<ProductSale, ProductSaleDataModel>
-    {
-        public override bool InitViewModel()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class SaleItemViewModel : ViewModel<SaleItem, SaleItemDataModel>
-    {
-        public override bool InitViewModel()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ProductSaleItemViewModel : ViewModel<ProductSale, SaleItem>
-    {
-        public override bool InitViewModel()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    #endregion NotImplemented
-
-    #region ViewModelTempletes
-
-    public abstract class ViewModel<T, Y, VM, DM>
-    {
-        public string StoreCode { get; set; }
-
-        public List<VM> _ViewModels { get; set; }
-        public List<T> PrimaryEntites { get; set; }
-        public List<Y> SecondayEntites { get; set; }
-        public T PrimaryEntity { get; set; }
-        public Y SecondaryEntity { get; set; }
-        public VM _ViewModel { get; set; }
-        public DM DataModel { get; set; }
-
-        public List<T> GetPrimaryEntities()
-        { return PrimaryEntites; }
-
-        public List<Y> GetSecondaryEntities()
-        { return SecondayEntites; }
-
-        public List<VM> GetViewModels()
-        { return _ViewModels; }
-
-        //Save Enties
-        public abstract bool Save(T entity);
-
-        public bool Save(Y entity)
-        { return false; }
-
-        //Delete
-        public abstract bool Delete(T entity);
-
-        public bool Delete(Y entity)
-        { return false; }
-
-        public abstract bool DeleteRange(List<T> entities);
-
-        public bool DeleteRange(List<Y> entities)
-        { return false; }
-
-        public abstract bool InitViewModel();
-
-        /// <summary>
-        /// Alert to UI
-        /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="type"></param>
-        /// <param name="func"></param>
-        public void Alert(string msg, AlertType type, Action<string, AlertType> func)
-        {
-            func(msg, type);
-        }
-        public enum AlertType { Normal, Info, Error, Warning }
-    }
-
-    public abstract class ViewModel<T, DM>
-    {
-        public string StoreCode { get; set; }
-        public List<T> PrimaryEntites { get; set; }
-        public T PrimaryEntity { get; set; }
-        public DM DataModel { get; set; }
-
-        public List<T> GetPrimaryEntities()
-        { return PrimaryEntites; }
-
-        //Save Enties
-        public bool Save(T entity)
-        { return false; }
-
-        //Delete
-        public bool Delete(T entity)
-        { return false; }
-
-        public bool DeleteRange(List<T> entities)
-        { return false; }
-
-        public abstract bool InitViewModel();
-    }
-
-    public abstract class ViewModel<T, Y, DM>
-    {
-        public string StoreCode { get; set; }
-        public List<T> PrimaryEntites { get; set; }
-        public List<Y> SecondayEntites { get; set; }
-        public T PrimaryEntity { get; set; }
-        public Y SecondaryEntity { get; set; }
-        public DM DataModel { get; set; }
-
-        public List<T> GetPrimaryEntities()
-        { return PrimaryEntites; }
-
-        public List<Y> GetSecondaryEntities()
-        { return SecondayEntites; }
-
-        //Save Enties
-        public bool Save(T entity)
-        { return false; }
-
-        public bool Save(Y entity)
-        { return false; }
-
-        //Delete
-        public bool Delete(T entity)
-        { return false; }
-
-        public bool Delete(Y entity)
-        { return false; }
-
-        public bool DeleteRange(List<T> entities)
-        { return false; }
-
-        public bool DeleteRange(List<Y> entities)
-        { return false; }
-
-        public abstract bool InitViewModel();
-    }
-
-    #endregion ViewModelTempletes
 }

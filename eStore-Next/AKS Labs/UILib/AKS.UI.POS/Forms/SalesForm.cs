@@ -5,31 +5,65 @@
  * @Copyrite: Aks Labs(Amit Kumar)
  * @AuthurEmail: amit.dumka@gmail.com
  */
+
 using AKS.Payroll.Database;
 using AKS.PosSystem.Helpers;
 using AKS.PosSystem.Models.VM;
+using AKS.PosSystem.Reports;
 using AKS.PosSystem.ViewModels;
+using AKS.Shared.Commons.Ops;
 using System.Data;
 
 namespace AKS.UI.POS.Forms
 {
     public partial class SalesForm : Form
     {
-        private SalesManager _salesManager;
+        // private SalesManager _salesManager;
 
+        private SalesViewModel _saleViewModel;
         private AzurePayrollDbContext azureDb;
         private LocalPayrollDbContext localDb;
+        private AutoCompleteStringCollection barcodeAutoSource;
+        private void Alerts(string msg, AlertType type)
+        {
+            string alertT = "Alert";
+            MessageBoxIcon icon = MessageBoxIcon.Asterisk;
+            switch (type)
+            {
+                case AlertType.Normal:
+                    break;
+
+                case AlertType.Info:
+                    icon = MessageBoxIcon.Information;
+                    alertT = "Infomation";
+                    break;
+
+                case AlertType.Error:
+                    icon = MessageBoxIcon.Error;
+                    alertT = "Error";
+                    break;
+
+                case AlertType.Warning:
+                    icon = MessageBoxIcon.Warning;
+                    alertT = "Warning";
+                    break;
+
+                default:
+                    break;
+            }
+            MessageBox.Show(msg, alertT, MessageBoxButtons.OK, icon);
+        }
 
         public SalesForm()
         {
             InitializeComponent();
-            _salesManager = new SalesManager(azureDb, localDb, null);
+            _saleViewModel = new SalesViewModel(InvoiceType.ManualSale, Alerts);
         }
 
         public SalesForm(InvoiceType type)
         {
             InitializeComponent();
-            _salesManager = new SalesManager(azureDb, localDb, type);
+            _saleViewModel = new SalesViewModel(type, Alerts);
         }
 
         private void AddToCart()
@@ -56,18 +90,18 @@ namespace AKS.UI.POS.Forms
                 si.Amount = (si.Rate * si.Qty) - si.Discount;
 
                 //Adding to List
-                _salesManager.SaleItem.Add(si);
+                _saleViewModel.SaleItemVMs.Add(si);
                 //Update Cart total
 
                 //TOD:Count based on unit if fabric then 1 and if rmz then stock unit
-                _salesManager.TotalItem++;
+                _saleViewModel.TotalItem++;
                 //TODO: 100% discount
 
-                _salesManager.TotalFreeQty += 0;
-                _salesManager.TotalQty += si.Qty;
-                _salesManager.TotalDiscount += si.Discount;
-                //_salesManager.TotalTax += si.Tax;
-                _salesManager.TotalAmount += si.Amount;
+                _saleViewModel.TotalFreeQty += 0;
+                _saleViewModel.TotalQty += si.Qty;
+                _saleViewModel.TotalDiscount += si.Discount;
+                //_saleViewModel.TotalTax += si.Tax;
+                _saleViewModel.TotalAmount += si.Amount;
                 UpdateCartTotal();
                 txtBarcode.Text = "";
                 txtQty.Text = "0";
@@ -103,11 +137,11 @@ namespace AKS.UI.POS.Forms
                         cbxInvType.SelectedIndex = (int)InvoiceType.SalesReturn;
                     else cbxInvType.SelectedIndex = (int)InvoiceType.Sales;
                 }
-                _salesManager.ResetCart();
+                _saleViewModel.ResetCart();
 
                 txtBarcode.AutoCompleteMode = AutoCompleteMode.Suggest;
                 txtBarcode.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                txtBarcode.AutoCompleteCustomSource = _salesManager.barcodeList;
+                txtBarcode.AutoCompleteCustomSource = barcodeAutoSource;
             }
             else if (btnAdd.Text == "Edit")
             {
@@ -123,12 +157,12 @@ namespace AKS.UI.POS.Forms
                 {
                     if (SaveSaleData())
                     {
-                        MessageBox.Show($"Invoice is Saved! \n Invoice No is {_salesManager.LastInvoice.InvoiceNo}");
-                        pdfViewer.Load(_salesManager.LastInvoicePath);
+                        MessageBox.Show($"Invoice is Saved! \n Invoice No is {_saleViewModel.LastInvoice.InvoiceNo}");
+                        pdfViewer.Load(_saleViewModel.LastInvoicePath);
                         pdfViewer.Visible = true;
                         tabControl1.SelectedTab = tpView;
-                        filename = _salesManager.LastInvoicePath;
-                        lbLastInvoice.Text = _salesManager.LastInvoice.InvoiceNo;
+                        filename = _saleViewModel.LastInvoicePath;
+                        lbLastInvoice.Text = _saleViewModel.LastInvoice.InvoiceNo;
                         btnAdd.Text = "Add";
                         PostPreFormReset();
 
@@ -147,7 +181,7 @@ namespace AKS.UI.POS.Forms
             if (cbCashBill.Checked) return true;
             else
             {
-                if (_salesManager.PaymentDetails == null || _salesManager.PaymentDetails.Count == 0)
+                if (_saleViewModel.PaymentDetails == null || _saleViewModel.PaymentDetails.Count == 0)
                     return false;
                 else return true;
             }
@@ -155,7 +189,7 @@ namespace AKS.UI.POS.Forms
 
         private void PostPreFormReset()
         {
-            _salesManager.ResetCart();
+            _saleViewModel.ResetCart();
             UpdateCartTotal();
             dgvSaleItems.DataSource = null;
             cbxMmobile.SelectedIndex = 0;
@@ -165,12 +199,12 @@ namespace AKS.UI.POS.Forms
 
         private void UpdateCartTotal()
         {
-            lbTotalAmount.Text = $"Total Amount: Rs {_salesManager.TotalAmount} ";
-            lbTotalDiscount.Text = $"Discount Amount: Rs {_salesManager.TotalDiscount} ";
-            lbTotalFree.Text = $"Free Qty(s): Rs {_salesManager.TotalFreeQty} ";
-            lbTotalQty.Text = $"Total Qty(s): Rs {_salesManager.TotalFreeQty} ";
-            lbTotalItem.Text = $"Total Items(s): Rs {_salesManager.TotalItem} ";
-            lbTotalTax.Text = $"Tax Amt: Rs {_salesManager.TotalTax} ";
+            lbTotalAmount.Text = $"Total Amount: Rs {_saleViewModel.TotalAmount} ";
+            lbTotalDiscount.Text = $"Discount Amount: Rs {_saleViewModel.TotalDiscount} ";
+            lbTotalFree.Text = $"Free Qty(s): Rs {_saleViewModel.TotalFreeQty} ";
+            lbTotalQty.Text = $"Total Qty(s): Rs {_saleViewModel.TotalFreeQty} ";
+            lbTotalItem.Text = $"Total Items(s): Rs {_saleViewModel.TotalItem} ";
+            lbTotalTax.Text = $"Tax Amt: Rs {_saleViewModel.TotalTax} ";
         }
 
         /// <summary>
@@ -179,13 +213,13 @@ namespace AKS.UI.POS.Forms
         /// <returns></returns>
         private bool SaveSaleData()
         {
-            return _salesManager.SaveInvoice(cbxMmobile.Text.Trim(), txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked, rbTailoring.Checked);
+            return _saleViewModel.SaveInvoice(cbxMmobile.Text.Trim(), txtCustomerName.Text.Trim(), cbxSalesman.SelectedValue.ToString(), (InvoiceType)cbxInvType.SelectedIndex, cbCashBill.Checked, rbTailoring.Checked);
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
             //TODO: Implement a Form or Dialog to take customer details
-            _salesManager.AddNewCustomer(txtCustomerName.Text.Trim(), cbxMmobile.Text.Trim());
+            _saleViewModel.AddNewCustomer(txtCustomerName.Text.Trim(), cbxMmobile.Text.Trim());
         }
 
         private void btnAddToCart_Click(object sender, EventArgs e)
@@ -200,7 +234,7 @@ namespace AKS.UI.POS.Forms
         {
             btnAdd.Text = "Add";
             tabControl1.SelectedTab = tpList;
-            _salesManager.ResetCart();
+            _saleViewModel.ResetCart();
             dgvSaleItems.Rows.Clear();
         }
 
@@ -210,7 +244,7 @@ namespace AKS.UI.POS.Forms
 
             if (payForm.ShowDialog() == DialogResult.OK)
             {
-                _salesManager.AddPayment(payForm.Pd);
+                _saleViewModel.AddToPaymentList(payForm.Pd);
                 lbPd.Text += $"Mode: {payForm.Pd.Mode}\t Rs. {payForm.Pd.Amount}\n";
                 // DisplayPayment();
             }
@@ -222,7 +256,7 @@ namespace AKS.UI.POS.Forms
 
         private void cbSalesReturn_CheckedChanged(object sender, EventArgs e)
         {
-            _salesManager.SetRadioButton(rbRegular.Checked, rbManual.Checked, cbSalesReturn.Checked);
+            _saleViewModel.SetRadioButton(rbRegular.Checked, rbManual.Checked, cbSalesReturn.Checked);
         }
 
         private void cbxMmobile_SelectedIndexChanged(object sender, EventArgs e)
@@ -240,9 +274,9 @@ namespace AKS.UI.POS.Forms
         private void DisplayPayment()
         {
             //TODO: Check uses and make amed
-            if (_salesManager.PaymentDetails == null) return;
+            if (_saleViewModel.PaymentDetails == null) return;
             lbPd.Text = "";
-            foreach (var pd in _salesManager.PaymentDetails)
+            foreach (var pd in _saleViewModel.PaymentDetails)
             {
                 lbPd.Text += $"Mode: {pd.Mode}\t Rs. {pd.Amount}\n";
             }
@@ -267,11 +301,11 @@ namespace AKS.UI.POS.Forms
         private void HandleBarcodeEntry()
         {
             //Implementing Tailoring bill
-            if (_salesManager.ReturnKey)
-                if(rbTailoring.Checked)
-                    DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim(),true));
+            if (_saleViewModel.ReturnKey)
+                if (rbTailoring.Checked)
+                    DisplayStockInfo(_saleViewModel.GetItemDetail(txtBarcode.Text.Trim(), true));
                 else
-                    DisplayStockInfo(_salesManager.GetItemDetail(txtBarcode.Text.Trim()));
+                    DisplayStockInfo(_saleViewModel.GetItemDetail(txtBarcode.Text.Trim()));
         }
 
         private void LoadFormData()
@@ -286,9 +320,15 @@ namespace AKS.UI.POS.Forms
 
                 //TODO: make static data or use json and store in a file and read it once a day.
                 //make less database use on remote machine
-                cbxMmobile.DataSource = _salesManager.SetupFormData();
-                dgvSaleItems.DataSource = _salesManager.SaleItem;
-                _salesManager.LoadBarcodeList();
+                cbxMmobile.DataSource = _saleViewModel.SetupFormData();
+                dgvSaleItems.DataSource = _saleViewModel.SaleItemVMs;
+                if (barcodeAutoSource == null || barcodeAutoSource.Count <= 0)
+                {
+                    var x = _saleViewModel.LoadBarcodeList();
+                    foreach (var item in x)
+                        barcodeAutoSource.Add(item);
+                }
+
 
                 cbxSalesman.DataSource = azureDb.Salesmen.Where(c => c.IsActive).Select(c => new { c.SalesmanId, c.Name }).ToList();
                 cbxSalesman.DisplayMember = "Name";
@@ -302,28 +342,28 @@ namespace AKS.UI.POS.Forms
 
         private void rbManual_CheckedChanged(object sender, EventArgs e)
         {
-            _salesManager.SetRadioButton(false, rbManual.Checked, cbSalesReturn.Checked);
+            _saleViewModel.SetRadioButton(false, rbManual.Checked, cbSalesReturn.Checked);
         }
 
         private void rbRegular_CheckedChanged(object sender, EventArgs e)
         {
-            _salesManager.SetRadioButton(rbRegular.Checked, false, cbSalesReturn.Checked);
+            _saleViewModel.SetRadioButton(rbRegular.Checked, false, cbSalesReturn.Checked);
         }
 
         private void SalesForm_Load(object sender, EventArgs e)
         {
-            _salesManager.InitManager();
+            _saleViewModel.InitViewModel();
             if (azureDb == null) azureDb = new AzurePayrollDbContext();
             if (localDb == null) localDb = new LocalPayrollDbContext();
             SetupForm();
-            lbYearList.DataSource = _salesManager.YearList;
-            dgvSales.DataSource = _salesManager.SetGridView();
+            lbYearList.DataSource = _saleViewModel.YearList;
+            dgvSales.DataSource = _saleViewModel.SetGridView();
         }
 
         private void SetupForm()
         {
             //TODO: make it salemager and pass controls to function and see it works
-            switch (_salesManager.InvoiceType)
+            switch (_saleViewModel.InvoiceType)
             {
                 case InvoiceType.Sales:
                     rbRegular.Checked = true;
@@ -358,19 +398,19 @@ namespace AKS.UI.POS.Forms
         {
             if (e.KeyCode == Keys.Tab || e.KeyCode == Keys.Enter)
             {
-                _salesManager.ReturnKey = true;
+                _saleViewModel.ReturnKey = true;
                 HandleBarcodeEntry();
             }
         }
 
         private void txtDiscount_TextChanged(object sender, EventArgs e)
         {
-            txtValue.Text = SalesManager.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();
+            txtValue.Text = SaleStatic.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();
         }
 
         private void txtQty_TextChanged(object sender, EventArgs e)
         {
-            txtValue.Text = SalesManager.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();
+            txtValue.Text = SaleStatic.CalculateRate(txtDiscount.Text, txtQty.Text, txtRate.Text).ToString();
         }
 
         private bool VerifyProductRow()
@@ -391,15 +431,15 @@ namespace AKS.UI.POS.Forms
         {
             if (SaleReports == null || SaleReports.Count == 0)
             {
-                SaleReports = _salesManager.SaleReports("ARD", _salesManager.InvoiceType);
+                var sr = new SaleReports(_saleViewModel.DataModel);
+                SaleReports = sr.SaleReport(CurrentSession.StoreCode, _saleViewModel.InvoiceType);
             }
             tabControl1.SelectedTab = tpView;
             DisplaySaleReport();
-
         }
+
         private void RemoveTestInv()
         {
-
             var invs = azureDb.ProductSales
                 .Where(c => c.InvoiceType == InvoiceType.ManualSale
             && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month
@@ -421,15 +461,14 @@ namespace AKS.UI.POS.Forms
                 if (card != null)
                     azureDb.CardPaymentDetails.RemoveRange(card);
                 azureDb.ProductSales.Remove(inv);
-
             }
 
             int x = azureDb.SaveChanges();
             MessageBox.Show("Removed " + x);
         }
 
-        private SortedDictionary<int, List<List<SaleReport>>> SaleReports;
-        private List<SaleReport> SaleReportsList;
+        private SortedDictionary<int, List<List<SaleReportVM>>> SaleReports;
+        private List<SaleReportVM> SaleReportsList;
         private DataGridView gv = new DataGridView();
 
         private void DisplaySaleReport()
@@ -437,7 +476,7 @@ namespace AKS.UI.POS.Forms
             gv.AllowUserToAddRows = false;
             if (SaleReportsList == null || SaleReports.Count == 0)
             {
-                SaleReportsList = new List<SaleReport>();
+                SaleReportsList = new List<SaleReportVM>();
                 foreach (var item in SaleReports)
                 {
                     if (item.Value != null && item.Value.Count > 0)
@@ -499,34 +538,3 @@ namespace AKS.UI.POS.Forms
         }
     }
 }
-
-//000000887H 16.00   3.20
-//101002  62.00   0.00
-//2599625 10.00   2.00
-//2608389 10.00   10.00
-//2609377 10.00   3.00
-//2686388 2.00    0.00
-//2700322 10.00   17.00
-//2700323 10.00   12.00
-//2700324 10.00   6.00
-//3635160 16.00   2.90
-//3635175 16.00   3.40
-//3635177 16.00   3.20
-//3635182 90.00   36.00
-//3635186 16.00   1.80
-//3635193 15.00   4.80
-//510000000472    1.00    0.00
-//510000000473    2.00    4.00
-//510000000474    1.00    1.00
-//510000000475    1.00    1.00
-//510000000482    1.00    0.00
-//510000000483    2.00    1.00
-//510000000484    2.00    1.00
-//510000000485    1.00    0.00
-//510000000486    1.00    0.00
-//510000000786    1.00    1.00
-//510000000787    2.00    4.00
-//510000000788    2.00    0.00
-//510000000789    1.00    1.00
-//510000001054    1.00    1.00
-//510000001055    3.00    7.00

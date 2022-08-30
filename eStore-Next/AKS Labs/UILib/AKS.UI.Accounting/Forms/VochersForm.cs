@@ -1,140 +1,39 @@
 ﻿using AKS.AccountingSystem.DTO;
-using AKS.Payroll.Database;
-using AKS.Printers.Thermals;
+using AKS.AccountingSystem.ViewModels;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
-using Microsoft.EntityFrameworkCore;
 using Syncfusion.Windows.Forms.PdfViewer;
-using System.Data;
 
 namespace AKS.UI.Accounting.Forms
 {
     public partial class VochersForm : Form
     {
         private readonly VoucherType voucherType;
+        private VoucherCashViewModel _voucherViewModel;
 
-        private AzurePayrollDbContext azureDb;
-        private LocalPayrollDbContext localDb;
+        //Old
         private int SelectedYear;
 
-        private ObservableListSource<VoucherVM> voucherVMs;
-        private ObservableListSource<CashVoucherVM> cashVoucherVMs;
-
-        private List<int> DataList;
-        private SortedDictionary<string, bool> DataDictionary = new SortedDictionary<string, bool>();
+        //private SortedDictionary<string, bool> DataDictionary = new SortedDictionary<string, bool>();
 
         public VochersForm()
         {
             InitializeComponent();
-            voucherType = VoucherType.Expense;
+            _voucherViewModel = new VoucherCashViewModel();
+            voucherType = VoucherType.Payment;
         }
 
         public VochersForm(VoucherType type)
         {
             InitializeComponent();
+            _voucherViewModel = new VoucherCashViewModel();
             voucherType = type;
-        }
-
-        public void UpdateVoucherList(List<Voucher> vouchers)
-        {
-            foreach (var vou in vouchers)
-            {
-                voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(vou));
-            }
-        }
-
-        public void UpdateCashVoucherList(List<CashVoucher> cashVouchers)
-        {
-            foreach (var vou in cashVouchers)
-            {
-                cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(vou));
-            }
-        }
-
-        private void LoadData()
-        {
-            azureDb = new AzurePayrollDbContext();
-            localDb = new LocalPayrollDbContext();
-            SelectedYear = DateTime.Now.Year;
-
-            LoadYearList();
-
-            DataList = new List<int>();
-
-            LoadDataGrid(voucherType, DateTime.Today.Year);
-        }
-
-        private void LoadDataGrid(VoucherType type, int year)
-        {
-            if (!DataDictionary.ContainsKey(type.ToString() + year))
-            {
-                if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
-                {
-                    var listData = azureDb.CashVouchers
-                        .Include(c => c.Employee).Include(c => c.Partys).Include(c => c.TranscationMode)
-                        .Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-                    UpdateCashVoucherList(listData);
-                }
-                else
-                {
-                    var listData = azureDb.Vouchers.Include(c => c.Employee).Include(c => c.Partys).Where(c => c.VoucherType == type && c.OnDate.Year == year).OrderBy(c => c.OnDate).ToList();
-                    UpdateVoucherList(listData);
-                }
-
-                DataDictionary.Add(type.ToString() + year, true);
-            }
-
-            switch (type)
-            {
-                case VoucherType.Payment:
-                    dgvPayments.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Payment && c.OnDate.Year == year).ToList();
-                    tabControl1.SelectedTab = tpPayments;
-                    break;
-
-                case VoucherType.Receipt:
-                    dgvReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Receipt && c.OnDate.Year == year).ToList();
-                    tabControl1.SelectedTab = tpReceipts;
-                    break;
-
-                case VoucherType.Contra:
-                    break;
-
-                case VoucherType.DebitNote:
-                    break;
-
-                case VoucherType.CreditNote:
-                    break;
-
-                case VoucherType.JV:
-                    break;
-
-                case VoucherType.Expense:
-                    dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == VoucherType.Expense && c.OnDate.Year == year).ToList();
-                    tabControl1.SelectedTab = tpExpenses;
-                    dgvExpenses.ScrollBars = ScrollBars.Both;
-                    dgvExpenses.AutoSize = true;
-                    break;
-
-                case VoucherType.CashReceipt:
-                    dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == VoucherType.CashReceipt && c.OnDate.Year == year).ToList();
-                    tabControl1.SelectedTab = tpCashReceipts;
-                    break;
-
-                case VoucherType.CashPayment:
-                    dgvCashPayments.DataSource = cashVoucherVMs.Where(c => c.VoucherType == VoucherType.CashPayment && c.OnDate.Year == year).ToList();
-                    tabControl1.SelectedTab = tpCashPayments;
-                    break;
-
-                default:
-                    break;
-            }
         }
 
         private void LoadYearList()
         {
-            var years = azureDb.Vouchers.Select(c => c.OnDate.Year).Distinct().ToList();
-            years.AddRange(azureDb.CashVouchers.Select(c => c.OnDate.Year).Distinct().ToList());
-            years = years.Distinct().OrderBy(c => c).ToList();
+            var years = _voucherViewModel.GetYearList();
+
             lbYearList.DataSource = years;
             lbYearList.SelectedValue = DateTime.Today.Year;
             lbYearList.SetSelected(lbYearList.Items.IndexOf(DateTime.Today.Year), true);
@@ -151,14 +50,7 @@ namespace AKS.UI.Accounting.Forms
                 case 2:
                     LoadDataGrid(VoucherType.Receipt, SelectedYear);
                     break;
-                //case VoucherType.Contra:
-                //    break;
-                //case VoucherType.DebitNote:
-                //    break;
-                //case VoucherType.CreditNote:
-                //    break;
-                //case VoucherType.JV:
-                //    break;
+
                 case 0:
                     LoadDataGrid(VoucherType.Expense, SelectedYear);
                     break;
@@ -177,17 +69,303 @@ namespace AKS.UI.Accounting.Forms
             }
         }
 
+        private void VochersForm_Load(object sender, EventArgs e)
+        {
+            _voucherViewModel.InitViewModel();
+            LoadData();
+        }
+
+        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
+        {
+            var tc = (TabControl)sender;
+            OnSelectedTab(tc.SelectedIndex);
+        }
+
+        private void PrintVoucher(Voucher voucher)
+        {
+            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
+
+            if (dlg == DialogResult.Yes)
+            {
+                ShowPrintDialog(_voucherViewModel.PrintVoucher(voucher));
+            }
+        }
+
+        private void PrintCashVoucher(CashVoucher voucher)
+        {
+            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
+
+            if (dlg == DialogResult.Yes)
+            {
+                ShowPrintDialog(_voucherViewModel.PrintCashVoucher(voucher));
+            }
+        }
+
+        private void ShowPrintDialog(string filename)
+        {
+            Form printForm = new Form();
+            printForm.WindowState = FormWindowState.Maximized;
+            PdfDocumentView docView = new PdfDocumentView();
+            docView.Load(filename);
+            docView.Dock = DockStyle.Fill;
+            printForm.Controls.Add(docView);
+
+            var result = printForm.ShowDialog();
+            var printDialog1 = new PrintDialog();
+            if (printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDialog1.AllowPrintToFile = true;
+                docView.Print(printDialog1.PrinterSettings.PrinterName);
+            }
+        }
+
+        //On Item Selected on DataGridView
+
+        private void dgvExpenses_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowData = DMMapper.Mapper.Map<Voucher>(dgvExpenses.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.Expense, rowData);
+
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    _voucherViewModel.UpdateVoucherList((VoucherVM)dgvExpenses.CurrentRow.DataBoundItem, form.SavedVoucher, form.isNew);
+                    RefreshDataView(VoucherType.Payment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+                    _voucherViewModel.RemoveCashVoucher(form.deleteVoucherNumber);
+                }
+                else
+                {
+                    _voucherViewModel.RemoveVoucher(form.deleteVoucherNumber);
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+            }
+        }
+
+        private void dgvPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowData = DMMapper.Mapper.Map<Voucher>(dgvPayments.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.Payment, rowData);
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    _voucherViewModel.UpdateVoucherList((VoucherVM)dgvPayments.CurrentRow.DataBoundItem, form.SavedVoucher, form.isNew);
+                    RefreshDataView(VoucherType.Payment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+                    _voucherViewModel.RemoveCashVoucher(form.deleteVoucherNumber);
+                }
+                else
+                {
+                    _voucherViewModel.RemoveVoucher(form.deleteVoucherNumber);
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+            }
+        }
+
+        private void dgvReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowData = DMMapper.Mapper.Map<Voucher>(dgvReceipts.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.Receipt, rowData);
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    _voucherViewModel.UpdateVoucherList((VoucherVM)dgvReceipts.CurrentRow.DataBoundItem, form.SavedVoucher, form.isNew);
+                    RefreshDataView(VoucherType.Payment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+                    _voucherViewModel.RemoveCashVoucher(form.deleteVoucherNumber);
+                }
+                else
+                {
+                    _voucherViewModel.RemoveVoucher(form.deleteVoucherNumber);
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+            }
+        }
+
+        private void dgvCashReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashReceipts.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.CashReceipt, rowData);
+
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    _voucherViewModel.UpdateCashVoucherList((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem, form.SavedCashVoucher, form.isNew);
+                    RefreshDataView(VoucherType.Payment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+                    _voucherViewModel.RemoveCashVoucher(form.deleteVoucherNumber);
+                }
+                else
+                {
+                    _voucherViewModel.RemoveVoucher(form.deleteVoucherNumber);
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+            }
+        }
+
+        private void dgvCashPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashPayments.CurrentRow.DataBoundItem);
+            var form = new VoucherEntryForm(VoucherType.CashPayment, rowData);
+
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                if (form.SavedVoucher != null)
+                {
+                    _voucherViewModel.UpdateCashVoucherList((CashVoucherVM)dgvCashPayments.CurrentRow.DataBoundItem, form.SavedCashVoucher, form.isNew);
+                    RefreshDataView(VoucherType.Payment);
+                }
+            }
+            else if (form.DialogResult == DialogResult.OK)
+            {
+                //Delete
+                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
+                {
+                    _voucherViewModel.RemoveCashVoucher(form.deleteVoucherNumber);
+                }
+                else
+                {
+                    _voucherViewModel.RemoveVoucher(form.deleteVoucherNumber);
+                }
+                RefreshDataView(form.voucherType);
+            }
+            else
+            {
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDataView(voucherType);
+        }
+
+        private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SelectedYear = lbYearList.SelectedValue != null ? (int)lbYearList.SelectedValue : DateTime.Today.Year;
+            }
+            catch (Exception)
+            {
+                SelectedYear = DateTime.Today.Year;
+            }
+        }
+
+        private void lbYearList_DoubleClick(object sender, EventArgs e)
+        {
+            SelectedYear = (int)lbYearList.SelectedValue;
+            OnSelectedTab(tabControl1.SelectedIndex);
+        }
+
+        //Not Ported
+        private void LoadData()
+        {
+            SelectedYear = DateTime.Now.Year;
+            LoadYearList();
+            LoadDataGrid(voucherType, DateTime.Today.Year);
+        }
+
+        private void LoadDataGrid(VoucherType type, int year)
+        {
+            _voucherViewModel.LoadGridData(type, year);
+
+            switch (type)
+            {
+                case VoucherType.Payment:
+                    dgvPayments.DataSource = _voucherViewModel.GetVouchers(VoucherType.Payment);
+                    tabControl1.SelectedTab = tpPayments;
+                    break;
+
+                case VoucherType.Receipt:
+                    dgvReceipts.DataSource = _voucherViewModel.GetVouchers(VoucherType.Receipt);
+                    tabControl1.SelectedTab = tpReceipts;
+                    break;
+
+                case VoucherType.Contra:
+                    break;
+
+                case VoucherType.DebitNote:
+                    break;
+
+                case VoucherType.CreditNote:
+                    break;
+
+                case VoucherType.JV:
+                    break;
+
+                case VoucherType.Expense:
+                    dgvExpenses.DataSource = _voucherViewModel.GetVouchers(VoucherType.Expense);
+                    tabControl1.SelectedTab = tpExpenses;
+                    dgvExpenses.ScrollBars = ScrollBars.Both;
+                    dgvExpenses.AutoSize = true;
+                    break;
+
+                case VoucherType.CashReceipt:
+                    dgvCashReceipts.DataSource = _voucherViewModel.GetVouchers(VoucherType.CashReceipt);
+                    tabControl1.SelectedTab = tpCashReceipts;
+                    break;
+
+                case VoucherType.CashPayment:
+                    dgvCashPayments.DataSource = _voucherViewModel.GetVouchers(VoucherType.CashPayment);
+                    tabControl1.SelectedTab = tpCashPayments;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void RefreshDataView(VoucherType type)
         {
             switch (type)
             {
                 case VoucherType.Payment:
-                    dgvPayments.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvPayments.DataSource = _voucherViewModel.GetVouchers(type);
 
                     break;
 
                 case VoucherType.Receipt:
-                    dgvReceipts.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvReceipts.DataSource = _voucherViewModel.GetVouchers(type);
 
                     break;
 
@@ -204,19 +382,19 @@ namespace AKS.UI.Accounting.Forms
                     break;
 
                 case VoucherType.Expense:
-                    dgvExpenses.DataSource = voucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvExpenses.DataSource = _voucherViewModel.GetVouchers(type);
                     dgvExpenses.Refresh();
                     dgvExpenses.ScrollBars = ScrollBars.Both;
                     dgvExpenses.AutoSize = true;
                     break;
 
                 case VoucherType.CashReceipt:
-                    dgvCashReceipts.DataSource = cashVoucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvCashReceipts.DataSource = _voucherViewModel.GetCashVouchers(type);
 
                     break;
 
                 case VoucherType.CashPayment:
-                    dgvCashPayments.DataSource = cashVoucherVMs.Where(c => c.VoucherType == type).OrderByDescending(c => c.OnDate).ToList();
+                    dgvCashPayments.DataSource = _voucherViewModel.GetCashVouchers(type);
 
                     break;
 
@@ -229,7 +407,6 @@ namespace AKS.UI.Accounting.Forms
         {
             VoucherEntryForm voucherEntryForm;
             VoucherType voucherType = VoucherType.Expense;
-
             switch (tabControl1.SelectedIndex)
             {
                 case 0://Epenses
@@ -270,13 +447,17 @@ namespace AKS.UI.Accounting.Forms
                 if (voucherEntryForm.voucherType == VoucherType.CashReceipt || voucherEntryForm.voucherType == VoucherType.CashPayment)
                 {
                     // Add to list voucherEntryForm.cashVoucher
-                    cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(voucherEntryForm.SavedCashVoucher));
+                    //cashVoucherVMs.Add(DMMapper.Mapper.Map<CashVoucherVM>(voucherEntryForm.SavedCashVoucher));
+
+                    _voucherViewModel.UpdateCashVoucherList(null, voucherEntryForm.SavedCashVoucher, true);
+
                     PrintCashVoucher(voucherEntryForm.SavedCashVoucher);
                 }
                 else
                 {
                     // Add to voucherEntryForm.voucher
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(voucherEntryForm.SavedVoucher));
+                    //voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(voucherEntryForm.SavedVoucher));
+                    _voucherViewModel.UpdateVoucherList(null, voucherEntryForm.SavedVoucher, true);
                     PrintVoucher(voucherEntryForm.SavedVoucher);
                 }
                 RefreshDataView(voucherEntryForm.voucherType);
@@ -290,219 +471,6 @@ namespace AKS.UI.Accounting.Forms
             }
         }
 
-        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
-        {
-            var tc = (TabControl)sender;
-            OnSelectedTab(tc.SelectedIndex);
-        }
-
-        private void VochersForm_Load(object sender, EventArgs e)
-        {
-            DMMapper.InitializeAutomapper();
-            voucherVMs = new ObservableListSource<VoucherVM>();
-            cashVoucherVMs = new ObservableListSource<CashVoucherVM>();
-            LoadData();
-        }
-
-        private void tabControl1_Selected(object sender, TabControlEventArgs e)
-        {
-        }
-
-        //On Item Selected on DataGridView
-
-        private void dgvExpenses_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var rowData = DMMapper.Mapper.Map<Voucher>(dgvExpenses.CurrentRow.DataBoundItem);
-            var form = new VoucherEntryForm(VoucherType.Expense, rowData);
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                if (form.SavedVoucher != null)
-                {
-                    if (!form.isNew)
-                        voucherVMs.Remove((VoucherVM)dgvExpenses.CurrentRow.DataBoundItem);
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
-                    RefreshDataView(VoucherType.Payment);
-                }
-            }
-            else if (form.DialogResult == DialogResult.OK)
-            {
-                //Delete
-                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
-                {
-                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                else
-                {
-                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                RefreshDataView(form.voucherType);
-            }
-            else
-            {
-            }
-        }
-
-        private void dgvPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var rowData = DMMapper.Mapper.Map<Voucher>(dgvPayments.CurrentRow.DataBoundItem);
-            var form = new VoucherEntryForm(VoucherType.Payment, rowData);
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                if (form.SavedVoucher != null)
-                {
-                    if (!form.isNew)
-                        voucherVMs.Remove((VoucherVM)dgvPayments.CurrentRow.DataBoundItem);
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
-                    RefreshDataView(VoucherType.Expense);
-                }
-            }
-            else if (form.DialogResult == DialogResult.OK)
-            {
-                //Delete
-                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
-                {
-                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                else
-                {
-                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                RefreshDataView(form.voucherType);
-            }
-            else
-            {
-            }
-        }
-
-        private void dgvReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var rowData = DMMapper.Mapper.Map<Voucher>(dgvReceipts.CurrentRow.DataBoundItem);
-            var form = new VoucherEntryForm(VoucherType.Receipt, rowData);
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                if (form.SavedVoucher != null)
-                {
-                    if (!form.isNew)
-                        voucherVMs.Remove((VoucherVM)dgvReceipts.CurrentRow.DataBoundItem);
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
-                    RefreshDataView(VoucherType.Receipt);
-                }
-            }
-            else if (form.DialogResult == DialogResult.OK)
-            {
-                //Delete
-                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
-                {
-                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                else
-                {
-                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                RefreshDataView(form.voucherType);
-            }
-            else
-            {
-            }
-        }
-
-        private void dgvCashReceipts_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashReceipts.CurrentRow.DataBoundItem);
-            var form = new VoucherEntryForm(VoucherType.CashReceipt, rowData);
-
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                if (form.SavedCashVoucher != null)
-                {
-                    if (!form.isNew)
-                        cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
-                    RefreshDataView(VoucherType.CashReceipt);
-                }
-            }
-            else if (form.DialogResult == DialogResult.OK)
-            {
-                //Delete
-                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
-                {
-                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                else
-                {
-                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                RefreshDataView(form.voucherType);
-            }
-            else
-            {
-            }
-        }
-
-        private void dgvCashPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var rowData = DMMapper.Mapper.Map<CashVoucher>(dgvCashPayments.CurrentRow.DataBoundItem);
-            var form = new VoucherEntryForm(VoucherType.CashPayment, rowData);
-
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                if (form.SavedCashVoucher != null)
-                {
-                    if (!form.isNew)
-                        cashVoucherVMs.Remove((CashVoucherVM)dgvCashReceipts.CurrentRow.DataBoundItem);
-                    voucherVMs.Add(DMMapper.Mapper.Map<VoucherVM>(form.SavedVoucher));
-                    RefreshDataView(VoucherType.CashPayment);
-                }
-            }
-            else if (form.DialogResult == DialogResult.OK)
-            {
-                //Delete
-                if (form.voucherType == VoucherType.CashPayment || form.voucherType == VoucherType.CashReceipt)
-                {
-                    cashVoucherVMs.Remove(cashVoucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                else
-                {
-                    voucherVMs.Remove(voucherVMs.Where(c => c.VoucherNumber == form.deleteVoucherNumber).First());
-                }
-                RefreshDataView(form.voucherType);
-            }
-            else
-            {
-            }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshDataView(voucherType);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                SelectedYear =  lbYearList.SelectedValue!=null?(int)lbYearList.SelectedValue:DateTime.Today.Year;
-            }
-            catch (Exception  )
-            {
-                SelectedYear = DateTime.Today.Year;
-            }
-        }
-
-        private void lbYearList_DoubleClick(object sender, EventArgs e)
-        {
-            SelectedYear = (int)lbYearList.SelectedValue;
-            OnSelectedTab(tabControl1.SelectedIndex);
-        }
-
         private void HideUnwantedCol(List<Object> lst, VoucherType type)
         {
             if (type == VoucherType.CashReceipt || type == VoucherType.CashPayment)
@@ -510,106 +478,6 @@ namespace AKS.UI.Accounting.Forms
             }
             else
             {
-            }
-        }
-
-        private void PrintCashVoucher(CashVoucher voucher)
-        {
-            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
-            if (dlg == DialogResult.Yes)
-            {
-                if (voucher.VoucherType == VoucherType.CashReceipt || voucher.VoucherType == VoucherType.CashPayment)
-                {
-                    if (voucher.PartyId != null)
-                    {
-                        voucher.Partys = azureDb.Parties.Find(voucher.PartyId);
-                    }
-                    voucher.TranscationMode = azureDb.TranscationModes.Find(voucher.TranscationId);
-                    voucher.Employee = azureDb.Employees.Find(voucher.EmployeeId);
-
-                    VoucherPrint print = new VoucherPrint
-                    {
-                        Amount = voucher.Amount,
-                        IsVoucherSet = true,
-                        NoOfCopy = 1,
-                        Page2Inch = false,
-                        OnDate = voucher.OnDate,
-                        Particulars = voucher.Particulars,
-                        PartyName = voucher.PartyName,
-                        LedgerName =voucher.Partys!=null?voucher.Partys.PartyName:"",
-                        Reprint = false,
-                        PaymentMode = PaymentMode.Cash,
-                        Voucher = voucher.VoucherType,
-                        VoucherNo = voucher.VoucherNumber,
-                        TranscationMode = null,
-                        PaymentDetails = voucher.TranscationMode.TranscationName,
-                        StoreCode = voucher.StoreId,
-                        Remarks = voucher.Remarks + " SlipNo:" + voucher.SlipNumber,
-                        IssuedBy = voucher.Employee.StaffName,
-                        PrintType = PrintType.PaymentVoucher
-                    };
-
-                    var fileName = (print.PrintPdf());
-                    ShowPrintDialog(fileName);
-                }
-            }
-        }
-
-        private void ShowPrintDialog(string filename)
-        {
-            Form printForm = new Form();
-            printForm.WindowState= FormWindowState.Maximized;
-            PdfDocumentView docView = new PdfDocumentView();
-            docView.Load(filename);
-            docView.Dock = DockStyle.Fill;
-            printForm.Controls.Add(docView);
-
-            var result = printForm.ShowDialog();
-            var printDialog1 = new PrintDialog();
-            if (printDialog1.ShowDialog() == DialogResult.OK)
-            {
-                printDialog1.AllowPrintToFile = true;
-                docView.Print(printDialog1.PrinterSettings.PrinterName);
-            }
-        }
-
-        private void PrintVoucher(Voucher voucher)
-        {
-            var dlg = MessageBox.Show("Do You want to print voucher.", "Print Confirmation", MessageBoxButtons.YesNo);
-            if (dlg == DialogResult.Yes)
-            {
-                if (voucher.VoucherType == VoucherType.Receipt || voucher.VoucherType == VoucherType.Expense || voucher.VoucherType == VoucherType.Payment)
-                {
-                    if (voucher.PartyId != null)
-                    {
-                        voucher.Partys = azureDb.Parties.Find(voucher.PartyId);
-                    }
-                    voucher.Employee = azureDb.Employees.Find(voucher.EmployeeId);
-
-                    VoucherPrint print = new VoucherPrint
-                    {
-                        Amount = voucher.Amount,
-                        IsVoucherSet = true,
-                        NoOfCopy = 1,
-                        Page2Inch = false,
-                        OnDate = voucher.OnDate,
-                        Particulars = voucher.Particulars,
-                        PartyName = voucher.PartyName,
-                        LedgerName = voucher.Partys != null ? voucher.Partys.PartyName : "",
-                        Reprint = false,
-                        PaymentMode = voucher.PaymentMode,
-                        Voucher = VoucherType.Payment,
-                        VoucherNo = voucher.VoucherNumber,
-                        TranscationMode = null,
-                        PaymentDetails = voucher.PaymentDetails,
-                        StoreCode = voucher.StoreId,
-                        Remarks = voucher.Remarks + " SlipNo:" + voucher.SlipNumber,
-                        IssuedBy = voucher.Employee.StaffName,
-                        PrintType = PrintType.PaymentVoucher
-                    };
-                    var fileName = (print.PrintPdf());
-                    ShowPrintDialog(fileName);
-                }
             }
         }
     }

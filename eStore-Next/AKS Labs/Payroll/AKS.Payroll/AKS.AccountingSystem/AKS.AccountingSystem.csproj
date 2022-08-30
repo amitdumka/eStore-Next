@@ -8,19 +8,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+    <ProjectReference Include="..\AKS.Printers\AKS.Printers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="DataModels\" />
     <Folder Include="Models\VM\" />
     <Folder Include="Reports\" />
     <Folder Include="Ops\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
   </ItemGroup>
+
+  <Import Project="..\AKS.Shared.Templets\AKS.Shared.Templets.projitems" Label="Shared" />
 
 </Project>

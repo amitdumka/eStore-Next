@@ -17,6 +17,7 @@ namespace AKS.Accounting.Forms
     public partial class BankTranscationForm : Form
     {
         private BankTranscationViewModel _viewModel;
+        private BankTranscation transcation;
         public BankTranscationForm()
         {
             InitializeComponent();
@@ -95,7 +96,7 @@ namespace AKS.Accounting.Forms
             {
                 if (validate())
                 {
-                    if (_viewModel.Save(ReadData(),_viewModel.GetEditMode()))
+                    if (_viewModel.Save(ReadData(), _viewModel.GetEditMode()))
                     {
                         MessageBox.Show("Bank Transcation is saved!");
                         btnAdd.Text = "Add";
@@ -137,8 +138,11 @@ namespace AKS.Accounting.Forms
                 var row = (BankTranscation)dgvBankTranscation.CurrentRow.DataBoundItem;
                 if (row != null)
                 {
+                    _viewModel.SetEnableDelete(true);
                     DisplayData(row);
                     btnAdd.Text = "Edit";
+                    transcation = row;
+
 
                 }
             }
@@ -179,6 +183,26 @@ namespace AKS.Accounting.Forms
             }
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            //Enable role based operation
+            if (_viewModel.GetEnableDelete())
+            {
+                if (transcation != null)
+                {
+                    if (_viewModel.Delete(transcation))
+                    {
+                        RefreshData();
+                        MessageBox.Show("Deleted");
+                     
+                        tabControl1.SelectedTab = tpGrid;
+                        ResetForm();
+                       
+
+                    }
+                }
+            }
+        }
     }
     public class BankTranscationVM : BankTranscation
     {
@@ -193,6 +217,9 @@ namespace AKS.Accounting.Forms
         List<BankTranscation> transcations;
         List<BankTranscationVM> vmList;
         BankTranscation Transcation { get; set; }
+        bool enableEditDelete = false;
+        public bool GetEnableDelete() { return enableEditDelete; }
+        public void SetEnableDelete(bool enable) { enableEditDelete = enable; }
 
         string AccountNumber = "";
         bool Yearly = false, Monthly = false, isNew = false;
@@ -260,6 +287,13 @@ namespace AKS.Accounting.Forms
                 transcations.Add(Transcation);
             }
             return flag;
+        }
+        public bool Delete(BankTranscation bt)
+        {
+            azuredb.BankTranscations.Remove(bt);
+            bool x = azuredb.SaveChanges() > 0;
+            transcations.Remove(bt);
+            return x;
         }
 
 

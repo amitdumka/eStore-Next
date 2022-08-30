@@ -1,8 +1,14 @@
-﻿using AKS.Payroll.Database;
-using AKS.UI.POS.Commons;
-using AKS.UI.POS.Controllers;
-using AKS.UI.POS.ViewModels;
-using Microsoft.EntityFrameworkCore;
+﻿/*
+ * @Author: Amit Kumar
+ * @Version: 1.0
+ * @Date: 30/08/2022
+ * @Copyrite: Aks Labs(Amit Kumar)
+ * @AuthurEmail: amit.dumka@gmail.com
+ */
+using AKS.Payroll.Database;
+using AKS.PosSystem.Helpers;
+using AKS.PosSystem.Models.VM;
+using AKS.PosSystem.ViewModels;
 using System.Data;
 
 namespace AKS.UI.POS.Forms

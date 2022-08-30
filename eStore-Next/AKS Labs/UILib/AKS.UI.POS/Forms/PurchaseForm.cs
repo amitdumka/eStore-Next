@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
-using AKS.UI.POS.Controllers;
+using AKS.POSBilling.Controllers;
+using AKS.PosSystem.ViewModels;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;

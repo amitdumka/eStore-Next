@@ -1,5 +1,5 @@
 ﻿using AKS.Payroll.Database;
-using AKS.UI.POS.ViewModels;
+using AKS.PosSystem.Models.VM;
 using System.Data;
 
 namespace AKS.UI.POS.Forms

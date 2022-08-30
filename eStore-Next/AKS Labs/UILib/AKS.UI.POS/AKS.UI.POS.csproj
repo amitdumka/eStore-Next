@@ -32,4 +32,7 @@
 		<PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56" />
 		<PackageReference Include="Syncfusion.Tools.Windows" Version="19.4.0.56" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.PosSystem\AKS.PosSystem.csproj" />
+	</ItemGroup>
 </Project>

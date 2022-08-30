@@ -1,4 +1,10 @@
-﻿using AKS.POSBilling.Controllers;
+﻿/*
+ * @Author: Amit Kumar
+ * @Version: 1.0
+ * @Date: 30/08/2022
+ * @Copyrite: Aks Labs(Amit Kumar)
+ * @AuthurEmail: amit.dumka@gmail.com
+ */
 using AKS.Shared.Commons.Models.Inventory;
 using iText.IO.Image;
 using iText.Kernel.Font;
@@ -10,7 +16,7 @@ using System.ComponentModel.DataAnnotations;
 using Image = iText.Layout.Element.Image;
 using Path = System.IO.Path;
 
-namespace AKS.POSBilling.Functions
+namespace AKS.PosSystem.Helpers
 {
     /// <summary>
     /// Invoice Printer : It generate invoice for thermal printer 2/3/4 inch

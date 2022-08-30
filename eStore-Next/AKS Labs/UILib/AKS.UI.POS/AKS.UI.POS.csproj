@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\PaymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\PurchaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SalesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Forms\SalesForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Syncfusion.Pdf.WinForms" Version="20.2.0.45" />
+		<PackageReference Include="Syncfusion.DocIO.WinForms" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.Pdf.WinForms" Version="20.2.0.45" />
+		<PackageReference Include="Syncfusion.PdfViewer.Windows" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56" />
+		<PackageReference Include="Syncfusion.Tools.Windows" Version="19.4.0.56" />
+	</ItemGroup>
+</Project>

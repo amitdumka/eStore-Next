@@ -313,6 +313,7 @@
             this.nudAmount.Name = "nudAmount";
             this.nudAmount.Size = new System.Drawing.Size(120, 23);
             this.nudAmount.TabIndex = 12;
+            this.nudAmount.ThousandsSeparator = true;
             // 
             // rbDeposit
             // 

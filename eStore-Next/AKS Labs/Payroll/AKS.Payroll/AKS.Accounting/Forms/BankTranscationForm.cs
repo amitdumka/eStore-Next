@@ -165,7 +165,7 @@ namespace AKS.Accounting.Forms
 
                 txtChequeNo.Text = bt.RefNumber;
 
-                nudAmount.Value = bt.Amount;
+                nudAmount.Value = Math.Abs(bt.Amount);
 
                 if (bt.DebitCredit == DebitCredit.In)
                     rbDeposit.Checked = true;

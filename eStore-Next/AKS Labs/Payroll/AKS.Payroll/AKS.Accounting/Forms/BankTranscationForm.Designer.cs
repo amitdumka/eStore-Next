@@ -144,6 +144,7 @@
             this.dgvBankTranscation.RowTemplate.Height = 25;
             this.dgvBankTranscation.Size = new System.Drawing.Size(640, 311);
             this.dgvBankTranscation.TabIndex = 0;
+            this.dgvBankTranscation.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvBankTranscation_CellContentClick);
             // 
             // tpEntry
             // 

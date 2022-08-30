@@ -33,6 +33,15 @@ namespace AKS.Accounting.Forms
             lbAccountList.DataSource = _viewModel.GetAccountList();
             cbxAccountNumber.DataSource = _viewModel.GetAccountList();
             dgvBankTranscation.DataSource = _viewModel.GetTranscations(DateTime.Today, true, false);
+
+            dgvBankTranscation.Columns["BankAccount"].Visible = false;
+            dgvBankTranscation.Columns["IsReadOnly"].Visible = false;
+            dgvBankTranscation.Columns["EntryStatus"].Visible = false;
+            dgvBankTranscation.Columns["UserId"].Visible = false;
+            dgvBankTranscation.Columns["MarkedDeleted"].Visible = false;
+            // dgvBankTranscation.Columns.Add("Store.StoreName", "Store Name");
+
+
         }
         private BankTranscation ReadData()
         {
@@ -43,7 +52,7 @@ namespace AKS.Accounting.Forms
                 Balance = 0,
                 EntryStatus = EntryStatus.Added,
                 IsReadOnly = false,
-                Naration = txtNaration.Text.Trim(),
+                Naration = cbxMode.Text.Trim() + " # " + txtNaration.Text.Trim(),
                 RefNumber = txtChequeNo.Text.Trim(),
                 OnDate = dtpOnDate.Value,
                 MarkedDeleted = false,
@@ -51,8 +60,20 @@ namespace AKS.Accounting.Forms
                 UserId = CurrentSession.UserName,
                 Verified = false
             };
+
+
+
             if (rbDeposit.Checked) bt.DebitCredit = DebitCredit.In;
-            else if (rbDeposit.Checked) bt.DebitCredit = DebitCredit.Out;
+            else if (rbWithdrawal.Checked)
+            {
+                bt.DebitCredit = DebitCredit.Out;
+                if (nudAmount.Value < 0)
+
+                    bt.Amount = nudAmount.Value;
+
+                else
+                    bt.Amount = 0 - bt.Amount;
+            }
             else bt.DebitCredit = DebitCredit.In;
             return bt;
         }
@@ -62,32 +83,43 @@ namespace AKS.Accounting.Forms
             if (btnAdd.Text == "Add")
             {
                 btnAdd.Text = "Save"; ResetForm();
+                tabControl1.SelectedTab = tpEntry;
+                _viewModel.SetEditMode(false);
             }
-            else if (btnAdd.Text == "Add")
+            else if (btnAdd.Text == "Edit")
             {
-                btnAdd.Text = "Edit";
+                btnAdd.Text = "Save";
+                _viewModel.SetEditMode(true);
             }
             else if (btnAdd.Text == "Save")
             {
                 if (validate())
                 {
-                    if (_viewModel.Save(ReadData()))
+                    if (_viewModel.Save(ReadData(),_viewModel.GetEditMode()))
                     {
                         MessageBox.Show("Bank Transcation is saved!");
                         btnAdd.Text = "Add";
                         ResetForm();
                         RefreshData();
-
                     }
                 }
             }
         }
         private void RefreshData()
         {
+            dgvBankTranscation.DataSource = null;
             dgvBankTranscation.DataSource = _viewModel.GetTranscation();
-            dgvBankTranscation.Refresh();
+            //dgvBankTranscation.Refresh();
         }
-        private void ResetForm() { }
+        private void ResetForm()
+        {
+            tabControl1.SelectedTab = tpGrid;
+            txtNaration.Text = txtChequeNo.Text = "";
+            cbxMode.SelectedIndex = 0;
+            nudAmount.Value = 0;
+            rbDeposit.Checked = rbWithdrawal.Checked = false;
+
+        }
         private bool validate()
         {
             if (rbDeposit.Checked == false && rbWithdrawal.Checked == false)
@@ -97,6 +129,56 @@ namespace AKS.Accounting.Forms
             }
             return true;
         }
+
+        private void dgvBankTranscation_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvBankTranscation.CurrentCell.Selected)
+            {
+                var row = (BankTranscation)dgvBankTranscation.CurrentRow.DataBoundItem;
+                if (row != null)
+                {
+                    DisplayData(row);
+                    btnAdd.Text = "Edit";
+
+                }
+            }
+        }
+
+        private void DisplayData(BankTranscation bt)
+        {
+            try
+            {
+
+                tabControl1.SelectedTab = tpEntry;
+                cbxAccountNumber.SelectedText = cbxAccountNumber.Text = bt.AccountNumber;
+                var nar = bt.Naration.Split("#");
+                if (nar != null && nar.Count() > 1)
+                {
+                    txtNaration.Text = nar != null ? nar[1] : bt.Naration;
+                    cbxMode.SelectedText = cbxMode.Text = nar != null ? nar[0] : " ";
+                }
+                else
+                {
+                    txtNaration.Text = bt.Naration;
+                    cbxMode.SelectedText = cbxMode.Text = " ";
+                }
+
+                txtChequeNo.Text = bt.RefNumber;
+
+                nudAmount.Value = bt.Amount;
+
+                if (bt.DebitCredit == DebitCredit.In)
+                    rbDeposit.Checked = true;
+                else if (bt.DebitCredit == DebitCredit.Out)
+                    rbWithdrawal.Checked = true;
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show("Error\n" + e.Message);
+            }
+        }
+
     }
     public class BankTranscationVM : BankTranscation
     {
@@ -111,15 +193,20 @@ namespace AKS.Accounting.Forms
         List<BankTranscation> transcations;
         List<BankTranscationVM> vmList;
         BankTranscation Transcation { get; set; }
+
         string AccountNumber = "";
-        bool Yearly = false, Monthly = false;
+        bool Yearly = false, Monthly = false, isNew = false;
         List<string> ModeList = new List<string>
         {
             "Cheque","ATM","Over Counter","NEFT/RTGS/IMPS","UPI","Others"
         };
         public List<string> GetModeList() { return ModeList; }
         public List<string> accountList;
-
+        public void SetEditMode(bool mode = true)
+        {
+            isNew = !mode;
+        }
+        public bool GetEditMode() { return isNew; }
         public BankTranscationViewModel()
         {
             azuredb = new AzurePayrollDbContext();
@@ -150,15 +237,16 @@ namespace AKS.Accounting.Forms
             this.AccountNumber = "";
             Yearly = yearly; Monthly = monthly;
             if (yearly)
-                return azuredb.BankTranscations.Include(c => c.BankAccount).Where(c => c.OnDate.Year == ondate.Year).ToList();
-            if (monthly)
-                return azuredb.BankTranscations.Include(c => c.BankAccount).Where(c => c.OnDate.Month == ondate.Month && c.OnDate.Year == ondate.Year).ToList();
-            return azuredb.BankTranscations.Include(c => c.BankAccount).Where(c => c.OnDate == ondate).ToList();
-
+                transcations = azuredb.BankTranscations.Include(c => c.BankAccount).Include(c => c.Store).Where(c => c.OnDate.Year == ondate.Year).ToList();
+            else if (monthly)
+                transcations = azuredb.BankTranscations.Include(c => c.BankAccount).Include(c => c.Store).Where(c => c.OnDate.Month == ondate.Month && c.OnDate.Year == ondate.Year).ToList();
+            else transcations = azuredb.BankTranscations.Include(c => c.BankAccount).Include(c => c.Store).Where(c => c.OnDate == ondate).ToList();
+            return transcations;
         }
         public List<BankTranscation> GetTranscation() { return transcations; }
-        public bool Save(BankTranscation bt, bool isNew = true)
+        public bool Save(BankTranscation bt, bool isnew = true)
         {
+            this.isNew = isnew;
             Transcation = bt;
             if (isNew)
                 azuredb.BankTranscations.Add(Transcation);
@@ -167,7 +255,8 @@ namespace AKS.Accounting.Forms
             var flag = azuredb.SaveChanges() > 0;
             if (flag)
             {
-                if (transcations == null) transcations = new List<BankTranscation>();
+                if (transcations == null)
+                    transcations = new List<BankTranscation>();
                 transcations.Add(Transcation);
             }
             return flag;

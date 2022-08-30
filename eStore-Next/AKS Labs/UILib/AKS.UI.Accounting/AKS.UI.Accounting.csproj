@@ -13,6 +13,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Forms\Banking\BankAccountEntryForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\Banking\BankForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\Banking\BankTranscationForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\Sales\DailySaleEntryForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\Sales\DailySaleForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\Sales\DueRecoveryEntryForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Forms\PettyCashSheetForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Forms\VochersForm.cs">
 			<SubType>Form</SubType>
 		</Compile>

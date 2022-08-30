@@ -51,6 +51,7 @@
             this.bankAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vendorAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.depositWithdrawalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +83,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.depositWithdrawalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dailySaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -111,7 +112,8 @@
             // testFormToolStripMenuItem
             // 
             this.testFormToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pettyCashSheetToolStripMenuItem});
+            this.pettyCashSheetToolStripMenuItem,
+            this.dailySaleToolStripMenuItem});
             this.testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
             this.testFormToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.testFormToolStripMenuItem.Text = "Operations";
@@ -119,7 +121,7 @@
             // pettyCashSheetToolStripMenuItem
             // 
             this.pettyCashSheetToolStripMenuItem.Name = "pettyCashSheetToolStripMenuItem";
-            this.pettyCashSheetToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.pettyCashSheetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pettyCashSheetToolStripMenuItem.Text = "Petty Cash Sheet";
             this.pettyCashSheetToolStripMenuItem.Click += new System.EventHandler(this.pettyCashSheetToolStripMenuItem_Click);
             // 
@@ -252,6 +254,13 @@
             this.accountListToolStripMenuItem.Name = "accountListToolStripMenuItem";
             this.accountListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.accountListToolStripMenuItem.Text = "Account List";
+            // 
+            // depositWithdrawalToolStripMenuItem
+            // 
+            this.depositWithdrawalToolStripMenuItem.Name = "depositWithdrawalToolStripMenuItem";
+            this.depositWithdrawalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.depositWithdrawalToolStripMenuItem.Text = "Deposit & Withdrawal";
+            this.depositWithdrawalToolStripMenuItem.Click += new System.EventHandler(this.depositWithdrawalToolStripMenuItem_Click);
             // 
             // toolsMenu
             // 
@@ -513,12 +522,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // depositWithdrawalToolStripMenuItem
+            // dailySaleToolStripMenuItem
             // 
-            this.depositWithdrawalToolStripMenuItem.Name = "depositWithdrawalToolStripMenuItem";
-            this.depositWithdrawalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.depositWithdrawalToolStripMenuItem.Text = "Deposit & Withdrawal";
-            this.depositWithdrawalToolStripMenuItem.Click += new System.EventHandler(this.depositWithdrawalToolStripMenuItem_Click);
+            this.dailySaleToolStripMenuItem.Name = "dailySaleToolStripMenuItem";
+            this.dailySaleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dailySaleToolStripMenuItem.Text = "Daily Sale";
+            this.dailySaleToolStripMenuItem.Click += new System.EventHandler(this.dailySaleToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -605,6 +614,7 @@
         private ToolStripMenuItem vendorCreditNotesToolStripMenuItem;
         private ToolStripMenuItem pettyCashSheetToolStripMenuItem;
         private ToolStripMenuItem depositWithdrawalToolStripMenuItem;
+        private ToolStripMenuItem dailySaleToolStripMenuItem;
     }
 }
 

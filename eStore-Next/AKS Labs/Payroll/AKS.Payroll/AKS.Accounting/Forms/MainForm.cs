@@ -157,5 +157,10 @@ namespace AKS.Accounting.Forms
         {
             LoadForm(new BankTranscationForm());
         }
+
+        private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new DailySaleForm());
+        }
     }
 }

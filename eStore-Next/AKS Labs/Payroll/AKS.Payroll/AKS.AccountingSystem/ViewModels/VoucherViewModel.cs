@@ -37,7 +37,7 @@ namespace AKS.AccountingSystem.ViewModels
 
         #region Common
 
-        private VoucherType voucherType;
+        public VoucherType voucherType;
 
         #endregion Common
 

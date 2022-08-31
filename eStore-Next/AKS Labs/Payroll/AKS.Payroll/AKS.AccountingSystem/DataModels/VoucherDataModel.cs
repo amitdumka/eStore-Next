@@ -1,9 +1,7 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Accounts;
-using AKS.Shared.Commons.ViewModels.Accounts;
 using AKS.Shared.Templets.DataModels;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AKS.AccountingSystem.DataModels
 {

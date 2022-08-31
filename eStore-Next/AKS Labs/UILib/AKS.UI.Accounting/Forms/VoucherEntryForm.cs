@@ -4,7 +4,6 @@ using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
 using System.Data;
 
-
 namespace AKS.UI.Accounting.Forms
 {
     public partial class VoucherEntryForm : Form
@@ -24,101 +23,21 @@ namespace AKS.UI.Accounting.Forms
         // private AzurePayrollDbContext azureDb;
         //private LocalPayrollDbContext localDb;
 
-        public VoucherEntryForm()
-        {
-            InitializeComponent();
-            _viewModel = new VoucherCashViewModel(VoucherType.Expense);
-            isNew = true;
-           
-        }
-
-        public VoucherEntryForm(VoucherType voucherType)
-        {
-            InitializeComponent();
-            isNew = true;
-            _viewModel = new VoucherCashViewModel(voucherType);
-        }
-
-        public VoucherEntryForm(VoucherType voucherType, Voucher voucher)
-        {
-            InitializeComponent();
-            _viewModel = new VoucherCashViewModel(voucherType);
-            _viewModel.Update(voucher);
-            isNew = false;
-            btnAdd.Text = "Edit";
-            voucherNumber = voucher.VoucherNumber;
-            panel1.Enabled = false;
-        }
-
-        public VoucherEntryForm(VoucherType voucherType, CashVoucher voucher)
-        {
-            InitializeComponent();
-            _viewModel = new VoucherCashViewModel(voucherType);
-            _viewModel.Update(voucher);
-            isNew = false;
-            btnAdd.Text = "Edit";
-            voucherNumber = voucher.VoucherNumber;
-            panel1.Enabled = false;
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (btnAdd.Text == "Add")
-                {
-                    isNew = true;
-                    ClearFields();
-                    btnAdd.Text = "Save";
-                }
-                else if (btnAdd.Text == "Edit")
-                {
-                    isNew = false;
-                    btnAdd.Text = "Save";
-                }
-                else if (btnAdd.Text == "Save")
-                {
-                    if (SaveData())
-                    {
-                        MessageBox.Show("Voucher is saved!!");
-                        btnAdd.Text = "Add";
-                        ClearFields();
-                        if (isNew)
-                            DialogResult = DialogResult.OK;
-                        else DialogResult = DialogResult.Yes;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error occured while saving voucher");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
         private void ClearFields()
         {
-            if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
-                cashVoucher = new CashVoucher
+            if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
+                _viewModel.cashVoucher = new CashVoucher
                 {
                     Amount = 0,
                     OnDate = DateTime.Now
                 };
-            else voucher = new Voucher
+            else _viewModel.voucher = new Voucher
             {
                 OnDate = DateTime.Now,
                 Amount = 0,
                 PaymentMode = PaymentMode.Cash
             };
             // DisplayData();
-        }
-
-        private void VoucherEntryForm_Load(object sender, EventArgs e)
-        {
-            LoadData();
         }
 
         private void LoadData()
@@ -146,16 +65,16 @@ namespace AKS.UI.Accounting.Forms
             cbxTranscationMode.DisplayMember = "TranscationName";
             cbxTranscationMode.ValueMember = "TranscationId";
 
-            ShowView(voucherType);
+            ShowView(_viewModel.voucherType);
             SetEntryType();
-            if (!isNew) DisplayData();
+            if (!_viewModel.isNew) DisplayData();
         }
 
         private void DisplayData()
         {
             //TODO; All fields are not updated.
 
-            if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+            if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
             {
                 cbxStores.SelectedValue = cashVoucher.StoreId;
                 voucherType = cashVoucher.VoucherType;
@@ -191,47 +110,16 @@ namespace AKS.UI.Accounting.Forms
             SetEntryType();
         }
 
-        private void SetEntryType()
-        {
-            switch (voucherType)
-            {
-                case VoucherType.Payment:
-                    rbPayment.Checked = true;
-                    break;
-
-                case VoucherType.Receipt:
-                    rbReceipts.Checked = true;
-                    break;
-
-                case VoucherType.Expense:
-                    rbExpenses.Checked = true;
-                    break;
-
-                case VoucherType.CashReceipt:
-                    rbCashReceipts.Checked = true;
-                    break;
-
-                case VoucherType.CashPayment:
-                    rbCashPayment.Checked = true;
-                    break;
-
-                default:
-                    rbExpenses.Checked = false;
-                    break;
-            }
-            ShowView(voucherType);
-        }
-
         private bool ReadData()
         {
             //TODO: Validation of Data is need
-            if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+            if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
             {
-                if (cashVoucher == null)
+                if (_viewModel.cashVoucher == null)
                 {
-                    cashVoucher = new CashVoucher
+                    _viewModel.cashVoucher = new CashVoucher
                     {
-                        VoucherType = voucherType,
+                        VoucherType = _viewModel.voucherType,
                         OnDate = dtpOnDate.Value,
                         Remarks = txtRemarks.Text,
                         SlipNumber = txtSlipNo.Text,
@@ -243,11 +131,10 @@ namespace AKS.UI.Accounting.Forms
                         IsReadOnly = false,
                         MarkedDeleted = false,
                         UserId = CurrentSession.UserName,
-                        EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
+                        EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated,
                         TranscationId = (string)cbxTranscationMode.SelectedValue,
                         Particulars = txtParticulars.Text.Trim(),
                     };
-                    
                 }
                 else
                 {
@@ -273,11 +160,11 @@ namespace AKS.UI.Accounting.Forms
             }
             else
             {
-                if (voucher == null)
+                if (_viewModel.voucher == null)
                 {
-                    voucher = new Voucher
+                    _viewModel.voucher = new Voucher
                     {
-                        VoucherType = voucherType,
+                        VoucherType = _viewModel.voucherType,
                         OnDate = dtpOnDate.Value,
                         Remarks = txtRemarks.Text,
                         SlipNumber = txtSlipNo.Text,
@@ -290,16 +177,16 @@ namespace AKS.UI.Accounting.Forms
                         AccountId = (string)cbxBankAccount.SelectedValue,
                         PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex,
                         Particulars = txtParticulars.Text.Trim(),
-                        EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
+                        EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated,
                         IsReadOnly = false,
                         MarkedDeleted = false,
                         UserId = CurrentSession.UserName
                     };
-                    voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
+                    _viewModel.voucher.AccountId = _viewModel.voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
                 else
                 {
-                    voucher.VoucherType = voucherType;
+                    voucher.VoucherType = _viewModel.voucherType;
                     voucher.OnDate = dtpOnDate.Value;
                     voucher.Remarks = txtRemarks.Text;
                     voucher.SlipNumber = txtSlipNo.Text;
@@ -312,13 +199,13 @@ namespace AKS.UI.Accounting.Forms
                     // voucher.AccountId = (string)cbxBankAccount.SelectedValue;
                     voucher.PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex;
                     voucher.Particulars = txtParticulars.Text.Trim();
-                    voucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
+                    voucher.EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated;
                     voucher.IsReadOnly = false;
                     voucher.MarkedDeleted = false;
                     voucher.UserId = CurrentSession.UserName;
                     voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
-                voucher.VoucherNumber = isNew ? VoucherStatic.GenerateVoucherNumber(voucher.VoucherType, voucher.OnDate, voucher.StoreId) : this.voucherNumber;
+                voucher.VoucherNumber = _viewModel.isNew ? VoucherStatic.GenerateVoucherNumber(voucher.VoucherType, voucher.OnDate, voucher.StoreId) : this.voucherNumber;
             }
             return true;
         }
@@ -327,20 +214,157 @@ namespace AKS.UI.Accounting.Forms
         {
             if (ReadData())
             {
-                if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
+                if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
                 {
-                   return _viewModel.Save(ReadData());
+                    return _viewModel.Save(ReadData());
                 }
                 else
                 {
-                   return _viewModel.Save(ReadData());
+                    return _viewModel.Save(ReadData());
                 }
-                
             }
             else
             {
                 return false;
             }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Are you sure to delete this Voucher ??",
+                                       "Confirm Delete!!",
+                                       MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
+                {
+                    azureDb.CashVouchers.Remove(cashVoucher);
+                }
+                else
+                {
+                    azureDb.Vouchers.Remove(voucher);
+                }
+
+                if (azureDb.SaveChanges() > 0)
+                {
+                    MessageBox.Show("Voucher is deleted!", "Delete");
+                    this.deleteVoucherNumber = voucherNumber;
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else MessageBox.Show("Failed to delete, please try again!", "Delete");
+            }
+        }
+
+        //Ported
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (btnAdd.Text == "Add")
+                {
+                    _viewModel.isNew = true;
+                    ClearFields();
+                    btnAdd.Text = "Save";
+                }
+                else if (btnAdd.Text == "Edit")
+                {
+                    _viewModel.isNew = false;
+                    btnAdd.Text = "Save";
+                }
+                else if (btnAdd.Text == "Save")
+                {
+                    if (SaveData())
+                    {
+                        MessageBox.Show("Voucher is saved!!");
+                        btnAdd.Text = "Add";
+                        ClearFields();
+                        if (_viewModel.isNew)
+                            DialogResult = DialogResult.OK;
+                        else DialogResult = DialogResult.Yes;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error occured while saving voucher");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public VoucherEntryForm()
+        {
+            InitializeComponent();
+            _viewModel = new VoucherCashViewModel(VoucherType.Expense);
+            _viewModel.isNew = true;
+        }
+
+        public VoucherEntryForm(VoucherType voucherType)
+        {
+            InitializeComponent();
+            _viewModel.isNew = true;
+            _viewModel = new VoucherCashViewModel(voucherType);
+        }
+
+        public VoucherEntryForm(VoucherType voucherType, Voucher voucher)
+        {
+            InitializeComponent();
+            _viewModel = new VoucherCashViewModel(voucherType);
+            _viewModel.Update(voucher);
+            _viewModel.isNew = false;
+            btnAdd.Text = "Edit";
+            _viewModel.voucherNumber = voucher.VoucherNumber;
+            panel1.Enabled = false;
+        }
+
+        public VoucherEntryForm(VoucherType voucherType, CashVoucher voucher)
+        {
+            InitializeComponent();
+            _viewModel = new VoucherCashViewModel(voucherType);
+            _viewModel.Update(voucher);
+            _viewModel.isNew = false;
+            btnAdd.Text = "Edit";
+            _viewModel.voucherNumber = voucher.VoucherNumber;
+            panel1.Enabled = false;
+        }
+
+        private void VoucherEntryForm_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void SetEntryType()
+        {
+            switch (_viewModel.voucherType)
+            {
+                case VoucherType.Payment:
+                    rbPayment.Checked = true;
+                    break;
+
+                case VoucherType.Receipt:
+                    rbReceipts.Checked = true;
+                    break;
+
+                case VoucherType.Expense:
+                    rbExpenses.Checked = true;
+                    break;
+
+                case VoucherType.CashReceipt:
+                    rbCashReceipts.Checked = true;
+                    break;
+
+                case VoucherType.CashPayment:
+                    rbCashPayment.Checked = true;
+                    break;
+
+                default:
+                    rbExpenses.Checked = false;
+                    break;
+            }
+            ShowView(_viewModel.voucherType);
         }
 
         private void ShowView(VoucherType type)
@@ -382,33 +406,6 @@ namespace AKS.UI.Accounting.Forms
             {
                 cbxBankAccount.Enabled = false;
                 txtPaymentDetails.Enabled = false;
-            }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            var confirmResult = MessageBox.Show("Are you sure to delete this Voucher ??",
-                                       "Confirm Delete!!",
-                                       MessageBoxButtons.YesNo);
-            if (confirmResult == DialogResult.Yes)
-            {
-                if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
-                {
-                    azureDb.CashVouchers.Remove(cashVoucher);
-                }
-                else
-                {
-                    azureDb.Vouchers.Remove(voucher);
-                }
-
-                if (azureDb.SaveChanges() > 0)
-                {
-                    MessageBox.Show("Voucher is deleted!", "Delete");
-                    this.deleteVoucherNumber = voucherNumber;
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else MessageBox.Show("Failed to delete, please try again!", "Delete");
             }
         }
 

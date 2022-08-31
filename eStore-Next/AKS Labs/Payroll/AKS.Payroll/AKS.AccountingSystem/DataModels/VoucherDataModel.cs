@@ -1,12 +1,64 @@
-﻿using AKS.Shared.Commons.Models.Accounts;
+﻿using AKS.Payroll.Database;
+using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
 using AKS.Shared.Templets.DataModels;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AKS.AccountingSystem.DataModels
 {
+    public class DynVM
+    {
+        public string StoreId { get; set; }
+
+        public string DisplayMember { get; set; }
+        public string DisplayData { get; set; }
+
+        public string ValueMember { get; set; }
+        public string ValueData { get; set; }
+        public int ValueIntData { get; set; }
+
+        public string BoolMember { get; set; }
+        public bool BoolValue { get; set; }
+    }
+    public class CommonDataModel
+    {
+        public static List<DynVM> GetStoreList(AzurePayrollDbContext db)
+        {
+            return db.Stores.Select(c => new DynVM { StoreId= c.StoreId, DisplayMember="StoreName"
+                , DisplayData=c.StoreName, BoolValue= c.IsActive , BoolMember="IsActive"}).ToList();
+
+        }
+
+        public static List<DynVM> GetEmployeeList(AzurePayrollDbContext db)
+        {
+           return db.Employees.Select(c => new DynVM {StoreId= c.StoreId, 
+               DisplayMember="StaffName", BoolMember="IsWorking", ValueMember="EmployeeId",
+             ValueData=  c.EmployeeId, DisplayData= c.StaffName, BoolValue= c.IsWorking }).ToList();
+
+        }
+
+        public static List<DynVM> GetBankAccount(AzurePayrollDbContext db)
+        {
+          return  db.BankAccounts.Select(c => new DynVM {StoreId= c.StoreId,
+              DisplayMember="AccountNumber", BoolMember="IsActive",
+             DisplayData= c.AccountNumber, BoolValue= c.IsActive }).ToList();
+
+        }
+    }
     public class VoucherCashDataModel : DataModel<Voucher, CashVoucher>
     {
+        
+        public int GetVoucherCount(string storeCode,DateTime onDate, VoucherType type)
+        {
+            return azureDb.Vouchers.Where(c => c.VoucherType==type && c.StoreId == storeCode && c.OnDate.Month == onDate.Month
+                   && c.OnDate.Year == onDate.Year).Count();
+        }
+        public int GetCashVoucherCount(string storeCode, DateTime onDate, VoucherType type)
+        {
+            return azureDb.CashVouchers.Where(c => c.VoucherType == type && c.StoreId == storeCode && c.OnDate.Month == onDate.Month
+                   && c.OnDate.Year == onDate.Year).Count();
+        }
 
         public List<Voucher> GetVouchers(VoucherType type, int year, string storeCode)
         {

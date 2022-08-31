@@ -12,7 +12,36 @@ namespace AKS.AccountingSystem.ViewModels
 {
     public class VoucherCashViewModel : ViewModel<Voucher, CashVoucher, VoucherCashDataModel>
     {
-        private readonly VoucherType voucherType;
+        #region Constructors
+
+        public VoucherCashViewModel(VoucherType type)
+        {
+            voucherType = type;
+        }
+
+        #endregion Constructors
+
+        #region VoucherEntry
+
+        public string voucherNumber;
+        public string deleteVoucherNumber;
+
+        public CashVoucher SavedCashVoucher { get; set; }
+        public Voucher SavedVoucher { get; set; }
+        public bool isNew = false;
+
+        private CashVoucher cashVoucher;
+        private Voucher voucher;
+
+        #endregion VoucherEntry
+
+        #region Common
+
+        private VoucherType voucherType;
+
+        #endregion Common
+
+        #region VoucherView
 
         private ObservableListSource<CashVoucherVM> cashVoucherVMs;
 
@@ -25,6 +54,8 @@ namespace AKS.AccountingSystem.ViewModels
         private int SelectedYear;
 
         private ObservableListSource<VoucherVM> voucherVMs;
+
+        #endregion VoucherView
 
         public override bool InitViewModel()
         {
@@ -198,5 +229,47 @@ namespace AKS.AccountingSystem.ViewModels
         }
 
         #endregion OpsFunctions
+
+        #region VoucherEntryMethods
+
+        public int GetCount(DateTime onDate, VoucherType type)
+        {
+            if (type == VoucherType.CashReceipt || type == VoucherType.CashPayment)
+            {
+                return DataModel.GetCashVoucherCount(CurrentSession.StoreCode, onDate, type);
+            }
+            else
+            {
+                return DataModel.GetVoucherCount(CurrentSession.StoreCode, onDate, type);
+            }
+        }
+
+        public bool Save(Voucher voucher, bool isNew)
+        {
+            SavedVoucher = DataModel.Save(voucher, isNew);
+            if (SavedVoucher != null) return true;
+            return false;
+        }
+
+        public bool Save(CashVoucher voucher, bool isNew)
+        {
+            SavedCashVoucher = DataModel.Save(voucher, isNew);
+            if (SavedCashVoucher != null) return true;
+            return false;
+        }
+
+        public void Delete(Voucher voucher)
+        { }
+
+        public void Delete(CashVoucher voucher)
+        { }
+
+        public void Update(Voucher voucher)
+        { PrimaryEntity = voucher; }
+
+        public void Update(CashVoucher voucher)
+        { SecondaryEntity = voucher; }
+
+        #endregion VoucherEntryMethods
     }
 }

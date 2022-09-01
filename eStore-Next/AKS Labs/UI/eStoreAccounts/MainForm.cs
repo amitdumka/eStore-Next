@@ -1,9 +1,57 @@
-﻿namespace eStoreAccounts
+﻿using AKS.Shared.Commons.Ops;
+using AKS.UI.Accounting.Forms;
+using AKS.UI.Accounting.Forms.Banking;
+
+namespace eStoreAccounts
 {
     public partial class MainForm : Form
     {
         private int childFormNumber = 0;
 
+        private void depositWithdrawalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new BankTranscationForm());
+        }
+
+        private void dailySaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new DailySaleForm());
+        }
+
+        private void bankToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new BankForm());
+        }
+
+        private void expensesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Expense));
+        }
+
+        private void paymentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Payment));
+        }
+
+        private void receiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.Receipt));
+        }
+
+        private void cashPaymentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.CashPayment));
+        }
+
+        private void cashReceiptsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new VochersForm(VoucherType.CashReceipt));
+        }
+
+        private void pettyCashSheetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadForm(new PettyCashSheetForm());
+        }
         public MainForm()
         {
             InitializeComponent();
@@ -38,6 +86,7 @@
         private void ExitToolsStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+            Application.Exit();
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -91,6 +140,62 @@
         private void ToolBarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolStrip.Visible = toolBarToolStripMenuItem.Checked;
+        }
+
+       
+
+        private void debitNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void creditNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vendorDebitNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vendorCreditNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+         
+
+        private void bankAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vendorAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void accountListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
+        private void LoadForm(Form frm)
+        {
+            frm.MdiParent = this;
+            frm.Show();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            toolStripStatusLabel1.Text = CurrentSession.StoreName;
+            toolStripStatusLabel2.Text = CurrentSession.StoreCode;
+            toolStripStatusLabel3.Text = CurrentSession.GuestName;
+            toolStripStatusLabel4.Text = CurrentSession.LoggedTime.ToString();
+          toolStripStatusLabel5.Text= CurrentSession.UserType.ToString();
+
         }
     }
 }

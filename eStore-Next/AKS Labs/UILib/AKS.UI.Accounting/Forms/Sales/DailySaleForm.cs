@@ -1,4 +1,5 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.AccountingSystem.DTO;
+using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Sales;
 using AKS.UI.Accounting.Forms.EntryForms;
 using AKS.Widgets.Helpers;

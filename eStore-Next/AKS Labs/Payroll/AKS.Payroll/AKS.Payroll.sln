@@ -68,11 +68,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UILibs", "UILibs", "{3A5EB5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.UI.Auths", "..\..\UILib\AKS.UI.Auths\AKS.UI.Auths.csproj", "{A8CB7CE2-3A7F-421A-8314-BF92A9685357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.UI.POS", "..\..\UILib\AKS.UI.POS\AKS.UI.POS.csproj", "{2B119404-CEF1-4793-A23F-02B594E04890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.UI.POS", "..\..\UILib\AKS.UI.POS\AKS.UI.POS.csproj", "{2B119404-CEF1-4793-A23F-02B594E04890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.PosSystem", "AKS.PosSystem\AKS.PosSystem.csproj", "{671FA9D9-2A2C-4A8C-96E7-BD22DE02A841}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.PosSystem", "AKS.PosSystem\AKS.PosSystem.csproj", "{671FA9D9-2A2C-4A8C-96E7-BD22DE02A841}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.UI.Accounting", "..\..\UILib\AKS.UI.Accounting\AKS.UI.Accounting.csproj", "{5C3C5EC4-EB98-40DB-9690-21EF54BD50EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.UI.Accounting", "..\..\UILib\AKS.UI.Accounting\AKS.UI.Accounting.csproj", "{5C3C5EC4-EB98-40DB-9690-21EF54BD50EF}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Templets", "AKS.Shared.Templets\AKS.Shared.Templets.shproj", "{D98B224D-C30E-4A2F-AE79-ACA26E2D8940}"
 EndProject
@@ -197,11 +197,15 @@ Global
 		SolutionGuid = {E330ACB7-D840-4475-B428-7A550A69C68A}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
+		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{2147e9df-8118-4daa-8611-40dd72c259f9}*SharedItemsImports = 13
 		AKS.Shared.PosBilling\AKS.Shared.PosBilling.projitems*{642f8409-f94e-404c-8d3a-cb1f801a1396}*SharedItemsImports = 13
 		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
+		AKS.Shared.Accounting\AKS.Shared.Accounting.projitems*{d540ea0b-62f2-4582-8fe1-0a2d381c29cc}*SharedItemsImports = 13
 		AKS.Shared.Templets\AKS.Shared.Templets.projitems*{d98b224d-c30e-4a2f-ae79-aca26e2d8940}*SharedItemsImports = 13
 		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
 		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{da385edd-4800-4705-a919-426fc5db5295}*SharedItemsImports = 5
+		..\..\..\eStore\eStore.Shared\eStore.Shared.projitems*{e7d3a8b8-6511-49dc-8f9f-f64eede437cf}*SharedItemsImports = 5
 		AKS.Shared.Templets\AKS.Shared.Templets.projitems*{ef802476-9a1f-48b6-87c7-e0f01e1e56c2}*SharedItemsImports = 5
 		..\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{f130673c-4ee9-4135-85a2-cedf6660859d}*SharedItemsImports = 5
 		..\..\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{f130673c-4ee9-4135-85a2-cedf6660859d}*SharedItemsImports = 5

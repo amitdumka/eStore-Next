@@ -19,14 +19,14 @@ namespace AKS.UI.Accounting.Forms
         public VochersForm()
         {
             InitializeComponent();
-            _voucherViewModel = new VoucherCashViewModel();
+            _voucherViewModel = new VoucherCashViewModel(VoucherType.Payment);
             voucherType = VoucherType.Payment;
         }
 
         public VochersForm(VoucherType type)
         {
             InitializeComponent();
-            _voucherViewModel = new VoucherCashViewModel();
+            _voucherViewModel = new VoucherCashViewModel(type);
             voucherType = type;
         }
 

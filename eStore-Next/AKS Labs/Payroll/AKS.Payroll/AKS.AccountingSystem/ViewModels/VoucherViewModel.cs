@@ -1,6 +1,7 @@
 ﻿//using AKS.Shared.Commons.Models.Accounts;
 using AKS.AccountingSystem.DataModels;
 using AKS.AccountingSystem.DTO;
+using AKS.AccountingSystem.Helpers;
 using AKS.Payroll.Database;
 using AKS.Printers.Thermals;
 using AKS.Shared.Commons.Models.Accounts;
@@ -246,6 +247,27 @@ namespace AKS.AccountingSystem.ViewModels
             }
         }
 
+        public bool SaveVoucher(bool isDataSet)
+        {
+            //TODO: Move VoucherNumber Creation ViewModel/DataModel Side
+            PrimaryEntity.VoucherNumber = isNew ? VoucherStatic.GenerateVoucherNumber(PrimaryEntity.VoucherType, PrimaryEntity.OnDate, PrimaryEntity.StoreId,
+                DataModel.GetCashVoucherCount(PrimaryEntity.StoreId, PrimaryEntity.OnDate, PrimaryEntity.VoucherType)) : this.voucherNumber;
+
+            SavedVoucher = DataModel.Save(PrimaryEntity, isNew);
+            if (SavedVoucher != null) return true;
+            return false;
+        }
+
+        public bool SaveCashVoucher(bool isDataSet)
+        {
+            SecondaryEntity.VoucherNumber = isNew ? VoucherStatic.GenerateVoucherNumber(SecondaryEntity.VoucherType, SecondaryEntity.OnDate, SecondaryEntity.StoreId,
+                DataModel.GetCashVoucherCount(SecondaryEntity.StoreId, SecondaryEntity.OnDate, SecondaryEntity.VoucherType)) : this.voucherNumber;
+
+            SavedCashVoucher = DataModel.Save(SecondaryEntity, isNew);
+            if (SavedCashVoucher != null) return true;
+            return false;
+        }
+
         public bool Save(Voucher voucher, bool isNew)
         {
             SavedVoucher = DataModel.Save(voucher, isNew);
@@ -294,20 +316,23 @@ namespace AKS.AccountingSystem.ViewModels
 
         public List<DynVM> GetStoreList()
         {
-
             return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
         }
+
         public List<DynVM> GetEmployeeList()
         {
             return CommonDataModel.GetEmployeeList(DataModel.GetDatabaseInstance());
         }
 
-        public List<DynVM> GetBankAccountList() { return CommonDataModel.GetBankAccount(DataModel.GetDatabaseInstance()); }
-        public List<DynVM> GetPartyList() { return CommonDataModel.GetParty(DataModel.GetDatabaseInstance()); }
-        public List<DynVM> GetTranscationList() { return CommonDataModel.GetTranscation(DataModel.GetDatabaseInstance()); }
+        public List<DynVM> GetBankAccountList()
+        { return CommonDataModel.GetBankAccount(DataModel.GetDatabaseInstance()); }
 
+        public List<DynVM> GetPartyList()
+        { return CommonDataModel.GetParty(DataModel.GetDatabaseInstance()); }
 
-        #endregion
+        public List<DynVM> GetTranscationList()
+        { return CommonDataModel.GetTranscation(DataModel.GetDatabaseInstance()); }
 
+        #endregion CommonDataModelsFunctions
     }
 }

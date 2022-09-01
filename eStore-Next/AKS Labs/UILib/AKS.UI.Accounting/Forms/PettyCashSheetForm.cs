@@ -2,7 +2,6 @@
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using ASK.UI.Libs;
-using System.Data;
 
 namespace AKS.UI.Accounting.Forms
 {
@@ -102,7 +101,7 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnMissingReport_Click(object sender, EventArgs e)
         {
-            string filename = new PettyCashSheetManager(azureDb, localDb).GenReport();
+            string filename = _viewModel.MissingReport();
 
             if (!string.IsNullOrEmpty(filename))
             {
@@ -128,26 +127,12 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
-            if (pcs != null && cashDetail != null)
-            {
-                ViewPdf();
-            }
-            else
-            {
-                pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
-                cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == DateTime.Today.Date).FirstOrDefault();
+            if (_viewModel.FetchTodayOrYesterday())
 
-                if (pcs != null)
-                    ViewPdf();
-                else
-                {
-                    pcs = azureDb.PettyCashSheets.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
-                    cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == DateTime.Today.AddDays(-1).Date).FirstOrDefault();
-                    if (pcs != null) ViewPdf();
-                    else
-                        MessageBox.Show("No Record Found");
-                }
-            }
+                ViewPdf();
+            else
+
+                MessageBox.Show("No Record Found");
         }
 
         private void btnPrint_Click(object sender, EventArgs e)
@@ -195,8 +180,8 @@ namespace AKS.UI.Accounting.Forms
                 if (row != null)
                 {
                     _viewModel.PrimaryEntity = row;
-                    _viewModel.SecondaryEntity = _viewModel.GetSecondary();
-                        
+                    _viewModel.SecondaryEntity = _viewModel.GetSecondary(row.OnDate);
+
                     ViewPdf();
                 }
             }
@@ -490,11 +475,5 @@ namespace AKS.UI.Accounting.Forms
         }
     }//end of class
 
-    internal class RowData
-    {
-        public string Name1 { get; set; }
-        public string Name2 { get; set; }
-        public string Value1 { get; set; }
-        public string Value2 { get; set; }
-    }
+    
 }

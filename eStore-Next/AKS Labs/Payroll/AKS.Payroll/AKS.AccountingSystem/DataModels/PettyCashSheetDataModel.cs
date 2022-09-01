@@ -1,6 +1,7 @@
 ﻿using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Templets.DataModels;
+using System.Drawing;
 
 namespace AKS.AccountingSystem.DataModels
 {
@@ -69,6 +70,25 @@ namespace AKS.AccountingSystem.DataModels
         public List<CashDetail> GetYList(int year)
         {
             return azureDb.CashDetails.Where(c => c.StoreId == StoreCode && c.OnDate.Year == year).ToList();
+        }
+
+        public List<Shared.Commons.Models.Sales.DailySale> DailySale(DateTime startDate, DateTime endDate)
+        {
+            return azureDb.DailySales.Where(c => c.OnDate.Date >= startDate && c.OnDate.Date <= endDate).ToList();
+
+        }
+
+        public List<Voucher> Vouchers(DateTime startDate, DateTime endDate)
+        {
+            return azureDb.Vouchers.Where(c => c.OnDate.Date >= startDate && c.OnDate.Date <= endDate).ToList();
+           // var cash = azureDb.CashVouchers.Where(c => c.OnDate.Date >= startDate && c.OnDate.Date <= endDate).ToList();
+
+        }
+        public List<CashVoucher> CashVouchers(DateTime startDate, DateTime endDate)
+        {
+           // return azureDb.Vouchers.Where(c => c.OnDate.Date >= startDate && c.OnDate.Date <= endDate).ToList();
+            return azureDb.CashVouchers.Where(c => c.OnDate.Date >= startDate && c.OnDate.Date <= endDate).ToList();
+
         }
     }
 }

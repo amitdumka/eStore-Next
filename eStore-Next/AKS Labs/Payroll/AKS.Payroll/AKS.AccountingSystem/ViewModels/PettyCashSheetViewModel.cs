@@ -4,7 +4,6 @@ using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Templets.ViewModels;
- 
 
 namespace AKS.AccountingSystem.ViewModels
 {
@@ -184,15 +183,38 @@ namespace AKS.AccountingSystem.ViewModels
         public void SetEdit()
         { }
 
-        public void GetSecondary(DateTime onDate)
+        public CashDetail GetSecondary(DateTime onDate)
         {
-            return DataModel.GetY(onDate);  
-                
-               
+            return DataModel.GetY(onDate);
         }
-        public void GetPrimary(DateTime onDate)
+
+        public PettyCashSheet GetPrimary(DateTime onDate)
         {
             return DataModel.Get(onDate);
+        }
+
+        public bool FetchTodayOrYesterday()
+        {
+            if (PrimaryEntity == null || SecondaryEntity == null)
+            {
+                PrimaryEntity = GetPrimary(DateTime.Now);
+                if (PrimaryEntity == null)
+                {
+                    PrimaryEntity = GetPrimary(DateTime.Today.AddDays(-1));
+                    if (PrimaryEntity != null)
+                        SecondaryEntity = GetSecondary(DateTime.Today.AddDays(-1));
+                    else return false;
+                    return true;
+                }
+            }
+            return true;
+        }
+
+
+        public string MissingReport()
+        {
+           // string filename = new PettyCashSheetManager(azureDb, localDb).GenReport();
+            return "";
         }
         #endregion OpsFunctions
 
@@ -206,10 +228,87 @@ namespace AKS.AccountingSystem.ViewModels
             }
             return ItemList;
         }
+       
+        public List<PettyCashSheet> GenDBSheet()
+        {
+            DateTime startDate = new DateTime(2021, 04, 13);
+            DateTime endDate = new DateTime(2021, 06, 01);
+
+            var dailySale = DataModel.DailySale(startDate, endDate);
+            var expen = DataModel.Vouchers(startDate, endDate);
+            var cash = DataModel.CashVouchers(startDate, endDate);
+
+            decimal openbal = 3109;
+            List<PettyCashSheet> cashSheet = new List<PettyCashSheet>();
+
+            DateTime onDate = startDate;
+            do
+            {
+                PettyCashSheet pcs = new PettyCashSheet
+                {
+                    OnDate = onDate,
+                    CardSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.PayMode == PayMode.Card).Select(c => c.Amount).Sum(),
+                    ManualSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.ManualBill).Select(c => c.Amount).Sum(),
+                    DailySale = dailySale.Where(c => c.OnDate.Date == onDate.Date && !c.ManualBill && !c.TailoringBill && !c.SalesReturn).Select(c => c.Amount).Sum(),
+                    NonCashSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.PayMode != PayMode.Cash && c.PayMode != PayMode.Card).Select(c => c.Amount).Sum(),
+
+                    BankDeposit = 0,
+                    BankWithdrawal = 0,
+                    ClosingBalance = 0,
+                    CustomerDue = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.IsDue).Select(c => c.Amount).Sum(),
+                    CustomerRecovery = 0,
+                    TailoringSale = dailySale.Where(c => c.OnDate.Date == onDate.Date && c.TailoringBill).Select(c => c.Amount).Sum(),
+                    OpeningBalance = openbal,
+                    PaymentNaration = "",
+                    ReceiptsNaration = "",
+                    DueList = "#",
+                    RecoveryList = "#",
+                    TailoringPayment = 0,
+                    Id = $"ARD/{onDate.Year}/{onDate.Month}/{onDate.Day}",
+
+                    ReceiptsTotal = cash.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.CashReceipt).Select(c => c.Amount).Sum(),
+                    PaymentTotal = cash.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.CashPayment).Select(c => c.Amount).Sum() +
+                              expen.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.Expense && c.PaymentMode == PaymentMode.Cash).Select(c => c.Amount).Sum(),
+                };
+
+                var recs = cash.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.CashReceipt)
+                    .Select(c => new { c.Amount, c.Particulars, c.SlipNumber, c.Remarks }).ToList();
+                var pay = cash.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.CashPayment).Select(c => new { c.Amount, c.Particulars, c.SlipNumber, c.Remarks }).ToList();
+                var exps = expen.Where(c => c.OnDate.Date == onDate.Date && c.VoucherType == VoucherType.Expense && c.PaymentMode == PaymentMode.Cash).Select(c => new { c.Amount, c.Particulars, c.SlipNumber, c.Remarks }).ToList();
+
+                foreach (var item in recs)
+                {
+                    pcs.ReceiptsNaration += $"#{item.SlipNumber} / {item.Particulars}/{item.Remarks} :{item.Amount} ";
+                }
+                var ds = dailySale.Where(c => c.OnDate.Date == onDate.Date).ToList();
+                foreach (var item in ds)
+                {
+                    pcs.ReceiptsNaration += $"#{item.InvoiceNumber} / {item.Remarks}/{item.PayMode} :{item.Amount} ";
+                }
+                // pcs.PaymentNaration = "$PAYMENT=>";
+                foreach (var item in pay)
+                {
+                    pcs.PaymentNaration += $"#{item.SlipNumber} = {item.Particulars}={item.Remarks} :{item.Amount} ";
+                }
+                // pcs.PaymentNaration+= "$Expenses=>";
+                foreach (var item in exps)
+                {
+                    pcs.PaymentNaration += $"#{item.SlipNumber} / {item.Particulars}/{item.Remarks} :{item.Amount} ";
+                }
+
+                var colbal = pcs.OpeningBalance + pcs.DailySale + pcs.ManualSale + pcs.TailoringSale + pcs.CustomerRecovery + pcs.ReceiptsTotal + pcs.BankWithdrawal;
+                colbal = colbal - (pcs.PaymentTotal + pcs.CardSale + pcs.TailoringPayment + pcs.CustomerDue + pcs.BankDeposit);
+                pcs.ClosingBalance = colbal;
+                cashSheet.Add(pcs);
+                onDate = onDate.AddDays(1);
+                openbal = colbal;
+            }
+            while (onDate < endDate);
+
+            return cashSheet;
+        }
 
         #endregion PrivateOpsFuncs
-
-
 
         #region ReportSections
 

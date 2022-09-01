@@ -10,6 +10,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.AccountingSystem\AKS.AccountingSystem.csproj" />
 		<ProjectReference Include="..\..\Payroll\AKS.Payroll\AKS.Printers\AKS.Printers.csproj" />
+		<ProjectReference Include="..\..\Payroll\AKS.Payroll\ASK.UI.Libs\ASK.UI.Libs.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

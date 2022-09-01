@@ -39,7 +39,7 @@ namespace AKS.AccountingSystem.ViewModels
         #region Common
 
         public VoucherType voucherType;
-        public CommonDataModel CommonDataModel;// { get; set; }
+        CommonDataModel CommonDataModel;// { get; set; }
 
         #endregion Common
 

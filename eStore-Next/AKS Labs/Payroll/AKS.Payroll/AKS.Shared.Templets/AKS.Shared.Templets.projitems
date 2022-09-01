@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DataModels\DataModels.cs" />
+    <Compile Include="..\AKS.Shared.Templets\Data\ObservableListSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\DataTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\LogWrite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModel.cs" />

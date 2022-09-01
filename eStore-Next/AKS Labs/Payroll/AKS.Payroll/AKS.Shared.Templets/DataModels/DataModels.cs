@@ -7,6 +7,10 @@ namespace AKS.Shared.Templets.DataModels
     {
         protected AzurePayrollDbContext azureDb;
         protected LocalPayrollDbContext localDb;
+        protected string StoreCode;
+       
+        public void SetStoreCode(string sc) { StoreCode = sc; }
+        public string GetStoreCode() { return StoreCode; }
 
         public DataModel()
         {

@@ -4,15 +4,34 @@
 
     public abstract class ViewModel<T, Y, VM, DM>
     {
-        public string StoreCode { get; set; }
-
+        public VM _ViewModel { get; set; }
         public List<VM> _ViewModels { get; set; }
+        public DM DataModel { get; set; }
         public List<T> PrimaryEntites { get; set; }
-        public List<Y> SecondayEntites { get; set; }
         public T PrimaryEntity { get; set; }
         public Y SecondaryEntity { get; set; }
-        public VM _ViewModel { get; set; }
-        public DM DataModel { get; set; }
+        public List<Y> SecondayEntites { get; set; }
+        public string StoreCode { get; set; }
+        protected bool isNew { get; set; }
+        /// <summary>
+        /// Alert to UI
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="type"></param>
+        /// <param name="func"></param>
+        public void Alert(string msg, AlertType type, Action<string, AlertType> func)
+        {
+            func(msg, type);
+        }
+
+        //Delete
+        public abstract bool Delete(T entity);
+
+        public abstract bool Delete(Y entity);
+
+        public abstract bool DeleteRange(List<T> entities);
+
+        public abstract bool DeleteRange(List<Y> entities);
 
         public List<T> GetPrimaryEntities()
         { return PrimaryEntites; }
@@ -23,24 +42,21 @@
         public List<VM> GetViewModels()
         { return _ViewModels; }
 
+        public abstract bool InitViewModel();
+
         //Save Enties
         public abstract bool Save(T entity);
 
-        public bool Save(Y entity)
-        { return false; }
+        public abstract bool Save(Y entity);
+    }
 
-        //Delete
-        public abstract bool Delete(T entity);
-
-        public bool Delete(Y entity)
-        { return false; }
-
-        public abstract bool DeleteRange(List<T> entities);
-
-        public bool DeleteRange(List<Y> entities)
-        { return false; }
-
-        public abstract bool InitViewModel();
+    public abstract class ViewModel<T, DM>
+    {
+        public DM DataModel { get; set; }
+        public List<T> PrimaryEntites { get; set; }
+        public T PrimaryEntity { get; set; }
+        public string StoreCode { get; set; }
+        protected bool isNew { get; set; }
 
         /// <summary>
         /// Alert to UI
@@ -52,40 +68,51 @@
         {
             func(msg, type);
         }
-    }
-
-    public abstract class ViewModel<T, DM>
-    {
-        public string StoreCode { get; set; }
-        public List<T> PrimaryEntites { get; set; }
-        public T PrimaryEntity { get; set; }
-        public DM DataModel { get; set; }
-
-        public List<T> GetPrimaryEntities()
-        { return PrimaryEntites; }
-
-        //Save Enties
-        public bool Save(T entity)
-        { return false; }
 
         //Delete
-        public bool Delete(T entity)
-        { return false; }
+        public abstract bool Delete(T entity);
 
-        public bool DeleteRange(List<T> entities)
-        { return false; }
+        public abstract bool DeleteRange(List<T> entities)
+
+
+public List<T> GetPrimaryEntities()
+        { return PrimaryEntites; }
 
         public abstract bool InitViewModel();
+
+        //Save Enties
+        public abstract bool Save(T entity);
     }
 
     public abstract class ViewModel<T, Y, DM>
     {
-        public string StoreCode { get; set; }
+        public DM DataModel { get; set; }
         public List<T> PrimaryEntites { get; set; }
-        public List<Y> SecondayEntites { get; set; }
         public T PrimaryEntity { get; set; }
         public Y SecondaryEntity { get; set; }
-        public DM DataModel { get; set; }
+        public List<Y> SecondayEntites { get; set; }
+        public string StoreCode { get; set; }
+        protected bool isNew { get; set; }
+
+        /// <summary>
+        /// Alert to UI
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="type"></param>
+        /// <param name="func"></param>
+        public void Alert(string msg, AlertType type, Action<string, AlertType> func)
+        {
+            func(msg, type);
+        }
+
+        //Delete
+        public abstract bool Delete(T entity);
+
+        public abstract bool Delete(Y entity);
+
+        public abstract bool DeleteRange(List<T> entities);
+
+        public abstract bool DeleteRange(List<Y> entities);
 
         public List<T> GetPrimaryEntities()
         { return PrimaryEntites; }
@@ -93,29 +120,13 @@
         public List<Y> GetSecondaryEntities()
         { return SecondayEntites; }
 
-        //Save Enties
-        public bool Save(T entity)
-        { return false; }
-
-        public bool Save(Y entity)
-        { return false; }
-
-        //Delete
-        public bool Delete(T entity)
-        { return false; }
-
-        public bool Delete(Y entity)
-        { return false; }
-
-        public bool DeleteRange(List<T> entities)
-        { return false; }
-
-        public bool DeleteRange(List<Y> entities)
-        { return false; }
-
         public abstract bool InitViewModel();
+
+        //Save Enties
+        public abstract bool Save(T entity);
+
+        public abstract bool Save(Y entity);
     }
 
     #endregion ViewModelTempletes
-
 }

@@ -55,14 +55,14 @@ namespace AKS.Shared.Commons.Models
         public string CustomerName { get { return (FirstName + " " + LastName); } }
         public int Age { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string City { get; set; }       
+        public string City { get; set; }
         public Gender Gender { get; set; }
         public int NoOfBills { get; set; }
         public decimal TotalAmount { get; set; }
         public DateTime OnDate { get; set; }
     }
     [Table("V1_CashDetails")]
-    public class CashDetail:BaseST
+    public class CashDetail : BaseST
     {
         [Key]
         public string CashDetailId { get; set; }
@@ -75,7 +75,7 @@ namespace AKS.Shared.Commons.Models
         public int N500 { get; set; }
         public int N200 { get; set; }
         public int N100 { get; set; }
-        public int N50 { get;set; }
+        public int N50 { get; set; }
         public int N20 { get; set; }
         public int N10 { get; set; }
 

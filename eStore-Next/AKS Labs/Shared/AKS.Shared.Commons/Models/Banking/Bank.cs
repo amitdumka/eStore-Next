@@ -37,11 +37,11 @@ namespace AKS.Shared.Commons.Models.Banking
 
         public string BankId { get; set; }
         public virtual Bank Bank { get; set; }
-        
+
         public string IFSCCode { get; set; }
         public string BranchName { get; set; }
         public AccountType AccountType { get; set; }
-        
+
         public bool IsActive { get; set; }
     }
 
@@ -58,7 +58,7 @@ namespace AKS.Shared.Commons.Models.Banking
         public string StoreId { get; set; }
         public bool MarkedDeleted { get; set; }
 
-         
+
     }
     [Table("V1_VendorBankAccounts")]
     public class VendorBankAccount : BankAccountBase

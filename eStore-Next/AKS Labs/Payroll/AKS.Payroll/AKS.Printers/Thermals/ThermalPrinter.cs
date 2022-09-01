@@ -5,8 +5,6 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 
-using iText.IO.Image;
-
 
 //using PDFtoPrinter;
 using Path = System.IO.Path;
@@ -125,7 +123,7 @@ namespace AKS.Printers.Thermals
             this.StoreName = CurrentSession.StoreName;
             this.TaxNo = CurrentSession.TaxNumber;
         }
-        public string CreateDocument(bool duplicate=false)
+        public string CreateDocument(bool duplicate = false)
         {
             if (!Page2Inch)
             {
@@ -186,7 +184,7 @@ namespace AKS.Printers.Thermals
                 else _title.Add(DotedLine);
             }
             pdfDoc.Add(_title);
-            if (_qrBarcode != null) 
+            if (_qrBarcode != null)
                 pdfDoc.Add(_qrBarcode);
             if (_content != null)
                 pdfDoc.Add(_content);

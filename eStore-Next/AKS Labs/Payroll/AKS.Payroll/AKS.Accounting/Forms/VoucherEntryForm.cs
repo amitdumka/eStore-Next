@@ -49,7 +49,7 @@ namespace AKS.Accounting.Forms.Vouchers
             cashVoucher = voucher;
             isNew = false;
             btnAdd.Text = "Edit";
-            voucherNumber=voucher.VoucherNumber;
+            voucherNumber = voucher.VoucherNumber;
             panel1.Enabled = false;
         }
 
@@ -187,7 +187,7 @@ namespace AKS.Accounting.Forms.Vouchers
             cbxTranscationMode.ValueMember = "TranscationId";
 
             ShowView(voucherType);
-            SetEntryType( );
+            SetEntryType();
             if (!isNew) DisplayData();
 
 
@@ -279,11 +279,11 @@ namespace AKS.Accounting.Forms.Vouchers
                         PartyId = (string)cbxParties.SelectedValue,
                         IsReadOnly = false,
                         MarkedDeleted = false,
-                        UserId=CurrentSession.UserName,
+                        UserId = CurrentSession.UserName,
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         TranscationId = (string)cbxTranscationMode.SelectedValue,
                         Particulars = txtParticulars.Text.Trim(),
-                         
+
 
                     };
 
@@ -308,10 +308,10 @@ namespace AKS.Accounting.Forms.Vouchers
                     cashVoucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     cashVoucher.IsReadOnly = false;
                     cashVoucher.MarkedDeleted = false;
-                    cashVoucher.UserId=CurrentSession.UserName;
+                    cashVoucher.UserId = CurrentSession.UserName;
                 }
-                cashVoucher.VoucherNumber = isNew ? 
-                    GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) : 
+                cashVoucher.VoucherNumber = isNew ?
+                    GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) :
                     this.voucherNumber;
 
 
@@ -339,7 +339,7 @@ namespace AKS.Accounting.Forms.Vouchers
                         EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated,
                         IsReadOnly = false,
                         MarkedDeleted = false,
-                        UserId=CurrentSession.UserName
+                        UserId = CurrentSession.UserName
                     };
                     voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
@@ -361,7 +361,7 @@ namespace AKS.Accounting.Forms.Vouchers
                     voucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
                     voucher.IsReadOnly = false;
                     voucher.MarkedDeleted = false;
-                    voucher.UserId=CurrentSession.UserName;
+                    voucher.UserId = CurrentSession.UserName;
                     voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
 
 
@@ -393,7 +393,7 @@ namespace AKS.Accounting.Forms.Vouchers
                     if (voucherType == VoucherType.CashPayment || voucherType == VoucherType.CashReceipt)
                         SavedCashVoucher = cashVoucher;
                     else SavedVoucher = voucher;
-                    
+
                     return true;
                 }
                 else
@@ -407,19 +407,19 @@ namespace AKS.Accounting.Forms.Vouchers
             }
 
         }
-        
+
         private void ShowView(VoucherType type)
         {
             if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
             {
-                lbBankAccount.Visible=false;
-                lbMode.Visible=false;
-                lbDetails.Visible=false;
-                cbxBankAccount.Visible=false;
-                cbxPaymentMode.Visible=false;
-                txtPaymentDetails.Visible=false;
-               
-                lbTMode.Visible = true; 
+                lbBankAccount.Visible = false;
+                lbMode.Visible = false;
+                lbDetails.Visible = false;
+                cbxBankAccount.Visible = false;
+                cbxPaymentMode.Visible = false;
+                txtPaymentDetails.Visible = false;
+
+                lbTMode.Visible = true;
                 cbxTranscationMode.Visible = true;
             }
             else
@@ -488,7 +488,7 @@ namespace AKS.Accounting.Forms.Vouchers
 
         private void rbReceipts_CheckedChanged(object sender, EventArgs e)
         {
-            if(rbReceipts.Checked)
+            if (rbReceipts.Checked)
             {
                 ShowView(VoucherType.Receipt);
             }

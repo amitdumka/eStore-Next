@@ -291,12 +291,14 @@ namespace AKS.AccountingSystem.ViewModels
         #endregion VoucherEntryMethods
 
         #region CommonDataModelsFunctions
-        
-        public List<DynVM> GetStoreList() { 
-        
-           return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
+
+        public List<DynVM> GetStoreList()
+        {
+
+            return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
         }
-        public List<DynVM> GetEmployeeList() {
+        public List<DynVM> GetEmployeeList()
+        {
             return CommonDataModel.GetEmployeeList(DataModel.GetDatabaseInstance());
         }
 

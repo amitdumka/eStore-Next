@@ -34,7 +34,7 @@ namespace AKS.UI.POS.Forms
             lbInv.Text = "Invoice No.: " + Invoice;
             lbAmount.Text = $"Amount: Rs. {Amount}";
             cbxPOSMachine.DataSource = _db.EDCTerminals.Where(c => c.Active).Select(c => new
-            {   c.EDCTerminalId,c.Name}).ToList();
+            { c.EDCTerminalId, c.Name }).ToList();
             cbxPOSMachine.DisplayMember = "Name";
             cbxPOSMachine.ValueMember = "EDCTerminalId";
 
@@ -91,9 +91,9 @@ namespace AKS.UI.POS.Forms
                     Pd.Card = (Card)cbxCard.SelectedIndex;
                     Pd.CardType = (CardType)cbxCardType.SelectedIndex;
                     Pd.LastFour = int.Parse(txtLastFour.Text.Trim());
-                   
+
                 }
-                else if(Pd.Mode==PayMode.UPI)
+                else if (Pd.Mode == PayMode.UPI)
                     Pd.PosMachineId = cbxPOSMachine.SelectedValue.ToString();
                 return Pd;
             }

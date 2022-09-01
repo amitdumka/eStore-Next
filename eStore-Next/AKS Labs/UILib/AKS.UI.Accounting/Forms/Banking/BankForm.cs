@@ -108,7 +108,7 @@ namespace AKS.UI.Accounting.Forms.Banking
             {
 
             }
-            
+
         }
 
         private void btnAddThirdPartyAccounts_Click(object sender, EventArgs e)

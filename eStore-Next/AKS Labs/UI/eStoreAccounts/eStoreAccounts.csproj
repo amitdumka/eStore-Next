@@ -8,4 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\UILib\AKS.UI.Accounting\AKS.UI.Accounting.csproj" />
+    <ProjectReference Include="..\..\UILib\AKS.UI.Auths\AKS.UI.Auths.csproj" />
+  </ItemGroup>
+
 </Project>

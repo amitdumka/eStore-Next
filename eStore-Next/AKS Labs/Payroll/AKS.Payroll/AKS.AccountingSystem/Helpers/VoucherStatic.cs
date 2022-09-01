@@ -13,7 +13,7 @@
                     break;
 
                 case VoucherType.Receipt:
-                     vNumber = $"{StoreCode}/RCT/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
+                    vNumber = $"{StoreCode}/RCT/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
 
                 case VoucherType.Contra:

@@ -2,7 +2,6 @@
 using AKS.AccountingSystem.ViewModels;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
-using System.Data;
 
 namespace AKS.UI.Accounting.Forms
 {

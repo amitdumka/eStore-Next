@@ -1,4 +1,4 @@
-﻿ 
+﻿
 using AKS.Accounting.Forms.DTOMapping;
 using AKS.Payroll.Database;
 using AKS.Printers.Thermals;
@@ -490,9 +490,9 @@ namespace AKS.Accounting.Forms.Vouchers
         {
             try
             {
-                SelectedYear =  lbYearList.SelectedValue!=null?(int)lbYearList.SelectedValue:DateTime.Today.Year;
+                SelectedYear = lbYearList.SelectedValue != null ? (int)lbYearList.SelectedValue : DateTime.Today.Year;
             }
-            catch (Exception  )
+            catch (Exception)
             {
                 SelectedYear = DateTime.Today.Year;
             }
@@ -537,7 +537,7 @@ namespace AKS.Accounting.Forms.Vouchers
                         OnDate = voucher.OnDate,
                         Particulars = voucher.Particulars,
                         PartyName = voucher.PartyName,
-                        LedgerName =voucher.Partys!=null?voucher.Partys.PartyName:"",
+                        LedgerName = voucher.Partys != null ? voucher.Partys.PartyName : "",
                         Reprint = false,
                         PaymentMode = PaymentMode.Cash,
                         Voucher = voucher.VoucherType,
@@ -559,7 +559,7 @@ namespace AKS.Accounting.Forms.Vouchers
         private void ShowPrintDialog(string filename)
         {
             Form printForm = new Form();
-            printForm.WindowState= FormWindowState.Maximized;
+            printForm.WindowState = FormWindowState.Maximized;
             PdfDocumentView docView = new PdfDocumentView();
             docView.Load(filename);
             docView.Dock = DockStyle.Fill;

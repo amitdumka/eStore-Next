@@ -1,6 +1,5 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Commons.Ops;
-using Microsoft.EntityFrameworkCore;
 
 namespace AKS.Auths
 {
@@ -28,7 +27,7 @@ namespace AKS.Auths
             }
             return false;
         }
-       
+
         public static void DoLogout()
         {
 
@@ -53,8 +52,8 @@ namespace AKS.Auths
         public void AddUser(string username, string password) { }
         public void DeleteUser(string username, string password) { }
         public void ChangePassword(string username, string password) { }
-       
-        
+
+
         public void GetUserInfo(string username, string password) { }
     }
     public class RoleManager

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AKS.Shared.Commons.ViewModels.Widgets
+﻿namespace AKS.Shared.Commons.ViewModels.Widgets
 {
     public class FirstPageVM
     {
         public SaleWidget Sale { get; set; }
-        public AccountWidget Account { get; set; }  
+        public AccountWidget Account { get; set; }
         public EmployeeWidget Employee { get; set; }
 
     }
@@ -50,10 +46,11 @@ namespace AKS.Shared.Commons.ViewModels.Widgets
 
     }
 
-    public class AccountWidget { 
-    
+    public class AccountWidget
+    {
+
         public DateTime OnDate { get; set; }
-       
+
         public decimal TotalCashPayment { get; set; }
         public decimal TotalCashExpenses { get; set; }
         public decimal TotalCashReceipt { get; set; }
@@ -70,13 +67,14 @@ namespace AKS.Shared.Commons.ViewModels.Widgets
         public decimal BankWithdrwal { get; set; }
 
     }
-    public class TailoringWidget { 
-    
+    public class TailoringWidget
+    {
+
         public DateTime OnDate { get; set; }
-        
+
         public int NoOfBooking { get; set; }
         public int NoOfDelivery { get; set; }
-        
+
         public decimal TotalBookingAmount { get; set; }
         public decimal TotalDeliveryAmount { get; set; }
 
@@ -88,14 +86,14 @@ namespace AKS.Shared.Commons.ViewModels.Widgets
         public string EmployeeId { get; set; }
         public string Name { get; set; }
         public EmpType Category { get; set; }
-       
+
         public decimal DailySale { get; set; }
         public decimal MonthlySale { get; set; }
         public decimal YearlySale { get; set; }
         public int NoOfBill { get; set; }
 
         public AttUnit Today { get; set; }
-        
+
         public decimal MonthlyPresent { get; set; }
         public decimal MonthlyAbsent { get; set; }
 

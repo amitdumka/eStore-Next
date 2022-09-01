@@ -41,7 +41,7 @@ namespace AKS.UI.Accounting.Forms
                 txtNonCash.Text = sale.NonCashAmount.ToString();
                 dtpOnDate.Value = sale.OnDate;
                 cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
-                cbxPOS.SelectedValue =sale.EDCTerminalId!=null? sale.EDCTerminalId:"";
+                cbxPOS.SelectedValue = sale.EDCTerminalId != null ? sale.EDCTerminalId : "";
                 cbxSaleman.SelectedValue = sale.SalesmanId;
                 cbManual.Checked = sale.ManualBill;
                 cbSalesReturn.Checked = sale.SalesReturn;
@@ -88,7 +88,7 @@ namespace AKS.UI.Accounting.Forms
             cbxPOS.DataSource = azureDb.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new { c.EDCTerminalId, c.Name }).ToList();
         }
 
-       private bool ReadData()
+        private bool ReadData()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace AKS.UI.Accounting.Forms
                         Amount = decimal.Parse(txtAmount.Text.Trim()),
                         CashAmount = decimal.Parse(txtCash.Text.Trim()),
                         NonCashAmount = decimal.Parse(txtNonCash.Text.Trim()),
-                        EDCTerminalId =   (string)cbxPOS.SelectedValue,
+                        EDCTerminalId = (string)cbxPOS.SelectedValue,
                         EntryStatus = EntryStatus.Added,
                         InvoiceNumber = txtInvoiceNumber.Text,
                         IsDue = cbDue.Checked,
@@ -113,7 +113,7 @@ namespace AKS.UI.Accounting.Forms
                         SalesReturn = cbSalesReturn.Checked,
                         StoreId = (string)cbxStores.SelectedValue,
                         TailoringBill = cbTailoring.Checked,
-                        UserId=CurrentSession.UserName
+                        UserId = CurrentSession.UserName
                     };
                 }
                 else
@@ -126,14 +126,14 @@ namespace AKS.UI.Accounting.Forms
                     sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
                     sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
                     sale.Remarks = txtRemarks.Text; sale.SalesmanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
-                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId=CurrentSession.UserName;
+                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = CurrentSession.UserName;
                 }
 
-                if(sale.PayMode!=PayMode.Card && sale.PayMode!=PayMode.UPI && sale.PayMode == PayMode.Wallets && sale.PayMode!=PayMode.MixPayments || sale.PayMode==PayMode.Cash)
+                if (sale.PayMode != PayMode.Card && sale.PayMode != PayMode.UPI && sale.PayMode == PayMode.Wallets && sale.PayMode != PayMode.MixPayments || sale.PayMode == PayMode.Cash)
                 {
                     sale.EDCTerminalId = null;
                 }
-                else if(string.IsNullOrWhiteSpace(sale.EDCTerminalId) || string.IsNullOrEmpty(sale.EDCTerminalId))
+                else if (string.IsNullOrWhiteSpace(sale.EDCTerminalId) || string.IsNullOrEmpty(sale.EDCTerminalId))
                 {
                     sale.EDCTerminalId = null;
                 }
@@ -152,20 +152,27 @@ namespace AKS.UI.Accounting.Forms
 
             }
         }
-       private void SaveDue()
+        private void SaveDue()
         {
             //TODO: Ideal is meet, when due is not present then add, when due present and edit due removed. 
-            CustomerDue = new() {
-                InvoiceNumber = sale.InvoiceNumber, Amount=sale.Amount, 
-                 EntryStatus= EntryStatus.Added, IsReadOnly=false, MarkedDeleted=false, 
-                  OnDate=sale.OnDate, Paid=false, StoreId=sale.StoreId, UserId=sale.UserId, 
-                   
+            CustomerDue = new()
+            {
+                InvoiceNumber = sale.InvoiceNumber,
+                Amount = sale.Amount,
+                EntryStatus = EntryStatus.Added,
+                IsReadOnly = false,
+                MarkedDeleted = false,
+                OnDate = sale.OnDate,
+                Paid = false,
+                StoreId = sale.StoreId,
+                UserId = sale.UserId,
+
             };
-            if(isNew)
-            azureDb.CustomerDues.Add(CustomerDue);
+            if (isNew)
+                azureDb.CustomerDues.Add(CustomerDue);
             else azureDb.CustomerDues.Update(CustomerDue);
         }
-       private void SavePaymentData()
+        private void SavePaymentData()
         {
             //TODO: Implement this . for banking input. 
         }
@@ -209,10 +216,11 @@ namespace AKS.UI.Accounting.Forms
                         else this.DialogResult = DialogResult.Yes;
                         IsSaved = true;
                     }
-                    else { 
+                    else
+                    {
                         azureDb.DailySales.Remove(sale);
                         if (sale.IsDue) azureDb.CustomerDues.Remove(CustomerDue);
-                        MessageBox.Show("An error occured while saving"); 
+                        MessageBox.Show("An error occured while saving");
                     }
                 }
                 else MessageBox.Show("An error occured while reading");
@@ -229,7 +237,7 @@ namespace AKS.UI.Accounting.Forms
                     azureDb.DailySales.Remove(sale);
                     if (sale.IsDue)
                     {
-                       var d= azureDb.CustomerDues.Where(c=>c.InvoiceNumber==sale.InvoiceNumber).FirstOrDefault();
+                        var d = azureDb.CustomerDues.Where(c => c.InvoiceNumber == sale.InvoiceNumber).FirstOrDefault();
                         if (d != null) { azureDb.CustomerDues.Remove(d); }
                     }
                     if (azureDb.SaveChanges() > 0)
@@ -278,14 +286,14 @@ namespace AKS.UI.Accounting.Forms
 
         }
 
-        
+
         private void cbxPaymentMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
+            if ((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
             {
-                cbxPOS.Enabled = false; 
+                cbxPOS.Enabled = false;
                 txtNonCash.Enabled = false;
-                txtNonCash.Text = "0"; 
+                txtNonCash.Text = "0";
                 txtCash.Text = "0";
             }
             else
@@ -296,7 +304,7 @@ namespace AKS.UI.Accounting.Forms
                 txtCash.Text = "0";
             }
         }
-    
+
         public DialogResult DeleteBox(string name)
         {
             return MessageBox.Show($"Are you sure to delete this {name} ??",
@@ -323,6 +331,6 @@ namespace AKS.UI.Accounting.Forms
 
             //}
         }
-    
+
     }
 }

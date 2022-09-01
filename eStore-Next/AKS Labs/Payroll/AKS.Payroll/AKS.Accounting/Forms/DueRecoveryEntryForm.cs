@@ -117,7 +117,7 @@ namespace AKS.Accounting.Forms.EntryForms
                     IsReadOnly = false,
                     OnDate = dtpOnDate.Value,
                     PayMode = (PayMode)cbxPayMode.SelectedIndex,
-                    UserId=CurrentSession.UserName,
+                    UserId = CurrentSession.UserName,
                     StoreId = cbxStores.SelectedValue.ToString(),
                     Remarks = txtRemarks.Text.Trim(),
                     ParticialPayment = cbParticalPayment.Checked,
@@ -133,7 +133,7 @@ namespace AKS.Accounting.Forms.EntryForms
                 DueRecovery.IsReadOnly = false;
                 DueRecovery.OnDate = dtpOnDate.Value;
                 DueRecovery.PayMode = (PayMode)cbxPayMode.SelectedIndex;
-                DueRecovery.UserId=CurrentSession.UserName;
+                DueRecovery.UserId = CurrentSession.UserName;
                 DueRecovery.StoreId = cbxStores.SelectedValue.ToString();
                 DueRecovery.Remarks = txtRemarks.Text.Trim();
                 DueRecovery.ParticialPayment = cbParticalPayment.Checked;
@@ -176,7 +176,7 @@ namespace AKS.Accounting.Forms.EntryForms
                 if (!DueRecovery.ParticialPayment)
                 {
                     var due = azureDb.CustomerDues.Where(c => c.InvoiceNumber == DueRecovery.InvoiceNumber).FirstOrDefault();
-                    if(due != null)
+                    if (due != null)
                     {
                         due.Paid = false;
                         azureDb.CustomerDues.Update(due);

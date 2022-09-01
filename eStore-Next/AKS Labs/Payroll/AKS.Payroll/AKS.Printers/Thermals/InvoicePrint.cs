@@ -37,7 +37,7 @@ namespace AKS.Printers.Thermals
         public ProductSale ProductSale { get; set; }
         public List<SalePaymentDetail> PaymentDetails { get; set; }
         public CardPaymentDetail CardDetails { get; set; }
-        
+
         /// <summary>
         /// Invoice Printing to PDF
         /// </summary>
@@ -76,7 +76,7 @@ namespace AKS.Printers.Thermals
                 code.SetFont(timesRoman).SetFontSize(FontSize);
 
                 //Details
-                 _content = new Paragraph().SetFontSize(FontSize);
+                _content = new Paragraph().SetFontSize(FontSize);
                 _content.AddStyle(code);
                 _content.SetTextAlignment(iText.Layout.Properties.TextAlignment.JUSTIFIED_ALL);
                 _content.Add(Employee + "\n");
@@ -134,8 +134,8 @@ namespace AKS.Printers.Thermals
                 _content.Add("Tender (s)\t\n Paid Amount:\t\t Rs. " + (ProductSale.TotalPrice - ProductSale.RoundOff).ToString("0.##"));
 
                 _content.Add("\n" + DotedLine);
-                _content.Add("Basic Price: " + basicPrice.ToString("0.##")+"\n");
-                _content.Add("CGST: " + gstPrice.ToString("0.##")+"\n");
+                _content.Add("Basic Price: " + basicPrice.ToString("0.##") + "\n");
+                _content.Add("CGST: " + gstPrice.ToString("0.##") + "\n");
                 _content.Add("SGST: " + gstPrice.ToString("0.##") + "\n");
                 _content.Add(DotedLine);
 
@@ -184,13 +184,13 @@ namespace AKS.Printers.Thermals
 
                 _footer.Add("Printed on: " + DateTime.Now + "\n\n\n\n\n");
                 _footer.Add("\n" + DotedLine + "\n\n\n\n");
-              
+
                 var barcode = Barcodes.QRBarcode.GenerateQRCode(ProductSale.InvoiceNo, ProductSale.OnDate, ProductSale.TotalPrice);
                 //var barcode = Barcodes.QRBarcode.GenerateBarCode(ProductSale.InvoiceNo);//,ProductSale.OnDate,ProductSale.TotalPrice);
                 if (barcode != null)
                 {
                     var img = ImageDataFactory.CreatePng(barcode.ToPngBinaryData());
-                     _qrBarcode = new Image(img);
+                    _qrBarcode = new Image(img);
                     _qrBarcode.Scale((float)0.1, (float)0.1);
                     _qrBarcode.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                     _qrBarcode.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);

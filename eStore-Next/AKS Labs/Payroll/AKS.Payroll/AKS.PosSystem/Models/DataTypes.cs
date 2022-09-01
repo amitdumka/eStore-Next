@@ -1,1 +1,1 @@
-﻿public enum AlertType{ Normal, Info, Error, Warning }
+﻿public enum AlertType { Normal, Info, Error, Warning }

@@ -1,10 +1,7 @@
 ﻿using AKS.Shared.Commons.Models.Base;
 using AKS.Shared.Payroll.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace AKS.Shared.Commons.Models.Accounts
 {
@@ -27,16 +24,16 @@ namespace AKS.Shared.Commons.Models.Accounts
 
 
 
-    public class Voucher:BaseST
+    public class Voucher : BaseST
     {
         [Key]
         public string VoucherNumber { get; set; }
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
         public string SlipNumber { get; set; }
-        
+
         public string PartyName { get; set; }
-        
+
         public string Particulars { get; set; }
 
         public decimal Amount { get; set; }
@@ -66,13 +63,13 @@ namespace AKS.Shared.Commons.Models.Accounts
         public string VoucherNumber { get; set; }
         public VoucherType VoucherType { get; set; }
         public DateTime OnDate { get; set; }
-        
-        
-        public string TranscationId{get;set;}
+
+
+        public string TranscationId { get; set; }
 
         [ForeignKey("TranscationId")]
-        public virtual TranscationMode TranscationMode { get;set;}
-        
+        public virtual TranscationMode TranscationMode { get; set; }
+
         public string SlipNumber { get; set; }
         public string PartyName { get; set; }
         public string Particulars { get; set; }
@@ -80,13 +77,13 @@ namespace AKS.Shared.Commons.Models.Accounts
         public string Remarks { get; set; }
         public string EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
-        
+
         public string PartyId { get; set; }
         public virtual Party Partys { get; set; }
 
     }
     [Table("V1_Notes")]
-    public class Note:BaseST
+    public class Note : BaseST
     {
         [Key]
         public string NoteNumber { get; set; }
@@ -117,7 +114,7 @@ namespace AKS.Shared.Commons.Models.Accounts
 
     }
     [Table("V1_Parties")]
-    public class Party:BaseST
+    public class Party : BaseST
     {
         public string PartyId { get; set; }
         public string PartyName { get; set; }
@@ -149,11 +146,11 @@ namespace AKS.Shared.Commons.Models.Accounts
         //Balance
         public decimal OpeningBalance { get; set; }
         public decimal ClosingBalance { get; set; }
-        
+
         //Bank
         public decimal BankDeposit { get; set; }
         public decimal BankWithdrawal { get; set; }
-        
+
         //Sale
         public decimal DailySale { get; set; }
 

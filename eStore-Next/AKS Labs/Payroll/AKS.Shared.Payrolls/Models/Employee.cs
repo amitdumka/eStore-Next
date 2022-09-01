@@ -297,14 +297,14 @@ namespace AKS.Shared.Payroll.Models
     }
     public class TimeSheet : Base
     {
-        public string Id { get;set; }
+        public string Id { get; set; }
         public string EmployeeId { get; set; }
         public DateTime OutTime { get; set; }
-        public DateTime? InTime { get; set; }    
+        public DateTime? InTime { get; set; }
         public string Reason { get; set; }
         public virtual Employee Employee { get; set; }
-        public double Duration { get { return ( (InTime.HasValue?InTime.Value:DateTime.Now)-OutTime).TotalMinutes; } }
+        public double Duration { get { return ((InTime.HasValue ? InTime.Value : DateTime.Now) - OutTime).TotalMinutes; } }
 
-     }
+    }
 
 }

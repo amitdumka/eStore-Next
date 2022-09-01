@@ -1,8 +1,5 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Shared.Templets.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AKS.Shared.Templets.DataModels
 {

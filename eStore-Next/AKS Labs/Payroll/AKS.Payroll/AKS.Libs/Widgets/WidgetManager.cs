@@ -23,11 +23,11 @@ namespace AKS.Libs.Widgets
                         Name = c.StaffName,
                         Category = c.Category
                     }).ToList();
-                var smList= azureDb.Salesmen.Where(c=>c.StoreId==StoreCode).Select(c=>new {c.EmployeeId,c.SalesmanId }).ToList();
+                var smList = azureDb.Salesmen.Where(c => c.StoreId == StoreCode).Select(c => new { c.EmployeeId, c.SalesmanId }).ToList();
                 // Today Attendance
                 var today = azureDb.Attendances.Where(c => c.StoreId == StoreCode && c.OnDate.Date == DateTime.Today.Date)
                        .Select(c => new { c.EmployeeId, c.Status }).ToList();
-               //Monthly Attendnace
+                //Monthly Attendnace
                 var month = azureDb.Attendances.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month)
                     .GroupBy(c => new { c.EmployeeId, c.Status })
                     .Select(c => new { ID = c.Key.EmployeeId, UNIT = c.Key.Status, CTR = c.Count() }).ToList();
@@ -64,27 +64,27 @@ namespace AKS.Libs.Widgets
                 {
                     //Calucating Monthly Attendace count.
                     var eAtt = mAtt.Where(c => c.EmployeeId == emp.EmployeeId).ToList();
-                    var hf = eAtt.Where(c => c.Status == AttUnit.HalfDay).Select(c=>c.CTR).FirstOrDefault();
-                    
-                    
-                    if (hf!=null && hf > 0) hf = hf / 2;
-                    else hf= 0;
-                   
+                    var hf = eAtt.Where(c => c.Status == AttUnit.HalfDay).Select(c => c.CTR).FirstOrDefault();
+
+
+                    if (hf != null && hf > 0) hf = hf / 2;
+                    else hf = 0;
+
                     emp.MonthlyPresent += hf;
                     emp.MonthlyAbsent += hf;
 
                     emp.MonthlyPresent += (decimal?)eAtt.FirstOrDefault(c => c.Status == AttUnit.Present).CTR ?? 0;
-                    emp.MonthlyAbsent += (decimal?)eAtt.Where(c => c.Status == AttUnit.Absent || c.Status == AttUnit.Sunday).Select(c=>c.CTR).FirstOrDefault() ?? 0;
+                    emp.MonthlyAbsent += (decimal?)eAtt.Where(c => c.Status == AttUnit.Absent || c.Status == AttUnit.Sunday).Select(c => c.CTR).FirstOrDefault() ?? 0;
                     // Updating Today's Attendances
 
-                   emp.Today= (today.FirstOrDefault(c => c.EmployeeId == emp.EmployeeId)?.Status) ?? AttUnit.Absent;
-                   //TODO: no of bill has issue with salesman
+                    emp.Today = (today.FirstOrDefault(c => c.EmployeeId == emp.EmployeeId)?.Status) ?? AttUnit.Absent;
+                    //TODO: no of bill has issue with salesman
                     // Calculating Sale data.
                     if (emp.Category == EmpType.Salesman)
                     {
-                        var smid= smList.FirstOrDefault(c=>c.EmployeeId == emp.EmployeeId).SalesmanId;
-                        emp.NoOfBill = monthly.Where(c => c.ID == smid).Select(c=>c.Count).FirstOrDefault();
-                        emp.MonthlySale = (decimal?)monthly.Where(c => c.ID == smid).Select(c=>c.AMT).FirstOrDefault() ?? 0;
+                        var smid = smList.FirstOrDefault(c => c.EmployeeId == emp.EmployeeId).SalesmanId;
+                        emp.NoOfBill = monthly.Where(c => c.ID == smid).Select(c => c.Count).FirstOrDefault();
+                        emp.MonthlySale = (decimal?)monthly.Where(c => c.ID == smid).Select(c => c.AMT).FirstOrDefault() ?? 0;
                         emp.DailySale = (decimal?)daily.Where(c => c.ID == smid).Select(c => c.AMT).FirstOrDefault() ?? 0;
                         emp.YearlySale = (decimal?)yearly.Where(c => c.ID == smid).Select(c => c.AMT).FirstOrDefault() ?? 0;
                         //emp.MonthlyAverage=

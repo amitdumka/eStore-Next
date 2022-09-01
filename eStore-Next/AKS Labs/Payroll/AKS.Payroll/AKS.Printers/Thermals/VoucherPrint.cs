@@ -38,7 +38,7 @@ namespace AKS.Printers.Thermals
                 {
                     PageWith = 240;
                     FontSize = 10;
-                    PageHeight = 1170*2;
+                    PageHeight = 1170 * 2;
 
                 }
                 if (!IsVoucherSet) return null;

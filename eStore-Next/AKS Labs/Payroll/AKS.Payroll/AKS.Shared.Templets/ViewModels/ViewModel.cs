@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AKS.Shared.Templets.ViewModels
+﻿namespace AKS.Shared.Templets.ViewModels
 {
     #region ViewModelTempletes
 

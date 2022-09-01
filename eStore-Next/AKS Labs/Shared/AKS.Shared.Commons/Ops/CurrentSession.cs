@@ -19,7 +19,7 @@ namespace AKS.Shared.Commons.Ops
         public static DateTime LoggedTime { get; set; } = DateTime.Now;
 
         public static bool IsLoggedIn { get; set; } = false;
-     
+
 
 
     }

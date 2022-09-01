@@ -2,7 +2,6 @@
 using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
-using Microsoft.EntityFrameworkCore;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;
 using Syncfusion.Pdf.Grid;
@@ -227,14 +226,14 @@ namespace AKS.Accounting.Forms
         private void DisplayData()
         {
         }
-        
+
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FilterData((int) lbYearList.SelectedValue);
+            FilterData((int)lbYearList.SelectedValue);
         }
         private void FilterData(int year)
         {
-            if (DataList.Contains(year)==false)           
+            if (DataList.Contains(year) == false)
             {
                 UpdateItemList(azureDb.PettyCashSheets.Where(c => c.OnDate.Year == year).ToList());
                 DataList.Add(year);
@@ -495,7 +494,7 @@ namespace AKS.Accounting.Forms
         private void UpdateView()
         {
             if (rbCMonth.Checked)
-                dgvPettyCashSheet.DataSource = (ItemList.Where(c =>c.OnDate.Year==DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList());
+                dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList());
             else if (rbYearly.Checked)
                 dgvPettyCashSheet.DataSource = ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
             else if (rbLMonth.Checked)

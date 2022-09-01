@@ -8,8 +8,8 @@ public enum Gender { Male, Female, TransGender }
 public enum Unit { Meters, Nos, Pcs, Packets, NoUnit }
 public enum ConnectionType { Commercial, Domestic, HighTension }
 public enum RentType { WorkShop, Shop, Goods, Office, House, Others }
-public enum Size { S, M, L, XL, XXL, XXXL, T28, T30, T32, T34, T36, T38, T40, T41, T42, T44, T46, T48, FreeSize, NS, NOTVALID,B36, B38, B40, B42,B44,B46,B96,B100, B104,B108 }
-public enum ProductCategory { Fabric, Apparel, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others , SuitCovers}
+public enum Size { S, M, L, XL, XXL, XXXL, T28, T30, T32, T34, T36, T38, T40, T41, T42, T44, T46, T48, FreeSize, NS, NOTVALID, B36, B38, B40, B42, B44, B46, B96, B100, B104, B108 }
+public enum ProductCategory { Fabric, Apparel, Accessiories, Tailoring, Trims, PromoItems, Coupons, GiftVouchers, Others, SuitCovers }
 public enum Card { DebitCard, CreditCard, AmexCard }
 public enum CardType { Visa, MasterCard, Mastro, Amex, Dinners, Rupay, }
 
@@ -24,10 +24,10 @@ public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccount
 public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 public enum HolidayReason { GovertmentHoliday, Bandha, Festivals, WeeklyOff, ApproveHoliday, Other }
 public enum SlipBookType { Payment, Reciept, PaymentRecieptCombo, DailyBook, DebitNote, CreditNote, TailoringBook }
-public enum VendorType { EBO, MBO, Tailoring, NonSalable, OtherSaleable, Others, TempVendor,InHouse, Distributor, Brands,BrandAuth }
+public enum VendorType { EBO, MBO, Tailoring, NonSalable, OtherSaleable, Others, TempVendor, InHouse, Distributor, Brands, BrandAuth }
 public enum NotesType { DebitNote, CreditNote }
 public enum InvoiceType { Sales, SalesReturn, ManualSale, ManualSaleReturn }
-public enum PurchaseInvoiceType { Purchase,PurchaseReturn }
+public enum PurchaseInvoiceType { Purchase, PurchaseReturn }
 
 
 //TODO: Below need to be checked and assimilated. 
@@ -61,7 +61,7 @@ public enum VPayMode { CA, DC, CC, Mix, Wal, CRD, OTH }
 // Aprajita Retails Context
 //public enum WalletType { PayTm, GooglePay, PhonePay, AirtelPay, BhimPay, Others }
 
-public enum PayMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Points, Others, Coupons, MixPayments, UPI,SaleReturn };
+public enum PayMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Points, Others, Coupons, MixPayments, UPI, SaleReturn };
 
 public enum PaymentMode { Cash, Card, RTGS, NEFT, IMPS, Wallets, Cheques, DemandDraft, Others, UPI };
 
@@ -85,7 +85,7 @@ public enum LedgerEntryType { Expenses, Payment, Reciept, Salary, AdvacePayment,
 
 //public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 
-public enum VoucherType { Payment, Receipt, Contra, DebitNote, CreditNote, JV ,Expense,CashReceipt,CashPayment}
+public enum VoucherType { Payment, Receipt, Contra, DebitNote, CreditNote, JV, Expense, CashReceipt, CashPayment }
 
 public enum LedgerTo { CashSales, POSSale, Cash, TailorBook, Suspense }
 

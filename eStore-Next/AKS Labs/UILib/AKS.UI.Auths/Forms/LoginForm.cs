@@ -33,7 +33,7 @@ namespace AKS.Payroll
         /// <returns></returns>
         private bool DoLoin(string u, string p)
         {
-           
+
             return Auth.DoLogin(u, p, azureDb);
         }
 

@@ -20,7 +20,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public ProductCategory ProductCategory { get; set; }
         public string SubCategory { get; set; }
 
-        public string? ProductTypeId { get; set; }   
+        public string? ProductTypeId { get; set; }
         public string HSNCode { get; set; }
         public Unit Unit { get; set; }
 
@@ -58,11 +58,11 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal CostPrice { get; set; }
         public decimal MRP { get; set; }
         public Unit Unit { get; set; }
-        
+
         [DefaultValue(false)]
         public bool MultiPrice { get; set; }
 
-        public decimal CurrentQty { get { return (PurhcaseQty - SoldQty - HoldQty); } }        
+        public decimal CurrentQty { get { return (PurhcaseQty - SoldQty - HoldQty); } }
         public decimal CurrentQtyWH { get { return (PurhcaseQty - SoldQty); } }
         public decimal StockValue { get { return (CurrentQty * CostPrice); } }
         public decimal StockValueWH { get { return (CurrentQtyWH * CostPrice); } }
@@ -150,7 +150,7 @@ namespace AKS.Shared.Commons.Models.Inventory
         public decimal FreeQty { get; set; }
         public decimal TotalQty { get { return BilledQty + FreeQty; } }
 
-        public decimal TotalMRP { get; set; }        
+        public decimal TotalMRP { get; set; }
         public decimal TotalDiscountAmount { get; set; }
 
         public decimal TotalBasicAmount { get; set; }
@@ -178,13 +178,13 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string InvoiceCode { get; set; }
 
         public string Barcode { get; set; }
-        
+
         public decimal BilledQty { get; set; }
         public decimal FreeQty { get; set; }
         public Unit Unit { get; set; }
-        
+
         public decimal DiscountAmount { get; set; }
-        
+
         //Amount Without Tax
         public decimal BasicAmount { get; set; }
         //Tax on Total Amount(Total Tax {Vat/IGST/CGST+SGST})
@@ -196,7 +196,7 @@ namespace AKS.Shared.Commons.Models.Inventory
 
         // Type of Invoice like Regular or manual  => Sale return 
         public InvoiceType InvoiceType { get; set; }
-        
+
         public bool Adjusted { get; set; }
         public bool LastPcs { get; set; }
 

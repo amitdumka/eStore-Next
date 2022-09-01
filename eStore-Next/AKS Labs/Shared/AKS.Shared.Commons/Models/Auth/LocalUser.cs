@@ -5,7 +5,7 @@ namespace AKS.Shared.Commons.Models.Auth
     //    1	Admin @estore.in Admin   1	0	Amit Kumar	1	4	3
     //    2	Alok @eStore.in Alok    1	1	Alok Kumar	1	1	1
     //    3	Gita @eStore.in Geeta   1	1	Geetanjali Verma	1	11	4
-    
+
     public class User
     {
         [Key]
@@ -35,7 +35,7 @@ namespace AKS.Shared.Commons.Models.Auth
 
         public string StoreId { get; set; }
         public string EmployeeId { get; set; }
-        
+
         public UserType UserType { get; set; }
     }
 }

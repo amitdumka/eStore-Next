@@ -76,7 +76,7 @@ namespace AKS.UI.Accounting.Forms.Banking
                 if (azureDb.SaveChanges() > 0)
                 {
                     MessageBox.Show("Account information is saved succesfully!!");
-                    btnAdd.Text = "Add"; 
+                    btnAdd.Text = "Add";
                     this.DialogResult = DialogResult.OK;
 
 
@@ -192,15 +192,15 @@ namespace AKS.UI.Accounting.Forms.Banking
             if (account.IsActive) account.ClosingDate = null;
             return account;
         }
-    
+
         private void FillFormValue()
         {
             if (rbCompanyAccount.Checked) { }
             else if (rbVendorAccount.Checked) { }
-            else if(rbThirdPartyAccount.Checked) { }
+            else if (rbThirdPartyAccount.Checked) { }
 
         }
-    
-    
+
+
     }
 }

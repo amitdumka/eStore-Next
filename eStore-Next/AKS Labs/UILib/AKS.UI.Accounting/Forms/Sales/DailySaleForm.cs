@@ -1,10 +1,9 @@
 ﻿using AKS.Payroll.Database;
-using AKS.UI.Accounting.Forms.EntryForms;
 using AKS.Shared.Commons.Models.Sales;
+using AKS.UI.Accounting.Forms.EntryForms;
+using AKS.Widgets.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using AKS.UI.Accounting.Forms.DTOMapping;
-using AKS.Widgets.Helpers;
 
 namespace AKS.UI.Accounting.Forms
 {
@@ -41,7 +40,7 @@ namespace AKS.UI.Accounting.Forms
             YearDataList = new List<int>();
             YearList = new List<int>();
             LoadData();
-            DisplaySale(); 
+            DisplaySale();
 
         }
 

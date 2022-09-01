@@ -17,7 +17,7 @@ namespace AKS.PosSystem.ViewModels
     {
         //TODO: To be implemented
     }
-    
+
     public class ProductSaleViewModel : ViewModel<ProductSale, ProductSaleDataModel>
     {
         public override bool InitViewModel()

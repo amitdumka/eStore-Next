@@ -109,13 +109,13 @@ namespace AKS.Payroll.Database
         public DbSet<CustomerDue> CustomerDues { get; set; }
 
         public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
-        public DbSet<TimeSheet> TimeSheets { get; set; }  
+        public DbSet<TimeSheet> TimeSheets { get; set; }
         public DbSet<CashDetail> CashDetails { get; set; }
-        
+
         //Inventory
-       
+
         public DbSet<ProductItem> ProductItems { get; set; }
-        public DbSet<ProductSubCategory> ProductSubCategories { get; set; } 
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
         public DbSet<Stock> Stocks { get; set; }
 
         public DbSet<Vendor> Vendors { get; set; }
@@ -132,7 +132,7 @@ namespace AKS.Payroll.Database
         public DbSet<CustomerSale> CustomerSales { get; set; }
 
         public DbSet<BankTranscation> BankTranscations { get; set; }
- 
+
     }
 
     public class ObservableListSource<T> : ObservableCollection<T>, IListSource

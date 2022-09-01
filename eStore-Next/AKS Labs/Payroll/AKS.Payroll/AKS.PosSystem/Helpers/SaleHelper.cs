@@ -20,9 +20,9 @@ namespace AKS.PosSystem.Helpers
     /// </summary>
     public class SaleHelper
     {
-       static string[] Months = {"","Jan","Feb","Mar","April","May","June","July",
+        static string[] Months = {"","Jan","Feb","Mar","April","May","June","July",
         "Aug","Sept","Oct","Nov","Dec"};
-        
+
         private PdfPage AddPage(PdfPage page, List<SaleReportVM> saleReports)
         {
 
@@ -65,7 +65,7 @@ namespace AKS.PosSystem.Helpers
             PdfGrid pdfGrid = new PdfGrid();
 
             List<int> monthlyTotal = new List<int>();
-            List<int> yearlyTotal  = new List<int>();
+            List<int> yearlyTotal = new List<int>();
 
             pdfGrid.DataSource = ToDataTable(saleReports, out yearlyTotal, out monthlyTotal);
 
@@ -81,7 +81,7 @@ namespace AKS.PosSystem.Helpers
             //pdfGrid.Style.TextBrush = PdfBrushes.DarkSlateBlue;
             //pdfGrid.Style.BorderOverlapStyle = PdfBorderOverlapStyle.Overlap;
             //pdfGrid.Style.CellPadding.All = 0.7f;
-            
+
 
             PdfGridRow header = pdfGrid.Headers[0];
 
@@ -221,7 +221,7 @@ namespace AKS.PosSystem.Helpers
                              Free = c.Sum(x => x.FreeQty),
                          })
                           .FirstOrDefault();
-                        
+
                         dataTable.Rows.Add(new object[] {curYear, "Yearly Total", "Sale"," ",
                             yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
                         RowNo++;
@@ -239,8 +239,8 @@ namespace AKS.PosSystem.Helpers
 
 
                     }
-                    
-                    
+
+
                     var datas = saleReports.Where(c => c.Month == item.Key.Month && c.Year == item.Key.Year).ToList();
 
                     foreach (var sale in datas)
@@ -277,7 +277,7 @@ namespace AKS.PosSystem.Helpers
                             yrData.Qty, yrData.Free, yrData.MRP,yrData.Discount, yrData.Tax, yrData.Value    });
                         RowNo++;
                         yearlyTotal.Add(RowNo);
-                         
+
                     }
 
                 }
@@ -308,7 +308,7 @@ namespace AKS.PosSystem.Helpers
                 PdfDocument document = new PdfDocument();
                 //Adds page settings
                 document.PageSettings.Orientation = PdfPageOrientation.Landscape;
-                
+
                 document.PageSettings.Margins.All = 50;
 
                 PdfPage pdfPage = document.Pages.Add();

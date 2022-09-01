@@ -99,7 +99,7 @@ namespace AKS.PosSystem.ViewModels
             if (_barcodeList.Count <= 0)
                 _barcodeList = _stockDataModel.GetBarcodeList();
             return _barcodeList;
-            
+
         }
 
         /// <summary>

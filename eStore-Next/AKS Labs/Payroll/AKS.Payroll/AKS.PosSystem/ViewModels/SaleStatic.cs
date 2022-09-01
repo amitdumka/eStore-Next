@@ -66,6 +66,6 @@ namespace AKS.PosSystem.ViewModels
         }
     }
 
-#endregion SaleModel
+    #endregion SaleModel
 
 }

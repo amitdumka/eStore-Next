@@ -62,6 +62,7 @@ namespace AKS.AccountingSystem.ViewModels
         public override bool InitViewModel()
         {
             CommonDataModel = new CommonDataModel();
+            DataModel = new VoucherCashDataModel();
             DMMapper.InitializeAutomapper();
             voucherVMs = new ObservableListSource<VoucherVM>();
             cashVoucherVMs = new ObservableListSource<CashVoucherVM>();

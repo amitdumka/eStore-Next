@@ -13,6 +13,7 @@ namespace AKS.Payroll
         public LoginForm(Form main)
         {
             InitializeComponent();
+            MainForm = main;
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -49,7 +50,7 @@ namespace AKS.Payroll
                 }
                 else
                 {
-                    MessageBox.Show("Username/Password does not match!");
+                    MessageBox.Show("User name/Password does not match!");
                 }
 
             }

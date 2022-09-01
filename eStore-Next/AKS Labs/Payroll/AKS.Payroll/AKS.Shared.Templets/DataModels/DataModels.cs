@@ -9,16 +9,25 @@ namespace AKS.Shared.Templets.DataModels
         protected LocalPayrollDbContext localDb;
 
         public DataModel()
-        { }
+        {
+            azureDb = new AzurePayrollDbContext();
+            localDb = new LocalPayrollDbContext();
+        }
 
         public DataModel(AzurePayrollDbContext db)
-        { }
+        {
+            azureDb = db;
+        }
 
         public DataModel(LocalPayrollDbContext ldb)
-        { }
+        {
+            localDb = ldb;
+        }
 
         public DataModel(AzurePayrollDbContext db, LocalPayrollDbContext ldb)
-        { }
+        {
+            azureDb = db; localDb = ldb;
+        }
 
         public AzurePayrollDbContext GetDatabaseInstance() { return azureDb; }
         public LocalPayrollDbContext GetLocalDbInstance() { return localDb; }

@@ -21,6 +21,10 @@ namespace AKS.AccountingSystem.DataModels
         {
             return azureDb.PettyCashSheets.Find(id);
         }
+        public  PettyCashSheet Get(DateTime onDate)
+        {
+            return azureDb.PettyCashSheets.Where(c=>c.OnDate.Date==onDate.Date).FirstOrDefault();
+        }
 
         public override List<PettyCashSheet> GetList()
         {
@@ -48,7 +52,10 @@ namespace AKS.AccountingSystem.DataModels
         {
             return azureDb.CashDetails.Find(id);
         }
-
+        public CashDetail GetY(DateTime onDate)
+        {
+            return azureDb.CashDetails.Where(c => c.OnDate.Date == onDate.Date).FirstOrDefault();
+        }
         public override List<CashDetail> GetYList()
         {
             return azureDb.CashDetails.Where(c => c.StoreId == StoreCode).ToList();

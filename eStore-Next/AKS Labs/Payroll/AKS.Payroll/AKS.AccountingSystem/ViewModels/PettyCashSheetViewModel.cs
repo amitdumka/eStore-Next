@@ -4,6 +4,7 @@ using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Templets.ViewModels;
+ 
 
 namespace AKS.AccountingSystem.ViewModels
 {
@@ -11,17 +12,26 @@ namespace AKS.AccountingSystem.ViewModels
     {
         #region Declaration
 
-       // private CommonDataModel CommonDataModel;
-        private ObservableListSource<PettyCashSheet> ItemList;
-        public List<int> YearList; 
-        private List<int> DataList;
-        private string pNar, rNar, dNar, rcNar;
-        public int TotalCurreny = 0, TotalCurrenyAmount = 0;
-        private decimal tPay, tRec, tDue, tdRec;
-        private CashDetail cashDetail;
+        public string pNar, rNar, dNar, rcNar;
+
         public CashDetail SavedCashDetail;
-        private PettyCashSheet? SavedPettyCash;
+
+        public int TotalCurreny = 0, TotalCurrenyAmount = 0;
+
+        public decimal tPay, tRec, tDue, tdRec;
+
+        public List<int> YearList;
+
+        private CashDetail cashDetail;
+
+        private List<int> DataList;
+
         private bool EnableCashAdd;
+
+        // private CommonDataModel CommonDataModel;
+        private ObservableListSource<PettyCashSheet> ItemList;
+
+        private PettyCashSheet? SavedPettyCash;
 
         #endregion Declaration
 
@@ -49,7 +59,6 @@ namespace AKS.AccountingSystem.ViewModels
 
         public override bool InitViewModel()
         {
-            
             DataModel = new PettyCashSheetDataModel();
             DMMapper.InitializeAutomapper();
             this.PrimaryEntites = new List<PettyCashSheet>();
@@ -87,12 +96,66 @@ namespace AKS.AccountingSystem.ViewModels
         #endregion OverrideMethods
 
         #region OpsFunctions
-        public void SetAdd()
+
+        public bool DeletePettyCash(PettyCashSheet pcs)
         {
-            isNew = true;
-            tPay = tRec = tDue = tdRec = 0;
+            if (Delete(pcs))
+            {
+                ItemList.Remove(pcs);
+                return true;
+            }
+            return false;
         }
-        public void SetEdit() { }
+
+        public void Filter(int year)
+        {
+            if (DataList.Contains(year) == false)
+            {
+                UpdateItemList(DataModel.GetList(year));
+                SecondayEntites.AddRange(DataModel.GetYList(year));
+                DataList.Add(year);
+            }
+        }
+
+        public List<CashDetail> GetCashCurrentMonth()
+        { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList(); }
+
+        public List<CashDetail> GetCashCurrentYearly()
+        { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList(); }
+
+        public List<CashDetail> GetCashLastMonth()
+        { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList(); }
+
+        public List<CashDetail> GetCashYearly(int year)
+        { return SecondayEntites.Where(c => c.OnDate.Year == year).ToList(); }
+
+        public List<PettyCashSheet> GetCurrentMonth()
+        { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList(); }
+
+        public List<PettyCashSheet> GetCurrentYearly()
+        { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList(); }
+
+        public List<PettyCashSheet> GetGridData()
+        {
+            return ItemList.ToList();
+        }
+
+        public List<PettyCashSheet> GetLastMonth()
+        { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList(); }
+
+        public List<DynVM> GetStoreList()
+        {
+            return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
+        }
+
+        public List<PettyCashSheet> GetYearly(int year)
+        { return ItemList.Where(c => c.OnDate.Year == year).ToList(); }
+
+        public bool SaveCashDetail(bool read)
+        {
+            return Save(SecondaryEntity);
+        }
+
         public bool SavePettyCash(bool read)
         {
             if (Save(PrimaryEntity))
@@ -111,37 +174,30 @@ namespace AKS.AccountingSystem.ViewModels
             }
             return false;
         }
-        public bool SaveCashDetail(bool read)
-        {
-            return Save(SecondaryEntity);
-        }
-        public bool DeletePettyCash(PettyCashSheet pcs)
-        {
-           if(Delete(pcs))
-            {
-                ItemList.Remove(pcs);
-                return true;
-            }
-            return false;
-        }
-        public List<PettyCashSheet> GetGridData()
-        {
-            return ItemList.ToList();
-        }
-        public List<PettyCashSheet> GetCurrentMonth() { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList(); }
-        public List<PettyCashSheet> GetLastMonth() { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList(); }
-        public List<PettyCashSheet> GetCurrentYearly() { return ItemList.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList(); }
 
-        public List<CashDetail> GetCashCurrentMonth() { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToList(); }
-        public List<CashDetail> GetCashLastMonth() { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).ToList(); }
-        public List<CashDetail> GetCashCurrentYearly() { return SecondayEntites.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList(); }
-
-        public List<DynVM> GetStoreList()
+        public void SetAdd()
         {
-            return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
+            isNew = true;
+            tPay = tRec = tDue = tdRec = 0;
         }
-        #endregion
+
+        public void SetEdit()
+        { }
+
+        public void GetSecondary(DateTime onDate)
+        {
+            return DataModel.GetY(onDate);  
+                
+               
+        }
+        public void GetPrimary(DateTime onDate)
+        {
+            return DataModel.Get(onDate);
+        }
+        #endregion OpsFunctions
+
         #region PrivateOpsFuncs
+
         private ObservableListSource<PettyCashSheet> UpdateItemList(List<PettyCashSheet> items)
         {
             foreach (var item in items)
@@ -151,17 +207,17 @@ namespace AKS.AccountingSystem.ViewModels
             return ItemList;
         }
 
-        #endregion
+        #endregion PrivateOpsFuncs
 
-        #region EntryFunctions
 
-        #endregion
 
-        #region ReportSections  
+        #region ReportSections
+
         public string GeneratePettyCashSheetPdf()
         {
             return "";
         }
-        #endregion
+
+        #endregion ReportSections
     }
 }

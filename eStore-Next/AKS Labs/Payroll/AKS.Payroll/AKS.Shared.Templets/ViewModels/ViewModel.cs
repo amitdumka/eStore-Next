@@ -12,7 +12,7 @@
         public Y SecondaryEntity { get; set; }
         public List<Y> SecondayEntites { get; set; }
         public string StoreCode { get; set; }
-        protected bool isNew { get; set; }
+        public bool isNew { get; set; }
         /// <summary>
         /// Alert to UI
         /// </summary>
@@ -56,7 +56,7 @@
         public List<T> PrimaryEntites { get; set; }
         public T PrimaryEntity { get; set; }
         public string StoreCode { get; set; }
-        protected bool isNew { get; set; }
+        public bool isNew { get; set; }
 
         /// <summary>
         /// Alert to UI
@@ -72,10 +72,10 @@
         //Delete
         public abstract bool Delete(T entity);
 
-        public abstract bool DeleteRange(List<T> entities)
+        public abstract bool DeleteRange(List<T> entities);
 
 
-public List<T> GetPrimaryEntities()
+        public List<T> GetPrimaryEntities()
         { return PrimaryEntites; }
 
         public abstract bool InitViewModel();
@@ -92,7 +92,7 @@ public List<T> GetPrimaryEntities()
         public Y SecondaryEntity { get; set; }
         public List<Y> SecondayEntites { get; set; }
         public string StoreCode { get; set; }
-        protected bool isNew { get; set; }
+        public bool isNew { get; set; }
 
         /// <summary>
         /// Alert to UI

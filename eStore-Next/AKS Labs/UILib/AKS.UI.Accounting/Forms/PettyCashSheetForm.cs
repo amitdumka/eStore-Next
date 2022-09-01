@@ -17,16 +17,6 @@ namespace AKS.UI.Accounting.Forms
             _viewModel = new PettyCashSheetViewModel();
         }
 
-        private void Reset()
-        {
-            lbPrimaryKey.Text = "";
-            lbPayList.Text = "";
-            lbPay.Text = "";
-            lbRec.Text = "";
-            lbRecList.Text = "";
-            dtpOnDate.Value = DateTime.Now;
-        }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (btnAdd.Text == "Add")
@@ -61,10 +51,9 @@ namespace AKS.UI.Accounting.Forms
                         btnAdd.Text = "Add Cash";
                         MessageBox.Show("Petty Cash Sheet Add! Kindly now add Cash Sheet");
                         dgvPettyCashSheet.Refresh();
-                        if (isNew)
-                        {
+                        if (_viewModel.isNew)
+
                             tabControl1.SelectedIndex = 2;
-                        }
                     }
                     else
                     {
@@ -102,8 +91,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnDue_Click(object sender, EventArgs e)
         {//TODO: prend
-            tDue += UIManager.ReadDec(txtDueAmount);
-            dNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
+            _viewModel.tDue += UIManager.ReadDec(txtDueAmount);
+            _viewModel.dNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
 
             lbPay.Text = lbPay.Text + "\n" + txtDueNaration.Text;
             lbPayList.Text = lbPayList.Text + "\n" + txtDueAmount.Text;
@@ -129,8 +118,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnPayment_Click(object sender, EventArgs e)
         {
-            tPay += UIManager.ReadDec(txtAmount);
-            pNar += $"#{txtNaration.Text} : {txtAmount.Text}";
+            _viewModel.tPay += UIManager.ReadDec(txtAmount);
+            _viewModel.pNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbPay.Text = lbPay.Text + "\n" + txtNaration.Text;
             lbPayList.Text = lbPayList.Text + "\n" + txtAmount.Text;
             txtAmount.Text = "0";
@@ -173,8 +162,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnReceipt_Click(object sender, EventArgs e)
         {
-            tRec += UIManager.ReadDec(txtAmount);
-            rNar += $"#{txtNaration.Text} : {txtAmount.Text}";
+            _viewModel.tRec += UIManager.ReadDec(txtAmount);
+            _viewModel.rNar += $"#{txtNaration.Text} : {txtAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtAmount.Text;
             txtAmount.Text = "0";
@@ -183,8 +172,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnRecovery_Click(object sender, EventArgs e)
         {
-            tdRec += UIManager.ReadDec(txtDueAmount);
-            rcNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
+            _viewModel.tdRec += UIManager.ReadDec(txtDueAmount);
+            _viewModel.rcNar += $"#{txtDueNaration.Text} : {txtDueAmount.Text}";
             lbRec.Text = lbRec.Text + "\n" + txtDueNaration.Text;
             lbRecList.Text = lbRecList.Text + "\n" + txtDueAmount.Text;
             txtDueAmount.Text = "0";
@@ -205,8 +194,9 @@ namespace AKS.UI.Accounting.Forms
                 var row = (PettyCashSheet)dgvPettyCashSheet.CurrentRow.DataBoundItem;
                 if (row != null)
                 {
-                    pcs = row;
-                    cashDetail = azureDb.CashDetails.Where(c => c.OnDate.Date == pcs.OnDate.Date).FirstOrDefault();
+                    _viewModel.PrimaryEntity = row;
+                    _viewModel.SecondaryEntity = _viewModel.GetSecondary();
+                        
                     ViewPdf();
                 }
             }
@@ -214,13 +204,9 @@ namespace AKS.UI.Accounting.Forms
 
         private void FilterData(int year)
         {
-            if (DataList.Contains(year) == false)
-            {
-                UpdateItemList(azureDb.PettyCashSheets.Where(c => c.OnDate.Year == year).ToList());
-                DataList.Add(year);
-            }
-            dgvPettyCashSheet.DataSource = (ItemList.Where(c => c.OnDate.Year == year).ToList());
-            dgvCashDetails.DataSource = azureDb.CashDetails.Where(c => c.OnDate.Year == year).ToList();
+            _viewModel.Filter(year);
+            dgvPettyCashSheet.DataSource = _viewModel.GetYearly(year);
+            dgvCashDetails.DataSource = _viewModel.GetCashYearly(year);
         }
 
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
@@ -242,7 +228,7 @@ namespace AKS.UI.Accounting.Forms
         private void nud2000_ValueChanged(object sender, EventArgs e)
         {
             NumericUpDown field = (NumericUpDown)sender;
-            TotalCurreny += (int)field.Value;
+            _viewModel.TotalCurreny += (int)field.Value;
             switch (field.Name)
             {
                 case "nud2000":
@@ -305,11 +291,10 @@ namespace AKS.UI.Accounting.Forms
 
                     break;
             }
-            lbTotalAmount.Text = TotalCurrenyAmount.ToString();
-            lbCount.Text = TotalCurreny.ToString();
+            lbTotalAmount.Text = _viewModel.TotalCurrenyAmount.ToString();
+            lbCount.Text = _viewModel.TotalCurreny.ToString();
         }
 
-        // private List<PettyCashSheet> ItemList;
         private void PettyCashSheetForm_Load(object sender, EventArgs e)
         {
             LoadData();
@@ -366,82 +351,100 @@ namespace AKS.UI.Accounting.Forms
             }
         }
 
-        private void ReadData()
+        private bool ReadData()
         {
-            if (isNew)
+            try
             {
-                if (dNar == null)
-                    dNar = "#";
-
-                if (pNar == null)
-                    pNar = "#";
-
-                if (rcNar == null)
-                    rcNar = "#";
-
-                if (rNar == null)
-                    rNar = "#";
-
-                pcs = new PettyCashSheet()
+                if (_viewModel.isNew)
                 {
-                    BankDeposit = UIManager.ReadDec(txtBankDeposit),
-                    BankWithdrawal = UIManager.ReadDec(txtWithdrawal),
-                    CardSale = UIManager.ReadDec(txtCardSale),
-                    ClosingBalance = UIManager.ReadDec(txtCashInHand),
+                    if (_viewModel.dNar == null)
+                        _viewModel.dNar = "#";
 
-                    DailySale = UIManager.ReadDec(txtSale),
-                    ManualSale = UIManager.ReadDec(txtManualSale),
-                    OnDate = dtpOnDate.Value,
-                    OpeningBalance = UIManager.ReadDec(txtOpeningBalance),
+                    if (_viewModel.pNar == null)
+                        _viewModel.pNar = "#";
 
-                    PaymentTotal = tPay,
-                    PaymentNaration = pNar,
-                    ReceiptsNaration = rNar,
-                    ReceiptsTotal = tRec,
+                    if (_viewModel.rcNar == null)
+                        _viewModel.rcNar = "#";
 
-                    DueList = dNar,
-                    RecoveryList = rcNar,
-                    CustomerDue = tDue,
-                    CustomerRecovery = tdRec,
+                    if (_viewModel.rNar == null)
+                        _viewModel.rNar = "#";
 
-                    NonCashSale = UIManager.ReadDec(txtNonCashSale),
-                    TailoringPayment = UIManager.ReadDec(txtTailoringPayment),
-                    TailoringSale = UIManager.ReadDec(txtTailoring),
-                    Id = "",
-                };
-                // pcs.Id = $"{StoreId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}";
-                pcs.Id = $"ARD/{pcs.OnDate.Year}/{pcs.OnDate.Month}/{pcs.OnDate.Day}";
+                    _viewModel.PrimaryEntity = new PettyCashSheet()
+                    {
+                        BankDeposit = UIManager.ReadDec(txtBankDeposit),
+                        BankWithdrawal = UIManager.ReadDec(txtWithdrawal),
+                        CardSale = UIManager.ReadDec(txtCardSale),
+                        ClosingBalance = UIManager.ReadDec(txtCashInHand),
+
+                        DailySale = UIManager.ReadDec(txtSale),
+                        ManualSale = UIManager.ReadDec(txtManualSale),
+                        OnDate = dtpOnDate.Value,
+                        OpeningBalance = UIManager.ReadDec(txtOpeningBalance),
+
+                        PaymentTotal = _viewModel.tPay,
+                        PaymentNaration = _viewModel.pNar,
+                        ReceiptsNaration = _viewModel.rNar,
+                        ReceiptsTotal = _viewModel.tRec,
+
+                        DueList = _viewModel.dNar,
+                        RecoveryList = _viewModel.rcNar,
+                        CustomerDue = _viewModel.tDue,
+                        CustomerRecovery = _viewModel.tdRec,
+
+                        NonCashSale = UIManager.ReadDec(txtNonCashSale),
+                        TailoringPayment = UIManager.ReadDec(txtTailoringPayment),
+                        TailoringSale = UIManager.ReadDec(txtTailoring),
+                        Id = "",
+                    };
+                    // _viewModel.PrimaryEntity .Id = $"{StoreId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}";
+                    _viewModel.PrimaryEntity.Id = $"ARD/{_viewModel.PrimaryEntity.OnDate.Year}/{_viewModel.PrimaryEntity.OnDate.Month}/{_viewModel.PrimaryEntity.OnDate.Day}";
+                }
+                else
+                {
+                    _viewModel.PrimaryEntity.BankDeposit = UIManager.ReadDec(txtBankDeposit);
+                    _viewModel.PrimaryEntity.BankWithdrawal = UIManager.ReadDec(txtWithdrawal);
+                    _viewModel.PrimaryEntity.CardSale = UIManager.ReadDec(txtCardSale);
+                    _viewModel.PrimaryEntity.ClosingBalance = UIManager.ReadDec(txtCashInHand);
+
+                    _viewModel.PrimaryEntity.CustomerDue = _viewModel.tDue;
+                    _viewModel.PrimaryEntity.CustomerRecovery = _viewModel.tdRec;
+
+                    _viewModel.PrimaryEntity.DailySale = UIManager.ReadDec(txtSale);
+                    _viewModel.PrimaryEntity.Id = lbPrimaryKey.Text;
+                    _viewModel.PrimaryEntity.ManualSale = UIManager.ReadDec(txtManualSale);
+                    _viewModel.PrimaryEntity.OnDate = dtpOnDate.Value;
+                    _viewModel.PrimaryEntity.OpeningBalance = UIManager.ReadDec(txtOpeningBalance);
+                    _viewModel.PrimaryEntity.NonCashSale = UIManager.ReadDec(txtNonCashSale);
+
+                    _viewModel.PrimaryEntity.PaymentTotal = _viewModel.tPay;
+                    _viewModel.PrimaryEntity.PaymentNaration = _viewModel.pNar;
+
+                    _viewModel.PrimaryEntity.ReceiptsNaration = _viewModel.rNar;
+
+                    _viewModel.PrimaryEntity.DueList = _viewModel.dNar;
+
+                    _viewModel.PrimaryEntity.RecoveryList = _viewModel.rcNar;
+                    _viewModel.PrimaryEntity.ReceiptsTotal = _viewModel.tdRec;
+
+                    _viewModel.PrimaryEntity.TailoringPayment = UIManager.ReadDec(txtTailoringPayment);
+                    _viewModel.PrimaryEntity.TailoringSale = UIManager.ReadDec(txtTailoring);
+                }
+                return true;
             }
-            else
+            catch (Exception)
             {
-                pcs.BankDeposit = UIManager.ReadDec(txtBankDeposit);
-                pcs.BankWithdrawal = UIManager.ReadDec(txtWithdrawal);
-                pcs.CardSale = UIManager.ReadDec(txtCardSale);
-                pcs.ClosingBalance = UIManager.ReadDec(txtCashInHand);
-
-                pcs.CustomerDue = tDue;
-                pcs.CustomerRecovery = tdRec;
-
-                pcs.DailySale = UIManager.ReadDec(txtSale);
-                pcs.Id = lbPrimaryKey.Text;
-                pcs.ManualSale = UIManager.ReadDec(txtManualSale);
-                pcs.OnDate = dtpOnDate.Value;
-                pcs.OpeningBalance = UIManager.ReadDec(txtOpeningBalance);
-                pcs.NonCashSale = UIManager.ReadDec(txtNonCashSale);
-
-                pcs.PaymentTotal = tPay;
-                pcs.PaymentNaration = pNar;
-
-                pcs.ReceiptsNaration = rNar;
-
-                pcs.DueList = dNar;
-
-                pcs.RecoveryList = rcNar;
-                pcs.ReceiptsTotal = tdRec;
-
-                pcs.TailoringPayment = UIManager.ReadDec(txtTailoringPayment);
-                pcs.TailoringSale = UIManager.ReadDec(txtTailoring);
+                return false;
             }
+        }
+
+        private void Reset()
+        {
+            lbPrimaryKey.Text = "";
+            lbPayList.Text = "";
+            lbPay.Text = "";
+            lbRec.Text = "";
+            lbRecList.Text = "";
+            dtpOnDate.Value = DateTime.Now;
         }
 
         private bool SaveCashDetails(CashDetail cd)

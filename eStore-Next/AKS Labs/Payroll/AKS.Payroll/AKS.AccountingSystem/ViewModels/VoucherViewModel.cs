@@ -38,6 +38,7 @@ namespace AKS.AccountingSystem.ViewModels
         #region Common
 
         public VoucherType voucherType;
+        public CommonDataModel CommonDataModel;// { get; set; }
 
         #endregion Common
 
@@ -59,6 +60,7 @@ namespace AKS.AccountingSystem.ViewModels
 
         public override bool InitViewModel()
         {
+            CommonDataModel = new CommonDataModel();
             DMMapper.InitializeAutomapper();
             voucherVMs = new ObservableListSource<VoucherVM>();
             cashVoucherVMs = new ObservableListSource<CashVoucherVM>();
@@ -258,11 +260,27 @@ namespace AKS.AccountingSystem.ViewModels
             return false;
         }
 
-        public void Delete(Voucher voucher)
-        { }
+        public bool Delete(Voucher voucher)
+        {
+            if (DataModel.Delete(voucher))
+            {
+                deleteVoucherNumber = voucherNumber;
+                PrimaryEntites.Remove(voucher);
+                return true;
+            }
+            return false;
+        }
 
-        public void Delete(CashVoucher voucher)
-        { }
+        public bool Delete(CashVoucher voucher)
+        {
+            if (DataModel.Delete(voucher))
+            {
+                deleteVoucherNumber = voucherNumber;
+                SecondayEntites.Remove(voucher);
+                return true;
+            }
+            return false;
+        }
 
         public void Update(Voucher voucher)
         { PrimaryEntity = voucher; }
@@ -271,5 +289,23 @@ namespace AKS.AccountingSystem.ViewModels
         { SecondaryEntity = voucher; }
 
         #endregion VoucherEntryMethods
+
+        #region CommonDataModelsFunctions
+        
+        public List<DynVM> GetStoreList() { 
+        
+           return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
+        }
+        public List<DynVM> GetEmployeeList() {
+            return CommonDataModel.GetEmployeeList(DataModel.GetDatabaseInstance());
+        }
+
+        public List<DynVM> GetBankAccountList() { return CommonDataModel.GetBankAccount(DataModel.GetDatabaseInstance()); }
+        public List<DynVM> GetPartyList() { return CommonDataModel.GetParty(DataModel.GetDatabaseInstance()); }
+        public List<DynVM> GetTranscationList() { return CommonDataModel.GetTranscation(DataModel.GetDatabaseInstance()); }
+
+
+        #endregion
+
     }
 }

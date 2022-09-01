@@ -15,7 +15,7 @@ namespace AKS.UI.Accounting.Forms
         //public string deleteVoucherNumber;
         //public CashVoucher SavedCashVoucher { get; set; }
         //public Voucher SavedVoucher { get; set; }
-        //private CashVoucher cashVoucher;
+        //private CashVoucher _viewModel.SecondaryEntity;
         //private Voucher voucher;
 
         //public bool isNew = false;
@@ -26,12 +26,12 @@ namespace AKS.UI.Accounting.Forms
         private void ClearFields()
         {
             if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
-                _viewModel.cashVoucher = new CashVoucher
+                _viewModel.SecondaryEntity = new CashVoucher
                 {
                     Amount = 0,
                     OnDate = DateTime.Now
                 };
-            else _viewModel.voucher = new Voucher
+            else _viewModel.PrimaryEntity = new Voucher
             {
                 OnDate = DateTime.Now,
                 Amount = 0,
@@ -43,25 +43,26 @@ namespace AKS.UI.Accounting.Forms
         private void LoadData()
         {
             //Store
-            cbxStores.DataSource = azureDb.Stores.Select(c => new { c.StoreId, c.StoreName, c.IsActive }).ToList();
+
+            cbxStores.DataSource = _viewModel.GetStoreList();
             cbxStores.DisplayMember = "StoreName";
             cbxStores.ValueMember = "StoreId";
 
-            cbxEmployees.DataSource = azureDb.Employees.Select(c => new { c.StoreId, c.EmployeeId, c.StaffName, c.IsWorking }).ToList();
+            cbxEmployees.DataSource = _viewModel.GetEmployeeList();
             cbxEmployees.DisplayMember = "StaffName";
             cbxEmployees.ValueMember = "EmployeeId";
 
-            cbxBankAccount.DataSource = azureDb.BankAccounts.Select(c => new { c.StoreId, c.AccountNumber, c.IsActive }).ToList();
+            cbxBankAccount.DataSource = _viewModel.GetBankAccountList();
             cbxBankAccount.DisplayMember = "AccountNumber";
             cbxBankAccount.ValueMember = "AccountNumber";
 
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PaymentMode)));
 
-            cbxParties.DataSource = azureDb.Parties.Select(c => new { c.StoreId, c.PartyId, c.PartyName }).ToList();
+            cbxParties.DataSource = _viewModel.GetPartyList();
             cbxParties.DisplayMember = "PartyName";
             cbxParties.ValueMember = "PartyId";
 
-            cbxTranscationMode.DataSource = azureDb.TranscationModes.Select(c => new { c.TranscationId, c.TranscationName }).ToList();
+            cbxTranscationMode.DataSource = _viewModel.GetTranscationList();
             cbxTranscationMode.DisplayMember = "TranscationName";
             cbxTranscationMode.ValueMember = "TranscationId";
 
@@ -76,36 +77,36 @@ namespace AKS.UI.Accounting.Forms
 
             if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
             {
-                cbxStores.SelectedValue = cashVoucher.StoreId;
-                voucherType = cashVoucher.VoucherType;
-                dtpOnDate.Value = cashVoucher.OnDate;
-                txtAmount.Text = cashVoucher.Amount.ToString();
+                cbxStores.SelectedValue = _viewModel.SecondaryEntity.StoreId;
+                _viewModel.voucherType = _viewModel.SecondaryEntity.VoucherType;
+                dtpOnDate.Value = _viewModel.SecondaryEntity.OnDate;
+                txtAmount.Text = _viewModel.SecondaryEntity.Amount.ToString();
 
-                txtSlipNo.Text = cashVoucher.SlipNumber;
-                txtPartyName.Text = cashVoucher.PartyName;
-                txtRemarks.Text = cashVoucher.Remarks;
-                cbxParties.SelectedValue = cashVoucher.PartyId;
-                cbxEmployees.SelectedValue = cashVoucher.EmployeeId;
-                cbxTranscationMode.SelectedValue = cashVoucher.TranscationId;
-                txtParticulars.Text = cashVoucher.Particulars;
-                this.Text = "Cash Voucher #\t" + cashVoucher.VoucherNumber;
+                txtSlipNo.Text = _viewModel.SecondaryEntity.SlipNumber;
+                txtPartyName.Text = _viewModel.SecondaryEntity.PartyName;
+                txtRemarks.Text = _viewModel.SecondaryEntity.Remarks;
+                cbxParties.SelectedValue = _viewModel.SecondaryEntity.PartyId;
+                cbxEmployees.SelectedValue = _viewModel.SecondaryEntity.EmployeeId;
+                cbxTranscationMode.SelectedValue = _viewModel.SecondaryEntity.TranscationId;
+                txtParticulars.Text = _viewModel.SecondaryEntity.Particulars;
+                this.Text = "Cash Voucher #\t" + _viewModel.SecondaryEntity.VoucherNumber;
             }
             else
             {
-                cbxStores.SelectedValue = voucher.StoreId;
-                voucherType = voucher.VoucherType;
-                dtpOnDate.Value = voucher.OnDate;
-                txtAmount.Text = voucher.Amount.ToString();
-                txtSlipNo.Text = voucher.SlipNumber;
-                txtPartyName.Text = voucher.PartyName;
-                txtRemarks.Text = voucher.Remarks;
-                cbxParties.SelectedValue = voucher.PartyId;
-                cbxEmployees.SelectedValue = voucher.EmployeeId;
+                cbxStores.SelectedValue = _viewModel.PrimaryEntity.StoreId;
+                _viewModel.voucherType = _viewModel.PrimaryEntity.VoucherType;
+                dtpOnDate.Value = _viewModel.PrimaryEntity.OnDate;
+                txtAmount.Text = _viewModel.PrimaryEntity.Amount.ToString();
+                txtSlipNo.Text = _viewModel.PrimaryEntity.SlipNumber;
+                txtPartyName.Text = _viewModel.PrimaryEntity.PartyName;
+                txtRemarks.Text = _viewModel.PrimaryEntity.Remarks;
+                cbxParties.SelectedValue = _viewModel.PrimaryEntity.PartyId;
+                cbxEmployees.SelectedValue = _viewModel.PrimaryEntity.EmployeeId;
 
-                cbxBankAccount.SelectedValue = voucher.AccountId;
-                cbxPaymentMode.SelectedIndex = (int)voucher.PaymentMode;
-                txtPaymentDetails.Text = voucher.PaymentDetails;
-                txtParticulars.Text = voucher.Particulars;
+                cbxBankAccount.SelectedValue = _viewModel.PrimaryEntity.AccountId;
+                cbxPaymentMode.SelectedIndex = (int)_viewModel.PrimaryEntity.PaymentMode;
+                txtPaymentDetails.Text = _viewModel.PrimaryEntity.PaymentDetails;
+                txtParticulars.Text = _viewModel.PrimaryEntity.Particulars;
             }
             SetEntryType();
         }
@@ -115,9 +116,9 @@ namespace AKS.UI.Accounting.Forms
             //TODO: Validation of Data is need
             if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
             {
-                if (_viewModel.cashVoucher == null)
+                if (_viewModel.SecondaryEntity == null)
                 {
-                    _viewModel.cashVoucher = new CashVoucher
+                    _viewModel.SecondaryEntity = new CashVoucher
                     {
                         VoucherType = _viewModel.voucherType,
                         OnDate = dtpOnDate.Value,
@@ -138,31 +139,31 @@ namespace AKS.UI.Accounting.Forms
                 }
                 else
                 {
-                    cashVoucher.TranscationId = (string)cbxTranscationMode.SelectedValue;
-                    cashVoucher.VoucherType = voucherType;
-                    cashVoucher.OnDate = dtpOnDate.Value;
-                    cashVoucher.Remarks = txtRemarks.Text.Trim();
-                    cashVoucher.SlipNumber = txtSlipNo.Text.Trim();
-                    cashVoucher.PartyName = txtPartyName.Text.Trim();
-                    cashVoucher.Amount = decimal.Parse(txtAmount.Text.Trim());
-                    cashVoucher.EmployeeId = (string)cbxEmployees.SelectedValue;
-                    cashVoucher.StoreId = (string)cbxStores.SelectedValue;
-                    cashVoucher.PartyId = (string)cbxParties.SelectedValue;
-                    cashVoucher.Particulars = txtParticulars.Text.Trim();
-                    cashVoucher.EntryStatus = isNew ? EntryStatus.Added : EntryStatus.Updated;
-                    cashVoucher.IsReadOnly = false;
-                    cashVoucher.MarkedDeleted = false;
-                    cashVoucher.UserId = CurrentSession.UserName;
+                    _viewModel.SecondaryEntity.TranscationId = (string)cbxTranscationMode.SelectedValue;
+                    _viewModel.SecondaryEntity.VoucherType = _viewModel.voucherType;
+                    _viewModel.SecondaryEntity.OnDate = dtpOnDate.Value;
+                    _viewModel.SecondaryEntity.Remarks = txtRemarks.Text.Trim();
+                    _viewModel.SecondaryEntity.SlipNumber = txtSlipNo.Text.Trim();
+                    _viewModel.SecondaryEntity.PartyName = txtPartyName.Text.Trim();
+                    _viewModel.SecondaryEntity.Amount = decimal.Parse(txtAmount.Text.Trim());
+                    _viewModel.SecondaryEntity.EmployeeId = (string)cbxEmployees.SelectedValue;
+                    _viewModel.SecondaryEntity.StoreId = (string)cbxStores.SelectedValue;
+                    _viewModel.SecondaryEntity.PartyId = (string)cbxParties.SelectedValue;
+                    _viewModel.SecondaryEntity.Particulars = txtParticulars.Text.Trim();
+                    _viewModel.SecondaryEntity.EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated;
+                    _viewModel.SecondaryEntity.IsReadOnly = false;
+                    _viewModel.SecondaryEntity.MarkedDeleted = false;
+                    _viewModel.SecondaryEntity.UserId = CurrentSession.UserName;
                 }
-                cashVoucher.VoucherNumber = isNew ?
-                    VoucherStatic.GenerateVoucherNumber(cashVoucher.VoucherType, cashVoucher.OnDate, cashVoucher.StoreId) :
-                    this.voucherNumber;
+                _viewModel.SecondaryEntity.VoucherNumber = _viewModel.isNew ?
+                    VoucherStatic.GenerateVoucherNumber(_viewModel.SecondaryEntity.VoucherType, _viewModel.SecondaryEntity.OnDate, _viewModel.SecondaryEntity.StoreId) :
+                    _viewModel.voucherNumber;
             }
             else
             {
-                if (_viewModel.voucher == null)
+                if (_viewModel.PrimaryEntity == null)
                 {
-                    _viewModel.voucher = new Voucher
+                    _viewModel.PrimaryEntity = new Voucher
                     {
                         VoucherType = _viewModel.voucherType,
                         OnDate = dtpOnDate.Value,
@@ -182,30 +183,31 @@ namespace AKS.UI.Accounting.Forms
                         MarkedDeleted = false,
                         UserId = CurrentSession.UserName
                     };
-                    _viewModel.voucher.AccountId = _viewModel.voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
+                    _viewModel.PrimaryEntity.AccountId = _viewModel.PrimaryEntity.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
                 else
                 {
-                    voucher.VoucherType = _viewModel.voucherType;
-                    voucher.OnDate = dtpOnDate.Value;
-                    voucher.Remarks = txtRemarks.Text;
-                    voucher.SlipNumber = txtSlipNo.Text;
-                    voucher.PartyName = txtPartyName.Text;
-                    voucher.Amount = decimal.Parse(txtAmount.Text.Trim());
-                    voucher.EmployeeId = (string)cbxEmployees.SelectedValue;
-                    voucher.StoreId = (string)cbxStores.SelectedValue;
-                    voucher.PartyId = (string)cbxParties.SelectedValue;
-                    voucher.PaymentDetails = txtPaymentDetails.Text;
-                    // voucher.AccountId = (string)cbxBankAccount.SelectedValue;
-                    voucher.PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex;
-                    voucher.Particulars = txtParticulars.Text.Trim();
-                    voucher.EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated;
-                    voucher.IsReadOnly = false;
-                    voucher.MarkedDeleted = false;
-                    voucher.UserId = CurrentSession.UserName;
-                    voucher.AccountId = voucher.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
+                    _viewModel.PrimaryEntity.VoucherType = _viewModel.voucherType;
+                    _viewModel.PrimaryEntity.OnDate = dtpOnDate.Value;
+                    _viewModel.PrimaryEntity.Remarks = txtRemarks.Text;
+                    _viewModel.PrimaryEntity.SlipNumber = txtSlipNo.Text;
+                    _viewModel.PrimaryEntity.PartyName = txtPartyName.Text;
+                    _viewModel.PrimaryEntity.Amount = decimal.Parse(txtAmount.Text.Trim());
+                    _viewModel.PrimaryEntity.EmployeeId = (string)cbxEmployees.SelectedValue;
+                    _viewModel.PrimaryEntity.StoreId = (string)cbxStores.SelectedValue;
+                    _viewModel.PrimaryEntity.PartyId = (string)cbxParties.SelectedValue;
+                    _viewModel.PrimaryEntity.PaymentDetails = txtPaymentDetails.Text;
+                    // _viewModel.PrimaryEntity.AccountId = (string)cbxBankAccount.SelectedValue;
+                    _viewModel.PrimaryEntity.PaymentMode = (PaymentMode)cbxPaymentMode.SelectedIndex;
+                    _viewModel.PrimaryEntity.Particulars = txtParticulars.Text.Trim();
+                    _viewModel.PrimaryEntity.EntryStatus = _viewModel.isNew ? EntryStatus.Added : EntryStatus.Updated;
+                    _viewModel.PrimaryEntity.IsReadOnly = false;
+                    _viewModel.PrimaryEntity.MarkedDeleted = false;
+                    _viewModel.PrimaryEntity.UserId = CurrentSession.UserName;
+                    _viewModel.PrimaryEntity.AccountId = _viewModel.PrimaryEntity.PaymentMode != PaymentMode.Cash ? (string)cbxBankAccount.SelectedValue : "";
                 }
-                voucher.VoucherNumber = _viewModel.isNew ? VoucherStatic.GenerateVoucherNumber(voucher.VoucherType, voucher.OnDate, voucher.StoreId) : this.voucherNumber;
+                //TODO: Move VoucherNumber Creation ViewModel/DataModel Side
+                _viewModel.PrimaryEntity.VoucherNumber = _viewModel.isNew ? VoucherStatic.GenerateVoucherNumber(_viewModel.PrimaryEntity.VoucherType, _viewModel.PrimaryEntity.OnDate, _viewModel.PrimaryEntity.StoreId) : _viewModel.voucherNumber;
             }
             return true;
         }
@@ -236,19 +238,20 @@ namespace AKS.UI.Accounting.Forms
                                        MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
+                bool flag = false;
                 if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
                 {
-                    azureDb.CashVouchers.Remove(cashVoucher);
+                    flag = _viewModel.Delete(_viewModel.SecondaryEntity);
                 }
                 else
                 {
-                    azureDb.Vouchers.Remove(voucher);
+                    flag = _viewModel.Delete(_viewModel.PrimaryEntity);
                 }
 
-                if (azureDb.SaveChanges() > 0)
+                if (flag)
                 {
                     MessageBox.Show("Voucher is deleted!", "Delete");
-                    this.deleteVoucherNumber = voucherNumber;
+
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

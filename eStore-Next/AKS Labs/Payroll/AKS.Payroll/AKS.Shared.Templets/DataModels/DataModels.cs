@@ -23,6 +23,9 @@ namespace AKS.Shared.Templets.DataModels
         public DataModel(AzurePayrollDbContext db, LocalPayrollDbContext ldb)
         { }
 
+        public AzurePayrollDbContext GetDatabaseInstance() { return azureDb; }
+        public LocalPayrollDbContext GetLocalDbInstance() { return localDb; }
+
         public int SaveChanges()
         { return azureDb.SaveChanges(); }
 

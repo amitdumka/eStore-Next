@@ -329,12 +329,12 @@ namespace AKS.UI.Accounting.Forms
                     break;
 
                 case VoucherType.CashReceipt:
-                    dgvCashReceipts.DataSource = _voucherViewModel.GetVouchers(VoucherType.CashReceipt);
+                    dgvCashReceipts.DataSource = _voucherViewModel.GetCashVouchers(VoucherType.CashReceipt);
                     tabControl1.SelectedTab = tpCashReceipts;
                     break;
 
                 case VoucherType.CashPayment:
-                    dgvCashPayments.DataSource = _voucherViewModel.GetVouchers(VoucherType.CashPayment);
+                    dgvCashPayments.DataSource = _voucherViewModel.GetCashVouchers(VoucherType.CashPayment);
                     tabControl1.SelectedTab = tpCashPayments;
                     break;
 

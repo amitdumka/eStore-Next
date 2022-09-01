@@ -74,7 +74,7 @@ namespace AKS.AccountingSystem.ViewModels
 
         public List<CashVoucherVM> GetCashVouchers(VoucherType vType, int year = 0)
         {
-            if (year > 0)
+            if (year <= 0)
                 return cashVoucherVMs.Where(c => c.VoucherType == vType).OrderByDescending(c => c.OnDate).ToList();
             else
                 return cashVoucherVMs.Where(c => c.VoucherType == vType && c.OnDate.Year == year).OrderByDescending(c => c.OnDate).ToList();
@@ -82,7 +82,7 @@ namespace AKS.AccountingSystem.ViewModels
 
         public List<VoucherVM> GetVouchers(VoucherType vType, int year = 0)
         {
-            if (year > 0)
+            if (year <= 0)
                 return voucherVMs.Where(c => c.VoucherType == vType).OrderByDescending(c => c.OnDate).ToList();
             else
                 return voucherVMs.Where(c => c.VoucherType == vType && c.OnDate.Year == year).OrderByDescending(c => c.OnDate).ToList();

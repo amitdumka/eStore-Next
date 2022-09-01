@@ -3,7 +3,7 @@ using AKS.AccountingSystem.ViewModels;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.ViewModels.Accounts;
 using Syncfusion.Windows.Forms.PdfViewer;
-
+//TODO: Add summary report like total Yearly, montly, daily from voucher list of particular type
 namespace AKS.UI.Accounting.Forms
 {
     public partial class VochersForm : Form

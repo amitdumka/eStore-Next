@@ -1,6 +1,7 @@
 ﻿using AKS.AccountingSystem.ViewModels;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
+using AKS.Shared.Commons.ViewModels.Accounts;
 
 namespace AKS.UI.Accounting.Forms
 {
@@ -15,6 +16,7 @@ namespace AKS.UI.Accounting.Forms
                 _viewModel = new VoucherCashViewModel(VoucherType.Expense);
             else _viewModel = vcvm;
             _viewModel.isNew = true;
+            this.Text = $"{CurrentSession.StoreName}: Expense Voucher : (New)";
         }
 
         public VoucherEntryForm(VoucherType voucherType, VoucherCashViewModel vcvm)
@@ -25,6 +27,9 @@ namespace AKS.UI.Accounting.Forms
                 _viewModel = new VoucherCashViewModel(voucherType);
             else _viewModel = vcvm;
             _viewModel.isNew = true;
+
+            this.Text = $"{CurrentSession.StoreName}: " + voucherType.ToString().Replace("Cash","") + $"{(!voucherType.ToString().Contains("Cash")?"":"(Cash)")}  Voucher : (New)";
+
         }
 
         public VoucherEntryForm(VoucherType voucherType, Voucher voucher, VoucherCashViewModel vcvm)
@@ -33,11 +38,14 @@ namespace AKS.UI.Accounting.Forms
             if (vcvm == null)
                 _viewModel = new VoucherCashViewModel(voucherType);
             else _viewModel = vcvm;
+            _viewModel.voucherType = voucherType;
             _viewModel.Update(voucher);
             _viewModel.isNew = false;
             btnAdd.Text = "Edit";
             _viewModel.voucherNumber = voucher.VoucherNumber;
             panel1.Enabled = false;
+            this.Text = $"{CurrentSession.StoreName}: " + voucherType.ToString() + $" Voucher :{voucher.VoucherNumber}";
+
         }
 
         public VoucherEntryForm(VoucherType voucherType, CashVoucher voucher, VoucherCashViewModel vcvm)
@@ -46,11 +54,13 @@ namespace AKS.UI.Accounting.Forms
             if (vcvm == null)
                 _viewModel = new VoucherCashViewModel(voucherType);
             else _viewModel = vcvm;
+            _viewModel.voucherType = voucherType;
             _viewModel.Update(voucher);
             _viewModel.isNew = false;
             btnAdd.Text = "Edit";
             _viewModel.voucherNumber = voucher.VoucherNumber;
             panel1.Enabled = false;
+            this.Text=$"{CurrentSession.StoreName}: "+voucherType.ToString().Replace("Cash","")+$" Voucher (Cash):{voucher.VoucherNumber}";
         }
 
         //Ported
@@ -174,7 +184,7 @@ namespace AKS.UI.Accounting.Forms
                 cbxEmployees.SelectedValue = _viewModel.SecondaryEntity.EmployeeId;
                 cbxTranscationMode.SelectedValue = _viewModel.SecondaryEntity.TranscationId;
                 txtParticulars.Text = _viewModel.SecondaryEntity.Particulars;
-                this.Text = "Cash Voucher #\t" + _viewModel.SecondaryEntity.VoucherNumber;
+                //this.Text = "Cash Voucher #\t" + _viewModel.SecondaryEntity.VoucherNumber;
             }
             else
             {
@@ -201,26 +211,26 @@ namespace AKS.UI.Accounting.Forms
             //Store
 
             cbxStores.DataSource = _viewModel.GetStoreList();
-            cbxStores.DisplayMember = "StoreName";
+            cbxStores.DisplayMember = "DisplayData";// "StoreName";
             cbxStores.ValueMember = "StoreId";
 
             cbxEmployees.DataSource = _viewModel.GetEmployeeList();
-            cbxEmployees.DisplayMember = "StaffName";
-            cbxEmployees.ValueMember = "EmployeeId";
+            cbxEmployees.DisplayMember = "DisplayData";
+            cbxEmployees.ValueMember = "ValueData";
 
             cbxBankAccount.DataSource = _viewModel.GetBankAccountList();
-            cbxBankAccount.DisplayMember = "AccountNumber";
-            cbxBankAccount.ValueMember = "AccountNumber";
+            cbxBankAccount.DisplayMember = "ValueData";
+            cbxBankAccount.ValueMember = "ValueData";
 
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PaymentMode)));
 
             cbxParties.DataSource = _viewModel.GetPartyList();
-            cbxParties.DisplayMember = "PartyName";
-            cbxParties.ValueMember = "PartyId";
+            cbxParties.DisplayMember = "DisplayData";
+            cbxParties.ValueMember = "ValueData";
 
             cbxTranscationMode.DataSource = _viewModel.GetTranscationList();
-            cbxTranscationMode.DisplayMember = "TranscationName";
-            cbxTranscationMode.ValueMember = "TranscationId";
+            cbxTranscationMode.DisplayMember = "DisplayData";
+            cbxTranscationMode.ValueMember = "ValueData";
 
             ShowView(_viewModel.voucherType);
             SetEntryType();
@@ -269,6 +279,11 @@ namespace AKS.UI.Accounting.Forms
 
         private bool ReadData()
         {
+            if (_viewModel.voucherType != ReadVoucher())
+            {
+                _viewModel.voucherType = ReadVoucher();
+            }
+
             //TODO: Validation of Data is need
             if (_viewModel.voucherType == VoucherType.CashPayment || _viewModel.voucherType == VoucherType.CashReceipt)
             {
@@ -325,6 +340,17 @@ namespace AKS.UI.Accounting.Forms
             return true;
         }
 
+        private VoucherType ReadVoucher()
+        {
+            if (rbCashPayment.Checked) return VoucherType.CashPayment;
+            if (rbCashReceipts.Checked) return VoucherType.CashReceipt;
+
+            if (rbPayment.Checked) return VoucherType.Payment;
+            if (rbReceipts.Checked) return VoucherType.Receipt;
+            if (rbExpenses.Checked) return VoucherType.Expense;
+            return VoucherType.Expense;
+        }
+
         private bool SaveData()
         {
             if (ReadData())
@@ -377,6 +403,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void ShowView(VoucherType type)
         {
+            //Changing Voucher Type so at time of Save it dont create problem
+            _viewModel.voucherType = type;
             if (type == VoucherType.CashPayment || type == VoucherType.CashReceipt)
             {
                 lbBankAccount.Visible = false;

@@ -197,5 +197,10 @@ namespace eStoreAccounts
           toolStripStatusLabel5.Text= CurrentSession.UserType.ToString();
 
         }
+
+        private void changeStoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO: Change store so accountant do work based on store 
+        }
     }
 }

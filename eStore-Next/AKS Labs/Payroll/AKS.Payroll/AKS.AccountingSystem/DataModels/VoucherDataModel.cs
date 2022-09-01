@@ -27,8 +27,7 @@ namespace AKS.AccountingSystem.DataModels
             return db.Stores.Select(c => new DynVM
             {
                 StoreId = c.StoreId,
-                DisplayMember = "StoreName"
-                ,
+                DisplayMember = "StoreName",
                 DisplayData = c.StoreName,
                 BoolValue = c.IsActive,
                 BoolMember = "IsActive"
@@ -37,7 +36,7 @@ namespace AKS.AccountingSystem.DataModels
 
         public static List<DynVM> GetEmployeeList(AzurePayrollDbContext db)
         {
-            return db.Employees.Select(c => new DynVM
+            return db.Employees.Where(c => c.IsWorking && !c.IsTailors).Select(c => new DynVM
             {
                 StoreId = c.StoreId,
                 DisplayMember = "StaffName",
@@ -54,10 +53,12 @@ namespace AKS.AccountingSystem.DataModels
             return db.BankAccounts.Select(c => new DynVM
             {
                 StoreId = c.StoreId,
-                DisplayMember = "AccountNumber",
+                ValueMember = "AccountNumber",
+                ValueData = c.AccountNumber,
                 BoolMember = "IsActive",
-                DisplayData = c.AccountNumber,
-                BoolValue = c.IsActive
+                BoolValue = c.IsActive,
+                DisplayData = c.AccountHolderName,
+                DisplayMember = "AccountHolderName"
             }).ToList();
         }
 

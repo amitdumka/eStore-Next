@@ -65,5 +65,20 @@ namespace AKS.AccountingSystem.DataModels
                 ValueData = c.TranscationId,
             }).ToList();
         }
+
+        public static List<DynVM> GetSalemanList(AzurePayrollDbContext db, string StoreCode)
+        {
+            return db.Salesmen.Where(c => c.StoreId == StoreCode && c.IsActive)
+                   .Select(c => new DynVM
+                   {
+                       ValueData = c.SalesmanId,
+                       DisplayData = c.Name
+                   }).ToList();
+        }
+
+        public static List<DynVM> GetPosList(AzurePayrollDbContext db, string StoreCode)
+        {
+            return db.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new DynVM { ValueData = c.EDCTerminalId, DisplayData = c.Name }).ToList();
+        }
     }
 }

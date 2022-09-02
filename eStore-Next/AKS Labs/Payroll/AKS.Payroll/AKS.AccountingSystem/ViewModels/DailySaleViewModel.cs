@@ -21,6 +21,7 @@ namespace AKS.AccountingSystem.ViewModels
         public List<int> YearList;
         public CustomerDue? SavedDue { get; private set; }
         public DailySale? SavedSale { get; private set; }
+
         #endregion Declarations
 
         public DailySaleViewModel()
@@ -28,16 +29,17 @@ namespace AKS.AccountingSystem.ViewModels
             DataModel = new DailySaleDataModel();
             DataModel.SetStoreCode(CurrentSession.StoreCode);
         }
+
         #region OverrideMethods
 
         public override bool Delete(DailySale entity)
         {
-            throw new NotImplementedException();
+            return DataModel.Delete(entity);
         }
 
         public override bool Delete(CustomerDue entity)
         {
-            throw new NotImplementedException();
+            return DataModel.Delete(entity);
         }
 
         public override bool DeleteRange(List<DailySale> entities)
@@ -68,7 +70,12 @@ namespace AKS.AccountingSystem.ViewModels
         public override bool Save(DailySale entity)
         {
             SavedSale = DataModel.Save(entity);
-            if (SavedSale != null) return true;
+            if (SavedSale != null)
+            {
+                //if (entity.IsDue)
+                //    Save(SecondaryEntity);
+                return true;
+            }
             return false;
         }
 
@@ -138,13 +145,46 @@ namespace AKS.AccountingSystem.ViewModels
                 YearList.Add(DateTime.Today.Year);
         }
 
+        public bool DeleteSale()
+        {
+            if (PrimaryEntity.IsDue)
+            {
+                var due = DataModel.GetY(PrimaryEntity.InvoiceNumber);
+                if (due != null)
+                    Delete(due);
+            }
+            if (Delete(PrimaryEntity))
+            {
+                return true;
+            }
+            else return false;
+        }
+
         public bool SaveSale(bool read)
         {
             if (read)
             {
                 if (Save(PrimaryEntity))
                 {
+                    if (PrimaryEntity.IsDue)
+                    {
+                        SecondaryEntity = new()
+                        {
+                            InvoiceNumber = PrimaryEntity.InvoiceNumber,
+                            Amount = PrimaryEntity.Amount,
+                            EntryStatus = EntryStatus.Added,
+                            IsReadOnly = false,
+                            MarkedDeleted = false,
+                            OnDate = PrimaryEntity.OnDate,
+                            Paid = false,
+                            StoreId = PrimaryEntity.StoreId,
+                            UserId = PrimaryEntity.UserId,
+                        };
+                        Save(SecondaryEntity);
+                    }
+
                     dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(SavedSale));
+
                     if (SavedDue != null)
                     {
                         if (SavedSale.InvoiceNumber == SavedDue.InvoiceNumber)
@@ -180,7 +220,27 @@ namespace AKS.AccountingSystem.ViewModels
                     DMMapper.Mapper.Map<DailySaleVM>(sale);
             }
         }
+
         #endregion UiFunctions
+
+        #region EntrySection
+
+        public List<DynVM> GetStoreList()
+        {
+            return CommonDataModel.GetStoreList(DataModel.GetDatabaseInstance());
+        }
+
+        public List<DynVM> GetSalesManList()
+        {
+            return CommonDataModel.GetSalemanList(DataModel.GetDatabaseInstance(), CurrentSession.StoreCode);
+        }
+
+        public List<DynVM> GetPosList()
+        {
+            return CommonDataModel.GetPosList(DataModel.GetDatabaseInstance(), CurrentSession.StoreCode);
+        }
+
+        #endregion EntrySection
     }
 
     public class DueViewModel : ViewModel<CustomerDue, DueRecovery, DailySaleDataModel>
@@ -191,6 +251,7 @@ namespace AKS.AccountingSystem.ViewModels
         {
             DataModel = new DailySaleDataModel();
         }
+
         //Primary Enity Due, Seconday Enity Recovery
         public DueViewModel(DailySaleDataModel dm)
         {

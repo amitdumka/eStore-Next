@@ -1,100 +1,184 @@
-﻿using AKS.Payroll.Database;
+﻿using AKS.AccountingSystem.ViewModels;
 using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Commons.Ops;
-using System.Data;
 
 namespace AKS.UI.Accounting.Forms
 {
     public partial class DailySaleEntryForm : Form
     {
-        private AzurePayrollDbContext azureDb;
-        private LocalPayrollDbContext localDb;
+        private DailySaleViewModel _viewModel;
 
-        private static string StoreCode = "ARD";
-        public DailySale sale;
-        public CustomerDue CustomerDue;
-        private bool isNew;
-        public string DeletedI { get; set; }
-        public bool IsSaved { get; set; }
-        public DailySaleEntryForm()
+        public DailySaleEntryForm(DailySaleViewModel vm)
         {
             InitializeComponent();
-            isNew = true;
+            _viewModel.isNew = true;
+            _viewModel = vm;
         }
-        public DailySaleEntryForm(DailySale daily)
+
+        public DailySaleEntryForm(DailySaleViewModel vm, DailySale daily)
         {
             InitializeComponent();
-            sale = daily;
-            isNew = false;
+            _viewModel.PrimaryEntity = daily;
+            _viewModel.isNew = false;
             btnAdd.Text = "Edit";
             txtInvoiceNumber.Enabled = false;
+            _viewModel = vm;
+        }
 
+        public string DeletedI { get; set; }
+        public bool IsSaved { get; set; }
+
+        public DialogResult DeleteBox(string name)
+        {
+            return MessageBox.Show($"Are you sure to delete this {name} ??",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (btnAdd.Text == "Add") { btnAdd.Text = "Save"; }
+            else if (btnAdd.Text == "Edit") { btnAdd.Text = "Save"; }
+            else if (btnAdd.Text == "Save")
+            {
+                if (_viewModel.SaveSale(ReadData()))
+                {
+                    MessageBox.Show("Invoice is saved");
+                    btnAdd.Text = "Add";
+                    //TODO: ClearFields();
+                    if (_viewModel.isNew) this.DialogResult = DialogResult.OK;
+                    else this.DialogResult = DialogResult.Yes;
+                    IsSaved = true;
+                }
+                else
+                {
+                    MessageBox.Show("An error occurred while saving");
+                }
+            }
+        }
+
+        private void btnCancle_Click(object sender, EventArgs e)
+        {
+            //TODO: ClearFields();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var confirmResult = DeleteBox("Sale ");
+            if (confirmResult == DialogResult.Yes)
+            {
+                if (_viewModel.PrimaryEntity.OnDate.Date > new DateTime(2022, 3, 31))
+                {
+                    if (_viewModel.DeleteSale())
+                    {
+                        MessageBox.Show("Sale is deleted!", "Delete");
+                        this.DeletedI = _viewModel.PrimaryEntity.InvoiceNumber;
+                        this.DialogResult = DialogResult.No;
+                        this.Close();
+                    }
+                    else MessageBox.Show("Failed to delete, please try again!", "Delete");
+                }
+                else
+                {
+                    MessageBox.Show("Sale before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
+                }
+            }
+        }
+
+        private void cbxPaymentMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
+            {
+                cbxPOS.Enabled = false;
+                txtNonCash.Enabled = false;
+                txtNonCash.Text = "0";
+                txtCash.Text = "0";
+            }
+            else
+            {
+                cbxPOS.Enabled = true;
+                txtNonCash.Enabled = true;
+                txtNonCash.Text = "0";
+                txtCash.Text = "0";
+            }
+        }
+
+        private void cbxStores_SelectedValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (((string)cbxStores.SelectedValue) != CurrentSession.StoreCode)
+                {
+                    CurrentSession.StoreCode = (string)cbxStores.SelectedValue;
+                    ReloadComoboData();
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        private void DailySaleEntryForm_Load(object sender, EventArgs e)
+        {
+            LoadData();
         }
 
         private void DisplayData()
         {
             try
             {
-                cbxStores.SelectedValue = sale.StoreId;
-                txtAmount.Text = sale.Amount.ToString();
-                txtCash.Text = sale.CashAmount.ToString();
-                txtNonCash.Text = sale.NonCashAmount.ToString();
-                dtpOnDate.Value = sale.OnDate;
-                cbxPaymentMode.SelectedIndex = (int)sale.PayMode;
-                cbxPOS.SelectedValue = sale.EDCTerminalId != null ? sale.EDCTerminalId : "";
-                cbxSaleman.SelectedValue = sale.SalesmanId;
-                cbManual.Checked = sale.ManualBill;
-                cbSalesReturn.Checked = sale.SalesReturn;
-                cbTailoring.Checked = sale.TailoringBill;
-                cbDue.Checked = sale.IsDue;
-                txtInvoiceNumber.Text = sale.InvoiceNumber.ToString();
-                txtRemarks.Text = sale.Remarks.ToString();
+                cbxStores.SelectedValue = _viewModel.PrimaryEntity.StoreId;
+                txtAmount.Text = _viewModel.PrimaryEntity.Amount.ToString();
+                txtCash.Text = _viewModel.PrimaryEntity.CashAmount.ToString();
+                txtNonCash.Text = _viewModel.PrimaryEntity.NonCashAmount.ToString();
+                dtpOnDate.Value = _viewModel.PrimaryEntity.OnDate;
+                cbxPaymentMode.SelectedIndex = (int)_viewModel.PrimaryEntity.PayMode;
+                cbxPOS.SelectedValue = _viewModel.PrimaryEntity.EDCTerminalId != null ? _viewModel.PrimaryEntity.EDCTerminalId : "";
+                cbxSaleman.SelectedValue = _viewModel.PrimaryEntity.SalesmanId;
+                cbManual.Checked = _viewModel.PrimaryEntity.ManualBill;
+                cbSalesReturn.Checked = _viewModel.PrimaryEntity.SalesReturn;
+                cbTailoring.Checked = _viewModel.PrimaryEntity.TailoringBill;
+                cbDue.Checked = _viewModel.PrimaryEntity.IsDue;
+                txtInvoiceNumber.Text = _viewModel.PrimaryEntity.InvoiceNumber.ToString();
+                txtRemarks.Text = _viewModel.PrimaryEntity.Remarks.ToString();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
-
-
         }
 
         private void LoadData()
         {
-            azureDb = new AzurePayrollDbContext();
-            localDb = new LocalPayrollDbContext();
-
-            cbxStores.DisplayMember = "StoreName";
+            cbxStores.DisplayMember = "DisplayData";
             cbxStores.ValueMember = "StoreId";
 
-            cbxPOS.DisplayMember = "Name";
-            cbxPOS.ValueMember = "EDCTerminalId";
+            cbxPOS.DisplayMember = "DisplayData";
+            cbxPOS.ValueMember = "ValueData";
 
-            cbxSaleman.DisplayMember = "Name";
-            cbxSaleman.ValueMember = "SalesmanId";
+            cbxSaleman.DisplayMember = "DisplayData";
+            cbxSaleman.ValueMember = "ValueData";
 
-            cbxStores.DataSource = azureDb.Stores.Select(c => new { c.StoreId, c.StoreName }).ToList();
-            cbxSaleman.DataSource = azureDb.Salesmen.Where(c => c.StoreId == StoreCode && c.IsActive)
-                .Select(c => new { c.SalesmanId, c.Name }).ToList();
-            cbxPOS.DataSource = azureDb.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new { c.EDCTerminalId, c.Name }).ToList();
+            cbxStores.DataSource = _viewModel.GetStoreList();
+
+            cbxSaleman.DataSource = _viewModel.GetSalesManList();
+
+            cbxPOS.DataSource = _viewModel.GetPosList();
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PayMode)));
 
-            if (!isNew) DisplayData();
-        }
-
-        private void ReloadComoboData()
-        {
-            cbxSaleman.DataSource = azureDb.Salesmen.Where(c => c.StoreId == StoreCode && c.IsActive).Select(c => new { c.SalesmanId, c.Name }).ToList();
-            cbxPOS.DataSource = azureDb.EDCTerminals.Where(c => c.StoreId == StoreCode && c.Active).Select(c => new { c.EDCTerminalId, c.Name }).ToList();
+            if (!_viewModel.isNew) DisplayData();
         }
 
         private bool ReadData()
         {
             try
             {
-                if (isNew)
+                if (_viewModel.isNew)
                 {
-                    sale = new DailySale
+                    _viewModel.PrimaryEntity = new DailySale
                     {
                         Amount = decimal.Parse(txtAmount.Text.Trim()),
                         CashAmount = decimal.Parse(txtCash.Text.Trim()),
@@ -118,24 +202,24 @@ namespace AKS.UI.Accounting.Forms
                 }
                 else
                 {
-                    sale.Amount = decimal.Parse(txtAmount.Text.Trim());
-                    sale.CashAmount = decimal.Parse(txtCash.Text.Trim());
-                    sale.NonCashAmount = decimal.Parse(txtNonCash.Text.Trim());
-                    sale.EDCTerminalId = (string)cbxPOS.SelectedValue;
-                    sale.EntryStatus = EntryStatus.Added; sale.InvoiceNumber = txtInvoiceNumber.Text;
-                    sale.IsDue = cbDue.Checked; sale.IsReadOnly = false; sale.ManualBill = cbManual.Checked; sale.MarkedDeleted = false;
-                    sale.OnDate = dtpOnDate.Value; sale.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
-                    sale.Remarks = txtRemarks.Text; sale.SalesmanId = (string)cbxSaleman.SelectedValue; sale.SalesReturn = cbSalesReturn.Checked;
-                    sale.StoreId = (string)cbxStores.SelectedValue; sale.TailoringBill = cbTailoring.Checked; sale.UserId = CurrentSession.UserName;
+                    _viewModel.PrimaryEntity.Amount = decimal.Parse(txtAmount.Text.Trim());
+                    _viewModel.PrimaryEntity.CashAmount = decimal.Parse(txtCash.Text.Trim());
+                    _viewModel.PrimaryEntity.NonCashAmount = decimal.Parse(txtNonCash.Text.Trim());
+                    _viewModel.PrimaryEntity.EDCTerminalId = (string)cbxPOS.SelectedValue;
+                    _viewModel.PrimaryEntity.EntryStatus = EntryStatus.Added; _viewModel.PrimaryEntity.InvoiceNumber = txtInvoiceNumber.Text;
+                    _viewModel.PrimaryEntity.IsDue = cbDue.Checked; _viewModel.PrimaryEntity.IsReadOnly = false; _viewModel.PrimaryEntity.ManualBill = cbManual.Checked; _viewModel.PrimaryEntity.MarkedDeleted = false;
+                    _viewModel.PrimaryEntity.OnDate = dtpOnDate.Value; _viewModel.PrimaryEntity.PayMode = (PayMode)cbxPaymentMode.SelectedIndex;
+                    _viewModel.PrimaryEntity.Remarks = txtRemarks.Text; _viewModel.PrimaryEntity.SalesmanId = (string)cbxSaleman.SelectedValue; _viewModel.PrimaryEntity.SalesReturn = cbSalesReturn.Checked;
+                    _viewModel.PrimaryEntity.StoreId = (string)cbxStores.SelectedValue; _viewModel.PrimaryEntity.TailoringBill = cbTailoring.Checked; _viewModel.PrimaryEntity.UserId = CurrentSession.UserName;
                 }
 
-                if (sale.PayMode != PayMode.Card && sale.PayMode != PayMode.UPI && sale.PayMode == PayMode.Wallets && sale.PayMode != PayMode.MixPayments || sale.PayMode == PayMode.Cash)
+                if (_viewModel.PrimaryEntity.PayMode != PayMode.Card && _viewModel.PrimaryEntity.PayMode != PayMode.UPI && _viewModel.PrimaryEntity.PayMode == PayMode.Wallets && _viewModel.PrimaryEntity.PayMode != PayMode.MixPayments || _viewModel.PrimaryEntity.PayMode == PayMode.Cash)
                 {
-                    sale.EDCTerminalId = null;
+                    _viewModel.PrimaryEntity.EDCTerminalId = null;
                 }
-                else if (string.IsNullOrWhiteSpace(sale.EDCTerminalId) || string.IsNullOrEmpty(sale.EDCTerminalId))
+                else if (string.IsNullOrWhiteSpace(_viewModel.PrimaryEntity.EDCTerminalId) || string.IsNullOrEmpty(_viewModel.PrimaryEntity.EDCTerminalId))
                 {
-                    sale.EDCTerminalId = null;
+                    _viewModel.PrimaryEntity.EDCTerminalId = null;
                 }
                 else
                 {
@@ -143,194 +227,18 @@ namespace AKS.UI.Accounting.Forms
                 }
 
                 return true;
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return false;
-
-            }
-        }
-        private void SaveDue()
-        {
-            //TODO: Ideal is meet, when due is not present then add, when due present and edit due removed. 
-            CustomerDue = new()
-            {
-                InvoiceNumber = sale.InvoiceNumber,
-                Amount = sale.Amount,
-                EntryStatus = EntryStatus.Added,
-                IsReadOnly = false,
-                MarkedDeleted = false,
-                OnDate = sale.OnDate,
-                Paid = false,
-                StoreId = sale.StoreId,
-                UserId = sale.UserId,
-
-            };
-            if (isNew)
-                azureDb.CustomerDues.Add(CustomerDue);
-            else azureDb.CustomerDues.Update(CustomerDue);
-        }
-        private void SavePaymentData()
-        {
-            //TODO: Implement this . for banking input. 
-        }
-        private bool SaveData()
-        {
-            try
-            {
-                if (sale.IsDue) SaveDue();
-
-                if (isNew)
-                    azureDb.DailySales.Add(sale);
-                else azureDb.DailySales.Update(sale);
-
-                return azureDb.SaveChanges() > 0;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return false;
             }
-
         }
 
-        private void ClearFields() { }
-
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void ReloadComoboData()
         {
-            if (btnAdd.Text == "Add") { btnAdd.Text = "Save"; }
-            else if (btnAdd.Text == "Edit") { btnAdd.Text = "Save"; }
-            else if (btnAdd.Text == "Save")
-            {
-
-                if (ReadData())
-                {
-                    if (SaveData())
-                    {
-                        MessageBox.Show("Invoice is saved");
-                        btnAdd.Text = "Add";
-                        ClearFields();
-                        if (isNew) this.DialogResult = DialogResult.OK;
-                        else this.DialogResult = DialogResult.Yes;
-                        IsSaved = true;
-                    }
-                    else
-                    {
-                        azureDb.DailySales.Remove(sale);
-                        if (sale.IsDue) azureDb.CustomerDues.Remove(CustomerDue);
-                        MessageBox.Show("An error occured while saving");
-                    }
-                }
-                else MessageBox.Show("An error occured while reading");
-            }
+            cbxSaleman.DataSource = _viewModel.GetSalesManList();
+            cbxPOS.DataSource = _viewModel.GetPosList(); ;
         }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            var confirmResult = DeleteBox("Sale ");
-            if (confirmResult == DialogResult.Yes)
-            {
-                if (sale.OnDate.Date > new DateTime(2022, 3, 31))
-                {
-                    azureDb.DailySales.Remove(sale);
-                    if (sale.IsDue)
-                    {
-                        var d = azureDb.CustomerDues.Where(c => c.InvoiceNumber == sale.InvoiceNumber).FirstOrDefault();
-                        if (d != null) { azureDb.CustomerDues.Remove(d); }
-                    }
-                    if (azureDb.SaveChanges() > 0)
-                    {
-                        MessageBox.Show("Sale is deleted!", "Delete");
-                        this.DeletedI = sale.InvoiceNumber;
-                        this.DialogResult = DialogResult.No;
-                        this.Close();
-                    }
-                    else MessageBox.Show("Failed to delete, please try again!", "Delete");
-                }
-                else
-                {
-                    MessageBox.Show("Sale before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
-                }
-
-            }
-        }
-
-        private void btnCancle_Click(object sender, EventArgs e)
-        {
-            ClearFields();
-            this.Close();
-        }
-
-        private void DailySaleEntryForm_Load(object sender, EventArgs e)
-        {
-            LoadData();
-        }
-
-        private void cbxStores_SelectedValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (((string)cbxStores.SelectedValue) != StoreCode)
-                {
-                    StoreCode = (string)cbxStores.SelectedValue;
-                    ReloadComoboData();
-                }
-            }
-            catch (Exception err)
-            {
-
-                Console.WriteLine(err.Message);
-            }
-
-        }
-
-
-        private void cbxPaymentMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if ((PayMode)cbxPaymentMode.SelectedIndex == PayMode.Cash)
-            {
-                cbxPOS.Enabled = false;
-                txtNonCash.Enabled = false;
-                txtNonCash.Text = "0";
-                txtCash.Text = "0";
-            }
-            else
-            {
-                cbxPOS.Enabled = true;
-                txtNonCash.Enabled = true;
-                txtNonCash.Text = "0";
-                txtCash.Text = "0";
-            }
-        }
-
-        public DialogResult DeleteBox(string name)
-        {
-            return MessageBox.Show($"Are you sure to delete this {name} ??",
-                                     "Confirm Delete!!",
-                                     MessageBoxButtons.YesNo);
-            //if (confirmResult == DialogResult.Yes)
-            //{
-            //    if (newAtt.OnDate.Date > new DateTime(2022, 3, 31))
-            //    {
-            //        db.Attendances.Remove(newAtt);
-            //        if (db.SaveChanges() > 0)
-            //        {
-            //            MessageBox.Show("Attendance is deleted!", "Delete");
-            //            this.DeletedAttednance = newAtt.AttendanceId;
-            //            this.DialogResult = DialogResult.OK;
-            //            this.Close();
-            //        }
-            //        else MessageBox.Show("Failed to delete, please try again!", "Delete");
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Attendace before 1st April 2022 cannot be deleted. You don't have accessed", "Access Denied");
-            //    }
-
-            //}
-        }
-
     }
 }

@@ -23,9 +23,7 @@
 		<Compile Update="Forms\Banking\BankTranscationForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>
-		<Compile Update="Forms\Sales\DailySaleEntryForm.cs">
-		  <SubType>Form</SubType>
-		</Compile>
+		<Compile Update="Forms\Sales\DailySaleEntryForm.cs" />
 		<Compile Update="Forms\Sales\DailySaleForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>

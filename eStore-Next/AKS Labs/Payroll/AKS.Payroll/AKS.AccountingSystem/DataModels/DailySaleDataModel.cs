@@ -1,11 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Templets.DataModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AKS.AccountingSystem.DataModels
 {
@@ -16,7 +11,7 @@ namespace AKS.AccountingSystem.DataModels
             EDCTerminal eDCTerminal = new EDCTerminal
             {
                 Active = true,
-                BankId = "Bank of Maharastra",
+                BankId = "Bank of Maharashtra",
                 EDCTerminalId = "EDC/2022/003",
                 EntryStatus = EntryStatus.Added,
                 IsReadOnly = true,
@@ -64,33 +59,7 @@ namespace AKS.AccountingSystem.DataModels
             azureDb.EDCTerminals.Add(eDCTerminal3);
             azureDb.EDCTerminals.Add(eDCTerminal);
             azureDb.EDCTerminals.Add(eDCTerminal2);
-            return (azureDb.SaveChanges() > 0); 
-        }
-
-
-        public List<int> YearList()
-        {
-            return azureDb.DailySales
-                .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
-                .Distinct().OrderBy(c => c).ToList();
-        }
-        public List<DailySale> GetCurrentYearSale()
-        {
-            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
-                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
-           ).OrderByDescending(c => c.OnDate).ToList();
-        }
-        public List<DailySale> GetCurrentMonthSale()
-        {
-            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
-                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
-            && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList();
-        }
-        public List<DailySale> GetLastMonthSale()
-        {
-            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
-                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
-            && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).OrderByDescending(c => c.OnDate).ToList();
+            return (azureDb.SaveChanges() > 0);
         }
 
         public override DailySale Get(string id)
@@ -103,9 +72,44 @@ namespace AKS.AccountingSystem.DataModels
             throw new NotImplementedException();
         }
 
+        public List<DailySale> GetCurrentMonthSale()
+        {
+            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
+                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
+            && c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList();
+        }
+
+        public List<DailySale> GetCurrentYearSale()
+        {
+            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
+                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
+           ).OrderByDescending(c => c.OnDate).ToList();
+        }
+
+        public List<CustomerDue> GetDueList()
+        {
+            return azureDb.CustomerDues
+                    .Where(c => c.StoreId == StoreCode && !c.Paid)
+                    .OrderByDescending(c => c.OnDate)
+                    .ToList();
+        }
+
+        public List<DailySale> GetLastMonthSale()
+        {
+            return azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman)
+                .Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
+            && c.OnDate.Month == DateTime.Today.AddMonths(-1).Month).OrderByDescending(c => c.OnDate).ToList();
+        }
+
         public override List<DailySale> GetList()
         {
             throw new NotImplementedException();
+        }
+
+        public List<DueRecovery> GetRecoveryList(int year)
+        {
+            return azureDb.DueRecovery.Where(c => c.StoreId == StoreCode &&
+             c.OnDate.Year == year).OrderByDescending(c => c.OnDate).ToList();
         }
 
         public override DueRecovery GetSeconday(string id)
@@ -136,6 +140,13 @@ namespace AKS.AccountingSystem.DataModels
         public override List<CustomerDue> GetYList()
         {
             throw new NotImplementedException();
+        }
+
+        public List<int> YearList()
+        {
+            return azureDb.DailySales
+                .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
+                .Distinct().OrderBy(c => c).ToList();
         }
     }
 }

@@ -14,18 +14,20 @@ namespace AKS.AccountingSystem.ViewModels
         #region Declarations
 
         public ObservableListSource<DailySaleVM> dailySaleVMs;//PrimaryVM
-        public List<int> YearList;
-        public List<int> YearDataList;
-
-        public DailySale? SavedSale { get; private set; }
-        public CustomerDue? SavedDue { get; private set; }
-
-        public string tsslMonthly = "";
-        public string sslToday = "";
         public bool DueDataLoaded = false;
-
+        public string sslToday = "";
+        public string tsslMonthly = "";
+        public List<int> YearDataList;
+        public List<int> YearList;
+        public CustomerDue? SavedDue { get; private set; }
+        public DailySale? SavedSale { get; private set; }
         #endregion Declarations
 
+        public DailySaleViewModel()
+        {
+            DataModel = new DailySaleDataModel();
+            DataModel.SetStoreCode(CurrentSession.StoreCode);
+        }
         #region OverrideMethods
 
         public override bool Delete(DailySale entity)
@@ -50,10 +52,16 @@ namespace AKS.AccountingSystem.ViewModels
 
         public override bool InitViewModel()
         {
+            if (DataModel == null)
+            {
+                DataModel = new DailySaleDataModel();
+                DataModel.SetStoreCode(CurrentSession.StoreCode);
+            }
             DMMapper.InitializeAutomapper();
             dailySaleVMs = new ObservableListSource<DailySaleVM>();
             YearDataList = new List<int>();
             YearList = new List<int>();
+            LoadIntialData();
             return true;
         }
 
@@ -74,35 +82,6 @@ namespace AKS.AccountingSystem.ViewModels
         #endregion OverrideMethods
 
         #region UiFunctions
-
-        public void LoadIntialData()
-        {
-            UpdateSaleList(DataModel.GetCurrentMonthSale());
-            YearList.AddRange(DataModel.YearList());
-
-            if (YearList.Contains(DateTime.Today.Year) == false)
-                YearList.Add(DateTime.Today.Year);
-        }
-
-        private void UpdateSaleList(List<DailySale> sales)
-        {
-            foreach (var sale in sales)
-                dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(sale));
-        }
-
-        private void UpdateSaleList(List<DailySale> sales, int year)
-        {
-            if (!YearDataList.Any(c => c == year))
-            {
-                foreach (var sale in sales)
-                    DMMapper.Mapper.Map<DailySaleVM>(sale);
-            }
-        }
-
-        public List<int> GetYearList()
-        {
-            return DataModel.YearList();
-        }
 
         public List<DailySaleVM> GetCurrentMonthSale()
         {
@@ -126,6 +105,14 @@ namespace AKS.AccountingSystem.ViewModels
                        && c.OnDate.Year == DateTime.Today.Year).ToList();
         }
 
+        public List<CustomerDue> GetDueData()
+        {
+            if (SecondayEntites == null)
+                SecondayEntites = new List<CustomerDue>();
+            SecondayEntites.AddRange(DataModel.GetDueList());
+            return SecondayEntites;
+        }
+
         public List<DailySaleVM> GetLastMonthSale()
         {
             if (dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
@@ -135,6 +122,20 @@ namespace AKS.AccountingSystem.ViewModels
             }
             return dailySaleVMs.Where(c => c.OnDate.Month == DateTime.Today.AddMonths(-1).Month
                    && c.OnDate.Year == DateTime.Today.Year).ToList();
+        }
+
+        public List<int> GetYearList()
+        {
+            return DataModel.YearList();
+        }
+
+        public void LoadIntialData()
+        {
+            UpdateSaleList(DataModel.GetCurrentMonthSale());
+            YearList.AddRange(DataModel.YearList());
+
+            if (YearList.Contains(DateTime.Today.Year) == false)
+                YearList.Add(DateTime.Today.Year);
         }
 
         public bool SaveSale(bool read)
@@ -165,7 +166,96 @@ namespace AKS.AccountingSystem.ViewModels
             sslToday = $"Today [Total Sales: Rs. {Sales.TodaySale} Cash: Rs. {Sales.TodayCashSale}  Non Cash: Rs. {Sales.TodayNonCashSale}  ] ";
         }
 
+        private void UpdateSaleList(List<DailySale> sales)
+        {
+            foreach (var sale in sales)
+                dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(sale));
+        }
+
+        private void UpdateSaleList(List<DailySale> sales, int year)
+        {
+            if (!YearDataList.Any(c => c == year))
+            {
+                foreach (var sale in sales)
+                    DMMapper.Mapper.Map<DailySaleVM>(sale);
+            }
+        }
         #endregion UiFunctions
+    }
+
+    public class DueViewModel : ViewModel<CustomerDue, DueRecovery, DailySaleDataModel>
+    {
+        #region Declarations
+
+        public DueViewModel()
+        {
+            DataModel = new DailySaleDataModel();
+        }
+        //Primary Enity Due, Seconday Enity Recovery
+        public DueViewModel(DailySaleDataModel dm)
+        {
+            DataModel = dm;
+            DataModel.SetStoreCode(CurrentSession.StoreCode);
+        }
+
+        #endregion Declarations
+
+        #region OverrideMethods
+
+        public override bool Delete(CustomerDue entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Delete(DueRecovery entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool DeleteRange(List<CustomerDue> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool DeleteRange(List<DueRecovery> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool InitViewModel()
+        {
+            if (DataModel == null)
+                DataModel = new DailySaleDataModel();
+            return true;
+        }
+
+        public override bool Save(CustomerDue entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Save(DueRecovery entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion OverrideMethods
+
+        public List<DueRecovery> GetCurrentRecoveryData()
+        {
+            if (SecondayEntites == null)
+                SecondayEntites = new List<DueRecovery>();
+            SecondayEntites.AddRange(DataModel.GetRecoveryList(DateTime.Today.Year));
+            return SecondayEntites;
+        }
+
+        public List<CustomerDue> GetDueData()
+        {
+            if (PrimaryEntites == null)
+                PrimaryEntites = new List<CustomerDue>();
+            PrimaryEntites.AddRange(DataModel.GetDueList());
+            return PrimaryEntites;
+        }
     }
 
     //TODO: move to widget sections with proper libs
@@ -231,53 +321,5 @@ namespace AKS.AccountingSystem.ViewModels
             TodayNonCashSale = today.Where(c => c.MODE != PayMode.Cash).Sum(c => c.AMT) - today.Where(c => c.MODE != PayMode.Cash).Sum(c => c.CASH);
             MonthlyNonCashSale = Monthly.Where(c => c.MODE != PayMode.Cash).Sum(c => c.AMT) - Monthly.Where(c => c.MODE != PayMode.Cash).Sum(c => c.CASH);
         }
-    }
-
-    public class DueViewModel : ViewModel<CustomerDue, DueRecovery, DailySaleDataModel>
-    {
-        #region Decalarations
-
-        //Primary Enity Due, Seconday Enity Recovery
-
-        #endregion Decalarations
-
-        #region OverrideMethods
-
-        public override bool Delete(CustomerDue entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Delete(DueRecovery entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool DeleteRange(List<CustomerDue> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool DeleteRange(List<DueRecovery> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool InitViewModel()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Save(CustomerDue entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool Save(DueRecovery entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion OverrideMethods
     }
 }

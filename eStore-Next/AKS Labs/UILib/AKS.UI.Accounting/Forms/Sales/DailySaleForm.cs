@@ -1,6 +1,5 @@
 ﻿using AKS.AccountingSystem.DTO;
 using AKS.AccountingSystem.ViewModels;
-using AKS.Payroll.Database;
 using AKS.Shared.Commons.Models.Sales;
 using AKS.UI.Accounting.Forms.EntryForms;
 using System.Data;
@@ -20,7 +19,8 @@ namespace AKS.UI.Accounting.Forms
         {
             InitializeComponent();
             _viewModel = new DailySaleViewModel();
-            _dueViewModel = new DueViewModel();
+            //Resuing same datamodel to redue memory
+            _dueViewModel = new DueViewModel(_viewModel.DataModel);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -134,7 +134,7 @@ namespace AKS.UI.Accounting.Forms
                     }
                     _viewModel.dailySaleVMs.Remove(_viewModel.dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());
                     dgvSales.Refresh();
-                    //TODO; realod data;
+                    //TODO; reload data;
                 }
             }
         }
@@ -169,10 +169,8 @@ namespace AKS.UI.Accounting.Forms
 
         private void LoadData()
         {
-            //DMMapper.InitializeAutomapper();
-            //var data = azureDb.DailySales.Include(c => c.Store).Include(c => c.EDC).Include(c => c.Saleman).Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year
-            //&& c.OnDate.Month == DateTime.Today.Month).OrderByDescending(c => c.OnDate).ToList();
-            //UpdateSaleList(data);
+            _viewModel.InitViewModel();
+            _dueViewModel.InitViewModel();
 
             dgvSales.DataSource = _viewModel.dailySaleVMs;
             dgvSales.ScrollBars = ScrollBars.Both;
@@ -185,36 +183,22 @@ namespace AKS.UI.Accounting.Forms
             dgvSales.Columns["IsReadOnly"].Visible = false;
             dgvSales.Columns["MarkedDeleted"].Visible = false;
             dgvSales.Columns["Store"].Visible = false;
-            // dgvSales.Columns["EDC"].Visible = false;
-            // dgvSales.Columns["Saleman"].Visible = false;
 
-            //YearList.AddRange(azureDb.DailySales
-            //    .Where(c => c.StoreId == StoreCode).Select(c => c.OnDate.Year)
-            //    .Distinct().OrderBy(c => c).ToList());
-            //if (YearList.Contains(DateTime.Today.Year) == false)
-            //    YearList.Add(DateTime.Today.Year);
             lbYearList.DataSource = _viewModel.YearList;
         }
 
         private void LoadDueData()
         {
-            if (_viewModel.SecondayEntites == null || _viewModel.SecondayEntites.Count() == 0)
-            {
-                if (_viewModel.SecondayEntites == null) _viewModel.SecondayEntites = new List<CustomerDue>();
-                _viewModel.SecondayEntites.AddRange(azureDb.CustomerDues
-                    .Where(c => c.StoreId == StoreCode && !c.Paid)
-                    .OrderByDescending(c => c.OnDate)
-                    .ToList());
-                if (_dueViewModel.SecondayEntites == null) _dueViewModel.SecondayEntites = new List<DueRecovery>();
-                _dueViewModel.SecondayEntites.AddRange(azureDb.DueRecovery.Where(c => c.StoreId == StoreCode &&
-                c.OnDate.Year == DateTime.Today.Year).OrderByDescending(c => c.OnDate).ToList());
-            }
+            _viewModel.GetDueData();
+            _dueViewModel.GetCurrentRecoveryData();
 
             if (!_viewModel.DueDataLoaded)
             {
                 dgvDues.DataSource = _viewModel.SecondayEntites;
                 dgvRecovered.DataSource = _dueViewModel.SecondayEntites;
+
                 _viewModel.DueDataLoaded = true;
+
                 dgvDues.Columns["Store"].Visible = false;
                 dgvDues.Columns["IsReadOnly"].Visible = false;
                 dgvDues.Columns["EntryStatus"].Visible = false;

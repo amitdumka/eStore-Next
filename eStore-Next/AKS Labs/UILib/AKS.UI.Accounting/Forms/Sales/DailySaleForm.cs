@@ -25,7 +25,7 @@ namespace AKS.UI.Accounting.Forms
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            DailySaleEntryForm form = new DailySaleEntryForm();
+            DailySaleEntryForm form = new DailySaleEntryForm(_viewModel);
 
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -102,23 +102,24 @@ namespace AKS.UI.Accounting.Forms
         private void dgvSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var sale = DMMapper.Mapper.Map<DailySale>(dgvSales.CurrentRow.DataBoundItem);
-            DailySaleEntryForm form = new DailySaleEntryForm(sale);
+            DailySaleEntryForm form = new DailySaleEntryForm(_viewModel, sale);
 
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if (form.IsSaved)
                 {
-                    _viewModel.dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    _viewModel.dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(_viewModel.SavedSale));
                     dgvSales.Refresh();
                     //TODO: reload Data;
                 }
             }
             else if (form.DialogResult == DialogResult.Yes)
             {
+                //TODO: moved to VM
                 if (form.IsSaved)
                 {
-                    _viewModel.dailySaleVMs.Remove(_viewModel.dailySaleVMs.Where(c => c.InvoiceNumber == form.sale.InvoiceNumber).First());
-                    _viewModel.dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(form.sale));
+                    _viewModel.dailySaleVMs.Remove(_viewModel.dailySaleVMs.Where(c => c.InvoiceNumber == _viewModel.SavedSale.InvoiceNumber).First());
+                    _viewModel.dailySaleVMs.Add(DMMapper.Mapper.Map<DailySaleVM>(_viewModel.SavedSale));
                     dgvSales.Refresh();
                     //TODO: reload Data;
                 }
@@ -127,9 +128,10 @@ namespace AKS.UI.Accounting.Forms
             {
                 if (!string.IsNullOrEmpty(form.DeletedI))
                 {
-                    if (form.sale.IsDue || form.CustomerDue != null)
+                    //TODO: Move to VM
+                    if (_viewModel.SavedSale.IsDue || _viewModel.SecondaryEntity != null)
                     {
-                        _viewModel.SecondayEntites.Remove(form.CustomerDue);
+                        _viewModel.SecondayEntites.Remove(_viewModel.SecondaryEntity);
                         dgvDues.Refresh();
                     }
                     _viewModel.dailySaleVMs.Remove(_viewModel.dailySaleVMs.Where(c => c.InvoiceNumber == form.DeletedI).First());

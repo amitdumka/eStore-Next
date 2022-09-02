@@ -11,8 +11,9 @@ namespace AKS.UI.Accounting.Forms
         public DailySaleEntryForm(DailySaleViewModel vm)
         {
             InitializeComponent();
-            _viewModel.isNew = true;
             _viewModel = vm;
+            _viewModel.isNew = true;
+
         }
 
         public DailySaleEntryForm(DailySaleViewModel vm, DailySale daily)
@@ -153,6 +154,7 @@ namespace AKS.UI.Accounting.Forms
 
         private void LoadData()
         {
+            cbxStores.Enabled = false;
             cbxStores.DisplayMember = "DisplayData";
             cbxStores.ValueMember = "StoreId";
 
@@ -168,6 +170,7 @@ namespace AKS.UI.Accounting.Forms
 
             cbxPOS.DataSource = _viewModel.GetPosList();
             cbxPaymentMode.Items.AddRange(Enum.GetNames(typeof(PayMode)));
+            cbxStores.SelectedValue = CurrentSession.StoreCode;
 
             if (!_viewModel.isNew) DisplayData();
         }

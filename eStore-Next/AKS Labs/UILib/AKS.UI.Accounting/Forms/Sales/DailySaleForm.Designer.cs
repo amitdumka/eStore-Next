@@ -147,7 +147,7 @@
             this.btnReload.TabIndex = 2;
             this.btnReload.Text = "Refresh";
             this.btnReload.UseVisualStyleBackColor = true;
-            this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
+            //this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
             // btnDelete
             // 
@@ -158,7 +158,7 @@
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+           // this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAdd
             // 
@@ -217,7 +217,7 @@
             this.tabControl1.Size = new System.Drawing.Size(682, 369);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
+            //this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
             // 
             // tabPage1
             // 
@@ -271,7 +271,7 @@
             this.dgvDues.RowTemplate.Height = 25;
             this.dgvDues.Size = new System.Drawing.Size(668, 335);
             this.dgvDues.TabIndex = 0;
-            this.dgvDues.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDues_CellContentClick);
+            //this.dgvDues.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDues_CellContentClick);
             // 
             // tabPage3
             // 

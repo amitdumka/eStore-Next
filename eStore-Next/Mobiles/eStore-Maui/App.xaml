@@ -49,7 +49,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
             <FlyoutItem Title="Favorites" Style="{StaticResource FavFlyout}">
-                <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+                <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
             </FlyoutItem>
             <FlyoutItem Title="Map" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
@@ -57,6 +57,7 @@
             <FlyoutItem Title="Admin" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
+
 
             <FlyoutItem
                 Title="Settings"
@@ -68,7 +69,7 @@
               <!--Phone-->  
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Home" Icon="tab_home.png">
-                    <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+                    <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
                 </Tab>
                 <Tab Title="Favorites" Icon="tab_favorites.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />

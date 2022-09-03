@@ -81,6 +81,7 @@
 	  <None Remove="DevExpress.Maui.Editors" />
 	  <None Remove="DevExpress.Maui.Scheduler" />-->
 	  <None Remove="Pages\" />
+	  <None Remove="Data\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
@@ -118,5 +119,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pages\" />
+	  <Folder Include="Data\" />
 	</ItemGroup>
 </Project>

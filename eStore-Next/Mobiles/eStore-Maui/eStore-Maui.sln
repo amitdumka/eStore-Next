@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.MAUI.Databases", "..\AK
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore-MauiLib", "..\eStore-MauiLib\eStore-MauiLib.csproj", "{EE018BAE-4550-4B0E-85A0-45B5D7549198}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AKSLabs", "AKSLabs", "{B2642C04-AA23-4240-A1FA-2E04F6D232B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{49F74354-F9B6-4D2F-8B8C-01D9284FB597}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.shproj", "{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Payrolls", "..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.shproj", "{062A8AC3-2766-4147-8809-9E46C9C71B34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +42,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DFCAD0F-DB8E-49C5-9FBD-07EC062D77F4}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{49F74354-F9B6-4D2F-8B8C-01D9284FB597} = {B2642C04-AA23-4240-A1FA-2E04F6D232B3}
+		{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C} = {49F74354-F9B6-4D2F-8B8C-01D9284FB597}
+		{062A8AC3-2766-4147-8809-9E46C9C71B34} = {49F74354-F9B6-4D2F-8B8C-01D9284FB597}
 	EndGlobalSection
 EndGlobal

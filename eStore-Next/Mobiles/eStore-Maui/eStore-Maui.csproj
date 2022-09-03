@@ -80,6 +80,7 @@
 	  <None Remove="DevExpress.Maui.DataGrid" />
 	  <None Remove="DevExpress.Maui.Editors" />
 	  <None Remove="DevExpress.Maui.Scheduler" />-->
+	  <None Remove="Pages\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
@@ -111,5 +112,11 @@
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\LoginPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Pages\" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace eStore_Maui
+﻿using CommunityToolkit.Maui;
+
+namespace eStore_Maui
 {
     public static class MauiProgram
     {
@@ -6,6 +8,7 @@
         {
             var builder = MauiApp.CreateBuilder();
             builder
+                .UseMauiCommunityToolkit()
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {

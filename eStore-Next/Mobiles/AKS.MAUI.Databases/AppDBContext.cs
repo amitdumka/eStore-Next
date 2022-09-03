@@ -20,7 +20,7 @@ namespace AKS.MAUI.Databases
     }
 
 
-    public enum DBType { Local, Azure, Remote, Mango, Others }
+    
     // All the code in this file is included in all platforms.
     public class AppDBContext : DbContext
     {

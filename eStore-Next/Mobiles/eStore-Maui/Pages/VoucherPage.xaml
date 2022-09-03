@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             x:Class="eStore_Maui.Pages.VoucherPage"
+             Title="Vouchers">
+    <VerticalStackLayout>
+        <Label 
+            Text="Vouchers"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Frame Padding="0" CornerRadius="0" HasShadow="False"
+                   Grid.Row="1"
+                           Grid.Column="0"
+                      HorizontalOptions="FillAndExpand"  BorderColor="#2121211F">
+
+            <sfgrid:SfDataGrid x:Name="dataGrid"
+                           AutoGenerateColumnsMode="None"
+                           RowHeight="48"
+                           HorizontalScrollBarVisibility="Always"
+                           VerticalScrollBarVisibility="Always"
+                           ItemsSource="{Binding TestList}"
+                           ColumnWidthMode="Fill"
+                           >
+                <sfgrid:SfDataGrid.DefaultStyle>
+                    <sfgrid:DataGridStyle HeaderRowFontFamily="Roboto-Medium" HeaderRowFontSize="14" RowFontSize="14" HeaderRowTextColor="#212121" RowTextColor="#212121"></sfgrid:DataGridStyle>
+                </sfgrid:SfDataGrid.DefaultStyle>
+                <sfgrid:SfDataGrid.Columns>
+
+                    <sfgrid:DataGridNumericColumn Format="D"
+                                           HeaderText="ID"
+                                           MappingName="id"
+                                           >
+                    </sfgrid:DataGridNumericColumn>
+
+                    <sfgrid:DataGridTextColumn 
+                                           HeaderText="Name"
+                                           MappingName="name"
+                                           >
+                    </sfgrid:DataGridTextColumn>
+
+                    <sfgrid:DataGridTextColumn 
+                                           HeaderText="Customer ID"
+                       MinimumWidth="{StaticResource minimumWidth}"
+                                           MappingName="id"
+                                           >
+                    </sfgrid:DataGridTextColumn>
+
+                    <sfgrid:DataGridTextColumn 
+                                           HeaderText="City"
+                       MinimumWidth="{StaticResource minimumWidth}"
+                                           MappingName="city"
+                                           >
+                    </sfgrid:DataGridTextColumn>
+
+                    <sfgrid:DataGridTextColumn
+                                           HeaderText="Country"
+                       MinimumWidth="{StaticResource minimumWidth}"
+                                           MappingName="city"
+                                           >
+                    </sfgrid:DataGridTextColumn>
+
+                </sfgrid:SfDataGrid.Columns>
+            </sfgrid:SfDataGrid>
+        </Frame>
+
+    </VerticalStackLayout>
+</ContentPage>

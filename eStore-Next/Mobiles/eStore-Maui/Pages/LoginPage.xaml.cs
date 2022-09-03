@@ -1,4 +1,5 @@
-﻿using AndroidX.Lifecycle;
+﻿using AKS.Shared.Commons.Ops;
+using AndroidX.Lifecycle;
 
 namespace eStore_Maui.Pages;
 
@@ -34,6 +35,8 @@ public partial class LoginPage : ContentPage
 
     bool DoLogin(string username, string password)
     {
+        CurrentSession.StoreCode = "ARD";
+
         var user = this.BackgroundColor;//viewModel.SignIn(UserName.Text.Trim() + "@eStore.in", Password.Text.Trim());
         if (user != null)
         {

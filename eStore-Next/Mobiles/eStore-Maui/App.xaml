@@ -72,13 +72,13 @@
                     <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
                 </Tab>
                 <Tab Title="Favorites" Icon="tab_favorites.png">
-                    <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+                    <ShellContent ContentTemplate="{DataTemplate page:VoucherPage}" />
                 </Tab>
                 <Tab Title="Map" Icon="tab_map.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
                 </Tab>
                 <Tab Title="Login" Icon="tab_settings.png">
-                    <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
+                    <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
                 </Tab>
                 <Tab Title="Settings" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />

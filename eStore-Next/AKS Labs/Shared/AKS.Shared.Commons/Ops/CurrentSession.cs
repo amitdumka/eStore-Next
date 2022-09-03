@@ -2,6 +2,7 @@
 
 namespace AKS.Shared.Commons.Ops
 {
+    //TODO: permission , READ, READ WrITE, READ WRITE Delte , Full
     public static class CurrentSession
     {
         public static string StoreCode { get; set; } = "ARD";
@@ -21,6 +22,10 @@ namespace AKS.Shared.Commons.Ops
         public static bool IsLoggedIn { get; set; } = false;
 
 
+    }
+    public static class AppConfig
+    {
+        public static DBType DBType { get; set; } = DBType.Local;
 
     }
 

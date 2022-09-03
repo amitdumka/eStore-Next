@@ -2,7 +2,7 @@
 /// These are data type(s) enum used in the projects.
 /// </summary>
 
-
+public enum DBType { Local, Azure, Remote, Mango, API,Others }
 public enum CRUD { Create, Update, Delete, Invalid }
 public enum Gender { Male, Female, TransGender }
 public enum Unit { Meters, Nos, Pcs, Packets, NoUnit }

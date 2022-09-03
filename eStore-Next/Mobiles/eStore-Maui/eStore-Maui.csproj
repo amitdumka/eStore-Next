@@ -39,6 +39,9 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
@@ -46,12 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">
-	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
-	  </ProjectReference>
-	  <ProjectReference Include="..\eStore-MauiLib\eStore-MauiLib.csproj">
-	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
-	  </ProjectReference>
+	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
+	  <ProjectReference Include="..\eStore-MauiLib\eStore-MauiLib.csproj" />
 	</ItemGroup>
 
 </Project>

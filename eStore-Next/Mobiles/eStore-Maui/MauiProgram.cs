@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using eStore_Maui;
 using Microsoft.Maui.LifecycleEvents;
+using Syncfusion.Maui.Core.Hosting;
+using Syncfusion.Maui.DataGrid.Hosting;
 
 namespace eStore_Maui
 {
@@ -20,7 +22,8 @@ namespace eStore_Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
                 });
-
+            builder.ConfigureSyncfusionCore();
+            builder.ConfigureSyncfusionDataGrid();
             return builder.Build();
         }
     }

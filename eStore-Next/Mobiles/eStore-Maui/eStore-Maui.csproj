@@ -55,6 +55,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
 	  <None Remove="Syncfusion.Maui.Core" />
 	  <None Remove="Syncfusion.Maui.TabView" />
 	  <None Remove="Syncfusion.Maui.ListView" />
@@ -105,5 +106,10 @@
 	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.4" />-->
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

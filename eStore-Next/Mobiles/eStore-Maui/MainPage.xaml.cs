@@ -1,4 +1,4 @@
-﻿namespace eStore_Maui
+﻿namespace eStore_Maui.Pages
 {
     public partial class MainPage : ContentPage
     {

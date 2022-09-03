@@ -54,4 +54,56 @@
 	  </ProjectReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Syncfusion.Maui.Core" />
+	  <None Remove="Syncfusion.Maui.TabView" />
+	  <None Remove="Syncfusion.Maui.ListView" />
+	  <None Remove="Syncfusion.Maui.Charts" />
+	  <None Remove="Syncfusion.Maui.Scheduler" />
+	  <None Remove="Syncfusion.Maui.Gauges" />
+	  <None Remove="Syncfusion.Maui.Sliders" />
+	  <None Remove="Syncfusion.Maui.Barcode" />
+	  <None Remove="Syncfusion.Maui.DataGrid" />
+	  <None Remove="Syncfusion.Maui.SignaturePad" />
+	  <None Remove="Syncfusion.Maui.Maps" />
+	  <None Remove="SharedMauiXamlStylesLibrary" />
+	  <None Remove="CommunityToolkit.Maui" />
+	  <None Remove="CommunityToolkit.Maui.Core" />
+	  <None Remove="CommunityToolkit.Maui.Markup" />
+	  <None Remove="FreshMvvm.Maui" />
+	  <None Remove="BarcodeScanner.Mobile.Maui" />
+	  <None Remove="ZXing.Net.Maui.Jgdev" />
+	  <None Remove="DevExpress.Maui.Charts" />
+	  <None Remove="DevExpress.Maui.CollectionView" />
+	  <None Remove="DevExpress.Maui.Controls" />
+	  <None Remove="DevExpress.Maui.DataGrid" />
+	  <None Remove="DevExpress.Maui.Editors" />
+	  <None Remove="DevExpress.Maui.Scheduler" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.ListView" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Gauges" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Sliders" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Barcode" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.SignaturePad" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Maps" Version="20.2.46" />
+	  <PackageReference Include="SharedMauiXamlStylesLibrary" Version="1.0.1" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.2.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
+	  <PackageReference Include="FreshMvvm.Maui" Version="0.0.4" />
+	  <PackageReference Include="BarcodeScanner.Mobile.Maui" Version="6.3.0.22-pre" />
+	  <PackageReference Include="ZXing.Net.Maui.Jgdev" Version="1.0.5" />
+	  <PackageReference Include="DevExpress.Maui.Charts" Version="22.1.4" />
+	  <PackageReference Include="DevExpress.Maui.CollectionView" Version="22.1.4" />
+	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.4" />
+	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.4" />
+	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.4" />
+	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.4" />
+	</ItemGroup>
 </Project>

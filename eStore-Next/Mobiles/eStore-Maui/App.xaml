@@ -17,7 +17,7 @@
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles/DefaultTheme.xaml" />
     </Application.Resources>
-    <Application.MainPage>
+    <!--<Application.MainPage>
         <Shell
             FlyoutBackgroundColor="{StaticResource Background_Mid}"
             FlyoutBehavior="{OnIdiom Phone=Disabled,
@@ -44,7 +44,7 @@
 
 
 
-            <!--  Desktop/Tablet  -->
+            --><!--  Desktop/Tablet  --><!--
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
@@ -61,7 +61,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
 
-            <!--  Phone  -->
+            --><!--  Phone  --><!--
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
@@ -97,5 +97,5 @@
 
             </Shell.ItemTemplate>
         </Shell>
-    </Application.MainPage>
+    </Application.MainPage>-->
 </Application>

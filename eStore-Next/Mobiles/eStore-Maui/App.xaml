@@ -17,7 +17,7 @@
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles/DefaultTheme.xaml" />
     </Application.Resources>
-    <!--<Application.MainPage>
+    <Application.MainPage>
         <Shell
             FlyoutBackgroundColor="{StaticResource Background_Mid}"
             FlyoutBehavior="{OnIdiom Phone=Disabled,
@@ -44,7 +44,7 @@
 
 
 
-            --><!--  Desktop/Tablet  --><!--
+              <!--Desktop/Tablet-->  
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
@@ -54,6 +54,10 @@
             <FlyoutItem Title="Map" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
+            <FlyoutItem Title="Admin" Style="{StaticResource MapFlyout}">
+                <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+            </FlyoutItem>
+
             <FlyoutItem
                 Title="Settings"
                 FlyoutItemIsVisible="False"
@@ -61,7 +65,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
 
-            --><!--  Phone  --><!--
+              <!--Phone-->  
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
@@ -70,6 +74,9 @@
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
                 </Tab>
                 <Tab Title="Map" Icon="tab_map.png">
+                    <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+                </Tab>
+                <Tab Title="Store" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
                 </Tab>
                 <Tab Title="Settings" Icon="tab_settings.png">
@@ -97,5 +104,5 @@
 
             </Shell.ItemTemplate>
         </Shell>
-    </Application.MainPage>-->
+    </Application.MainPage>
 </Application>

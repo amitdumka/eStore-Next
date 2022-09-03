@@ -5,13 +5,13 @@ namespace eStore_Maui
     {
         public App()
         {
+           // InitializeComponent();
+            //MainPage = new AppShell();
             InitializeComponent();
-            MainPage = new AppShell();
-            //InitializeComponent();
             //App.Current.UserAppTheme = AppTheme.Dark;
 
-            //if (DeviceInfo.Idiom == DeviceIdiom.Phone)
-            //    Shell.Current.CurrentItem = PhoneTabs;
+            if (DeviceInfo.Idiom == DeviceIdiom.Phone)
+                Shell.Current.CurrentItem = PhoneTabs;
 
             //Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }

@@ -7,6 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eStore_MauiLib.DataModels
 {
+    public class DynVM
+    {
+        public string StoreId { get; set; }
+
+        public string DisplayMember { get; set; }
+        public string DisplayData { get; set; }
+
+        public string ValueMember { get; set; }
+        public string ValueData { get; set; }
+        public int ValueIntData { get; set; }
+
+        public string BoolMember { get; set; }
+        public bool BoolValue { get; set; }
+    }
 
     public abstract class BaseDataModel<T> where T : class
     {
@@ -740,7 +754,5 @@ namespace eStore_MauiLib.DataModels
 
 
     }
-
-
 }
 

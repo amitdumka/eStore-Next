@@ -1,38 +1,17 @@
 ﻿using System;
+using System.Data;
 using AKS.Shared.Commons.Models.Auth;
+using eStore_MauiLib.DataModels;
 
 namespace eStore_MauiLib.DataModels.Auths
 {
-	public class AuthDataModel:BaseDataModel<User>
-	{
-        //public AuthDataModel() => throw NotSupportedException;
-
-        public AuthDataModel(ConType dBType):base(dBType)
+    public class AuthDataModel : BaseDataModel<User>
+    {
+        public AuthDataModel(ConType conType) : base(conType)
         {
-
-        }
-
-        public override Task<bool> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<bool> Delete(string id)
-        {
-            throw new NotImplementedException();
         }
 
         public override Task<List<User>> FindAsync(QueryParam query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<User> GetById(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<User> GetById(int id)
         {
             throw new NotImplementedException();
         }
@@ -47,30 +26,29 @@ namespace eStore_MauiLib.DataModels.Auths
             throw new NotImplementedException();
         }
 
-        public override Task<List<User>> GetItems()
-        {
-            throw new NotImplementedException();
-        }
-
         public override Task<bool> InitContext()
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsExists(string id)
+        public User SignIn(string userName, string password)
         {
-            throw new NotImplementedException();
-        }
+            User user = null;
+            switch (Mode)
+            {
+                case DBType.Local:
+                    user = _localDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                    break;
+                case DBType.Azure:
+                    user = _azureDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                    break;
+                case DBType.API:
+                    break;
+                default:
+                    break;
+            }
 
-        public override bool IsExists(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<User> Save(User item, bool isNew = true)
-        {
-            throw new NotImplementedException();
+            if (user != null) return true; else return false;
         }
     }
 }
-

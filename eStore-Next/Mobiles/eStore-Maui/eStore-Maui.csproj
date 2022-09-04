@@ -28,6 +28,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<UserSecretsId>86783d35-2351-4e66-9b5d-6dc64e5061c2</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -82,6 +83,9 @@
 	  <None Remove="DevExpress.Maui.Scheduler" />-->
 	  <None Remove="Pages\" />
 	  <None Remove="Data\" />
+	  <None Remove="Microsoft.Extensions.Configuration.UserSecrets" />
+	  <None Remove="System.Text.Json" />
+	  <None Remove="AutoMapper" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
@@ -108,6 +112,9 @@
 	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.4" />-->
+	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+	  <PackageReference Include="System.Text.Json" Version="7.0.0-preview.7.22375.6" />
+	  <PackageReference Include="AutoMapper" Version="11.0.1" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">

@@ -430,3 +430,148 @@
 
 
 
+//PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+//PermissionStatus status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+//public async Task<PermissionStatus> CheckAndRequestLocationPermission()
+//{
+//    PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+//    if (status == PermissionStatus.Granted)
+//        return status;
+
+//    if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+//    {
+//        // Prompt the user to turn on in settings
+//        // On iOS once a permission has been denied it may not be requested again from the application
+//        return status;
+//    }
+
+//    if (Permissions.ShouldShowRationale<Permissions.LocationWhenInUse>())
+//    {
+//        // Prompt the user with additional information as to why the permission is needed
+//    }
+
+//    status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+
+//    return status;
+//}
+
+
+//public class MyPermission : Permissions.BasePermission
+//{
+//    // This method checks if current status of the permission.
+//    public override Task<PermissionStatus> CheckStatusAsync()
+//    {
+//        throw new System.NotImplementedException();
+//    }
+
+//    // This method is optional and a PermissionException is often thrown if a permission is not declared.
+//    public override void EnsureDeclared()
+//    {
+//        throw new System.NotImplementedException();
+//    }
+
+//    // Requests the user to accept or deny a permission.
+//    public override Task<PermissionStatus> RequestAsync()
+//    {
+//        throw new System.NotImplementedException();
+//    }
+
+//    // Indicates that the requestor should prompt the user as to why the app requires the permission, because the
+//    // user has previously denied this permission.
+//    public override bool ShouldShowRationale()
+//    {
+//        throw new NotImplementedException();
+//    }
+//}
+
+//public class ReadWriteStoragePerms : Permissions.BasePlatformPermission
+//{
+//    public override (string androidPermission, bool isRuntime)[] RequiredPermissions =>
+//        new List<(string androidPermission, bool isRuntime)>
+//        {
+//        (global::Android.Manifest.Permission.ReadExternalStorage, true),
+//        (global::Android.Manifest.Permission.WriteExternalStorage, true)
+//        }.ToArray();
+//}
+
+//private void ToggleOrientation(IOrientationSensor orientation)
+//{
+//    if (orientation.IsSupported)
+//    {
+//        if (!orientation.IsMonitoring)
+//        {
+//            // Turn on compass
+//            orientation.ReadingChanged += Orientation_ReadingChanged;
+//            orientation.Start(SensorSpeed.UI);
+//        }
+//        else
+//        {
+//            // Turn off compass
+//            orientation.Stop();
+//            orientation.ReadingChanged -= Orientation_ReadingChanged;
+//        }
+//    }
+//}
+
+//private void Orientation_ReadingChanged(object sender, OrientationSensorChangedEventArgs e)
+//{
+//    // Update UI Label with orientation state
+//    OrientationLabel.TextColor = Colors.Green;
+//    OrientationLabel.Text = $"Orientation: {e.Reading}";
+//}
+
+//private void ReadDeviceInfo()
+//{
+//    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+//    sb.AppendLine($"Model: {DeviceInfo.Current.Model}");
+//    sb.AppendLine($"Manufacturer: {DeviceInfo.Current.Manufacturer}");
+//    sb.AppendLine($"Name: {DeviceInfo.Name}");
+//    sb.AppendLine($"OS Version: {DeviceInfo.VersionString}");
+//    sb.AppendLine($"Refresh Rate: {DeviceInfo.Current}");
+//    sb.AppendLine($"Idiom: {DeviceInfo.Current.Idiom}");
+//    sb.AppendLine($"Platform: {DeviceInfo.Current.Platform}");
+
+//    bool isVirtual = DeviceInfo.Current.DeviceType switch
+//    {
+//        DeviceType.Physical => false,
+//        DeviceType.Virtual => true,
+//        _ => false
+//    };
+
+//    sb.AppendLine($"Virtual device? {isVirtual}");
+
+//    DisplayDeviceLabel.Text = sb.ToString();
+//}
+//private void PrintIdiom()
+//{
+//    if (DeviceInfo.Current.Idiom == DeviceIdiom.Desktop)
+//        Console.WriteLine("The current device is a desktop");
+//    else if (DeviceInfo.Current.Idiom == DeviceIdiom.Phone)
+//        Console.WriteLine("The current device is a phone");
+//    else if (DeviceInfo.Current.Idiom == DeviceIdiom.Tablet)
+//        Console.WriteLine("The current device is a Tablet");
+//}
+
+//bool isVirtual = DeviceInfo.Current.DeviceType switch
+//{
+//    DeviceType.Physical => false,
+//    DeviceType.Virtual => true,
+//    _ => false
+//};
+
+//string name = AppInfo.Current.Name;
+//string package = AppInfo.Current.PackageName;
+//string version = AppInfo.Current.VersionString;
+//string build = AppInfo.Current.BuildString;
+
+//ThemeInfoLabel.Text = AppInfo.Current.RequestedTheme switch
+//{
+//    AppTheme.Dark => "Dark theme",
+//    AppTheme.Light => "Light theme",
+//    _ => "Unknown"
+//};
+
+//AppInfo.Current.ShowSettingsUI();

@@ -1,21 +1,11 @@
-﻿using AKS.Shared.Commons.Models;
-using eStoreMobileX.Data.DataModels.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//TODO:remove
-namespace eStoreMobileX.Data.DataModels.Stores
-{
-    public class StoreDataModel : HybridDataMode<Store>
+﻿using System;
+using AKS.Shared.Commons.Models;
 
+namespace eStore_MauiLib.DataModels.Stores
+{
+    public class StoreDataModel : BaseDataModel<Store>
     {
         public StoreDataModel(ConType conType) : base(conType)
-        {
-        }
-
-        public StoreDataModel(ConType conType, string url, string name) : base(conType, url, name)
         {
         }
 
@@ -33,5 +23,11 @@ namespace eStoreMobileX.Data.DataModels.Stores
         {
             throw new NotImplementedException();
         }
+
+        public override Task<bool> InitContext()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+

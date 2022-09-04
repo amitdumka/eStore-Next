@@ -23,12 +23,14 @@
 	  <None Remove="ViewModels\" />
 	  <None Remove="DTO\" />
 	  <None Remove="DataModels\Auths\" />
+	  <None Remove="DataModels\Stores\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DataModels\" />
 	  <Folder Include="ViewModels\" />
 	  <Folder Include="DTO\" />
 	  <Folder Include="DataModels\Auths\" />
+	  <Folder Include="DataModels\Stores\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />

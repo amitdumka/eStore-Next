@@ -10,6 +10,8 @@ namespace eStore_MauiLib.DataModels
 
     public abstract class BaseDataModel<T> where T : class
     {
+        //TODO: remove default;
+        public string StoreCode = "ARD";
         public DBType Mode { get; set; }
         public ConType ConType { get; set; }
         public List<T> Entity { get; set; }
@@ -23,6 +25,7 @@ namespace eStore_MauiLib.DataModels
         /// <returns></returns>
 
         public AppDBContext GetContextLocal() => _localDb;
+        public AppDBContext GetContextAzure() => _azureDb;
 
         public BaseDataModel(ConType conType)
         {

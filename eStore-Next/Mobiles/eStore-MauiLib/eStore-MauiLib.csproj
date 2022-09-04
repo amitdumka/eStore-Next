@@ -24,6 +24,7 @@
 	  <None Remove="DTO\" />
 	  <None Remove="DataModels\Auths\" />
 	  <None Remove="DataModels\Stores\" />
+	  <None Remove="DataModels\Accounting\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DataModels\" />
@@ -31,6 +32,7 @@
 	  <Folder Include="DTO\" />
 	  <Folder Include="DataModels\Auths\" />
 	  <Folder Include="DataModels\Stores\" />
+	  <Folder Include="DataModels\Accounting\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />

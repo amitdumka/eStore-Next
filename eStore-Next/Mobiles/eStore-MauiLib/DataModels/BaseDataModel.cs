@@ -26,7 +26,7 @@ namespace eStore_MauiLib.DataModels
 
         public AppDBContext GetContextLocal() => _localDb;
         public AppDBContext GetContextAzure() => _azureDb;
-
+        public abstract List<int> GetYearList();
         public BaseDataModel(ConType conType)
         {
             ConType = conType;

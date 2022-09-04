@@ -147,5 +147,10 @@ namespace eStore_MauiLib.DataModels.Auths
             throw new NotImplementedException();
 
         }
+
+        public override List<int> GetYearList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

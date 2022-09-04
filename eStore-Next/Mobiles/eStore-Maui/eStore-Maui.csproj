@@ -86,6 +86,7 @@
 	  <None Remove="Microsoft.Extensions.Configuration.UserSecrets" />
 	  <None Remove="System.Text.Json" />
 	  <None Remove="AutoMapper" />
+	  <None Remove="Test\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
@@ -133,5 +134,6 @@
 	<ItemGroup>
 	  <Folder Include="Pages\" />
 	  <Folder Include="Data\" />
+	  <Folder Include="Test\" />
 	</ItemGroup>
 </Project>

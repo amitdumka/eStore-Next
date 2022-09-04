@@ -1,6 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
+using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Models.Inventory;
+using AKS.Shared.Commons.Models.Sales;
+using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -85,5 +90,76 @@ namespace AKS.MAUI.Databases
         public DbSet<Store> Stores { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LocalUser> LocalUsers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<MonthlyAttendance> MonthlyAttendances { get; set; }
+        public DbSet<Salary> Salaries { get; set; }
+        public DbSet<SalaryPayment> SalaryPayment { get; set; }
+        public DbSet<EmployeeDetails> EmployeeDetails { get; set; }
+        public DbSet<StaffAdvanceReceipt> StaffAdvanceReceipt { get; set; }
+
+        public DbSet<PaySlip> PaySlips { get; set; }
+
+        public DbSet<SalaryLedger> SalaryLedgers { get; set; }
+
+        //Common Table which will be shared accross Databases.
+       // public DbSet<Store> Stores { get; set; }
+
+        public DbSet<Salesman> Salesmen { get; set; }
+        //public DbSet<LocalUser> LocalUsers { get; set; }
+        //public DbSet<User> Users { get; set; }
+
+        // Banking  Note: Some of Table will move to other part. 
+
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<BankAccountList> AccountLists { get; set; }
+        public DbSet<ChequeBook> ChequeBooks { get; set; }
+        public DbSet<ChequeIssued> ChequeIssued { get; set; }
+        public DbSet<ChequeLog> ChequeLogs { get; set; }
+
+
+        // Vouchers and Notes  Note: Some of the table will move to other parts
+        public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<CashVoucher> CashVouchers { get; set; }
+        public DbSet<Note> Notes { get; set; }
+
+        public DbSet<TranscationMode> TranscationModes { get; set; }
+
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<LedgerGroup> LedgerGroups { get; set; }
+        public DbSet<LedgerMaster> LedgerMasters { get; set; }
+
+        // Daily Sales
+        public DbSet<DailySale> DailySales { get; set; }
+        public DbSet<EDCTerminal> EDCTerminals { get; set; }
+        public DbSet<DueRecovery> DueRecovery { get; set; }
+        public DbSet<CustomerDue> CustomerDues { get; set; }
+
+        public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
+        public DbSet<TimeSheet> TimeSheets { get; set; }
+        public DbSet<CashDetail> CashDetails { get; set; }
+
+        //Inventory
+
+        public DbSet<ProductItem> ProductItems { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+        public DbSet<PurchaseItem> PurchaseItems { get; set; }
+        public DbSet<ProductSale> ProductSales { set; get; }
+        public DbSet<SaleItem> SaleItems { get; set; }
+        public DbSet<SalePaymentDetail> SalePaymentDetails { get; set; }
+        public DbSet<CardPaymentDetail> CardPaymentDetails { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<CustomerSale> CustomerSales { get; set; }
+
+        public DbSet<BankTranscation> BankTranscations { get; set; }
     }
 }

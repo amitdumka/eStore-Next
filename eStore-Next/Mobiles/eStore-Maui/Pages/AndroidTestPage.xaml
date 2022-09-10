@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              
+             x:Class="eStore_Maui.Pages.AndroidTestPage"
+             Title="AndroidTestPage">
+    <VerticalStackLayout>
+        <Label Text="Android Test for Print" VerticalOptions="Center"   HorizontalOptions="Center" />
+        <Label Text="Text to Print" VerticalOptions="Center" HorizontalOptions="Center" />
+
+        <Picker ItemsSource="{Binding DeviceList}"
+                    Title="Select Device"
+                    ItemDisplayBinding="{Binding .}"
+                    SelectedItem="{Binding SelectedDevice}" />
+        <Entry Text="{Binding PrintMessage}"
+                   Placeholder="Message"/>
+        <Button Text="Print"
+                    Command="{Binding PrintCommand}"/>
+
+
+    </VerticalStackLayout>
+</ContentPage>

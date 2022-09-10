@@ -26,6 +26,13 @@
 	  <None Remove="DataModels\Stores\" />
 	  <None Remove="DataModels\Accounting\" />
 	  <None Remove="Helpers\" />
+	  <None Remove="Services\" />
+	  <None Remove="Platforms\Android\Services\" />
+	  <None Remove="Services\Print\" />
+	  <None Remove="Platforms\Android\Services\Print\" />
+	  <None Remove="CommunityToolkit.Maui" />
+	  <None Remove="CommunityToolkit.Maui.Markup" />
+	  <None Remove="CommunityToolkit.Maui.Core" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DataModels\" />
@@ -35,8 +42,17 @@
 	  <Folder Include="DataModels\Stores\" />
 	  <Folder Include="DataModels\Accounting\" />
 	  <Folder Include="Helpers\" />
+	  <Folder Include="Services\" />
+	  <Folder Include="Platforms\Android\Services\" />
+	  <Folder Include="Services\Print\" />
+	  <Folder Include="Platforms\Android\Services\Print\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.2.0" />
 	</ItemGroup>
 </Project>

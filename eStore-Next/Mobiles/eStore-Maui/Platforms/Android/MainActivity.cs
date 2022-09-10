@@ -2,6 +2,13 @@
 using Android.Content.PM;
 using Android.OS;
 
+[assembly: UsesPermission(Android.Manifest.Permission.AccessCoarseLocation)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessFineLocation)]
+[assembly: UsesPermission(Android.Manifest.Permission.Bluetooth)]
+[assembly: UsesPermission(Android.Manifest.Permission.BluetoothConnect)]
+[assembly: UsesFeature("android.hardware.location", Required = false)]
+[assembly: UsesFeature("android.hardware.location.gps", Required = false)]
+[assembly: UsesFeature("android.hardware.location.network", Required = false)]
 namespace eStore_Maui
 {
 

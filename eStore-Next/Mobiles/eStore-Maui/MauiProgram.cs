@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using eStore_Maui;
+using eStore_Maui.Pages;
+using eStore_MauiLib.Services;
 using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
@@ -24,8 +26,16 @@ namespace eStore_Maui
                 });
             builder.ConfigureSyncfusionCore();
             builder.ConfigureSyncfusionDataGrid();
+            var services= builder.Services;
+#if ANDROID
+            builder.Services.AddTransient<AndroidTestPage>();
+            builder.Services.AddTransient<PrintPageViewModel>();
+            services.AddTransient<IPrintService, eStore_MauiLib.Services.PrintService>();
+            services.AddSingleton<IPrintService, eStore_MauiLib.Services.PrintService>();
+#endif
             return builder.Build();
         }
+        
     }
 }
 

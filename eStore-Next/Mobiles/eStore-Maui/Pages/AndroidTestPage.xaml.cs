@@ -1,8 +1,11 @@
 ﻿
 
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows.Input;
 using eStore_MauiLib.Services;
+using eStore_MauiLib.Services.Print;
+using Org.Apache.Http.Authentication;
 
 namespace eStore_Maui.Pages;
 
@@ -17,6 +20,12 @@ public partial class AndroidTestPage : ContentPage
         BindingContext = new PrintPageViewModel();
     }
 
+    private void print()
+    {
+        //byte[] bytes = Encoding.ASCII.GetBytes(author);
+        //DependencyService.Get<IPrintService>().Print(stream, "test.txt");
+    }
+
 
 
 
@@ -24,6 +33,7 @@ public partial class AndroidTestPage : ContentPage
 public class PrintPageViewModel
 {
     private readonly IPrintService _blueToothService;
+    private readonly IPrinterService _aksPrint;
 
     private IList<string> _deviceList;
     public IList<string> DeviceList
@@ -71,6 +81,13 @@ public class PrintPageViewModel
         PrintMessage += " Xamarin Forms is awesome!";
         await _blueToothService.Print(SelectedDevice, PrintMessage);
     });
+    public ICommand Print2Command => new Command(async () =>
+    {
+        PrintMessage += " Printer  is awesome!";
+        byte[] bytes = Encoding.ASCII.GetBytes(PrintMessage);
+        _aksPrint.Print(bytes, "test2.txt");
+        //await _blueToothService.Print(SelectedDevice, PrintMessage);
+    });
 
     public PrintPageViewModel()
     {
@@ -79,7 +96,7 @@ public class PrintPageViewModel
         {
            _blueToothService= ServiceHelper.GetService<IPrintService>();
         }
-
+        _aksPrint= ServiceHelper.GetService<IPrinterService>();
 
         var list = _blueToothService.GetDeviceList();
         DeviceList.Clear();

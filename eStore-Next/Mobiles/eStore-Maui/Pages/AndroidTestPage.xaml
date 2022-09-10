@@ -15,7 +15,7 @@
         <Entry Text="{Binding PrintMessage}"
                    Placeholder="Message"/>
         <Button Text="Print"
-                    Command="{Binding PrintCommand}"/>
+                    Command="{Binding Print2Command}"/>
 
 
     </VerticalStackLayout>

@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using eStore_Maui;
 using eStore_Maui.Pages;
+using eStore_MauiLib.Platforms.Android.Services.Print;
 using eStore_MauiLib.Services;
+using eStore_MauiLib.Services.Print;
 using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
@@ -32,6 +34,9 @@ namespace eStore_Maui
             builder.Services.AddTransient<PrintPageViewModel>();
             services.AddTransient<IPrintService, eStore_MauiLib.Services.PrintService>();
             services.AddSingleton<IPrintService, eStore_MauiLib.Services.PrintService>();
+            services.AddTransient<IPrinterService, PrinterService>();
+            services.AddSingleton<IPrinterService, PrinterService>();
+
 #endif
             return builder.Build();
         }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using eStore_Maui;
 using eStore_Maui.Pages;
+using eStore_Maui.Test;
 using eStore_MauiLib.Platforms.Android.Services.Print;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
@@ -36,6 +37,9 @@ namespace eStore_Maui
             services.AddSingleton<IPrintService, eStore_MauiLib.Services.PrintService>();
             services.AddTransient<IPrinterService, PrinterService>();
             services.AddSingleton<IPrinterService, PrinterService>();
+            services.AddTransient<ISave, SaveAndroid2>();
+            services.AddSingleton<ISave, SaveAndroid2>();
+
 
 #endif
             return builder.Build();

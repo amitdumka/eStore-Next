@@ -1,8 +1,10 @@
 ﻿
 
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
+using eStore_Maui.Test;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
 using Org.Apache.Http.Authentication;
@@ -83,10 +85,14 @@ public class PrintPageViewModel
     });
     public ICommand Print2Command => new Command(async () =>
     {
-        PrintMessage += " Printer  is awesome!";
-        byte[] bytes = Encoding.ASCII.GetBytes(PrintMessage);
-        _aksPrint.Print(bytes, "test2.txt");
+        //using var stream =
+        //         await FileSystem.OpenAppPackageFileAsync("gis.pdf");
+        //_aksPrint.Print(stream, "gis.pdf");
+        //PrintMessage += " Printer  is awesome!";
+        //byte[] bytes = Encoding.ASCII.GetBytes(PrintMessage);
+        //_aksPrint.Print(bytes, "test2.txt");
         //await _blueToothService.Print(SelectedDevice, PrintMessage);
+        DummyPdf.Get();
     });
 
     public PrintPageViewModel()
@@ -105,22 +111,15 @@ public class PrintPageViewModel
             DeviceList.Add(item);
         }
     }
+    public static Stream GetStreamFromFile(string filename)
+    {
+        var assembly = typeof(App).GetTypeInfo().Assembly;
+        var assemblyName = assembly.GetName().Name;
+
+        var stream = assembly.GetManifestResourceStream($"{assemblyName}.{filename}");
+
+        return stream;
+    }
 
 }
 
-public static class ServiceHelper
-{
-
-    public static T GetService<T>() => Current.GetService<T>();
-
-    public static IServiceProvider Current =>
-#if WINDOWS10_0_17763_0_OR_GREATER
-    MauiWinUIApplication.Current.Services;
-#elif ANDROID
-        MauiApplication.Current.Services;
-#elif IOS || MACCATALYST
-    MauiUIApplicationDelegate.Current.Services;
-#else
-    null;
-#endif
-}

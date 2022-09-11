@@ -1,4 +1,7 @@
-﻿https://github.com/jamesmontemagno/InAppBillingPlugin
+﻿https://www.syncfusion.com/kb/8767/how-to-print-pdf-documents-in-xamarin-forms-platform
+https://github.com/mono/sharpen
+
+https://github.com/jamesmontemagno/InAppBillingPlugin
 https://github.com/Redth/ZXing.Net.Maui
 <uses-permission android:name="android.permission.CAMERA" />
 ios

@@ -85,14 +85,13 @@ public class PrintPageViewModel
     });
     public ICommand Print2Command => new Command(async () =>
     {
-        //using var stream =
-        //         await FileSystem.OpenAppPackageFileAsync("gis.pdf");
-        //_aksPrint.Print(stream, "gis.pdf");
-        //PrintMessage += " Printer  is awesome!";
-        //byte[] bytes = Encoding.ASCII.GetBytes(PrintMessage);
-        //_aksPrint.Print(bytes, "test2.txt");
-        //await _blueToothService.Print(SelectedDevice, PrintMessage);
-        DummyPdf.Get();
+        List<string> lines = new List<string>();
+        var ds = PrintMessage.Split("#");
+        foreach (var item in ds)
+        {
+            lines.Add(item);
+        }
+        DummyPdf.PrintPdf("Testing", lines, "Testing.pdf");
     });
 
     public PrintPageViewModel()
@@ -100,9 +99,9 @@ public class PrintPageViewModel
         _blueToothService = DependencyService.Get<IPrintService>();
         if (_blueToothService == null)
         {
-           _blueToothService= ServiceHelper.GetService<IPrintService>();
+            _blueToothService = ServiceHelper.GetService<IPrintService>();
         }
-        _aksPrint= ServiceHelper.GetService<IPrinterService>();
+        _aksPrint = ServiceHelper.GetService<IPrinterService>();
 
         var list = _blueToothService.GetDeviceList();
         DeviceList.Clear();

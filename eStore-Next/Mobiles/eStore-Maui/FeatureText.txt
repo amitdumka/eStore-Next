@@ -1,8 +1,15 @@
 ﻿https://www.syncfusion.com/kb/8767/how-to-print-pdf-documents-in-xamarin-forms-platform
 https://github.com/mono/sharpen
-
+https://github.com/CommunityToolkit/Maui
+https://help.syncfusion.com/file-formats/pdf/working-with-text
+https://docs.microsoft.com/en-us/dotnet/api/?term=communitytoolkit.common
+https://github.com/vniehues/mavvm
+https://docs.microsoft.com/en-us/dotnet/communitytoolkit/maui/
+https://docs.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/
+https://docs.microsoft.com/en-us/dotnet/communitytoolkit/
 https://github.com/jamesmontemagno/InAppBillingPlugin
 https://github.com/Redth/ZXing.Net.Maui
+https://github.com/jsuarezruiz/awesome-dotnet-maui
 <uses-permission android:name="android.permission.CAMERA" />
 ios
 <key>NSCameraUsageDescription</key>

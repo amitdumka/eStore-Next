@@ -8,6 +8,7 @@ using eStore_MauiLib.Services.Print;
 using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
+using ZXing.Net.Maui;
 
 namespace eStore_Maui
 {
@@ -18,7 +19,7 @@ namespace eStore_Maui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiCommunityToolkit()
-                .UseMauiApp<App>()
+                .UseMauiApp<App>().UseBarcodeReader()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

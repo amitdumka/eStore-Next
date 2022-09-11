@@ -40,15 +40,17 @@ public class DummyPdf
         //Create a brush with a white color. 
         PdfBrush whiteBrush = new PdfSolidBrush(Color.FromArgb(255, 255, 255, 255));
         //Get the font file stream from the assembly. 
-        // Assembly assembly = typeof(MainPage).GetTypeInfo().Assembly;
-        //string basePath = "eStore_Maui.Resources.Fonts.";
-        //Stream fontStream = assembly.GetManifestResourceStream(basePath + "OpenSans-Regular.ttf");
+        //Assembly assembly = typeof(MainPage).GetTypeInfo().Assembly;
+        //string basePath = "Fonts.OpenSans-Regular.ttf";
+        //Stream fontStream = assembly.GetManifestResourceStream(basePath);
 
         //Create a PdfTrueTypeFont from the stream with the different sizes. 
-        //PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 30, PdfFontStyle.Regular);
-        //PdfTrueTypeFont arialRegularFont = new PdfTrueTypeFont(fontStream, 18, PdfFontStyle.Regular);
+       // PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 30, PdfFontStyle.Regular);
+       // PdfTrueTypeFont arialRegularFont = new PdfTrueTypeFont(fontStream, 18, PdfFontStyle.Regular);
         //PdfTrueTypeFont arialBoldFont = new PdfTrueTypeFont(fontStream, 9, PdfFontStyle.Bold);
-       // PdfFont headerFont = new PdfFont(PdfFontFamily.TimesRoman);
+        PdfFont headerFont = new PdfStandardFont(PdfFontFamily.Helvetica, 30);
+        PdfFont arialRegularFont = new PdfStandardFont(PdfFontFamily.Courier, 18);
+        PdfFont arialBoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 9);
         //Create a string format.
         PdfStringFormat format = new PdfStringFormat();
         format.Alignment = PdfTextAlignment.Center;
@@ -83,7 +85,7 @@ public class DummyPdf
         //Draw the total value to the PDF page. 
         graphics.DrawString("$" + "6000", arialRegularFont, whiteBrush, new RectangleF(400, 0, pageWidth - 400, headerHeight + 10), format);
         //Create a font from the font stream. 
-        arialRegularFont = new PdfTrueTypeFont(fontStream, 9, PdfFontStyle.Regular);
+       // arialRegularFont = new PdfTrueTypeFont(fontStream, 9, PdfFontStyle.Regular);
         //Set the bottom line alignment and draw the text to the PDF page. 
         format.LineAlignment = PdfVerticalAlignment.Bottom;
         graphics.DrawString("Amount", arialRegularFont, whiteBrush, new RectangleF(400, 0, pageWidth - 400, headerHeight / 2 - arialRegularFont.Height), format);

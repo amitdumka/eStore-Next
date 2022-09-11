@@ -8,6 +8,7 @@ using eStore_MauiLib.Services.Print;
 using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
+using Syncfusion.Maui.SignaturePad.Hosting;
 using ZXing.Net.Maui;
 
 namespace eStore_Maui
@@ -29,6 +30,7 @@ namespace eStore_Maui
                     fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
                 });
             builder.ConfigureSyncfusionCore();
+            builder.ConfigureSyncfusionSignaturePad();
             builder.ConfigureSyncfusionDataGrid();
             var services= builder.Services;
 #if ANDROID

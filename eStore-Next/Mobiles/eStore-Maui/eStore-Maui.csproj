@@ -94,6 +94,12 @@
 	  <None Remove="ZXing.Net.Maui" />
 	  <None Remove="Features\Barcodes\Views\" />
 	  <None Remove="Resources\Splash\arlogo.png" />
+	  <None Remove="Pages\Stores\" />
+	  <None Remove="Views\" />
+	  <None Remove="Views\Custom\" />
+	  <None Remove="Syncfusion.XlsIO.NET" />
+	  <None Remove="Platforms\Android\Resources\xml\" />
+	  <None Remove="Syncfusion.DocIO.NET" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
@@ -125,6 +131,8 @@
 	  <PackageReference Include="AutoMapper" Version="11.0.1" />
 	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.48" />
 	  <PackageReference Include="ZXing.Net.Maui" Version="0.1.0-preview.7" />
+	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />
+	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.48" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
@@ -148,6 +156,12 @@
 	  <MauiXaml Update="Features\Barcodes\Views\QRCodePage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Stores\StorePage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Custom\RecordListingView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pages\" />
@@ -156,5 +170,9 @@
 	  <Folder Include="Features\" />
 	  <Folder Include="Features\Barcodes\" />
 	  <Folder Include="Features\Barcodes\Views\" />
+	  <Folder Include="Pages\Stores\" />
+	  <Folder Include="Views\" />
+	  <Folder Include="Views\Custom\" />
+	  <Folder Include="Platforms\Android\Resources\xml\" />
 	</ItemGroup>
 </Project>

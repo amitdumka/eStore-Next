@@ -2,11 +2,77 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eStore_Maui.Pages.DashboardPage"
+             xmlns:signaturePad="clr-namespace:Syncfusion.Maui.SignaturePad;assembly=Syncfusion.Maui.SignaturePad"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
              Title="Dashboard">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to Aprajita Retails !"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <tabView:SfTabView  x:Name="tabView" TabBarBackground="LightBlue" IndicatorPlacement="Fill">
+            <tabView:SfTabView.Items>
+                <tabView:SfTabItem Header="Schedular">
+                    <tabView:SfTabItem.Content>
+                        <VerticalStackLayout>
+                            <Picker x:Name="pck" SelectedIndexChanged="Picker_SelectedIndexChanged" Title="Mode">
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Month</x:String>
+                                        <x:String>Agenda</x:String>
+                                        <x:String>Day</x:String>
+                                        <x:String>TimelineMonth</x:String>
+                                        <x:String>TimelineDay</x:String>
+                                        <x:String>TimelineWeek</x:String>
+                                        <x:String>TimelineWorkWeek</x:String>
+
+                                        <x:String>Week</x:String>
+                                        <x:String>WorkWeek</x:String>
+
+                                    </x:Array>
+
+                                </Picker.ItemsSource>
+
+                            </Picker>
+                            <scheduler:SfScheduler View="Month" x:Name="sch"  BackgroundColor="LightBlue" CellBorderBrush="Blue"
+                               ShowNavigationArrows="True" TodayHighlightBrush="Orange">
+                                <scheduler:SfScheduler.AppointmentMapping>
+                                    <scheduler:SchedulerAppointmentMapping
+                Subject="EventName"
+                StartTime="From"
+                EndTime="To"
+                Background="Background"
+                IsAllDay="IsAllDay"
+                StartTimeZone="StartTimeZone"
+                EndTimeZone="EndTimeZone"/>
+                                </scheduler:SfScheduler.AppointmentMapping>
+
+                            </scheduler:SfScheduler>
+
+                        </VerticalStackLayout>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Header="Favorites">
+                    <tabView:SfTabItem.Content>
+                        <VerticalStackLayout>
+                            <Grid BackgroundColor="Green" />
+                            <Entry Placeholder="Subject"/>
+                            <Entry Placeholder="Message"/>
+
+                            <signaturePad:SfSignaturePad  x:Name="SignPad" MinimumStrokeThickness="1"
+                             MaximumStrokeThickness="6" StrokeColor="Blue"/>
+                            <Button Text="SaveButton" x:Name="SaveButton"
+                                    Clicked="SaveButton_Clicked" />
+                            <Button Text="Clear" x:Name="ClearButton"
+                                    Clicked="ClearButton_Clicked" />
+                        </VerticalStackLayout>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView.Items>
+
+        </tabView:SfTabView>
+
     </VerticalStackLayout>
 </ContentPage>

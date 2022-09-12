@@ -39,7 +39,7 @@ namespace AKS.Printers.Thermals
                     FileName = Path.Combine(PathName, FileName);
                 }
 
-                this.TitleName = $" \t   Pay slip          \nFor Month of {Month}/{Year}";
+                this.TitleName = $" \t   Pay   Slip   \t         \nFor Month of {Month}/{Year}";
                 SetStoreInfo();
                 PathName = $@"d:\{StoreCode}\PaySlips\{StaffName}\{Year}\{Month}\";
                 Directory.CreateDirectory(FileName.Replace(Path.GetFileName(FileName), ""));
@@ -80,7 +80,7 @@ namespace AKS.Printers.Thermals
                 if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
                 _content.Add("Deductions:\n");
                 _content.Add($"Last Month Advance: Rs. {LastMonthAdvance.ToString("0.##")} \n Salary Adavance: Rs. {SalaryAdvance.ToString("0.##")}\n");
-                _content.Add($"Net Deducations:Rs. {(LastMonthAdvance + SalaryAdvance).ToString("0.##")} ");
+                _content.Add($"Net Deducations:Rs. {(LastMonthAdvance + SalaryAdvance).ToString("0.##")} \n");
                 if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
                 _content.Add("Salary:\n");
                 _content.Add($"Net Salary: Rs. {CurrentMonthSalary.ToString("0.##")}\n");

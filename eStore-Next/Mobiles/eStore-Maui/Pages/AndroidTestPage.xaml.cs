@@ -1,19 +1,14 @@
-﻿
-
-using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Text;
-using System.Windows.Input;
-using eStore_Maui.Test;
+﻿using eStore_MauiLib.Helpers;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
-using Org.Apache.Http.Authentication;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Input;
 
 namespace eStore_Maui.Pages;
 
 public partial class AndroidTestPage : ContentPage
 {
-
     public AndroidTestPage()
     {
         InitializeComponent();
@@ -27,17 +22,15 @@ public partial class AndroidTestPage : ContentPage
         //byte[] bytes = Encoding.ASCII.GetBytes(author);
         //DependencyService.Get<IPrintService>().Print(stream, "test.txt");
     }
-
-
-
-
 }
+
 public class PrintPageViewModel
 {
     private readonly IPrintService _blueToothService;
     private readonly IPrinterService _aksPrint;
 
     private IList<string> _deviceList;
+
     public IList<string> DeviceList
     {
         get
@@ -53,6 +46,7 @@ public class PrintPageViewModel
     }
 
     private string _printMessage;
+
     public string PrintMessage
     {
         get
@@ -66,6 +60,7 @@ public class PrintPageViewModel
     }
 
     private string _selectedDevice;
+
     public string SelectedDevice
     {
         get
@@ -83,6 +78,7 @@ public class PrintPageViewModel
         PrintMessage += " Xamarin Forms is awesome!";
         await _blueToothService.Print(SelectedDevice, PrintMessage);
     });
+
     public ICommand Print2Command => new Command(async () =>
     {
         List<string> lines = new List<string>();
@@ -104,12 +100,20 @@ public class PrintPageViewModel
         _aksPrint = ServiceHelper.GetService<IPrinterService>();
 
         var list = _blueToothService.GetDeviceList();
-        DeviceList.Clear();
-        foreach (var item in list)
+        if (list != null)
         {
-            DeviceList.Add(item);
+            DeviceList.Clear();
+            foreach (var item in list)
+            {
+                DeviceList.Add(item);
+            }
+        }
+        else
+        {
+            DeviceList.Add("No Device Found!");
         }
     }
+
     public static Stream GetStreamFromFile(string filename)
     {
         var assembly = typeof(App).GetTypeInfo().Assembly;
@@ -119,6 +123,4 @@ public class PrintPageViewModel
 
         return stream;
     }
-
 }
-

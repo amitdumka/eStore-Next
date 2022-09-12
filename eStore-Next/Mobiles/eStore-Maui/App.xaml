@@ -44,7 +44,7 @@
 
 
 
-              <!--Desktop/Tablet-->  
+            <!--  Desktop/Tablet  -->
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
@@ -66,7 +66,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
 
-              <!--Phone-->  
+            <!--  Phone  -->
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />

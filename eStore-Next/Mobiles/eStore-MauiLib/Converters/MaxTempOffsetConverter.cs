@@ -1,17 +1,17 @@
 ﻿using System.Globalization;
 
-namespace eStore_Maui.Converters;
+namespace eStore_MauiLib.Converters;
 
-public class MinTempOffsetConverter : IValueConverter
+public class MaxTempOffsetConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        const double min = 40 * 3;
+        const double max = 90 * 3;
 
-        var minTemp = System.Convert.ToDouble(value) * 3;
-        var bottomMargin = minTemp - min;
+        var maxTemp = System.Convert.ToDouble(value) * 3;
+        var topMargin = max - maxTemp;
 
-        return new Thickness(0, 0, 0, bottomMargin);
+        return new Thickness(0, topMargin, 0, 0);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

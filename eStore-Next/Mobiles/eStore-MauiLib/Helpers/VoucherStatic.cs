@@ -1,5 +1,4 @@
-﻿using System;
-namespace eStore_MauiLib.Helpers
+﻿namespace eStore_MauiLib.Helpers
 {
     public static class VoucherStatic
     {
@@ -49,4 +48,3 @@ namespace eStore_MauiLib.Helpers
         }
     }
 }
-

@@ -1,25 +1,6 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
 using Java.IO;
-using Android.Content;
-using Android.OS;
-using Java.IO;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-
-//namespace eStore_Maui.Platforms.Android
-//{
-//	public class SaveService
-//	{
-//		public SaveService()
-//		{
-//		}
-//	}
-//}
-
-
 
 namespace eStore_Maui.Services
 {
@@ -61,7 +42,6 @@ namespace eStore_Maui.Services
             }
             if (file.Exists())
             {
-
                 if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     var fileUri = AndroidX.Core.Content.FileProvider.GetUriForFile(Android.App.Application.Context, Android.App.Application.Context.PackageName + ".provider", file);
@@ -80,7 +60,6 @@ namespace eStore_Maui.Services
                     intent!.AddFlags(ActivityFlags.NewTask);
                     Android.App.Application.Context.StartActivity(intent);
                 }
-
             }
         }
     }

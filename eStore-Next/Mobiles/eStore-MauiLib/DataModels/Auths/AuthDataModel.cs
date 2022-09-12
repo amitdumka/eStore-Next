@@ -33,7 +33,7 @@ namespace eStore_MauiLib.DataModels.Auths
 
                 default:
                     return null;
-                    break;
+                   
             }
         }
 

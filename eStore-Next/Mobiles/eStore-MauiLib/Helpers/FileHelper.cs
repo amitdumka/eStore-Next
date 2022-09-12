@@ -4,14 +4,12 @@ namespace eStore_MauiLib.Helpers
 {
     public class FileHelper
     {
-
         public static async Task<Stream> ReadFromRaw(string filename)
         {
             var stream =
                await FileSystem.OpenAppPackageFileAsync(filename);
             return stream;
         }
-
 
         public async Task<FileResult> PickAndShow(PickOptions options)
         {
@@ -69,6 +67,7 @@ namespace eStore_MauiLib.Helpers
 
             return await reader.ReadToEndAsync();
         }
+
         public async Task ConvertFileToUpperCase(string sourceFile, string targetFileName)
         {
             // Read the source file
@@ -90,4 +89,3 @@ namespace eStore_MauiLib.Helpers
         }
     }
 }
-

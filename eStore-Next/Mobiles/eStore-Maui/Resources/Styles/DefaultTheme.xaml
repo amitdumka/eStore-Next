@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary
-    x:Class="WeatherTwentyOne.Resources.Styles.DefaultTheme"
+    x:Class="eStore_Maui.Resources.Styles.DefaultTheme"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
     xmlns:app="clr-namespace:WeatherTwentyOne.Resources.Styles"
-    xmlns:converter="clr-namespace:WeatherTwentyOne.Converters">
+    xmlns:converter="clr-namespace:eStore_Maui.Converters">
 
     <Color x:Key="Primary">#512BD4</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>

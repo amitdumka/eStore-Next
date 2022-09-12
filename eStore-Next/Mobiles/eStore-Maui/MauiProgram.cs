@@ -1,11 +1,9 @@
 ﻿using CommunityToolkit.Maui;
-using eStore_Maui;
 using eStore_Maui.Pages;
-using eStore_Maui.Test;
+using eStore_MauiLib.Helpers.Interfaces;
 using eStore_MauiLib.Platforms.Android.Services.Print;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
-using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
 using Syncfusion.Maui.SignaturePad.Hosting;
@@ -32,7 +30,7 @@ namespace eStore_Maui
             builder.ConfigureSyncfusionCore();
             builder.ConfigureSyncfusionSignaturePad();
             builder.ConfigureSyncfusionDataGrid();
-            var services= builder.Services;
+            var services = builder.Services;
 #if ANDROID
             builder.Services.AddTransient<AndroidTestPage>();
             builder.Services.AddTransient<PrintPageViewModel>();
@@ -40,14 +38,11 @@ namespace eStore_Maui
             services.AddSingleton<IPrintService, eStore_MauiLib.Services.PrintService>();
             services.AddTransient<IPrinterService, PrinterService>();
             services.AddSingleton<IPrinterService, PrinterService>();
-            services.AddTransient<ISave, SaveAndroid2>();
-            services.AddSingleton<ISave, SaveAndroid2>();
-
-
+            services.AddTransient<ISave, SaveAndroid>();
+            services.AddSingleton<ISave, SaveAndroid>();
 #endif
             return builder.Build();
         }
-        
     }
 }
 
@@ -93,9 +88,6 @@ namespace eStore_Maui
 //#endif
 //        services.AddSingleton<HomeViewModel>();
 //        services.AddSingleton<HomePage>();
-
-
-
 
 //        return builder.Build();
 //    }

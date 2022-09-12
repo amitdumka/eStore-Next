@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace eStore_Maui.Converters;
+namespace eStore_MauiLib.Converters;
 
 public class ImageByStateConverter : IValueConverter
 {

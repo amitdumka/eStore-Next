@@ -42,9 +42,6 @@
 	  <Folder Include="DataModels\Auths\" />
 	  <Folder Include="DataModels\Stores\" />
 	  <Folder Include="DataModels\Accounting\" />
-	  <Folder Include="Helpers\" />
-	  <Folder Include="Services\" />
-	  <Folder Include="Platforms\Android\Services\" />
 	  <Folder Include="Services\Print\" />
 	  <Folder Include="Platforms\Android\Services\Print\" />
 	</ItemGroup>

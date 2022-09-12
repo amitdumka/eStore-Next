@@ -1,22 +1,20 @@
-﻿using System;
+﻿using eStore_Maui.Services;
+using eStore_MauiLib.Helpers.Interfaces;
+using eStore_MauiLib.Services;
 using Syncfusion.XlsIO;
-using System.IO;
 using System.Reflection;
-using Android.SE.Omapi;
 using IApplication = Syncfusion.XlsIO.IApplication;
-using eStore_Maui.Services;
 
 namespace eStore_Maui.Test
 {
-	public class ExcelHelper
-	{
-		public ExcelHelper()
-		{
-		}
+    public class ExcelHelper
+    {
+        public ExcelHelper()
+        {
+        }
 
         public static void ReadEDit()
         {
-
             //Create an instance of ExcelEngine.
             using (ExcelEngine excelEngine = new ExcelEngine())
             {
@@ -46,8 +44,9 @@ namespace eStore_Maui.Test
                 DependencyService.Get<ISave>().SaveAndView("Invoice.xlsx", "application/excel", ms);
             }
         }
-		public static void Create()
-		{
+
+        public static void Create()
+        {
             //Create an instance of ExcelEngine.
             using (ExcelEngine excelEngine = new ExcelEngine())
             {
@@ -232,14 +231,5 @@ namespace eStore_Maui.Test
                 saveService.SaveAndView("Output.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ms);
             }
         }
-	}
-}
-
-namespace eStore_Maui.Services
-{
-    public partial class SaveService
-    {
-        //Method to save document as a file and view the saved document.
-        public partial void SaveAndView(string filename, string contentType, MemoryStream stream);
     }
 }

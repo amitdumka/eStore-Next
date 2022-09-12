@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace WeatherTwentyOne.Converters;
+namespace eStore_Maui.Converters;
 
 public class MaxTempOffsetConverter : IValueConverter
 {

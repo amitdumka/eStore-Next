@@ -1,21 +1,16 @@
-﻿using Syncfusion.DocIO;
-using Syncfusion.DocIO.DLS;
-using System.IO;
-using System.Reflection;
-using System;
-using eStore_Maui.Pages;
+﻿using eStore_Maui.Pages;
 using eStore_Maui.Services;
+using eStore_MauiLib.Services;
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
+using System.Reflection;
 
 namespace eStore_Maui.Test
 {
-	public class WordHelper
-	{
-		public WordHelper()
-		{
-		}
-
-		public static void Create()
-		{
+    public class WordHelper
+    {
+        public static void Create()
+        {
             //Creates a new document.
             using WordDocument document = new();
             //Adds a new section to the document.
@@ -244,6 +239,5 @@ namespace eStore_Maui.Test
             SaveService saveService = new();
             saveService.SaveAndView("Sample.docx", "application/msword", ms);
         }
-	}
+    }
 }
-

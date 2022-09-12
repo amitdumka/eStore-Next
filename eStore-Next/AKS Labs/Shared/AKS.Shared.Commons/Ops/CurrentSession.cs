@@ -9,7 +9,7 @@ namespace AKS.Shared.Commons.Ops
         public static string StoreName { get; set; } = "Aprajita Retails";
         public static string CityName { get; set; } = "Dumka";
         public static string Address { get; set; } = "Bhagalpur Road, Dumka";
-        public static string TaxNumber { get; set; } = "10AJHP7396P1ZV";
+        public static string TaxNumber { get; set; } = "20AJHP7396P1ZV";
         public static string PhoneNo { get; set; } = "06434-224461";
 
 

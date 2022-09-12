@@ -17,6 +17,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\..
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Payrolls", "..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.shproj", "{062A8AC3-2766-4147-8809-9E46C9C71B34}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.Printers", "..\..\AKS Labs\Payroll\AKS.Payroll\AKS.Printers\AKS.Printers.csproj", "{3062813D-36CF-4655-A87E-554A4BCFDAE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{EE018BAE-4550-4B0E-85A0-45B5D7549198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE018BAE-4550-4B0E-85A0-45B5D7549198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE018BAE-4550-4B0E-85A0-45B5D7549198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3062813D-36CF-4655-A87E-554A4BCFDAE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3062813D-36CF-4655-A87E-554A4BCFDAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3062813D-36CF-4655-A87E-554A4BCFDAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3062813D-36CF-4655-A87E-554A4BCFDAE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{49F74354-F9B6-4D2F-8B8C-01D9284FB597} = {B2642C04-AA23-4240-A1FA-2E04F6D232B3}
 		{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C} = {49F74354-F9B6-4D2F-8B8C-01D9284FB597}
 		{062A8AC3-2766-4147-8809-9E46C9C71B34} = {49F74354-F9B6-4D2F-8B8C-01D9284FB597}
+		{3062813D-36CF-4655-A87E-554A4BCFDAE1} = {B2642C04-AA23-4240-A1FA-2E04F6D232B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DFCAD0F-DB8E-49C5-9FBD-07EC062D77F4}

@@ -1,4 +1,5 @@
-﻿using eStore_MauiLib.Helpers;
+﻿using eStore_Maui.Test;
+using eStore_MauiLib.Helpers;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
 using System.Collections.ObjectModel;
@@ -81,13 +82,14 @@ public class PrintPageViewModel
 
     public ICommand Print2Command => new Command(async () =>
     {
-        List<string> lines = new List<string>();
-        var ds = PrintMessage.Split("#");
-        foreach (var item in ds)
-        {
-            lines.Add(item);
-        }
-        DummyPdf.PrintPdf("Testing", lines, "Testing.pdf");
+        //List<string> lines = new List<string>();
+        //var ds = PrintMessage.Split("#");
+        //foreach (var item in ds)
+        //{
+        //    lines.Add(item);
+        //}
+        //DummyPdf.PrintPdf("Testing", lines, "Testing.pdf");
+        TestPaySlip.Print();
     });
 
     public PrintPageViewModel()

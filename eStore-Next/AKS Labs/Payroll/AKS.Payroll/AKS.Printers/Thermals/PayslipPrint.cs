@@ -29,16 +29,13 @@ namespace AKS.Printers.Thermals
         {
             try
             {
-                SetPageType();
+                SetPageType(duplicate);
                 if (!IsDataSet) return null;
-
                 this.PrintType = PrintType.Payslip;
-
                 if (!FileName.Contains(PathName))
                 {
                     FileName = Path.Combine(PathName, FileName);
                 }
-
                 this.TitleName = $" \t   Pay   Slip   \t         \nFor Month of {Month}/{Year}";
                 SetStoreInfo();
                 PathName = $@"d:\{StoreCode}\PaySlips\{StaffName}\{Year}\{Month}\";
@@ -85,6 +82,7 @@ namespace AKS.Printers.Thermals
                 _content.Add("Salary:\n");
                 _content.Add($"Net Salary: Rs. {CurrentMonthSalary.ToString("0.##")}\n");
                 _content.Add($"Net Payable: Rs. {NetPayableSalary.ToString("0.##")}\n(After deductions)\n");
+                
                 if (!Page2Inch) _content.Add(DotedLineLong); else _content.Add(DotedLine);
                 _footer.Add("************************* \nThis is computer generated payslip\n ");
                 _footer.Add(" No Sign is requried\n ************************* \n");

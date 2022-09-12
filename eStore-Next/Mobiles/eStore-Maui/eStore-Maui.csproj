@@ -171,7 +171,6 @@
 	<ItemGroup>
 	  <Folder Include="Pages\" />
 	  <Folder Include="Data\" />
-	  <Folder Include="Test\" />
 	  <Folder Include="Features\" />
 	  <Folder Include="Features\Barcodes\" />
 	  <Folder Include="Features\Barcodes\Views\" />

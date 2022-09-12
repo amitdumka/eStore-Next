@@ -5,7 +5,6 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 
-
 //using PDFtoPrinter;
 using Path = System.IO.Path;
 
@@ -57,14 +56,19 @@ namespace AKS.Printers.Thermals
         protected Paragraph _dupFooter;
         protected Image _qrBarcode;
 
-        protected void SetPageType()
+        protected void SetPageType(bool duplicate)
         {
             if (!Page2Inch)
             {
                 PageWith = 240;
                 FontSize = 10;
+                if (duplicate)
+                {
+                    PageHeight = 1170 * 2;
+                }
             }
         }
+
         protected void GenrateFileName(string number)
         {
             if (string.IsNullOrEmpty(PathName))
@@ -107,6 +111,7 @@ namespace AKS.Printers.Thermals
                     case PrintType.Note:
                         PathName = Path.Combine(PathName, "Others\\Notes");
                         break;
+
                     case PrintType.Payslip:
                         PathName = Path.Combine(PathName, "PaySlips");
                         break;
@@ -134,30 +139,17 @@ namespace AKS.Printers.Thermals
             this.StoreName = CurrentSession.StoreName;
             this.TaxNo = CurrentSession.TaxNumber;
         }
+
         public string CreateDocument(bool duplicate = false)
         {
             try
             {
-                if (!Page2Inch)
-                {
-                    PageWith = 240;
-                    FontSize = 10;
-                    if (duplicate)
-                    {
-                        PageHeight = 1170 * 2;
-                    }
-                }
+                SetPageType(duplicate);
                 PdfWriter pdfWriter = new PdfWriter(FileName);
                 PdfDocument pdf = new PdfDocument(pdfWriter);
 
                 Document pdfDoc = new Document(pdf, new PageSize(PageWith, PageHeight));
-
-                this.StoreCode = CurrentSession.StoreCode;
-                this.Address = CurrentSession.Address;
-                this.City = CurrentSession.CityName;
-                this.Phone = CurrentSession.PhoneNo;
-                this.StoreName = CurrentSession.StoreName;
-                this.TaxNo = CurrentSession.TaxNumber;
+                SetStoreInfo();
 
                 if (Page2Inch)
                     pdfDoc.SetMargins(90, 25, 90, 8);

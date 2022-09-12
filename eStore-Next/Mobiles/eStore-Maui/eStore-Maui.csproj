@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+	  <None Remove="Resources\xml\provider_path.xml" />
 	  <None Remove="Syncfusion.Maui.Core" />
 	  <None Remove="Syncfusion.Maui.TabView" />
 	  <None Remove="Syncfusion.Maui.ListView" />
@@ -100,6 +101,10 @@
 	  <None Remove="Syncfusion.XlsIO.NET" />
 	  <None Remove="Platforms\Android\Resources\xml\" />
 	  <None Remove="Syncfusion.DocIO.NET" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidResource Include="Resources\xml\provider_path.xml" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />

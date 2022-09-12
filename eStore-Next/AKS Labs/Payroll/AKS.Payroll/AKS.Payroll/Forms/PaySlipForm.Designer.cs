@@ -115,6 +115,7 @@
             this.dgvPayslips.RowTemplate.Height = 29;
             this.dgvPayslips.Size = new System.Drawing.Size(626, 315);
             this.dgvPayslips.TabIndex = 0;
+            this.dgvPayslips.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPayslips_CellContentClick);
             // 
             // groupBox2
             // 

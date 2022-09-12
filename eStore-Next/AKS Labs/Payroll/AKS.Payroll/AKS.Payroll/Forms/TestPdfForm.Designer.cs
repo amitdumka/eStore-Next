@@ -211,6 +211,7 @@
             this.pdfViewer.VerticalScrollOffset = 0;
             this.pdfViewer.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
             this.pdfViewer.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.Default;
+            //this.pdfViewer.Load += new System.EventHandler(this.pdfViewer_Load);
             // 
             // TestPdfForm
             // 

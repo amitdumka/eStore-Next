@@ -16,6 +16,7 @@ using SizeF = Syncfusion.Drawing.SizeF;
 using Path = System.IO.Path;
 using eStore_MauiLib.DataModels.Accounting;
 using Syncfusion.Pdf.Barcode;
+using Microsoft.Maui.Controls.Compatibility;
 
 namespace eStore_MauiLib.Printers.Thermals
 {
@@ -50,13 +51,13 @@ namespace eStore_MauiLib.Printers.Thermals
         protected string TitleName { get; set; }
         protected bool SubTitle { get; set; }
         protected string SubTitleName { get; set; }
-        
+
         //Syncfusion Addittion
-        protected float Top = 90;
+        protected float Top = 20;
         protected float X = 0, Y = 0;
-        protected float LineSpace = 5;
+        protected float LineSpace = 2;
         protected float Margin = 30;
-       
+
         protected PdfStringFormat formatMiddleCenter = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
         protected PdfStringFormat formatMiddleLeft = new PdfStringFormat(PdfTextAlignment.Left, PdfVerticalAlignment.Middle);
         protected PdfStringFormat formatMiddleRight = new PdfStringFormat(PdfTextAlignment.Right, PdfVerticalAlignment.Middle);
@@ -74,10 +75,11 @@ namespace eStore_MauiLib.Printers.Thermals
         protected static PdfBrush blackBrush = new PdfSolidBrush(Color.Black);
 
         //Fonts
-        protected static PdfFont HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 10, PdfFontStyle.Bold);
-        protected static PdfFont RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 9, PdfFontStyle.Regular);
-        protected static PdfFont BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 8, PdfFontStyle.Bold);
-
+        protected static PdfFont HeaderFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 10, PdfFontStyle.Bold);
+        protected static PdfFont RegularFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 9, PdfFontStyle.Regular);
+        protected static PdfFont BoldFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 8, PdfFontStyle.Bold);
+        protected static PdfFont SmallFont;//= new PdfStandardFont(PdfFontFamily.Courier, 9, PdfFontStyle.Regular);
+        protected static PdfFont RegularSmallFont;
         protected void SetPageType(bool duplicate)
         {
             if (!Page2Inch)
@@ -95,19 +97,22 @@ namespace eStore_MauiLib.Printers.Thermals
             { MarginTop = 170; MarginRight = 25; MarginBottom = 90; MarginLeft = 35; }
 
             X = 0;
-            Y = 10;
+            Y = 0;
 
             pdfMargins = new PdfMargins();
             pdfMargins.Bottom = MarginBottom;
-            pdfMargins.Top = MarginTop;
+            pdfMargins.Top = MarginTop/2;
             pdfMargins.Left = MarginLeft;
             pdfMargins.Right = MarginRight;
-           HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
+
+            HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
             RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Regular);
             BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
+            SmallFont = new PdfStandardFont(PdfFontFamily.Courier, FontSize-2.5f, PdfFontStyle.Italic);
+            RegularSmallFont = new PdfStandardFont(PdfFontFamily.Helvetica, FontSize-1.5f, PdfFontStyle.Bold);
 
 
-    }
+        }
 
         protected void GenrateFileName(string number)
         {
@@ -182,12 +187,13 @@ namespace eStore_MauiLib.Printers.Thermals
 
         protected void TitleText()
         {
+            AddRegularText("  ");
             AddDotedLine();
-            AddRegularText( TitleName);
+            AddRegularText(TitleName,formatMiddleCenter);
             AddDotedLine();
             if (SubTitle)
             {
-                AddRegularText($"  {SubTitleName}\n");
+                AddRegularText($"{SubTitleName}");
                 AddDotedLine();
             }
         }
@@ -199,53 +205,160 @@ namespace eStore_MauiLib.Printers.Thermals
             AddHeaderText(City);
             AddHeaderText("Ph No: " + Phone);
             AddHeaderText(TaxNo);
+            //AddSpace();
         }
 
         protected void AddHeaderText(string text)
         {
-            //Measure the string size using the font.
-            SizeF textSize = HeaderFont.MeasureString(text);
-            graphics.DrawString(text, HeaderFont, darkBlueBrush, new RectangleF(X, Y, textSize.Width+25, textSize.Height + 10), formatMiddleCenter);
-            Y += RegularFont.Height + LineSpace;
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = HeaderFont.MeasureString(line);
+                    graphics.DrawString(line, HeaderFont, blackBrush, new RectangleF(X, Y, textSize2.Width + 25, textSize2.Height + 10), formatMiddleCenter);
+                    Y += RegularFont.Height;// + LineSpace;
+                }
+                Y += LineSpace;
+            }
+            else
+            {
+                SizeF textSize = HeaderFont.MeasureString(text);
+                graphics.DrawString(text, HeaderFont, blackBrush, new RectangleF(X, Y, textSize.Width + 25, textSize.Height + 10), formatMiddleCenter);
+                Y += RegularFont.Height + LineSpace;
+            }
         }
 
         protected void AddNormalText(string text)
         {
-            //Measure the string size using the font.
-            SizeF textSize = RegularFont.MeasureString(text);
-            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
-            Y += BoldFont.Height + LineSpace;
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = BoldFont.MeasureString(line);
+                    graphics.DrawString(line, BoldFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                    Y += BoldFont.Height;
+                }
+                Y += LineSpace;
+            }
+            else
+            {
+                SizeF textSize = BoldFont.MeasureString(text);
+                graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                Y += BoldFont.Height + LineSpace;
+            }
         }
 
         protected void AddRegularText(string text)
         {
-            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);    
-            Y += RegularFont.Height + LineSpace;
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = RegularFont.MeasureString(line);
+                    graphics.DrawString(line, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                    Y += BoldFont.Height;// + LineSpace;
+                }
+                Y += LineSpace;
+            }
+            else
+            {
+                graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                Y += RegularFont.Height + LineSpace;
+            }
         }
 
         protected void AddNormalText(string text, PdfStringFormat format)
         {
-            graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), format);
-            Y += BoldFont.Height + LineSpace;
-            
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = BoldFont.MeasureString(line);
+                    graphics.DrawString(line, BoldFont, blackBrush, new PointF(X, Y), format);
+                    Y += BoldFont.Height;// + LineSpace;
+                }
+                Y += LineSpace;
+            }
+            else
+            {
+                graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), format);
+                Y += BoldFont.Height + LineSpace;
+            }
+
         }
 
         protected void AddRegularText(string text, PdfStringFormat format)
         {
-            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), format);
-            Y += RegularFont.Height + LineSpace;
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = RegularFont.MeasureString(line);
+                    graphics.DrawString(line, RegularFont, blackBrush, new PointF(X, Y), format);
+                    Y += BoldFont.Height;
+                }
+                Y += LineSpace;
+            }
+            else
+            {
+                graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), format);
+                Y += RegularFont.Height + LineSpace;
+            }
         }
-
+        protected void AddSmallText(string text)
+        {
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = SmallFont.MeasureString(line);
+                    graphics.DrawString(line, SmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                    Y += SmallFont.Height;
+                }
+                Y += LineSpace-1;
+            }
+            else
+            {
+                SizeF textSize = SmallFont.MeasureString(text);
+                graphics.DrawString(text, SmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                Y += SmallFont.Height + LineSpace-1;
+            }
+        }
+        protected void AddSubText(string text)
+        {
+            if (text.Contains("\n"))
+            {
+                var lines = text.Split("\n");
+                foreach (var line in lines)
+                {
+                    SizeF textSize2 = RegularSmallFont.MeasureString(line);
+                    graphics.DrawString(line, RegularSmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                    Y += RegularSmallFont.Height;
+                }
+                Y += LineSpace - 1;
+            }
+            else
+            {
+                SizeF textSize = RegularSmallFont.MeasureString(text);
+                graphics.DrawString(text, RegularSmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+                Y += RegularSmallFont.Height + LineSpace - 1;
+            }
+        }
         protected void AddDotedLine()
         {
-            if (!Page2Inch) AddNormalText(DotedLineLong,formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
-            //AddLine();
+            //if (!Page2Inch) AddNormalText(DotedLineLong, formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
+            AddLine();
         }
         protected void AddLine()
         {
-           
-            graphics.DrawRectangle(darkBlueBrush, new RectangleF(0,Y, PageWith, 5));
-            graphics.DrawLine(PdfPens.Blue, 0, Y+4, PageWith, Y + 2);
+            //graphics.DrawRectangle(darkBlueBrush, new RectangleF(0, Y, PageWith, 5));
+            graphics.DrawLine(PdfPens.Blue, 0, Y, PageWith, Y );
             Y += 6;
         }
         protected void AddSpace()
@@ -260,18 +373,14 @@ namespace eStore_MauiLib.Printers.Thermals
         protected abstract void QRBarcode();
         protected void QRCode(string text)
         {
-            //$"InvNo:{invNo} On {onDate.ToString()} of Rs. {value}/-"
-            //Drawing QR Barcode
             PdfQRBarcode barcode = new PdfQRBarcode();
-            //Set Error Correction Level
             barcode.ErrorCorrectionLevel = PdfErrorCorrectionLevel.High;
-            //Set XDimension
             barcode.XDimension = 3;
             barcode.Text = text;
-            SizeF size = new SizeF(10,10);
-            barcode.Draw(page, new PointF(X, Y),size);
-            Y+=size.Height+LineSpace+Margin;
-
+            SizeF size = new SizeF(35, 35);
+            barcode.Draw(page, new PointF((PageWith/2)-45, Y), size);
+            Y += size.Height + LineSpace;
+            
         }
         //Init 
         protected bool Init(bool duplicate = false)
@@ -281,7 +390,7 @@ namespace eStore_MauiLib.Printers.Thermals
                 SetPageType(duplicate);
                 SetStoreInfo();
                 document = new PdfDocument();
-                //document.PageSettings.Size = PdfPageSize.Note;
+                
                 var pSize = new SizeF(PageWith, PageHeight);
                 document.PageSettings.Size = pSize;
                 document.PageSettings.Margins = pdfMargins;

@@ -4,7 +4,7 @@
              x:Class="eStore_Maui.Pages.DashboardPage"
              xmlns:signaturePad="clr-namespace:Syncfusion.Maui.SignaturePad;assembly=Syncfusion.Maui.SignaturePad"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler" xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
              Title="Dashboard">
     <VerticalStackLayout>
         <Label 
@@ -58,15 +58,16 @@
                     <tabView:SfTabItem.Content>
                         <VerticalStackLayout>
                             <Grid BackgroundColor="Green" />
-                            <Entry Placeholder="Subject"/>
+                            <Entry Placeholder="Subject" />
                             <Entry Placeholder="Message"/>
-
+                            <aloha:ToggleSwitch IsOn="True" BackgroundColor="CadetBlue"/>
                             <signaturePad:SfSignaturePad  x:Name="SignPad" MinimumStrokeThickness="1"
-                             MaximumStrokeThickness="6" StrokeColor="Blue"/>
+                             MaximumStrokeThickness="6" StrokeColor="Blue" />
                             <Button Text="SaveButton" x:Name="SaveButton"
                                     Clicked="SaveButton_Clicked" />
                             <Button Text="Clear" x:Name="ClearButton"
                                     Clicked="ClearButton_Clicked" />
+                            <aloha:PulseIcon Source="arlogo.jpg" BackgroundColor="Aqua"/>
                         </VerticalStackLayout>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>

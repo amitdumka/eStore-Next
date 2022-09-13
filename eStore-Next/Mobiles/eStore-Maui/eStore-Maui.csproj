@@ -101,6 +101,7 @@
 	  <None Remove="Syncfusion.XlsIO.NET" />
 	  <None Remove="Platforms\Android\Resources\xml\" />
 	  <None Remove="Syncfusion.DocIO.NET" />
+	  <None Remove="AlohaKit" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -138,6 +139,7 @@
 	  <PackageReference Include="ZXing.Net.Maui" Version="0.1.0-preview.7" />
 	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />
 	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.48" />
+	  <PackageReference Include="AlohaKit" Version="1.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">

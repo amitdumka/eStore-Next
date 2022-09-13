@@ -64,6 +64,7 @@ namespace eStore_MauiLib.Printers.Thermals
         protected PdfGraphics graphics;
         protected PdfDocument document;
         protected PdfPage page;
+        protected PdfMargins pdfMargins;
 
         //Colors
         protected static PdfColor darkBlue = Color.FromArgb(255, 65, 104, 209);
@@ -73,9 +74,9 @@ namespace eStore_MauiLib.Printers.Thermals
         protected static PdfBrush blackBrush = new PdfSolidBrush(Color.Black);
 
         //Fonts
-        protected static PdfFont HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 22, PdfFontStyle.Bold);
-        protected static PdfFont RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 16, PdfFontStyle.Regular);
-        protected static PdfFont BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 12, PdfFontStyle.Bold);
+        protected static PdfFont HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 12, PdfFontStyle.Bold);
+        protected static PdfFont RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 9, PdfFontStyle.Regular);
+        protected static PdfFont BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 8, PdfFontStyle.Bold);
 
         protected void SetPageType(bool duplicate)
         {
@@ -92,6 +93,16 @@ namespace eStore_MauiLib.Printers.Thermals
             { MarginTop = 90; MarginRight = 25; MarginBottom = 90; MarginLeft = 8; }
             else
             { MarginTop = 170; MarginRight = 25; MarginBottom = 90; MarginLeft = 35; }
+
+            X = MarginTop;
+            Y = MarginLeft;
+
+            pdfMargins = new PdfMargins();
+            pdfMargins.Bottom = MarginBottom;
+            pdfMargins.Top = MarginTop;
+            pdfMargins.Left = MarginLeft;
+            pdfMargins.Right = MarginRight;
+            
         }
 
         protected void GenrateFileName(string number)
@@ -190,7 +201,6 @@ namespace eStore_MauiLib.Printers.Thermals
         {
             //Measure the string size using the font.
             SizeF textSize = HeaderFont.MeasureString(text);
-            //graphics.DrawString(text, HeaderFont, darkBlueBrush, new RectangleF(0, 0, textSize.Width + 50, textSize.Height + 10), formatMiddleCenter);
             graphics.DrawString(text, HeaderFont, darkBlueBrush, new RectangleF(0, Y, page.Size.Width, textSize.Height + 10), formatMiddleCenter);
             Y += RegularFont.Height + LineSpace;
         }
@@ -199,46 +209,41 @@ namespace eStore_MauiLib.Printers.Thermals
         {
             //Measure the string size using the font.
             SizeF textSize = BoldFont.MeasureString(text);
-            //graphics.DrawString(text, BoldFont, blackBrush, new RectangleF(0, 0, textSize.Width + 50, textSize.Height + 10), formatMiddleJustify);
             graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
             Y += BoldFont.Height + LineSpace;
         }
 
         protected void AddRegularText(string text)
         {
-            //Measure the string size using the font.
-            SizeF textSize = RegularFont.MeasureString(text);
-            // graphics.DrawString(text, RegularFont, blackBrush, new RectangleF(0, 0, textSize.Width + 50, textSize.Height + 10), formatMiddleJustify);
-            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
-            //graphics.DrawString(text, RegularFont, blackBrush, new RectangleF(0, 0, page.Size.Width, textSize.Height + 10), formatMiddleCenter);
+            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleCenter);    
             Y += RegularFont.Height + LineSpace;
         }
 
         protected void AddNormalText(string text, PdfStringFormat format)
         {
-            //Measure the string size using the font.
-            SizeF textSize = BoldFont.MeasureString(text);
-            //graphics.DrawString(text, BoldFont, blackBrush, new RectangleF(0, 0, textSize.Width + 50, textSize.Height + 10), formatMiddleJustify);
             graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), format);
             Y += BoldFont.Height + LineSpace;
+            
         }
 
         protected void AddRegularText(string text, PdfStringFormat format)
         {
-            //Measure the string size using the font.
-            //SizeF textSize = RegularFont.MeasureString(text);
-            // graphics.DrawString(text, RegularFont, blackBrush, new RectangleF(0, 0, textSize.Width + 50, textSize.Height + 10), formatMiddleJustify);
-            graphics.DrawString(text, RegularFont, blackBrush,
-                //new RectangleF(0, Y, page.Size.Width, RegularFont.Height + 10), format);
-                new PointF(X, Y), format);
+            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), format);
             Y += RegularFont.Height + LineSpace;
         }
 
         protected void AddDotedLine()
         {
-            if (!Page2Inch) AddNormalText(DotedLineLong,formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
+            //if (!Page2Inch) AddNormalText(DotedLineLong,formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
+            AddLine();
         }
-
+        protected void AddLine()
+        {
+           
+            graphics.DrawRectangle(darkBlueBrush, new RectangleF(0,Y,page.Size.Width,5));
+            graphics.DrawLine(PdfPens.Blue, 0, Y+4, page.Size.Width, Y + 2);
+            Y += 6;
+        }
         protected void AddSpace()
         {
             Y += ((RegularFont.Height + LineSpace) * 3);
@@ -272,12 +277,15 @@ namespace eStore_MauiLib.Printers.Thermals
                 SetPageType(duplicate);
                 SetStoreInfo();
                 document = new PdfDocument();
-                document.PageSettings.Size = PdfPageSize.Note;
+                //document.PageSettings.Size = PdfPageSize.Note;
+                var pSize = new SizeF(PageWith, PageHeight);
+                document.PageSettings.Size = pSize;
+                document.PageSettings.Margins = pdfMargins;
+                document.PageSettings.Orientation = PdfPageOrientation.Portrait;
+
+                //document.PageSettings.Margins;
                 page = document.Pages.Add();
                 graphics = page.Graphics;
-                //Adding Header
-                Y = MarginTop ;
-                X = MarginLeft;
                 HeaderText();
                 TitleText();
                 return true;

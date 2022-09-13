@@ -1,23 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eStore_Maui.Pages.DashboardPage"
-             xmlns:signaturePad="clr-namespace:Syncfusion.Maui.SignaturePad;assembly=Syncfusion.Maui.SignaturePad"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler" xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
-             Title="Dashboard">
+<ContentPage
+    x:Class="eStore_Maui.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:aloha="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+    xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+    xmlns:signaturePad="clr-namespace:Syncfusion.Maui.SignaturePad;assembly=Syncfusion.Maui.SignaturePad"
+    xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+    Title="Dashboard">
     <VerticalStackLayout>
-        <Label 
+        <Label
+            HorizontalOptions="Center"
             Text="Welcome to Aprajita Retails !"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            VerticalOptions="Center" />
 
-        <tabView:SfTabView  x:Name="tabView" TabBarBackground="LightBlue" IndicatorPlacement="Fill">
+        <tabView:SfTabView
+            x:Name="tabView"
+            IndicatorPlacement="Fill"
+            TabBarBackground="LightBlue">
             <tabView:SfTabView.Items>
                 <tabView:SfTabItem Header="Schedular">
                     <tabView:SfTabItem.Content>
                         <VerticalStackLayout>
-                            <Picker x:Name="pck" SelectedIndexChanged="Picker_SelectedIndexChanged" Title="Mode">
+                            <Picker
+                                x:Name="pck"
+                                Title="Mode"
+                                SelectedIndexChanged="Picker_SelectedIndexChanged">
                                 <Picker.ItemsSource>
                                     <x:Array Type="{x:Type x:String}">
                                         <x:String>Month</x:String>
@@ -36,17 +44,22 @@
                                 </Picker.ItemsSource>
 
                             </Picker>
-                            <scheduler:SfScheduler View="Month" x:Name="sch"  BackgroundColor="LightBlue" CellBorderBrush="Blue"
-                               ShowNavigationArrows="True" TodayHighlightBrush="Orange">
+                            <scheduler:SfScheduler
+                                x:Name="sch"
+                                BackgroundColor="LightBlue"
+                                CellBorderBrush="Blue"
+                                ShowNavigationArrows="True"
+                                TodayHighlightBrush="Orange"
+                                View="Month">
                                 <scheduler:SfScheduler.AppointmentMapping>
                                     <scheduler:SchedulerAppointmentMapping
-                Subject="EventName"
-                StartTime="From"
-                EndTime="To"
-                Background="Background"
-                IsAllDay="IsAllDay"
-                StartTimeZone="StartTimeZone"
-                EndTimeZone="EndTimeZone"/>
+                                        Background="Background"
+                                        EndTime="To"
+                                        EndTimeZone="EndTimeZone"
+                                        IsAllDay="IsAllDay"
+                                        StartTime="From"
+                                        StartTimeZone="StartTimeZone"
+                                        Subject="EventName" />
                                 </scheduler:SfScheduler.AppointmentMapping>
 
                             </scheduler:SfScheduler>
@@ -59,18 +72,61 @@
                         <VerticalStackLayout>
                             <Grid BackgroundColor="Green" />
                             <Entry Placeholder="Subject" />
-                            <Entry Placeholder="Message"/>
-                            <aloha:ToggleSwitch IsOn="True" BackgroundColor="CadetBlue"/>
-                            <signaturePad:SfSignaturePad  x:Name="SignPad" MinimumStrokeThickness="1"
-                             MaximumStrokeThickness="6" StrokeColor="Blue" />
-                            <Button Text="SaveButton" x:Name="SaveButton"
-                                    Clicked="SaveButton_Clicked" />
-                            <Button Text="Clear" x:Name="ClearButton"
-                                    Clicked="ClearButton_Clicked" />
-                            <aloha:PulseIcon Source="arlogo.jpg" BackgroundColor="Aqua"/>
+                            <Entry Placeholder="Message" />
+                            <aloha:ToggleSwitch BackgroundColor="CadetBlue" IsOn="True" />
+                            <signaturePad:SfSignaturePad
+                                x:Name="SignPad"
+                                MaximumStrokeThickness="6"
+                                MinimumStrokeThickness="1"
+                                StrokeColor="Blue" />
+                            <Button
+                                x:Name="SaveButton"
+                                Clicked="SaveButton_Clicked"
+                                Text="SaveButton" />
+                            <Button
+                                x:Name="ClearButton"
+                                Clicked="ClearButton_Clicked"
+                                Text="Clear" />
+                            <aloha:PulseIcon BackgroundColor="Aqua" Source="arlogo.jpg" />
                         </VerticalStackLayout>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>
+
+                <tabView:SfTabItem Header="Aloha">
+                    <tabView:SfTabItem.Content>
+                        <VerticalStackLayout>
+                            <aloha:Button
+                                Margin="20"
+                                Text="TestMe"
+                                TextColor="Red" />
+                            <aloha:Avatar BackgroundColor="#F7BB97" Fill="#DD5E89" />
+                            <aloha:ToggleSwitch
+                                Margin="10"
+                                BackgroundColor="#DD5E89"
+                                FlowDirection="RightToLeft"
+                                HasShadow="True"
+                                Rotation="140"
+                                ThumbBrush="#DD5E89"
+                                VerticalOptions="CenterAndExpand" />
+                            <aloha:NumericUpDown
+                                BackgroundColor="Blue"
+                                TextColor="Cyan"
+                                Visual="Default"
+                                Color="AliceBlue"
+                                Value="500" />
+                            <!--<aloha:HorizontalProgressBar
+                                Margin="20"
+                                BackgroundColor="Yellow"
+                                Progress="-1" />-->
+                            <aloha:CheckBox
+                                Margin="10" Background="Yellow"
+                                BackgroundColor="AliceBlue" 
+                                IsChecked="True" />
+                        </VerticalStackLayout>
+                    </tabView:SfTabItem.Content>
+
+                </tabView:SfTabItem>
+
             </tabView:SfTabView.Items>
 
         </tabView:SfTabView>

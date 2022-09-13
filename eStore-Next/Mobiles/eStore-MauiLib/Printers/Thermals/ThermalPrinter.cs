@@ -413,6 +413,7 @@ namespace eStore_MauiLib.Printers.Thermals
                 graphics = page.Graphics;
                 HeaderText();
                 TitleText();
+                AddWaterMark();
                 return true;
             }
             catch (Exception ex)
@@ -420,6 +421,16 @@ namespace eStore_MauiLib.Printers.Thermals
                 Debug.WriteLine(ex.Message);
                 return false;
             }
+        }
+        protected void AddWaterMark()
+        {
+            PdfGraphicsState state = graphics.Save();
+
+            graphics.SetTransparency(0.25f);
+
+            graphics.RotateTransform(-40);
+
+            graphics.DrawString(StoreName +"\n"+TitleName, new PdfStandardFont(PdfFontFamily.Helvetica, 20), PdfPens.Red, PdfBrushes.Red, new PointF(-150, 450));
         }
 
         protected MemoryStream Save(bool print = false)

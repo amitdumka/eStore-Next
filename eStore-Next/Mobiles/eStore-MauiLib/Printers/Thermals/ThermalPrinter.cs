@@ -26,7 +26,7 @@ namespace eStore_MauiLib.Printers.Thermals
 
         protected int PageWith = 150;
         protected int PageHeight = 1170;
-        protected int FontSize = 8;
+        protected int FontSize = 7;
         protected float MarginTop, MarginBottom, MarginLeft, MarginRight;
         public bool Page2Inch { get; set; } = false;
 
@@ -54,7 +54,7 @@ namespace eStore_MauiLib.Printers.Thermals
         //Syncfusion Addittion
         protected float Top = 90;
         protected float X = 0, Y = 0;
-        protected float LineSpace = 10;
+        protected float LineSpace = 5;
         protected float Margin = 30;
        
         protected PdfStringFormat formatMiddleCenter = new PdfStringFormat(PdfTextAlignment.Center, PdfVerticalAlignment.Middle);
@@ -74,7 +74,7 @@ namespace eStore_MauiLib.Printers.Thermals
         protected static PdfBrush blackBrush = new PdfSolidBrush(Color.Black);
 
         //Fonts
-        protected static PdfFont HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 12, PdfFontStyle.Bold);
+        protected static PdfFont HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 10, PdfFontStyle.Bold);
         protected static PdfFont RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 9, PdfFontStyle.Regular);
         protected static PdfFont BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, 8, PdfFontStyle.Bold);
 
@@ -94,16 +94,20 @@ namespace eStore_MauiLib.Printers.Thermals
             else
             { MarginTop = 170; MarginRight = 25; MarginBottom = 90; MarginLeft = 35; }
 
-            X = MarginTop;
-            Y = MarginLeft;
+            X = 0;
+            Y = 10;
 
             pdfMargins = new PdfMargins();
             pdfMargins.Bottom = MarginBottom;
             pdfMargins.Top = MarginTop;
             pdfMargins.Left = MarginLeft;
             pdfMargins.Right = MarginRight;
-            
-        }
+           HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
+            RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Regular);
+            BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
+
+
+    }
 
         protected void GenrateFileName(string number)
         {
@@ -179,11 +183,11 @@ namespace eStore_MauiLib.Printers.Thermals
         protected void TitleText()
         {
             AddDotedLine();
-            AddRegularText( TitleName,formatMiddleCenter);
+            AddRegularText( TitleName);
             AddDotedLine();
             if (SubTitle)
             {
-                AddRegularText($"  {SubTitleName}\n", formatMiddleCenter);
+                AddRegularText($"  {SubTitleName}\n");
                 AddDotedLine();
             }
         }
@@ -201,21 +205,21 @@ namespace eStore_MauiLib.Printers.Thermals
         {
             //Measure the string size using the font.
             SizeF textSize = HeaderFont.MeasureString(text);
-            graphics.DrawString(text, HeaderFont, darkBlueBrush, new RectangleF(0, Y, page.Size.Width, textSize.Height + 10), formatMiddleCenter);
+            graphics.DrawString(text, HeaderFont, darkBlueBrush, new RectangleF(X, Y, textSize.Width+25, textSize.Height + 10), formatMiddleCenter);
             Y += RegularFont.Height + LineSpace;
         }
 
         protected void AddNormalText(string text)
         {
             //Measure the string size using the font.
-            SizeF textSize = BoldFont.MeasureString(text);
-            graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
+            SizeF textSize = RegularFont.MeasureString(text);
+            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
             Y += BoldFont.Height + LineSpace;
         }
 
         protected void AddRegularText(string text)
         {
-            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleCenter);    
+            graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);    
             Y += RegularFont.Height + LineSpace;
         }
 
@@ -234,14 +238,14 @@ namespace eStore_MauiLib.Printers.Thermals
 
         protected void AddDotedLine()
         {
-            //if (!Page2Inch) AddNormalText(DotedLineLong,formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
-            AddLine();
+            if (!Page2Inch) AddNormalText(DotedLineLong,formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
+            //AddLine();
         }
         protected void AddLine()
         {
            
-            graphics.DrawRectangle(darkBlueBrush, new RectangleF(0,Y,page.Size.Width,5));
-            graphics.DrawLine(PdfPens.Blue, 0, Y+4, page.Size.Width, Y + 2);
+            graphics.DrawRectangle(darkBlueBrush, new RectangleF(0,Y, PageWith, 5));
+            graphics.DrawLine(PdfPens.Blue, 0, Y+4, PageWith, Y + 2);
             Y += 6;
         }
         protected void AddSpace()

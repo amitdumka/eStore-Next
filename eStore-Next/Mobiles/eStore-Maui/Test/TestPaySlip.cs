@@ -18,7 +18,7 @@ namespace eStore_Maui.Test
             Present=23, PrintType=PrintType.Payslip, Reprint=false, SalaryAdvance=1000, StaffName="Test Name", 
             StoreCode="ARD", WorkingDay=26, WowBill=0, Year=2022
             };
-            ps.PrintPdf(true,true); 
+            ps.PrintPdf(false,true); 
         }
     }
 }

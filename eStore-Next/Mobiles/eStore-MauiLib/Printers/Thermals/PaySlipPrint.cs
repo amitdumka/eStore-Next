@@ -72,13 +72,13 @@ namespace eStore_MauiLib.Printers.Thermals
         protected override void Content()
         {
             AddDotedLine();
-            AddNormalText("PaySlip No: " + PaySlipNo + "\n");
+            AddNormalText("PaySlip No:\n " + PaySlipNo + "\n");
             //AddNormalTextTabStops(new TabStop(30));
-            AddNormalText("Printed Date: " + DateTime.Now.ToString() + "\n");
+            AddNormalText("Printed Date: \n" + DateTime.Now.ToString() + "\n");
             //AddNormalTextTabStops(new TabStop(30));
 
             AddDotedLine();
-            AddNormalText("Employee Name: " + StaffName + "\n");
+            AddNormalText("Employee Name: \n" + StaffName + "\n");
             AddNormalText($"Address: {City}\n");
             //AddNormalTextTabStops(new TabStop(30));
             AddNormalText($"Period: {Month} / {Year} \n");
@@ -92,36 +92,36 @@ namespace eStore_MauiLib.Printers.Thermals
             //AddNormalTextTabStops(new TabStop(30));
             AddDotedLine();
             AddNormalText("Deductions:\n");
-            AddNormalText($"Last Month Advance: Rs. {LastMonthAdvance.ToString("0.##")} \n Salary Adavance: Rs. {SalaryAdvance.ToString("0.##")}\n");
-            AddNormalText($"Net Deducations:Rs. {(LastMonthAdvance + SalaryAdvance).ToString("0.##")} \n");
+            AddNormalText($"Last Month Advance:\n Rs. {LastMonthAdvance.ToString("0.##")} \n Salary Adavance: Rs. {SalaryAdvance.ToString("0.##")}\n");
+            AddNormalText($"Net Deducations:\nRs. {(LastMonthAdvance + SalaryAdvance).ToString("0.##")} \n");
             AddDotedLine();
             AddNormalText("Salary:\n");
-            AddNormalText($"Net Salary: Rs. {CurrentMonthSalary.ToString("0.##")}\n");
-            AddNormalText($"Net Payable: Rs. {NetPayableSalary.ToString("0.##")}\n(After deductions)\n");
+            AddNormalText($"Net Salary:\n Rs. {CurrentMonthSalary.ToString("0.##")}\n");
+            AddNormalText($"Net Payable:\n Rs. {NetPayableSalary.ToString("0.##")}\n(After deductions)\n");
         }
 
         protected override void Footer()
         {
             AddDotedLine();
-            AddRegularText("************************* \nThis is computer generated payslip\n ", formatMiddleCenter);
-            AddRegularText(" No Sign is requried\n ************************* \n", formatMiddleCenter);
+            AddRegularText("************************* \nThis is computer generated payslip\n ");
+            AddRegularText(" No Sign is requried\n ************************* \n");
 
             AddDotedLine();
 
-            AddRegularText("No of present day also includes half day, paid leave, sick leaves and sunday(s)\n");
-            AddRegularText("Deducations are basic and computer generated. In actual can varries based on request.\n");
-            AddRegularText("Last month advance is deducted and Salary advance may not be deducted!.\n\n");
+            AddRegularText("No of present day also includes half day, \npaid leave, sick leaves and sunday(s)\n");
+            AddRegularText("Deducations are basic and computer generated. \nIn actual can varries based on request.\n");
+            AddRegularText("Last month advance is deducted \nand Salary advance may not be deducted!.\n\n");
             AddRegularText(DotedLineLong);
-            AddRegularText($"For {StoreName}\n\n_______________\n(SM/Accounts)\n Signature" + "\n", formatMiddleCenter);
-            AddRegularText("\n_______________\nEmp Signature" + "\n", formatMiddleCenter);
+            AddRegularText($"For {StoreName}\n\n_______________\n(SM/Accounts)\n Signature" + "\n");
+            AddRegularText("\n_______________\nEmp Signature" + "\n");
             AddDotedLine();
             if (Reprint)
             {
-                AddRegularText("(Reprinted Orginal)\n", formatMiddleCenter);
+                AddRegularText("(Reprinted Orginal)\n");
             }
             else
             {
-                AddRegularText("(Orignal Copy)\n", formatMiddleCenter);
+                AddRegularText("(Orignal Copy)\n");
             }
             AddRegularText("Printed on: " + DateTime.Now + "\n\n\n\n\n");
             AddRegularText("\n" + DotedLine + "\n\n\n\n");

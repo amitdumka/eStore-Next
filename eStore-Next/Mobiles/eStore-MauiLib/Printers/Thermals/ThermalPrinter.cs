@@ -1,22 +1,16 @@
 ﻿using AKS.Shared.Commons.Ops;
-using eStore_MauiLib.Helpers.Interfaces;
 using eStore_MauiLib.Helpers;
+using eStore_MauiLib.Helpers.Interfaces;
 using eStore_MauiLib.Services.Print;
-using Microsoft.Data.SqlClient.Server;
-using Microsoft.Maui.Controls.Shapes;
-using Microsoft.Maui.Storage;
 using Syncfusion.Drawing;
 using Syncfusion.Pdf;
+using Syncfusion.Pdf.Barcode;
 using Syncfusion.Pdf.Graphics;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 using Color = Syncfusion.Drawing.Color;
+using Path = System.IO.Path;
 using PointF = Syncfusion.Drawing.PointF;
 using SizeF = Syncfusion.Drawing.SizeF;
-using Path = System.IO.Path;
-using eStore_MauiLib.DataModels.Accounting;
-using Syncfusion.Pdf.Barcode;
-using Microsoft.Maui.Controls.Compatibility;
 
 namespace eStore_MauiLib.Printers.Thermals
 {
@@ -54,6 +48,7 @@ namespace eStore_MauiLib.Printers.Thermals
 
         //Syncfusion Addittion
         protected float Top = 20;
+
         protected float X = 0, Y = 0;
         protected float LineSpace = 2;
         protected float Margin = 30;
@@ -69,17 +64,22 @@ namespace eStore_MauiLib.Printers.Thermals
 
         //Colors
         protected static PdfColor darkBlue = Color.FromArgb(255, 65, 104, 209);
+
         protected static PdfBrush darkBlueBrush = new PdfSolidBrush(darkBlue);
+
         //Create a brush with a white color.
         protected static PdfBrush whiteBrush = new PdfSolidBrush(Color.FromArgb(255, 255, 255, 255));
+
         protected static PdfBrush blackBrush = new PdfSolidBrush(Color.Black);
 
         //Fonts
-        protected static PdfFont HeaderFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 10, PdfFontStyle.Bold);
-        protected static PdfFont RegularFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 9, PdfFontStyle.Regular);
-        protected static PdfFont BoldFont;// = new PdfStandardFont(PdfFontFamily.TimesRoman, 8, PdfFontStyle.Bold);
-        protected static PdfFont SmallFont;//= new PdfStandardFont(PdfFontFamily.Courier, 9, PdfFontStyle.Regular);
+        protected static PdfFont HeaderFont;
+
+        protected static PdfFont RegularFont;
+        protected static PdfFont BoldFont;
+        protected static PdfFont SmallFont;
         protected static PdfFont RegularSmallFont;
+
         protected void SetPageType(bool duplicate)
         {
             if (!Page2Inch)
@@ -101,17 +101,15 @@ namespace eStore_MauiLib.Printers.Thermals
 
             pdfMargins = new PdfMargins();
             pdfMargins.Bottom = MarginBottom;
-            pdfMargins.Top = MarginTop/2;
+            pdfMargins.Top = MarginTop / 2;
             pdfMargins.Left = MarginLeft;
             pdfMargins.Right = MarginRight;
 
             HeaderFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
             RegularFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Regular);
             BoldFont = new PdfStandardFont(PdfFontFamily.TimesRoman, FontSize, PdfFontStyle.Bold);
-            SmallFont = new PdfStandardFont(PdfFontFamily.Courier, FontSize-2.5f, PdfFontStyle.Italic);
-            RegularSmallFont = new PdfStandardFont(PdfFontFamily.Helvetica, FontSize-1.5f, PdfFontStyle.Bold);
-
-
+            SmallFont = new PdfStandardFont(PdfFontFamily.Courier, FontSize - 2.5f, PdfFontStyle.Italic);
+            RegularSmallFont = new PdfStandardFont(PdfFontFamily.Helvetica, FontSize - 1.5f, PdfFontStyle.Bold);
         }
 
         protected void GenrateFileName(string number)
@@ -189,11 +187,11 @@ namespace eStore_MauiLib.Printers.Thermals
         {
             AddRegularText("  ");
             AddDotedLine();
-            AddRegularText(TitleName,formatMiddleCenter);
+            AddNormalText(TitleName, formatMiddleCenter);
             AddDotedLine();
             if (SubTitle)
             {
-                AddRegularText($"{SubTitleName}");
+                AddNormalText(SubTitleName, formatMiddleCenter);
                 AddDotedLine();
             }
         }
@@ -258,15 +256,16 @@ namespace eStore_MauiLib.Printers.Thermals
                 foreach (var line in lines)
                 {
                     SizeF textSize2 = RegularFont.MeasureString(line);
-                    graphics.DrawString(line, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
-                    Y += BoldFont.Height;// + LineSpace;
+                    graphics.DrawString(line, RegularFont, blackBrush, new RectangleF(X, Y - 5, textSize2.Width + 25, textSize2.Height + 10), formatMiddleJustify);
+                    Y += RegularFont.Height;// + LineSpace;
                 }
-                Y += LineSpace;
+                Y += LineSpace + 2;
             }
             else
             {
-                graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
-                Y += RegularFont.Height + LineSpace;
+                SizeF textSize = RegularFont.MeasureString(text);
+                graphics.DrawString(text, RegularFont, blackBrush, new RectangleF(X, Y - 5, textSize.Width + 25, textSize.Height + 10), formatMiddleJustify);
+                Y += RegularFont.Height + LineSpace + 2;
             }
         }
 
@@ -278,17 +277,17 @@ namespace eStore_MauiLib.Printers.Thermals
                 foreach (var line in lines)
                 {
                     SizeF textSize2 = BoldFont.MeasureString(line);
-                    graphics.DrawString(line, BoldFont, blackBrush, new PointF(X, Y), format);
-                    Y += BoldFont.Height;// + LineSpace;
+                    graphics.DrawString(line, BoldFont, blackBrush, new RectangleF(X, Y - 5, textSize2.Width + 25, textSize2.Height + 10), format);
+                    Y += BoldFont.Height;
                 }
-                Y += LineSpace;
+                Y += LineSpace + 2;
             }
             else
             {
-                graphics.DrawString(text, BoldFont, blackBrush, new PointF(X, Y), format);
-                Y += BoldFont.Height + LineSpace;
+                SizeF textSize = BoldFont.MeasureString(text);
+                graphics.DrawString(text, BoldFont, blackBrush, new RectangleF(X, Y - 5, textSize.Width + 25, textSize.Height + 10), format);
+                Y += BoldFont.Height + LineSpace + 2;
             }
-
         }
 
         protected void AddRegularText(string text, PdfStringFormat format)
@@ -299,17 +298,20 @@ namespace eStore_MauiLib.Printers.Thermals
                 foreach (var line in lines)
                 {
                     SizeF textSize2 = RegularFont.MeasureString(line);
-                    graphics.DrawString(line, RegularFont, blackBrush, new PointF(X, Y), format);
-                    Y += BoldFont.Height;
+                    graphics.DrawString(line, RegularFont, blackBrush, new RectangleF(X, Y - 5, textSize2.Width + 25, textSize2.Height + 10), format);
+                    Y += RegularFont.Height;
                 }
-                Y += LineSpace;
+                Y += LineSpace + 2;
             }
             else
             {
-                graphics.DrawString(text, RegularFont, blackBrush, new PointF(X, Y), format);
-                Y += RegularFont.Height + LineSpace;
+                SizeF textSize = RegularFont.MeasureString(text);
+
+                graphics.DrawString(text, RegularFont, blackBrush, new RectangleF(X, Y - 5, textSize.Width + 25, textSize.Height + 10), format);
+                Y += RegularFont.Height + LineSpace + 2;
             }
         }
+
         protected void AddSmallText(string text)
         {
             if (text.Contains("\n"))
@@ -321,15 +323,16 @@ namespace eStore_MauiLib.Printers.Thermals
                     graphics.DrawString(line, SmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
                     Y += SmallFont.Height;
                 }
-                Y += LineSpace-1;
+                Y += LineSpace - 1;
             }
             else
             {
                 SizeF textSize = SmallFont.MeasureString(text);
                 graphics.DrawString(text, SmallFont, blackBrush, new PointF(X, Y), formatMiddleJustify);
-                Y += SmallFont.Height + LineSpace-1;
+                Y += SmallFont.Height + LineSpace - 1;
             }
         }
+
         protected void AddSubText(string text)
         {
             if (text.Contains("\n"))
@@ -350,27 +353,36 @@ namespace eStore_MauiLib.Printers.Thermals
                 Y += RegularSmallFont.Height + LineSpace - 1;
             }
         }
+
         protected void AddDotedLine()
         {
             //if (!Page2Inch) AddNormalText(DotedLineLong, formatMiddleCenter); else AddNormalText(DotedLine, formatMiddleCenter);
             AddLine();
         }
+
         protected void AddLine()
         {
             //graphics.DrawRectangle(darkBlueBrush, new RectangleF(0, Y, PageWith, 5));
-            graphics.DrawLine(PdfPens.Blue, 0, Y, PageWith, Y );
+            graphics.DrawLine(PdfPens.Blue, 0, Y, PageWith, Y);
             Y += 6;
         }
+
         protected void AddSpace()
         {
             Y += ((RegularFont.Height + LineSpace) * 3);
         }
+
         //Abstract Methods
         public abstract MemoryStream PrintPdf(bool duplicate, bool print = false);
+
         protected abstract void Content();
+
         protected abstract void Footer();
+
         protected abstract void DuplicateFooter();
+
         protected abstract void QRBarcode();
+
         protected void QRCode(string text)
         {
             PdfQRBarcode barcode = new PdfQRBarcode();
@@ -378,11 +390,11 @@ namespace eStore_MauiLib.Printers.Thermals
             barcode.XDimension = 3;
             barcode.Text = text;
             SizeF size = new SizeF(35, 35);
-            barcode.Draw(page, new PointF((PageWith/2)-45, Y), size);
+            barcode.Draw(page, new PointF((PageWith / 2) - 45, Y), size);
             Y += size.Height + LineSpace;
-            
         }
-        //Init 
+
+        //Init
         protected bool Init(bool duplicate = false)
         {
             try
@@ -390,7 +402,7 @@ namespace eStore_MauiLib.Printers.Thermals
                 SetPageType(duplicate);
                 SetStoreInfo();
                 document = new PdfDocument();
-                
+
                 var pSize = new SizeF(PageWith, PageHeight);
                 document.PageSettings.Size = pSize;
                 document.PageSettings.Margins = pdfMargins;
@@ -409,6 +421,7 @@ namespace eStore_MauiLib.Printers.Thermals
                 return false;
             }
         }
+
         protected MemoryStream Save(bool print = false)
         {
             using MemoryStream ms = new();
@@ -424,6 +437,7 @@ namespace eStore_MauiLib.Printers.Thermals
 
             return ms;
         }
+
         public static void SavePdf(MemoryStream memory, string fileName)
         {
             ServiceHelper.GetService<ISave>().SaveAndView(fileName, "application/pdf", memory);
@@ -433,6 +447,5 @@ namespace eStore_MauiLib.Printers.Thermals
         {
             ServiceHelper.GetService<IPrinterService>().Print(memory, fileName);
         }
-
     }
 }

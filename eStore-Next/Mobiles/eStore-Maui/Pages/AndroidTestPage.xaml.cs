@@ -82,13 +82,7 @@ public class PrintPageViewModel
 
     public ICommand Print2Command => new Command(async () =>
     {
-        //List<string> lines = new List<string>();
-        //var ds = PrintMessage.Split("#");
-        //foreach (var item in ds)
-        //{
-        //    lines.Add(item);
-        //}
-        //DummyPdf.PrintPdf("Testing", lines, "Testing.pdf");
+        
         TestPaySlip.Print();
     });
 

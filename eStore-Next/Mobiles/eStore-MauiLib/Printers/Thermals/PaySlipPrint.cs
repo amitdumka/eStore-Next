@@ -1,5 +1,4 @@
-﻿using Syncfusion.Pdf.Barcode;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace eStore_MauiLib.Printers.Thermals
 {
@@ -37,7 +36,7 @@ namespace eStore_MauiLib.Printers.Thermals
                 //    FileName = Path.Combine(PathName, FileName);
                 //}
                 this.TitleName = $"Pay Slip";
-                this.SubTitle = true; 
+                this.SubTitle = true;
                 this.SubTitleName = $"For Month of {Month}/{Year}";
                 SetStoreInfo();
                 PathName = $@"{StoreCode}/PaySlips/{StaffName}/{Year}/{Month}/";
@@ -53,7 +52,7 @@ namespace eStore_MauiLib.Printers.Thermals
                     AddSpace();
                     HeaderText();
                     TitleText();
-                    
+
                     Content();
                     DuplicateFooter();
                     AddSpace();
@@ -75,10 +74,10 @@ namespace eStore_MauiLib.Printers.Thermals
         protected override void Content()
         {
             AddDotedLine();
-            AddNormalText("PaySlip No:" + PaySlipNo);
-            AddNormalText("Printed Date: \n" + DateTime.Now.ToString());
+            AddNormalText("PaySlip No:" + PaySlipNo, formatMiddleCenter);
+            AddNormalText("Printed Date: \n" + DateTime.Now.ToString(), formatMiddleCenter);
             AddDotedLine();
-            AddNormalText("Employee Name: \n\t" + StaffName);
+            AddNormalText("Employee Name: \n\t" + StaffName, formatMiddleCenter);
             AddNormalText($"Address: {City}");
             AddNormalText($"Period: {Month} / {Year}");
             AddDotedLine();

@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
 namespace AKS.Shared.Commons.Ops
 {
     //TODO: permission , READ, READ WrITE, READ WRITE Delte , Full
@@ -20,13 +22,18 @@ namespace AKS.Shared.Commons.Ops
         public static DateTime LoggedTime { get; set; } = DateTime.Now;
 
         public static bool IsLoggedIn { get; set; } = false;
+        public static void Clear()
+        {
+            IsLoggedIn = false;
+            UserName = GuestName = StoreCode = StoreName = CityName=Address=TaxNumber=PhoneNo="";
+            UserType = UserType.Guest;
 
+        }
+    }
+        public static class AppConfig
+        {
+            public static DBType DBType { get; set; } = DBType.Local;
+
+        }
 
     }
-    public static class AppConfig
-    {
-        public static DBType DBType { get; set; } = DBType.Local;
-
-    }
-
-}

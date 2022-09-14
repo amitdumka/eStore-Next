@@ -78,15 +78,15 @@ namespace eStore_MauiLib.ViewModels.Auth
             }
             else
             {
-              var user=  DataModel.SignIn(_userName,_password);
+                var user = DataModel.SignIn(_userName, _password);
                 if (user != null)
                 {
                     var store = await DataModel.GetStore(user.StoreId);
                     CurrentSession.StoreCode = user.StoreId;
                     CurrentSession.UserName = user.UserName;
                     CurrentSession.GuestName = user.GuestName;
-                    CurrentSession.IsLoggedIn = true; 
-                    CurrentSession.LoggedTime= DateTime.Now;
+                    CurrentSession.IsLoggedIn = true;
+                    CurrentSession.LoggedTime = DateTime.Now;
                     CurrentSession.UserType = user.UserType;
                     if (store != null)
                     {
@@ -95,11 +95,10 @@ namespace eStore_MauiLib.ViewModels.Auth
                         CurrentSession.StoreName = store.StoreName;
                         CurrentSession.PhoneNo = store.StorePhoneNumber;
                         CurrentSession.CityName = store.City;
-                       await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                        await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
 
                         return true;
                     }
-
                 }
                 await Toast.Make($"User {UserName} not Found ....", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 return false;
@@ -108,7 +107,10 @@ namespace eStore_MauiLib.ViewModels.Auth
 
         [RelayCommand]
         private async Task<bool> SignOut()
-        { return false; }
+        {
+            CurrentSession.Clear();
+            return true;
+        }
 
         [RelayCommand]
         private async Task<bool> SignUP()
@@ -118,7 +120,6 @@ namespace eStore_MauiLib.ViewModels.Auth
         private void ShowErrors()
         {
             string message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
-            //_ = DialogService.ShowMessageDialogAsync("Validation errors", message);
             Toast.Make(message, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
         }
     }

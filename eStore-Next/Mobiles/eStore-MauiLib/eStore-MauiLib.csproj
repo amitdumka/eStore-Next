@@ -36,8 +36,6 @@
 	  <None Remove="CommunityToolkit.Maui.Core" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="DataModels\" />
-	  <Folder Include="ViewModels\" />
 	  <Folder Include="DTO\" />
 	  <Folder Include="DataModels\Auths\" />
 	  <Folder Include="DataModels\Stores\" />
@@ -49,9 +47,13 @@
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0" />
+	  <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
+	  <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.0.0" />
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
 	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
 	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.2.0" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.48" />
 	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.48" />
 	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />

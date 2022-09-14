@@ -37,9 +37,10 @@ namespace eStore_MauiLib.DataModels.Auths
             }
         }
 
-        public override Task<bool> InitContext()
+        public override async Task<bool> InitContext()
         {
-            throw new NotImplementedException();
+            // Datamodel setup in case requried
+            return Connect();
         }
 
         public User SignIn(string userName, string password)
@@ -142,15 +143,53 @@ namespace eStore_MauiLib.DataModels.Auths
             return false;
         }
 
-        public bool SyncUp(DBType dBType)
+        public async Task<bool> SyncUp(DBType dBType)
         {
-            throw new NotImplementedException();
+            switch (dBType)
+            {
+                case DBType.Local:
+                    break;
+                case DBType.Azure:
+                    if (_azureDb == null)
+                    {
+                        _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
+                    }
+                    if (_localDb == null)
+                    {
+                        _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
+                    }
+
+                    var users = _localDb.Users.Where(c => c.StoreId == StoreCode).ToList();
+                    int newUser = 0;
+                    foreach (var user in users)
+                    {
+                        if (!_azureDb.Users.Any(c => c.UserName == user.UserName))
+                        {
+                            _azureDb.Users.Add(user);
+                            newUser++;
+                        }
+                    }
+                    return (await _azureDb.SaveChangesAsync())>0;
+                    
+                case DBType.API:
+                    break;
+                case DBType.Remote:
+                    break;
+                case DBType.Mango:
+                    break;
+                case DBType.Others:
+                    break;
+                default:
+                    break;
+            }
+            return false;
+            
 
         }
 
         public override List<int> GetYearList()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

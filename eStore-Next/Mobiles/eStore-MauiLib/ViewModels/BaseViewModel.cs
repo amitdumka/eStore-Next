@@ -1,16 +1,35 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection.Metadata;
 
 namespace eStore_MauiLib.ViewModels
 {
-	public class BaseViewModel <T>: INotifyPropertyChanged
+    [ObservableRecipient]
+    public abstract partial class BaseViewModel<T, DM> : ObservableValidator
     {
-
         #region Field
+        protected DM DataModel;
+
+        [ObservableProperty]
+        protected bool _isNew;
+
+        [ObservableProperty]
+        protected T _entity;
+
+        [ObservableProperty]
+        protected ObservableCollection<T> _entities;
 
         #endregion
-        #region Constructors
 
+
+        #region Constructors
+        public BaseViewModel()
+        {
+
+        }
         #endregion
         #region EventHandler
         #endregion
@@ -21,11 +40,23 @@ namespace eStore_MauiLib.ViewModels
         #region Methods
 
         #endregion
-        #region Abstractfunctions
 
+        #region Abstractfunctions
+        [RelayCommand]
+        protected abstract Task<bool> Save(bool isNew = false);
+        [RelayCommand]
+        protected abstract Task<bool> Delete();
+        [RelayCommand]
+        protected abstract Task<T> Get(string id);
+        [RelayCommand]
+        protected abstract Task<T> GetById(int id);
+        [RelayCommand]
+        protected abstract Task<List<T>> GetList();
+        [RelayCommand]
+        protected abstract Task<List<T>> Filter(string fitler);
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }
 

@@ -94,7 +94,7 @@
                 <Tab Title="Login" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
                 </Tab>
-                
+
                 <Tab Title="Settings" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
                 </Tab>

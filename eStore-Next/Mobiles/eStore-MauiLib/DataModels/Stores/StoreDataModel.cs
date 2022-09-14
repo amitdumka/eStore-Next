@@ -26,7 +26,7 @@ namespace eStore_MauiLib.DataModels.Stores
 
         public override List<int> GetYearList()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override Task<bool> InitContext()

@@ -12,9 +12,9 @@
             HorizontalOptions="Center" />
 
         <HorizontalStackLayout x:Name="ControlsLayout" Margin="10" HorizontalOptions="CenterAndExpand">
-            <Button x:Name="AddButton" Text="{Binding AddButtonText, FallbackValue='Add'}" Margin="15"/>
-            <Button x:Name="DeleteButton" Text="{Binding DeleteButtonText, FallbackValue='Delete'}"/>
-            <Button x:Name="RefreshButton" Text="{Binding RefreshButtonText, FallbackValue='Refresh'}" Margin="15"/>
+            <Button x:Name="AddButton" Text="{Binding AddButtonText, FallbackValue='Add'}" Margin="10"/>
+            <Button x:Name="DeleteButton" Text="{Binding DeleteButtonText, FallbackValue='Delete'}" Margin="10"/>
+            <Button x:Name="RefreshButton" Text="{Binding RefreshButtonText, FallbackValue='Refresh'}" Margin="10"/>
         </HorizontalStackLayout>
 
         <VerticalStackLayout x:Name="DetailsLayout" Margin="10">

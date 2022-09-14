@@ -102,6 +102,7 @@
 	  <None Remove="Platforms\Android\Resources\xml\" />
 	  <None Remove="Syncfusion.DocIO.NET" />
 	  <None Remove="AlohaKit" />
+	  <None Remove="Pages\Auth\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -169,6 +170,9 @@
 	  <MauiXaml Update="Views\Custom\RecordListingView.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Auth\UsersPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pages\" />
@@ -180,5 +184,6 @@
 	  <Folder Include="Views\" />
 	  <Folder Include="Views\Custom\" />
 	  <Folder Include="Platforms\Android\Resources\xml\" />
+	  <Folder Include="Pages\Auth\" />
 	</ItemGroup>
 </Project>

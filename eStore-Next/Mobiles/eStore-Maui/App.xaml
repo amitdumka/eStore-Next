@@ -46,7 +46,7 @@
 
             <!--  Desktop/Tablet  -->
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
-                <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+                <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
             </FlyoutItem>
             <FlyoutItem Title="Login" Style="{StaticResource FavFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
@@ -57,7 +57,15 @@
             <FlyoutItem Title="Admin" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
-
+            <FlyoutItem Title="Vouchers" Style="{StaticResource MapFlyout}">
+                <ShellContent ContentTemplate="{DataTemplate page:VoucherPage}" />
+            </FlyoutItem>
+            <FlyoutItem Title="Users" Style="{StaticResource MapFlyout}">
+                <ShellContent ContentTemplate="{DataTemplate page:Auth.UsersPage}" />
+            </FlyoutItem>
+            <FlyoutItem Title="Stores" Style="{StaticResource MapFlyout}">
+                <ShellContent ContentTemplate="{DataTemplate page:Stores.StorePage}" />
+            </FlyoutItem>
 
             <FlyoutItem
                 Title="Settings"
@@ -71,7 +79,13 @@
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
                 </Tab>
-                <Tab Title="Favorites" Icon="tab_favorites.png">
+                <Tab Title="Users" Icon="tab_settings.png">
+                    <ShellContent ContentTemplate="{DataTemplate page:Auth.UsersPage}" />
+                </Tab>
+                <Tab Title="Stores" Icon="tab_settings.png">
+                    <ShellContent ContentTemplate="{DataTemplate page:Stores.StorePage}" />
+                </Tab>
+                <Tab Title="Vouchers" Icon="tab_favorites.png">
                     <ShellContent ContentTemplate="{DataTemplate page:VoucherPage}" />
                 </Tab>
                 <Tab Title="Test" Icon="tab_map.png">
@@ -80,6 +94,7 @@
                 <Tab Title="Login" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
                 </Tab>
+                
                 <Tab Title="Settings" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
                 </Tab>

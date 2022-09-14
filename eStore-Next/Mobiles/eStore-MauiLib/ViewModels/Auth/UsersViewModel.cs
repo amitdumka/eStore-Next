@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Auth;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
@@ -16,6 +17,7 @@ namespace eStore_MauiLib.ViewModels.Auth
         [Required]
         [MinLength(5)]
         [MaxLength(15)]
+        [EmailAddress]
         private string _userName;
 
         [ObservableProperty]
@@ -66,12 +68,33 @@ namespace eStore_MauiLib.ViewModels.Auth
 
         [RelayCommand]
         private async Task<bool> SignIn()
-        { return true; }
+        {
+            ValidateAllProperties();
+            if (HasErrors)
+            {
+                ShowErrors();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         [RelayCommand]
         private async Task<bool> SignOut()
         { return false; }
+
         [RelayCommand]
         private async Task<bool> SignUP()
         { return false; }
+
+        [RelayCommand]
+        private void ShowErrors()
+        {
+            string message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
+            //_ = DialogService.ShowMessageDialogAsync("Validation errors", message);
+            Toast.Make(message, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+        }
     }
 }

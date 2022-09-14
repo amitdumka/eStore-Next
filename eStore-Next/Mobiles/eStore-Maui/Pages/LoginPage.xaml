@@ -6,6 +6,14 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModel="clr-namespace:eStore_MauiLib.ViewModels.Auth;assembly=eStore-MauiLib"
     Title="eStore Login">
+    <ContentPage.Resources>
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+        </Style>
+        <Style x:Key="ValidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Green" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.BindingContext>
         <viewModel:UsersViewModel x:Name="viewModel" />
     </ContentPage.BindingContext>
@@ -47,8 +55,17 @@
         <Entry
             x:Name="UserName"
             Margin="5"
+            Keyboard="Email"
             Placeholder="Username"
             Text="{Binding UserName, Mode=TwoWay}">
+            <Entry.Behaviors>
+                <toolkit:EmailValidationBehavior
+                    x:Name="EmailValidator"
+                    DecorationFlags="Trim"
+                    Flags="ValidateOnValueChanged"
+                    InvalidStyle="{StaticResource InvalidEntryStyle}"
+                    ValidStyle="{StaticResource ValidEntryStyle}" IsNotValid="True" />
+            </Entry.Behaviors>
             <!--<Entry.Behaviors>
                 <toolkit:EventToCommandBehavior Command="{Binding HasErrors}" EventName="TextChanged" />
             </Entry.Behaviors>-->
@@ -67,7 +84,13 @@
             Margin="5"
             IsPassword="True"
             Placeholder="Password"
-            Text="{Binding Password, Mode=TwoWay}" />
+            Text="{Binding Password, Mode=TwoWay}">
+            <!--<Entry.Behaviors>
+                <toolkit:AnimationBehavior >
+
+                </toolkit:AnimationBehavior>
+            </Entry.Behaviors>-->
+        </Entry>
         <Grid ColumnDefinitions="*, *">
             <Button
                 Margin="5"
@@ -81,5 +104,30 @@
                 Command="{Binding SignUPCommand}"
                 Text="Sign Up" />
         </Grid>
+        <!--<Grid ColumnDefinitions="*">
+            <Label Text="Invalid Email"
+            VerticalTextAlignment="Start"
+            HorizontalTextAlignment="Start"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            TextColor="Red"
+            FontSize="Header"
+            IsVisible="{Binding IsNotValid, Source={x:Reference EmailValidator}}"/>
+        </Grid>-->
+        <!--<Grid ColumnDefinitions="*,*,*">
+            <toolkit:AvatarView
+                CornerRadius="90"
+                ImageSource="arlogo.jpg"
+                HeightRequest="90"
+                WidthRequest="90"
+                BackgroundColor="White"
+                BorderColor="Red"
+                 />
+            <toolkit:UniformItemsLayout Grid.Column="1">
+                <Button Text="Add"/>
+                <Button Text="Del"/>
+                <Button Text="Refresh"/>
+            </toolkit:UniformItemsLayout>
+        </Grid>-->
     </StackLayout>
 </ContentPage>

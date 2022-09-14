@@ -1,6 +1,4 @@
-﻿using AndroidX.CardView.Widget;
-
-namespace eStore_Maui.Views.Custom;
+﻿namespace eStore_Maui.Views.Custom;
 
 public partial class RecordListingView : ContentView
 {

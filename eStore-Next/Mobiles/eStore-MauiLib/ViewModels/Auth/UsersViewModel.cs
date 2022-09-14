@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Auth;
+using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -24,7 +25,7 @@ namespace eStore_MauiLib.ViewModels.Auth
         //[NotifyPropertyChangedRecipients]
         [NotifyDataErrorInfo]
         [Required]
-        [MinLength(8)]
+        [MinLength(4)]
         [MaxLength(12)]
         private string _password;
 
@@ -77,7 +78,31 @@ namespace eStore_MauiLib.ViewModels.Auth
             }
             else
             {
-                return true;
+              var user=  DataModel.SignIn(_userName,_password);
+                if (user != null)
+                {
+                    var store = await DataModel.GetStore(user.StoreId);
+                    CurrentSession.StoreCode = user.StoreId;
+                    CurrentSession.UserName = user.UserName;
+                    CurrentSession.GuestName = user.GuestName;
+                    CurrentSession.IsLoggedIn = true; 
+                    CurrentSession.LoggedTime= DateTime.Now;
+                    CurrentSession.UserType = user.UserType;
+                    if (store != null)
+                    {
+                        CurrentSession.Address = store.City + "\t" + store.State;
+                        CurrentSession.TaxNumber = store.GSTIN;
+                        CurrentSession.StoreName = store.StoreName;
+                        CurrentSession.PhoneNo = store.StorePhoneNumber;
+                        CurrentSession.CityName = store.City;
+                       await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+
+                        return true;
+                    }
+
+                }
+                await Toast.Make($"User {UserName} not Found ....", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                return false;
             }
         }
 

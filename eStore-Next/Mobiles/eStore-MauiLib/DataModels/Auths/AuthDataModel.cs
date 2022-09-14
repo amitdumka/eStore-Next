@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Auth;
 using eStore_MauiLib.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,30 @@ namespace eStore_MauiLib.DataModels.Auths
             throw new NotImplementedException();
         }
 
+        public async Task<Store> GetStore(string sid)
+        {
+            switch (Mode)
+            {
+                case DBType.Local:
+                    var store= await _localDb.Stores.FindAsync(sid);
+                        //Failsafe
+                        if (store == null)
+                        {
+                            if (this.ConType == ConType.Hybrid || ConType == ConType.HybridDB)
+                            {
+                            store = await _azureDb.Stores.FindAsync(sid);
+                            }
+                        }
+                        return store;
+                    
+                case DBType.Azure:
+                    return await _azureDb.Stores.FindAsync(sid);
+
+                default:
+                    return null;
+
+            }
+        }
         public override async Task<List<User>> GetItems(string storeid)
         {
             switch (Mode)
@@ -50,6 +75,14 @@ namespace eStore_MauiLib.DataModels.Auths
             {
                 case DBType.Local:
                     user = _localDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                    //Failsafe
+                    if (user == null)
+                    {
+                        if (this.ConType == ConType.Hybrid|| ConType == ConType.HybridDB)
+                        {
+                            user = _azureDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();
+                        }
+                    }
                     break;
                 case DBType.Azure:
                     user = _azureDb.Users.Where(c => c.UserName == userName && c.Password == password).FirstOrDefault();

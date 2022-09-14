@@ -1,60 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eStore_Maui.Pages.Stores.StorePage"
-              xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
-             Title="Stores">
-    <VerticalStackLayout>
-        <Label 
+<ContentPage
+    x:Class="eStore_Maui.Pages.Stores.StorePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+    Title="Stores">
+    <VerticalStackLayout BackgroundColor="Bisque">
+        <Label
+            Margin="10"
+            HorizontalOptions="Center"
             Text="Store"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            VerticalOptions="Center" />
         <VerticalStackLayout>
-            <HorizontalStackLayout>
-                <Button Text="Add"/>
-                <Button Text="Delete"/>
-                <Button Text="Refresh"/>
+            <HorizontalStackLayout
+                Margin="10"
+                BackgroundColor="AliceBlue"
+                HorizontalOptions="CenterAndExpand">
+                <Button
+                    Margin="5"
+                    CornerRadius="30"
+                    Text="Add Store" />
+                <Button
+                    Margin="5"
+                    CornerRadius="30"
+                    Text="Delete" />
+                <Button
+                    Margin="5"
+                    CornerRadius="30"
+                    Text="Refresh" />
             </HorizontalStackLayout>
-            <VerticalStackLayout>
-                <sfgrid:SfDataGrid x:Name="dataGrid"
-                           AutoGenerateColumnsMode="None"
-                            ColumnWidthMode="Fill"
-                           RowHeight="48"
-                               SortingMode="Single"
-                                  VerticalOptions="CenterAndExpand"
-                                 SelectionMode="SingleDeselect"
-                           HorizontalOptions="Center"
-                           HorizontalScrollBarVisibility="Always"
-                           VerticalScrollBarVisibility="Always"
-                               ItemsSource="{Binding TestList}">
+            <VerticalStackLayout BackgroundColor="Aqua">
+                <sfgrid:SfDataGrid
+                    x:Name="dataGrid"
+                    AutoGenerateColumnsMode="None"
+                    ColumnWidthMode="Fill"
+                    HorizontalOptions="Center"
+                    HorizontalScrollBarVisibility="Always"
+                    ItemsSource="{Binding TestList}"
+                    RowHeight="48"
+                    SelectionMode="SingleDeselect"
+                    BackgroundColor="Beige"
+                    MaximumHeightRequest="570"
+                    SortingMode="Single"
+                    VerticalOptions="CenterAndExpand"
+                    VerticalScrollBarVisibility="Always">
+                    
                     <sfgrid:SfDataGrid.DefaultStyle>
-                        <sfgrid:DataGridStyle HeaderRowFontFamily="Roboto-Medium" HeaderRowFontSize="24" RowFontSize="14" HeaderRowTextColor="#212121" RowTextColor="#212121"></sfgrid:DataGridStyle>
+                        <sfgrid:DataGridStyle
+                            HeaderRowFontFamily="Roboto-Medium"
+                            HeaderRowFontSize="24"
+                            HeaderRowTextColor="#212121"
+                            RowFontSize="14"
+                            RowTextColor="#212121" />
                     </sfgrid:SfDataGrid.DefaultStyle>
-
 
                     <sfgrid:SfDataGrid.Columns>
 
-                        <sfgrid:DataGridNumericColumn Format="D"
-                                           HeaderText="Code"
-                                           MappingName="StoreId"
-                                           >
-                        </sfgrid:DataGridNumericColumn>
+                        <sfgrid:DataGridNumericColumn
+                            Format="D"
+                            HeaderText="Code"
+                            MappingName="StoreId" />
 
-                        <sfgrid:DataGridTextColumn 
-                                           HeaderText="Name"
-                                           MappingName="StoreName"
-                                           >
-                        </sfgrid:DataGridTextColumn>
-                        <sfgrid:DataGridTextColumn 
-                                           HeaderText="City"                       
-                                           MappingName="city"
-                                           >
-                        </sfgrid:DataGridTextColumn>
-                        <sfgrid:DataGridCheckBoxColumn 
-                                           HeaderText="Active"                      
-                                           MappingName="IsActive"
-                                           >
-                        </sfgrid:DataGridCheckBoxColumn>
+                        <sfgrid:DataGridTextColumn HeaderText="Name" MappingName="StoreName" />
+                        <sfgrid:DataGridTextColumn HeaderText="City" MappingName="city" />
+                        <sfgrid:DataGridCheckBoxColumn HeaderText="Active" MappingName="IsActive" />
 
                     </sfgrid:SfDataGrid.Columns>
                     <sfgrid:SfDataGrid.SortColumnDescriptions>
@@ -62,7 +71,7 @@
                     </sfgrid:SfDataGrid.SortColumnDescriptions>
                 </sfgrid:SfDataGrid>
             </VerticalStackLayout>
-            <Label Text="No of Store(s):1"/>
+            <Label Text="No of Store(s):1" TextColor="IndianRed" BackgroundColor="DarkGrey" HorizontalTextAlignment="End" FontAttributes="Bold" FontAutoScalingEnabled="True"/>
         </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

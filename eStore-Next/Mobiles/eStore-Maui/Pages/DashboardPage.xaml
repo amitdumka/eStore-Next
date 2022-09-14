@@ -119,8 +119,9 @@
                                 BackgroundColor="Yellow"
                                 Progress="-1" />-->
                             <aloha:CheckBox
-                                Margin="10" Background="Yellow"
-                                BackgroundColor="AliceBlue" 
+                                Margin="10"
+                                Background="Yellow"
+                                BackgroundColor="AliceBlue"
                                 IsChecked="True" />
                         </VerticalStackLayout>
                     </tabView:SfTabItem.Content>

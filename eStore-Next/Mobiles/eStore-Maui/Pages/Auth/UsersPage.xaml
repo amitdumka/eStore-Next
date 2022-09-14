@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eStore_Maui.Pages.Auth.UsersPage"
-             xmlns:rlv="clr-namespace:eStore_Maui.Views.Custom" 
-             Title="UsersPage">
+<ContentPage
+    x:Class="eStore_Maui.Pages.Auth.UsersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:rlv="clr-namespace:eStore_Maui.Views.Custom"
+    Title="Users">
     <VerticalStackLayout>
-        <Label 
-            Text="User List" Margin="5,0,5,0"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <rlv:RecordListingView Title="User List" AddButtonText="Add User" RefreshButtonText="Login"
-                               BackgroundColor="White" Padding="10" Margin="10" 
-                               />
+        <rlv:RecordListingView
+            Title="Users List"
+            AddButtonText="Add User"
+            BackgroundColor="White"
+            RefreshButtonText="ReLoad" />
     </VerticalStackLayout>
 </ContentPage>

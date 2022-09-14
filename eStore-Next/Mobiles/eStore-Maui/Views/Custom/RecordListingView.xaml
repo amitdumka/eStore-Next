@@ -1,32 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Name="this"
-              xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
-             x:Class="eStore_Maui.Views.Custom.RecordListingView">
-    <VerticalStackLayout BindingContext="{x:Reference this}">
+<ContentView
+    x:Class="eStore_Maui.Views.Custom.RecordListingView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+    x:Name="this">
+    <VerticalStackLayout BackgroundColor="DarkSalmon" BindingContext="{x:Reference this}">
 
-        <Label x:Name="_viewTitle"
+        <Label
+            x:Name="_viewTitle"
+            FontAttributes="Bold"
+            FontAutoScalingEnabled="True"
+            FontSize="Medium"
+            HorizontalOptions="Center"
             Text="{Binding Title, FallbackValue='Title'}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            TextColor="OrangeRed"
+            VerticalOptions="Center" />
 
-        <HorizontalStackLayout x:Name="ControlsLayout" Margin="10" HorizontalOptions="CenterAndExpand">
-            <Button x:Name="AddButton" Text="{Binding AddButtonText, FallbackValue='Add'}" Margin="10"/>
-            <Button x:Name="DeleteButton" Text="{Binding DeleteButtonText, FallbackValue='Delete'}" Margin="10"/>
-            <Button x:Name="RefreshButton" Text="{Binding RefreshButtonText, FallbackValue='Refresh'}" Margin="10"/>
+        <HorizontalStackLayout
+            x:Name="ControlsLayout"
+            Margin="10"
+            BackgroundColor="AliceBlue"
+            HorizontalOptions="CenterAndExpand">
+            <Button
+                x:Name="AddButton"
+                Margin="5"
+                CornerRadius="30"
+                Text="{Binding AddButtonText, FallbackValue='Add'}" />
+            <Button
+                x:Name="DeleteButton"
+                Margin="5"
+                CornerRadius="30"
+                Text="{Binding DeleteButtonText, FallbackValue='Delete'}" />
+            <Button
+                x:Name="RefreshButton"
+                Margin="5"
+                CornerRadius="30"
+                Text="{Binding RefreshButtonText, FallbackValue='Refresh'}" />
         </HorizontalStackLayout>
 
         <VerticalStackLayout x:Name="DetailsLayout" Margin="10">
-            <sfgrid:SfDataGrid x:Name="dataGrid"  ColumnWidthMode="Fill" 
-                  HorizontalOptions="Center"  HorizontalScrollBarVisibility="Always" VerticalScrollBarVisibility="Always" RowHeight="48"
-                  SortingMode="Single"  VerticalOptions="CenterAndExpand" SelectionMode="SingleDeselect">
+            <sfgrid:SfDataGrid
+                x:Name="dataGrid"
+                AutoGenerateColumnsMode="None"
+                BackgroundColor="SteelBlue"
+                ColumnWidthMode="Fill"
+                HorizontalOptions="Center"
+                HorizontalScrollBarVisibility="Always"
+                MaximumHeightRequest="570"
+                RowHeight="48"
+                SelectionMode="SingleDeselect"
+                SortingMode="Single"
+                VerticalOptions="CenterAndExpand"
+                VerticalScrollBarVisibility="Always">
                 <sfgrid:SfDataGrid.SortColumnDescriptions>
-                        <sfgrid:SortColumnDescription ColumnName="StoreName" />
+                    <sfgrid:SortColumnDescription ColumnName="StoreName" />
                 </sfgrid:SfDataGrid.SortColumnDescriptions>
             </sfgrid:SfDataGrid>
         </VerticalStackLayout>
-
+        <Label
+            BackgroundColor="DarkGrey"
+            FontAttributes="Bold"
+            FontAutoScalingEnabled="True"
+            HorizontalTextAlignment="End"
+            Text="No of Store(s):1"
+            TextColor="IndianRed" />
     </VerticalStackLayout>
 </ContentView>
 

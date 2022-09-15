@@ -17,10 +17,18 @@ public partial class LoginPage : ContentPage
         {
             if (!DatabaseStatus.VerifyLocalStatus())
             {
-
                 DatabaseStatus.SyncInitial();
+                ButtonControls.IsVisible = CurrentSession.LocalStatus;
+                signInButton.IsEnabled = true;
+                signUpButton.IsEnabled = true;
             }
-            else CurrentSession.LocalStatus = true;
+            else 
+            { 
+                CurrentSession.LocalStatus = true;
+                ButtonControls.IsVisible = CurrentSession.LocalStatus;
+                signInButton.IsEnabled = true;
+                signUpButton.IsEnabled = true;
+            }
         }
     }
     void DoSignUpClicked(Object sender, EventArgs e)

@@ -64,7 +64,8 @@
                     DecorationFlags="Trim"
                     Flags="ValidateOnValueChanged"
                     InvalidStyle="{StaticResource InvalidEntryStyle}"
-                    ValidStyle="{StaticResource ValidEntryStyle}" IsNotValid="True" />
+                    IsNotValid="True"
+                    ValidStyle="{StaticResource ValidEntryStyle}" />
             </Entry.Behaviors>
             <!--<Entry.Behaviors>
                 <toolkit:EventToCommandBehavior Command="{Binding HasErrors}" EventName="TextChanged" />
@@ -91,43 +92,27 @@
                 </toolkit:AnimationBehavior>
             </Entry.Behaviors>-->
         </Entry>
-        <Grid ColumnDefinitions="*, *">
-            <Button
+        <Grid
+            x:Name="ButtonControls"
+            ColumnDefinitions="*, *"
+            IsVisible="False">
+            <Button x:Name="signInButton"
                 Margin="5"
                 BackgroundColor="{StaticResource Accent_Blue100}"
                 Command="{Binding SignInCommand}"
+                IsEnabled="False"
                 Text="Sign In" />
-            <Button
+            <Button x:Name="signUpButton"
                 Grid.Column="1"
                 Margin="5"
                 BackgroundColor="{StaticResource Accent_Yellow100}"
                 Command="{Binding SignUPCommand}"
+                IsEnabled="False"
                 Text="Sign Up" />
         </Grid>
-        <!--<Grid ColumnDefinitions="*">
-            <Label Text="Invalid Email"
-            VerticalTextAlignment="Start"
-            HorizontalTextAlignment="Start"
-            HorizontalOptions="Start"
-            VerticalOptions="Start"
-            TextColor="Red"
-            FontSize="Header"
-            IsVisible="{Binding IsNotValid, Source={x:Reference EmailValidator}}"/>
-        </Grid>-->
-        <!--<Grid ColumnDefinitions="*,*,*">
-            <toolkit:AvatarView
-                CornerRadius="90"
-                ImageSource="arlogo.jpg"
-                HeightRequest="90"
-                WidthRequest="90"
-                BackgroundColor="White"
-                BorderColor="Red"
-                 />
-            <toolkit:UniformItemsLayout Grid.Column="1">
-                <Button Text="Add"/>
-                <Button Text="Del"/>
-                <Button Text="Refresh"/>
-            </toolkit:UniformItemsLayout>
-        </Grid>-->
+
+        <Grid ColumnDefinitions="*">
+            <Label x:Name="LastStore" Text="{Binding StringFormat=$'{UserName} has logged in/'}" />
+        </Grid>
     </StackLayout>
 </ContentPage>

@@ -12,7 +12,7 @@ public partial class DashboardPage : ContentPage
 
         if (CurrentSession.IsLoggedIn)
         {
-            HeaderText.Text = $"Welcome to {CurrentSession.StoreCode}";
+            HeaderText.Text = $"Welcome to {CurrentSession.StoreName}";
 
         }
         var Meetings = new ObservableCollection<Meeting>();

@@ -50,7 +50,7 @@
             </FlyoutItem>
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
-            </FlyoutItem>            
+            </FlyoutItem>
             <FlyoutItem Title="Test" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:AndroidTestPage}" />
             </FlyoutItem>
@@ -94,7 +94,7 @@
                 <Tab Title="Test" Icon="tab_map.png">
                     <ShellContent ContentTemplate="{DataTemplate page:AndroidTestPage}" />
                 </Tab>
-                
+
 
                 <Tab Title="Settings" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />

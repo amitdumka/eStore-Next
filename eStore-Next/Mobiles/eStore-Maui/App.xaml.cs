@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using AKS.Shared.Commons.Ops;
+using eStore_MauiLib.RemoteService;
+
 namespace eStore_Maui
 {
     public partial class App : Application
@@ -24,6 +27,14 @@ namespace eStore_Maui
             catch (Exception ex)
             {
                 Debug.WriteLine($"err: {ex.Message}");
+            }
+        }
+
+        async void InitialDatabase()
+        {
+            if (!DatabaseStatus.VerifyLocalStatus())
+            {
+               CurrentSession.LocalStatus= DatabaseStatus.SyncInitial();
             }
         }
     }

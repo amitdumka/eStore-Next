@@ -45,12 +45,12 @@
 
 
             <!--  Desktop/Tablet  -->
-            <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
-                <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
-            </FlyoutItem>
             <FlyoutItem Title="Login" Style="{StaticResource FavFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
             </FlyoutItem>
+            <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
+                <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
+            </FlyoutItem>            
             <FlyoutItem Title="Test" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:AndroidTestPage}" />
             </FlyoutItem>
@@ -76,6 +76,9 @@
 
             <!--  Phone  -->
             <TabBar x:Name="PhoneTabs">
+                <Tab Title="Login" Icon="tab_settings.png">
+                    <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
+                </Tab>
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
                 </Tab>
@@ -91,9 +94,7 @@
                 <Tab Title="Test" Icon="tab_map.png">
                     <ShellContent ContentTemplate="{DataTemplate page:AndroidTestPage}" />
                 </Tab>
-                <Tab Title="Login" Icon="tab_settings.png">
-                    <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
-                </Tab>
+                
 
                 <Tab Title="Settings" Icon="tab_settings.png">
                     <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />

@@ -1,5 +1,5 @@
 ﻿using AKS.Shared.Commons.Ops;
-
+using eStore_MauiLib.RemoteService;
 
 namespace eStore_Maui.Pages;
 
@@ -8,7 +8,21 @@ public partial class LoginPage : ContentPage
 	public LoginPage()
 	{
 		InitializeComponent();
+        SyncLocal();
 	}
+
+    async void SyncLocal()
+    {
+        if (!CurrentSession.LocalStatus)
+        {
+            if (!DatabaseStatus.VerifyLocalStatus())
+            {
+
+                DatabaseStatus.SyncInitial();
+            }
+            else CurrentSession.LocalStatus = true;
+        }
+    }
     void DoSignUpClicked(Object sender, EventArgs e)
     {
         ////if (viewModel.Validate())

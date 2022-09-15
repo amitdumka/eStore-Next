@@ -1,12 +1,20 @@
 ﻿using System.Collections.ObjectModel;
+using AKS.Shared.Commons.Ops;
 using Syncfusion.Maui.Scheduler;
 
 namespace eStore_Maui.Pages;
 
 public partial class DashboardPage : ContentPage
 {
+    public string StoreName { get; set; }
     void Init()
     {
+
+        if (CurrentSession.IsLoggedIn)
+        {
+            HeaderText.Text = $"Welcome to {CurrentSession.StoreCode}";
+
+        }
         var Meetings = new ObservableCollection<Meeting>();
         Meeting meeting = new Meeting {
             Background= Brush.Orange, From=DateTime.Now.Date.AddHours(-2),

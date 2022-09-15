@@ -10,8 +10,9 @@
     Title="Dashboard">
     <VerticalStackLayout>
         <Label
+            x:Name="HeaderText"
             HorizontalOptions="Center"
-            Text="Welcome to Aprajita Retails !"
+            Text="Welcome to AR!"
             VerticalOptions="Center" />
 
         <tabView:SfTabView

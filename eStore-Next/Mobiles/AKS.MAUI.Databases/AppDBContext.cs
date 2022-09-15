@@ -13,6 +13,7 @@ namespace AKS.MAUI.Databases
 {
     public class MUAIConstant
     {
+        public const string AzurePath= "Data Source=tcp:aprajitaretails.database.windows.net,1433;Initial Catalog=AprajitaRetails_db;User Id=AmitKumar@aprajitaretails;Password=Dumka@@2654";
         public const string DatabaseFile = "eStoreDBSqlite.db3";
         public static string DatabasePath
         {

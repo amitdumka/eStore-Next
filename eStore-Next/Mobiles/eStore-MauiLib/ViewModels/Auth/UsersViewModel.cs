@@ -29,10 +29,13 @@ namespace eStore_MauiLib.ViewModels.Auth
         [MaxLength(12)]
         private string _password;
 
+        [ObservableProperty]
+        private string _guestName;
         #endregion PropertyFields
 
         public UsersViewModel()
         {
+            GuestName = "No user ";
             DataModel = new AuthDataModel(ConType.Hybrid);
             DataModel.Connect();
         }
@@ -88,6 +91,7 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.IsLoggedIn = true;
                     CurrentSession.LoggedTime = DateTime.Now;
                     CurrentSession.UserType = user.UserType;
+                    GuestName = user.GuestName;
                     if (store != null)
                     {
                         CurrentSession.Address = store.City + "\t" + store.State;

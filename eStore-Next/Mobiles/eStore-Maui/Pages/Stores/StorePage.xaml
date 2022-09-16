@@ -3,66 +3,83 @@
     x:Class="eStore_Maui.Pages.Stores.StorePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:eStore_MauiLib.ViewModels.Stores;assembly=eStore-MauiLib"
     xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
     Title="Stores">
-    <VerticalStackLayout BackgroundColor="Bisque">
+    <ContentPage.BindingContext>
+        <viewModels:StoreViewModel x:Name="viewModel"/>
+    </ContentPage.BindingContext>
+    <VerticalStackLayout >
         <Label
             Margin="10"
-            HorizontalOptions="Center"
-            Text="Store"
+            FontSize="Subtitle"
+            TextColor="Blue"
+            FontAttributes="Bold"
+            HorizontalOptions="CenterAndExpand"
+            Text="{Binding Title }"
             VerticalOptions="Center" />
+
         <VerticalStackLayout>
             <HorizontalStackLayout
                 Margin="10"
-                BackgroundColor="AliceBlue"
                 HorizontalOptions="CenterAndExpand">
                 <Button
-                    Margin="5"
-                    CornerRadius="30"
-                    Text="Add Store" />
+                     BackgroundColor="{StaticResource Accent_Blue100}"
+                    
+                    Text="Add Store" 
+                    />
                 <Button
-                    Margin="5"
-                    CornerRadius="30"
+                    BackgroundColor="{StaticResource   Accent}"
+                    
+                   
                     Text="Delete" />
                 <Button
-                    Margin="5"
-                    CornerRadius="30"
+                    BackgroundColor="{StaticResource   Accent_Blue200}"
+                    
+                    CornerRadius="40"
                     Text="Refresh" />
             </HorizontalStackLayout>
-            <VerticalStackLayout BackgroundColor="Aqua">
+            <VerticalStackLayout  BackgroundColor="Beige" Padding="4">
                 <sfgrid:SfDataGrid
                     x:Name="dataGrid"
+                    
+                    BackgroundColor="Black"
                     AutoGenerateColumnsMode="None"
-                    ColumnWidthMode="Fill"
-                    HorizontalOptions="Center"
+                    ColumnWidthMode="Auto"
+                    HorizontalOptions="CenterAndExpand"
+                    
                     HorizontalScrollBarVisibility="Always"
-                    ItemsSource="{Binding TestList}"
+                    ItemsSource="{Binding Entities}"
                     RowHeight="48"
                     SelectionMode="SingleDeselect"
-                    BackgroundColor="Beige"
+                     
                     MaximumHeightRequest="570"
                     SortingMode="Single"
                     VerticalOptions="CenterAndExpand"
                     VerticalScrollBarVisibility="Always">
-                    
+
                     <sfgrid:SfDataGrid.DefaultStyle>
                         <sfgrid:DataGridStyle
                             HeaderRowFontFamily="Roboto-Medium"
-                            HeaderRowFontSize="24"
-                            HeaderRowTextColor="#212121"
+                            HeaderRowFontAttributes="Bold"
+                            AlternateRowBackground="#AFD5AA"
+                            HeaderRowFontSize="15"
+                            HeaderRowTextColor="White"
+                            HeaderRowBackground="#0074E3"
+                            RowBackground="#AFD5FB"
                             RowFontSize="14"
                             RowTextColor="#212121" />
                     </sfgrid:SfDataGrid.DefaultStyle>
 
                     <sfgrid:SfDataGrid.Columns>
 
-                        <sfgrid:DataGridNumericColumn
-                            Format="D"
-                            HeaderText="Code"
+                        <sfgrid:DataGridTextColumn
+                             HeaderText="Code"
                             MappingName="StoreId" />
 
                         <sfgrid:DataGridTextColumn HeaderText="Name" MappingName="StoreName" />
-                        <sfgrid:DataGridTextColumn HeaderText="City" MappingName="city" />
+                        <sfgrid:DataGridTextColumn HeaderText="City" MappingName="City" />
+                        <sfgrid:DataGridTextColumn HeaderText="Manager" MappingName="StoreManager" />
                         <sfgrid:DataGridCheckBoxColumn HeaderText="Active" MappingName="IsActive" />
 
                     </sfgrid:SfDataGrid.Columns>
@@ -71,7 +88,7 @@
                     </sfgrid:SfDataGrid.SortColumnDescriptions>
                 </sfgrid:SfDataGrid>
             </VerticalStackLayout>
-            <Label Text="No of Store(s):1" TextColor="IndianRed" BackgroundColor="DarkGrey" HorizontalTextAlignment="End" FontAttributes="Bold" FontAutoScalingEnabled="True"/>
+            <Label Text="{Binding RecordCount, StringFormat='Count : {0:RecordCount}' ,Mode=TwoWay}" TextColor="White" BackgroundColor="#0074E3" HorizontalTextAlignment="End" FontAttributes="Bold"  FontSize="Medium" FontAutoScalingEnabled="True"/>
         </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

@@ -35,6 +35,7 @@
 	  <None Remove="CommunityToolkit.Maui.Markup" />
 	  <None Remove="CommunityToolkit.Maui.Core" />
 	  <None Remove="RemoteService\" />
+	  <None Remove="ViewModels\Stores\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DTO\" />
@@ -44,6 +45,7 @@
 	  <Folder Include="Services\Print\" />
 	  <Folder Include="Platforms\Android\Services\Print\" />
 	  <Folder Include="RemoteService\" />
+	  <Folder Include="ViewModels\Stores\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />

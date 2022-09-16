@@ -20,14 +20,14 @@ public partial class LoginPage : ContentPage
                 DatabaseStatus.SyncInitial();
                 ButtonControls.IsVisible = CurrentSession.LocalStatus;
                 signInButton.IsEnabled = true;
-                signUpButton.IsEnabled = true;
+                //signUpButton.IsEnabled = true;
             }
             else 
             { 
                 CurrentSession.LocalStatus = true;
                 ButtonControls.IsVisible = CurrentSession.LocalStatus;
                 signInButton.IsEnabled = true;
-                signUpButton.IsEnabled = true;
+                //signUpButton.IsEnabled = true;
             }
         }
     }

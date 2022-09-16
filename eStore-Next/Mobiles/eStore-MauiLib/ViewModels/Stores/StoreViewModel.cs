@@ -1,13 +1,16 @@
 ﻿using AKS.Shared.Commons.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using eStore_MauiLib.DataModels.Auths;
 using eStore_MauiLib.DataModels.Stores;
 using System.ComponentModel.DataAnnotations;
 
-namespace eStore_MauiLib.ViewModels
+namespace eStore_MauiLib.ViewModels.Stores
 {
     public partial class StoreViewModel : BaseViewModel<Store, StoreDataModel>
     {
         #region Field
+        
 
         [ObservableProperty]
         private string _storeCode;
@@ -50,11 +53,33 @@ namespace eStore_MauiLib.ViewModels
 
         public StoreViewModel() : base()
         {
+            InitViewModelAsync();
         }
 
         #endregion Constructors
 
         #region Methods
+
+        
+
+        protected async Task InitViewModelAsync()
+        {
+            _title = "Stores";
+            DataModel = new StoreDataModel(ConType.Hybrid);
+            DataModel.Mode = DBType.Local;
+            DataModel.Connect();
+            var x = await DataModel.GetItems();
+            UpdateEntities(x);
+        }
+        protected void UpdateEntities(List<Store> stores)
+        {
+            if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Store>();
+            foreach (var store in stores)
+            {
+                Entities.Add(store);
+            }
+            RecordCount = Entities.Count;
+        }
 
         protected override async Task<bool> Save(bool isNew = true)
         {
@@ -81,9 +106,13 @@ namespace eStore_MauiLib.ViewModels
             throw new NotImplementedException();
         }
 
-        protected override Task<List<Store>> GetList()
+        protected override async Task<List<Store>> GetList()
         {
-            throw new NotImplementedException();
+            if(Entities==null || Entities.Count == 0)
+            {
+                UpdateEntities(await DataModel.GetItems());
+            }
+            return Entities.ToList();
         }
 
         #endregion Methods

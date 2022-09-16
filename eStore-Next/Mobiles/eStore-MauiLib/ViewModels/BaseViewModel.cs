@@ -12,7 +12,8 @@ namespace eStore_MauiLib.ViewModels
     {
         #region Field
         protected DM DataModel;
-
+        [ObservableProperty]
+        protected string _title;
         [ObservableProperty]
         protected bool _isNew;
 
@@ -21,6 +22,9 @@ namespace eStore_MauiLib.ViewModels
 
         [ObservableProperty]
         protected ObservableCollection<T> _entities;
+
+        [ObservableProperty]
+        protected int _recordCount;
 
         #endregion
 

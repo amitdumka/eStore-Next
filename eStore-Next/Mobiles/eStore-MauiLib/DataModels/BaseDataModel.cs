@@ -277,17 +277,17 @@ namespace eStore_MauiLib.DataModels
             {
                 case DBType.Local:
                     return await _localDb.Set<T>().ToListAsync();
-                    break;
+                    
 
                 case DBType.Azure:
                     return await _azureDb.Set<T>().ToListAsync();
-                    break;
+                    
                 //case DBType.API:
                 //    return await _service.RefreshDataAsync();
                 //    break;
                 default:
-                    return null;
-                    break;
+                    return await _localDb.Set<T>().ToListAsync();
+
             }
         }
 

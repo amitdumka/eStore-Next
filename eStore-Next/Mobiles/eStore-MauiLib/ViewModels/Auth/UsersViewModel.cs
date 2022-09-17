@@ -35,11 +35,32 @@ namespace eStore_MauiLib.ViewModels.Auth
 
         public UsersViewModel()
         {
-            GuestName = "No user ";
             DataModel = new AuthDataModel(ConType.Hybrid);
-            DataModel.Connect();
+            InitViewModel();
         }
 
+        [RelayCommand]
+        private async void InitViewModel()
+        {
+            DataModel.Connect();
+            DataModel.Mode = DBType.Local;
+
+            UpdateEntities(await DataModel.GetItems());
+            Title = "Users";
+            GuestName = "No user ";
+            DefaultSortedColName = nameof(User.UserName);
+            
+        }
+        [RelayCommand]
+        private void UpdateEntities(List<User> users)
+        {
+            if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<User>();
+            foreach (var user in users)
+            {
+                Entities.Add(user);
+            }
+            RecordCount=Entities.Count();
+        }
         protected override Task<bool> Delete()
         {
             throw new NotImplementedException();

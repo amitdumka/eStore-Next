@@ -10,36 +10,33 @@
     <ContentPage.BindingContext>
         <viewModels:StoreViewModel x:Name="viewModel" />
     </ContentPage.BindingContext>
-    
+
     <VerticalStackLayout>
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Image >
+            <Image>
                 <Image.Source>
                     <FontImageSource
-                    FontFamily="FontAwesome"
-                Glyph="{x:Static app:IconFont.ShoppingCart}"
-                Color="{StaticResource Primary}"
-                    Size="24" />
+                        FontFamily="FontAwesome"
+                        Glyph="{x:Static app:IconFont.ShoppingCart}"
+                        Size="24"
+                        Color="{StaticResource Primary}" />
                 </Image.Source>
             </Image>
             <Label
-            Margin="10"
-            FontAttributes="Bold"
-            FontSize="Subtitle"
-            HorizontalOptions="CenterAndExpand"
-            Text="{Binding Title}"
-            TextColor="Blue"
-            VerticalOptions="Center" />
-        
+                Margin="10"
+                FontAttributes="Bold"
+                FontSize="Subtitle"
+                HorizontalOptions="CenterAndExpand"
+                Text="{Binding Title}"
+                TextColor="Blue"
+                VerticalOptions="Center" />
+
         </HorizontalStackLayout>
         <VerticalStackLayout>
             <HorizontalStackLayout Margin="10" HorizontalOptions="CenterAndExpand">
                 <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" />
                 <Button BackgroundColor="{StaticResource Accent}" Text="Delete" />
-                <Button
-                    BackgroundColor="{StaticResource Accent_Blue200}"
-                    CornerRadius="40"
-                    Text="Refresh" />
+                <Button BackgroundColor="{StaticResource Accent_Blue200}" Text="Refresh" />
             </HorizontalStackLayout>
             <VerticalStackLayout Padding="4" BackgroundColor="Beige">
                 <sfgrid:SfDataGrid
@@ -67,17 +64,21 @@
                             HeaderRowTextColor="White"
                             RowBackground="#AFD5FB"
                             RowFontSize="14"
-                            RowTextColor="#212121" />
+                            RowTextColor="#212121"
+                            SelectedRowTextColor="{x:StaticResource Tertiary}"
+                            SelectionBackground="{x:StaticResource Accent_Yellow200}" />
                     </sfgrid:SfDataGrid.DefaultStyle>
 
                     <sfgrid:SfDataGrid.Columns>
-
                         <sfgrid:DataGridTextColumn HeaderText="Code" MappingName="StoreId" />
 
                         <sfgrid:DataGridTextColumn HeaderText="Name" MappingName="StoreName" />
                         <sfgrid:DataGridTextColumn HeaderText="City" MappingName="City" />
                         <sfgrid:DataGridTextColumn HeaderText="Manager" MappingName="StoreManager" />
-                        <sfgrid:DataGridCheckBoxColumn HeaderText="Active" MappingName="IsActive" />
+                        <sfgrid:DataGridCheckBoxColumn
+                            AllowSorting="True"
+                            HeaderText="Active"
+                            MappingName="IsActive" />
 
                     </sfgrid:SfDataGrid.Columns>
                     <sfgrid:SfDataGrid.SortColumnDescriptions>
@@ -86,12 +87,13 @@
                 </sfgrid:SfDataGrid>
             </VerticalStackLayout>
             <Label
+                Padding="0,0,10,0"
                 BackgroundColor="#0074E3"
                 FontAttributes="Bold"
                 FontAutoScalingEnabled="True"
                 FontSize="Medium"
                 HorizontalTextAlignment="End"
-                Text="{Binding RecordCount, StringFormat='Count : {0:RecordCount}', Mode=TwoWay}"
+                Text="{Binding RecordCount, StringFormat='No Of Store : {0}', Mode=TwoWay}"
                 TextColor="White" />
         </VerticalStackLayout>
     </VerticalStackLayout>

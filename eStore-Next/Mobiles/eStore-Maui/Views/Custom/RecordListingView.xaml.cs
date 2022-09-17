@@ -2,21 +2,25 @@
 
 public partial class RecordListingView : ContentView
 {
+    
 	public RecordListingView()
 	{
 		InitializeComponent();
+       // var p = this.Parent;
+        //var c = p.BindingContext;
+        //BindingContext = this.Parent.BindingContext;
 	}
 
     #region PropertyDefine
 
-    //Title
-    public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(RecordListingView), string.Empty);
+    ////Title
+    //public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(RecordListingView), string.Empty);
 
-    public string Title
-    {
-        get => (string)GetValue(RecordListingView.TitleProperty);
-        set => SetValue(RecordListingView.TitleProperty, value);
-    }
+    //public string Title
+    //{
+    //    get => (string)GetValue(RecordListingView.TitleProperty);
+    //    set => SetValue(RecordListingView.TitleProperty, value);
+    //}
 
     //Add Button
     public static readonly BindableProperty AddButtonTextProperty = BindableProperty.Create(nameof(AddButtonText), typeof(string), typeof(RecordListingView), "Add");

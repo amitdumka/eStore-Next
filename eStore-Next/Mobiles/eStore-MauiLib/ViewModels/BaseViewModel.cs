@@ -14,6 +14,8 @@ namespace eStore_MauiLib.ViewModels
         protected DM DataModel;
 
         [ObservableProperty]
+        protected string _defaultSortedColName;
+        [ObservableProperty]
         protected string _icon;
 
         [ObservableProperty]

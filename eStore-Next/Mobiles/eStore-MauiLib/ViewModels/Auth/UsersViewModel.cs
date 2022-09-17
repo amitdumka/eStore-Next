@@ -147,5 +147,21 @@ namespace eStore_MauiLib.ViewModels.Auth
             string message = string.Join(Environment.NewLine, GetErrors().Select(e => e.ErrorMessage));
             Toast.Make(message, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
         }
+
+        protected override void AddButton()
+        {
+            Toast.Make("Add Button Presed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
+        }
+
+        protected override void DeleteButton()
+        {
+            Toast.Make("Delete Button Presed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
+            //throw new NotImplementedException();
+        }
+
+        protected override void RefreshButton()
+        {
+            Toast.Make("Refresh Button Presed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
+        }
     }
 }

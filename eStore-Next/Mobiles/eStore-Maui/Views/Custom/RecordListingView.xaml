@@ -28,9 +28,9 @@
                 VerticalOptions="Center" />
         </HorizontalStackLayout>
         <HorizontalStackLayout Margin="10" HorizontalOptions="CenterAndExpand">
-            <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" />
-            <Button BackgroundColor="{StaticResource Accent}" Text="Delete" />
-            <Button BackgroundColor="{StaticResource NeutralDarker}" Text="Refresh" />
+            <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" Command="{Binding AddButtonCommand}" />
+            <Button BackgroundColor="{StaticResource Accent}" Text="Delete" Command="{Binding DeleteButtonCommand}"/>
+            <Button BackgroundColor="{StaticResource NeutralDarker}" Text="Refresh" Command="{Binding RefershButtonCommand}" />
         </HorizontalStackLayout>
         <VerticalStackLayout x:Name="DetailsLayout" Margin="10">
             <sfgrid:SfDataGrid
@@ -45,12 +45,9 @@
                 SelectionMode="SingleDeselect"
                 SortingMode="Single"
                 VerticalOptions="CenterAndExpand"
-               
                 VerticalScrollBarVisibility="Default">
                 <sfgrid:SfDataGrid.DefaultStyle>
                     <sfgrid:DataGridStyle
-                        SelectedRowTextColor="{x:StaticResource Tertiary}"
-                        SelectionBackground="{x:StaticResource Accent_Yellow200}"
                         AlternateRowBackground="#AFD5AA"
                         HeaderRowBackground="#0074E3"
                         HeaderRowFontAttributes="Bold"
@@ -59,7 +56,9 @@
                         HeaderRowTextColor="White"
                         RowBackground="#AFD5FB"
                         RowFontSize="14"
-                        RowTextColor="#212121" />
+                        RowTextColor="#212121"
+                        SelectedRowTextColor="{x:StaticResource Tertiary}"
+                        SelectionBackground="{x:StaticResource Accent_Yellow200}" />
                 </sfgrid:SfDataGrid.DefaultStyle>
                 <!--<sfgrid:SfDataGrid.SortColumnDescriptions>
                     <sfgrid:SortColumnDescription ColumnName="{Binding  DefaultSortedColName}" />

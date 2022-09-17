@@ -64,6 +64,13 @@ namespace eStore_MauiLib.ViewModels
         protected abstract Task<List<T>> GetList();
         [RelayCommand]
         protected abstract Task<List<T>> Filter(string fitler);
+
+        [RelayCommand]
+        protected abstract void AddButton();
+        [RelayCommand]
+        protected abstract void DeleteButton();
+        [RelayCommand]
+        protected abstract void RefreshButton();
         #endregion
 
 

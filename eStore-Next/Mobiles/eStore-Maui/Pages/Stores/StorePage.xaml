@@ -34,9 +34,9 @@
         </HorizontalStackLayout>
         <VerticalStackLayout>
             <HorizontalStackLayout Margin="10" HorizontalOptions="CenterAndExpand">
-                <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" />
-                <Button BackgroundColor="{StaticResource Accent}" Text="Delete" />
-                <Button BackgroundColor="{StaticResource Accent_Blue200}" Text="Refresh" />
+                <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" Command="{Binding AddButtonCommand}" />
+                <Button BackgroundColor="{StaticResource Accent}" Text="Delete" Command="{Binding DeleteButtonCommand}" />
+                <Button BackgroundColor="{StaticResource Accent_Blue200}" Text="Refresh" Command="{Binding RefreshButtonCommand}" />
             </HorizontalStackLayout>
             <VerticalStackLayout Padding="4" BackgroundColor="Beige">
                 <sfgrid:SfDataGrid

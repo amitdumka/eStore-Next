@@ -115,6 +115,21 @@ namespace eStore_MauiLib.ViewModels.Stores
             return Entities.ToList();
         }
 
+        protected override void AddButton()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void DeleteButton()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void RefreshButton()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion Methods
     }
 }

@@ -34,6 +34,7 @@
         </HorizontalStackLayout>
         <VerticalStackLayout>
             <HorizontalStackLayout Margin="10" HorizontalOptions="CenterAndExpand">
+
                 <Button
                     BackgroundColor="{StaticResource Accent_Blue100}"
                     Command="{Binding AddButtonCommand}"
@@ -48,6 +49,31 @@
                     Text="Refresh" />
             </HorizontalStackLayout>
             <VerticalStackLayout Padding="4" BackgroundColor="Beige">
+                <!--<SwipeView>
+                    <SwipeView.LeftItems>
+                        <SwipeItemView Invoked="OnLeft">
+                            <Grid WidthRequest="100">
+                                <Frame BackgroundColor="DarkGray" CornerRadius="30">
+                                    <Label
+                                        HorizontalOptions="Center"
+                                        Text="2"
+                                        VerticalOptions="Center" />
+                                </Frame>
+                            </Grid>
+                        </SwipeItemView>
+                    </SwipeView.LeftItems>
+                    <SwipeView.RightItems>
+                        <SwipeItemView Invoked="OnRight">
+                            <Grid WidthRequest="100">
+                                <Frame BackgroundColor="DarkGray" CornerRadius="30">
+                                    <Label
+                                        HorizontalOptions="Center"
+                                        Text="1"
+                                        VerticalOptions="Center" />
+                                </Frame>
+                            </Grid>
+                        </SwipeItemView>
+                    </SwipeView.RightItems>-->
                 <sfgrid:SfDataGrid
                     x:Name="dataGrid"
                     AutoGenerateColumnsMode="None"
@@ -90,11 +116,31 @@
                             MappingName="IsActive" />
 
                     </sfgrid:SfDataGrid.Columns>-->
-                    <sfgrid:SfDataGrid.Columns />
+
+                    <!--<sfgrid:SfDataGrid.CurrentRow>
+                        <SwipeView>
+                            <SwipeView.LeftItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="LightGreen"
+                                        IconImageSource="favorite.png"
+                                        Invoked="OnLeft"
+                                        Text="Favorite" />
+                                    <SwipeItem
+                                        BackgroundColor="LightPink"
+                                        IconImageSource="delete.png"
+                                        Invoked="OnRight"
+                                        Text="Delete" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                        </SwipeView>
+                    </sfgrid:SfDataGrid.CurrentRow>-->
+
                     <sfgrid:SfDataGrid.SortColumnDescriptions>
                         <sfgrid:SortColumnDescription ColumnName="StoreName" />
                     </sfgrid:SfDataGrid.SortColumnDescriptions>
                 </sfgrid:SfDataGrid>
+                <!--</SwipeView>-->
             </VerticalStackLayout>
             <Label
                 Padding="0,0,10,0"

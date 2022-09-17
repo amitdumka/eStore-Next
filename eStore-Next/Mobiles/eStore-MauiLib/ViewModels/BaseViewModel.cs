@@ -12,6 +12,10 @@ namespace eStore_MauiLib.ViewModels
     {
         #region Field
         protected DM DataModel;
+
+        [ObservableProperty]
+        protected string _icon;
+
         [ObservableProperty]
         protected string _title;
         [ObservableProperty]

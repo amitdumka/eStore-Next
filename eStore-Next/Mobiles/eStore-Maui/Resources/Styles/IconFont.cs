@@ -1,5 +1,5 @@
 ﻿
-namespace WeatherTwentyOne.Resources.Styles;
+namespace eStore_Maui.Resources.Styles;
 
 static class IconFont
 {

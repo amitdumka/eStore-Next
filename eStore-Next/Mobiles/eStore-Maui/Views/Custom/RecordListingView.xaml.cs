@@ -1,27 +1,44 @@
-﻿namespace eStore_Maui.Views.Custom;
+﻿using Android.Net.Wifi.Aware;
+using Syncfusion.Maui.DataGrid;
+using static Android.Icu.Text.CaseMap;
+
+namespace eStore_Maui.Views.Custom;
 
 public partial class RecordListingView : ContentView
 {
+    public  SfDataGrid DataGrid;
+    public ColumnCollection gridColumns;
     
-	public RecordListingView()
+    public RecordListingView()
 	{
 		InitializeComponent();
-       // var p = this.Parent;
+        // var p = this.Parent;
         //var c = p.BindingContext;
         //BindingContext = this.Parent.BindingContext;
+        //DataGrid = dataGrid;
+        //if (gridColumns != null) 
+        //   dataGrid.Columns = gridColumns;
+        if(Cols!=null)
+            dataGrid.Columns = Cols;
 	}
 
     #region PropertyDefine
 
-    ////Title
-    //public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(RecordListingView), string.Empty);
-
-    //public string Title
-    //{
-    //    get => (string)GetValue(RecordListingView.TitleProperty);
-    //    set => SetValue(RecordListingView.TitleProperty, value);
-    //}
-
+    // Cols for Datagrids
+    public static readonly BindableProperty ColsProperty = BindableProperty.Create(nameof(Cols), typeof(ColumnCollection), typeof(RecordListingView), null);
+    
+    public ColumnCollection Cols
+    {
+        get => (ColumnCollection)GetValue(RecordListingView.ColsProperty);
+        set => UpdateGrid(RecordListingView.ColsProperty, value);
+    }
+    
+    private void UpdateGrid(BindableProperty prop,object value)
+    {
+        SetValue(prop, value);
+        dataGrid.Columns = (ColumnCollection)value;
+    }
+   
     //Add Button
     public static readonly BindableProperty AddButtonTextProperty = BindableProperty.Create(nameof(AddButtonText), typeof(string), typeof(RecordListingView), "Add");
 

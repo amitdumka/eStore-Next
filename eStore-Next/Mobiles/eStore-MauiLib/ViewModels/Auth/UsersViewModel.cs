@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
+using Syncfusion.DocIO.DLS;
 using System.ComponentModel.DataAnnotations;
 
 namespace eStore_MauiLib.ViewModels.Auth
@@ -163,5 +164,7 @@ namespace eStore_MauiLib.ViewModels.Auth
         {
             Toast.Make("Refresh Button Presed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
+
+        
     }
 }

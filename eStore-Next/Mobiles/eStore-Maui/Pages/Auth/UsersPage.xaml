@@ -12,7 +12,6 @@
             x:Name="RLV"
             AddButtonText="Add User"
             BackgroundColor="White"
-            BindingContext="{Binding viewModel, Mode=TwoWay}"
             RefreshButtonText="ReLoad" />
     </VerticalStackLayout>
 </ContentPage>

@@ -28,13 +28,23 @@
                 VerticalOptions="Center" />
         </HorizontalStackLayout>
         <HorizontalStackLayout Margin="10" HorizontalOptions="CenterAndExpand">
-            <Button BackgroundColor="{StaticResource Accent_Blue100}" Text="Add Store" Command="{Binding AddButtonCommand}" />
-            <Button BackgroundColor="{StaticResource Accent}" Text="Delete" Command="{Binding DeleteButtonCommand}"/>
-            <Button BackgroundColor="{StaticResource NeutralDarker}" Text="Refresh" Command="{Binding RefershButtonCommand}" />
+            <Button
+                BackgroundColor="{StaticResource Accent_Blue100}"
+                Command="{Binding AddButtonCommand}"
+                Text="Add Store" />
+            <Button
+                BackgroundColor="{StaticResource Accent}"
+                Command="{Binding DeleteButtonCommand}"
+                Text="Delete" />
+            <Button
+                BackgroundColor="{StaticResource NeutralDarker}"
+                Command="{Binding RefershButtonCommand}"
+                Text="Refresh" />
         </HorizontalStackLayout>
         <VerticalStackLayout x:Name="DetailsLayout" Margin="10">
             <sfgrid:SfDataGrid
                 x:Name="dataGrid"
+                AutoGenerateColumnsMode="None"
                 BackgroundColor="Black"
                 ColumnWidthMode="FitByCell"
                 HorizontalOptions="CenterAndExpand"
@@ -49,6 +59,7 @@
                 <sfgrid:SfDataGrid.DefaultStyle>
                     <sfgrid:DataGridStyle
                         AlternateRowBackground="#AFD5AA"
+                        GridLineColor="IndianRed"
                         HeaderRowBackground="#0074E3"
                         HeaderRowFontAttributes="Bold"
                         HeaderRowFontFamily="Roboto-Medium"
@@ -60,9 +71,11 @@
                         SelectedRowTextColor="{x:StaticResource Tertiary}"
                         SelectionBackground="{x:StaticResource Accent_Yellow200}" />
                 </sfgrid:SfDataGrid.DefaultStyle>
+                <sfgrid:SfDataGrid.Columns />
                 <!--<sfgrid:SfDataGrid.SortColumnDescriptions>
                     <sfgrid:SortColumnDescription ColumnName="{Binding  DefaultSortedColName}" />
                 </sfgrid:SfDataGrid.SortColumnDescriptions>-->
+
             </sfgrid:SfDataGrid>
         </VerticalStackLayout>
         <Label

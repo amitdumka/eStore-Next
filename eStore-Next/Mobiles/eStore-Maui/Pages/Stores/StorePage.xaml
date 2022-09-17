@@ -49,33 +49,12 @@
                     Text="Refresh" />
             </HorizontalStackLayout>
             <VerticalStackLayout Padding="4" BackgroundColor="Beige">
-                <!--<SwipeView>
-                    <SwipeView.LeftItems>
-                        <SwipeItemView Invoked="OnLeft">
-                            <Grid WidthRequest="100">
-                                <Frame BackgroundColor="DarkGray" CornerRadius="30">
-                                    <Label
-                                        HorizontalOptions="Center"
-                                        Text="2"
-                                        VerticalOptions="Center" />
-                                </Frame>
-                            </Grid>
-                        </SwipeItemView>
-                    </SwipeView.LeftItems>
-                    <SwipeView.RightItems>
-                        <SwipeItemView Invoked="OnRight">
-                            <Grid WidthRequest="100">
-                                <Frame BackgroundColor="DarkGray" CornerRadius="30">
-                                    <Label
-                                        HorizontalOptions="Center"
-                                        Text="1"
-                                        VerticalOptions="Center" />
-                                </Frame>
-                            </Grid>
-                        </SwipeItemView>
-                    </SwipeView.RightItems>-->
+              
                 <sfgrid:SfDataGrid
+                    
                     x:Name="dataGrid"
+                    CellDoubleTapped="dataGrid_CellDoubleTapped"
+                    CellLongPress="dataGrid_CellLongPress"
                     AutoGenerateColumnsMode="None"
                     BackgroundColor="Black"
                     ColumnWidthMode="Auto"

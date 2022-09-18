@@ -1,6 +1,10 @@
 ﻿using AKS.Shared.Commons.Models;
+using CommunityToolkit.Maui.Views;
+using eStore_Maui.Views.Custom;
 using Syncfusion.Maui.DataGrid;
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace eStore_Maui.Pages.Stores;
 
 public partial class StorePage : ContentPage
@@ -48,8 +52,19 @@ public partial class StorePage : ContentPage
         var rowData = (Store)e.RowData;
         var columnIndex = e.RowColumnIndex.ColumnIndex;
         var column = e.Column;
+        var jsonStr = JsonSerializer.Serialize(rowData);
 
-        await DisplayAlert("Double!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
+        RecordViewModel vm = new RecordViewModel
+        {
+            Id = rowData.StoreCode,
+            Name = $"Store: {rowData.StoreName}",
+            JsonData = jsonStr,
+            Title = "Store"
+        };
+        var rv = new RecordView(vm);
+        await this.ShowPopupAsync(rv);
+
+        //await DisplayAlert("Double!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
     }
     private async void dataGrid_CellLongPress(object sender, DataGridCellLongPressEventArgs e)
     {

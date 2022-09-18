@@ -52,27 +52,50 @@ public partial class StorePage : ContentPage
         var rowData = (Store)e.RowData;
         var columnIndex = e.RowColumnIndex.ColumnIndex;
         var column = e.Column;
+        //var jsonStr = JsonSerializer.Serialize(rowData);
+
+        //RecordViewModel vm = new RecordViewModel
+        //{
+        //    Id = $"Store Code: {rowData.StoreCode}",
+        //    Name = $"Store: {rowData.StoreName}",
+        //    JsonData = jsonStr,
+        //    Title = "Store"
+        //};
+        //var rv = new RecordView(vm);
+        //await this.ShowPopupAsync(rv);
+
+        await DisplayAlert("Double!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
+    }
+    private async void dataGrid_CellLongPress(object sender, DataGridCellLongPressEventArgs e)
+    {
+        
+        var rowIndex = e.RowColumnIndex.RowIndex;
+        var rowData = (Store)e.RowData;
+        if (rowData != null)
+        {
+            var columnIndex = e.RowColumnIndex.ColumnIndex;
+            var column = e.Column;
+
+            await DisplayAlert("Long!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
+        }
+    }
+
+    async void dataGrid_CellTapped(System.Object sender, Syncfusion.Maui.DataGrid.DataGridCellTappedEventArgs e)
+    {
+        var rowIndex = e.RowColumnIndex.RowIndex;
+        var rowData = (Store)e.RowData;
+        var columnIndex = e.RowColumnIndex.ColumnIndex;
+        var column = e.Column;
         var jsonStr = JsonSerializer.Serialize(rowData);
 
         RecordViewModel vm = new RecordViewModel
         {
-            Id = rowData.StoreCode,
+            Id = $"Store Code: {rowData.StoreCode}",
             Name = $"Store: {rowData.StoreName}",
             JsonData = jsonStr,
             Title = "Store"
         };
         var rv = new RecordView(vm);
         await this.ShowPopupAsync(rv);
-
-        //await DisplayAlert("Double!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
-    }
-    private async void dataGrid_CellLongPress(object sender, DataGridCellLongPressEventArgs e)
-    {
-        var rowIndex = e.RowColumnIndex.RowIndex;
-        var rowData = (Store)e.RowData;
-        var columnIndex = e.RowColumnIndex.ColumnIndex;
-        var column = e.Column;
-        
-        await DisplayAlert("Long!", $"{e.Column.MappingName}: {rowData.StoreName} ", "OK");
     }
 }

@@ -38,7 +38,7 @@
                 Text="Delete" />
             <Button
                 BackgroundColor="{StaticResource NeutralDarker}"
-                Command="{Binding RefershButtonCommand}"
+                Command="{Binding RefreshButtonCommand}"
                 Text="Refresh" />
         </HorizontalStackLayout>
         <VerticalStackLayout x:Name="DetailsLayout" Margin="10">

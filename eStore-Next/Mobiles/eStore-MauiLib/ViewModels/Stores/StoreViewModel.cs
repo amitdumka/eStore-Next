@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
@@ -117,17 +118,16 @@ namespace eStore_MauiLib.ViewModels.Stores
 
         protected override void AddButton()
         {
-            throw new NotImplementedException();
+            Toast.Make("Button Pressed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
-
         protected override void DeleteButton()
         {
-            throw new NotImplementedException();
+            Toast.Make("Button Pressed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
 
         protected override void RefreshButton()
         {
-            throw new NotImplementedException();
+            Toast.Make("Button Pressed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
 
         #endregion Methods

@@ -18,6 +18,7 @@ namespace AKS.Shared.Commons.Ops
         public static string UserName { get; set; } = "AuotAdmin";
         public static string GuestName { get; set; } = "Admin";
         public static UserType UserType { get; set; } = UserType.StoreManager;
+        public static string EmployeeId { get; set; }
 
         public static DateTime LoggedTime { get; set; } = DateTime.Now;
 

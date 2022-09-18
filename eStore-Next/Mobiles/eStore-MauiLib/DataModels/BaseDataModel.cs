@@ -30,6 +30,10 @@ namespace eStore_MauiLib.DataModels
         {
             ConType = conType;
         }
+        /// <summary>
+        /// Connect Database and return true if sucessful
+        /// </summary>
+        /// <returns></returns>
         public bool Connect()
         {
             switch (ConType)

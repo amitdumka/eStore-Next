@@ -53,6 +53,7 @@
                 <sfgrid:SfDataGrid
                     
                     x:Name="dataGrid"
+                    CellTapped="dataGrid_CellTapped"
                     CellDoubleTapped="dataGrid_CellDoubleTapped"
                     CellLongPress="dataGrid_CellLongPress"
                     AutoGenerateColumnsMode="None"

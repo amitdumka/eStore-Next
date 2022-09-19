@@ -49,15 +49,14 @@
                     Text="Refresh" />
             </HorizontalStackLayout>
             <VerticalStackLayout Padding="4" BackgroundColor="Beige">
-              
+
                 <sfgrid:SfDataGrid
-                    
                     x:Name="dataGrid"
-                    CellTapped="dataGrid_CellTapped"
-                    CellDoubleTapped="dataGrid_CellDoubleTapped"
-                    CellLongPress="dataGrid_CellLongPress"
                     AutoGenerateColumnsMode="None"
                     BackgroundColor="Black"
+                    CellDoubleTapped="dataGrid_CellDoubleTapped"
+                    CellLongPress="dataGrid_CellLongPress"
+                    CellTapped="dataGrid_CellTapped"
                     ColumnWidthMode="Auto"
                     HorizontalOptions="CenterAndExpand"
                     HorizontalScrollBarVisibility="Always"

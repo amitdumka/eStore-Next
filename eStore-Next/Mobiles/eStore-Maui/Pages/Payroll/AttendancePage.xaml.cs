@@ -23,12 +23,12 @@ public partial class AttendancePage : ContentPage
     protected ColumnCollection SetGridCols()
     {
         gridColumns = new();
-        gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.OnDate), MappingName = nameof(Attendance.OnDate) });
+        gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.OnDate), MappingName = nameof(Attendance.OnDate), Format="dd/MMM/yyyy" });
         gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.EmployeeId), MappingName = nameof(Attendance.EmployeeId) });  
         gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.Status), MappingName = nameof(Attendance.Status) });
         gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.EntryTime), MappingName = nameof(Attendance.EntryTime) });
         gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.StoreId), MappingName = nameof(Attendance.StoreId) });
-        gridColumns.Add(new DataGridCheckBoxColumn() { HeaderText = nameof(Attendance.Remarks), MappingName = nameof(Attendance.Remarks) });
+        gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Attendance.Remarks), MappingName = nameof(Attendance.Remarks) });
         return gridColumns;
     }
 }

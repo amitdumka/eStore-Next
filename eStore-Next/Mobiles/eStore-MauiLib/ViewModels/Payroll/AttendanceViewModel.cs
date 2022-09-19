@@ -3,7 +3,10 @@ using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Payroll;
+using eStore_MauiLib.RemoteService;
 
 namespace eStore_MauiLib.ViewModels.Payroll
 {
@@ -14,8 +17,12 @@ namespace eStore_MauiLib.ViewModels.Payroll
     /// This View Model strictly shoud follow role based only.
     /// // Current Month Attendance of Employee in case of SM and power user other wise employee attendance full .
     /// </summary>
-    public class AttendanceViewModel : BaseViewModel<Attendance, AttendanceDataModel>
+    public partial class AttendanceViewModel : BaseViewModel<Attendance, AttendanceDataModel>
     {
+        [ObservableProperty]
+        //[NotifyCanExecuteChangedFor(nameof(OnLocalDBSyncChanged))]
+        private bool _localDBSync;
+       
 
         public AttendanceViewModel()
         {
@@ -26,8 +33,24 @@ namespace eStore_MauiLib.ViewModels.Payroll
             DataModel.Mode = DBType.Local;
             Title = "Attendance List";
             DefaultSortedColName = nameof(Entity.OnDate);
+           if(!DatabaseStatus.VerifyPayrollSet())
+            {
+                SyncLocal();
+            }
             InitViewModel();
 
+        }
+        protected async void SyncLocal()
+        {
+            LocalDBSync=await DatabaseStatus.SyncAttendance();
+            Toast.Make("LocalDataBase Sync: "+LocalDBSync, CommunityToolkit.Maui.Core.ToastDuration.Long);
+        }
+
+
+        partial void OnLocalDBSyncChanged(bool value)
+        {
+            if(value)
+                RefreshButton();
         }
 
         protected override async void AddButton()

@@ -75,10 +75,10 @@
                 <Tab Title="Home" Icon="tab_home.png">
                     <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
                 </Tab>
-                <Tab Title="Users" Icon="rain_icon.png">
+                <Tab Title="Attendance" Icon="rain_icon.png">
                     <ShellContent ContentTemplate="{DataTemplate page:Payroll.AttendancePage}" />
                 </Tab>
-                <Tab Title="Users" Icon="rain_icon.png">
+                <Tab Title="Users" Icon="checkmark_icon.png">
                     <ShellContent ContentTemplate="{DataTemplate page:Auth.UsersPage}" />
                 </Tab>
                 <Tab Title="Stores" Icon="tab_settings.png">

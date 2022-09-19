@@ -3,8 +3,12 @@ using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
+using CommunityToolkit.Maui.Alerts;
 using Microsoft.EntityFrameworkCore;
-public enum LocalSync { Initial, Accounting, Inventory, InitialAccounting, InitialInventory, All }
+
+public enum LocalSync
+{ Initial, Accounting, Inventory, InitialAccounting, InitialInventory, All }
+
 namespace eStore_MauiLib.RemoteService
 {
     public class SyncService
@@ -29,7 +33,7 @@ namespace eStore_MauiLib.RemoteService
                 {
                     if (!db.Users.Any(c => c.UserName == user.UserName))
                     {
-                        db.Users.Add(user);
+                        db.Users.AddAsync(user);
                         recordAdded++;
                     }
                 }
@@ -37,7 +41,7 @@ namespace eStore_MauiLib.RemoteService
 
                 if (count == recordAdded)
                 {
-                    Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#{local + recordAdded}#L");
+                    Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}");
                     return true;
                 }
                 else
@@ -66,7 +70,7 @@ namespace eStore_MauiLib.RemoteService
                 {
                     if (!db.TranscationModes.Any(c => c.TranscationId == mode.TranscationId))
                     {
-                        db.TranscationModes.Add(mode);
+                        db.TranscationModes.AddAsync(mode);
                         recordAdded++;
                     }
                 }
@@ -103,7 +107,7 @@ namespace eStore_MauiLib.RemoteService
                 {
                     if (!db.EmployeeDetails.Any(c => c.EmployeeId == emp.EmployeeId))
                     {
-                        db.EmployeeDetails.Add(emp);
+                        db.EmployeeDetails.AddAsync(emp);
                         recordAdded += 2;
                     }
                 }
@@ -123,7 +127,8 @@ namespace eStore_MauiLib.RemoteService
         }
 
         public void SyncDownSalaries()
-        { }
+        {
+        }
 
         public async Task<bool> SyncDownStoresAsync()
         {
@@ -142,7 +147,7 @@ namespace eStore_MauiLib.RemoteService
                 {
                     if (!db.Stores.Any(c => c.StoreCode == Store.StoreCode))
                     {
-                        db.Stores.Add(Store);
+                        db.Stores.AddAsync(Store);
                         recordAdded++;
                     }
                 }
@@ -178,7 +183,7 @@ namespace eStore_MauiLib.RemoteService
                 {
                     if (!db.Salesmen.Any(c => c.SalesmanId == sm.SalesmanId))
                     {
-                        db.Salesmen.Add(sm);
+                        db.Salesmen.AddAsync(sm);
                         recordAdded++;
                     }
                 }
@@ -220,63 +225,462 @@ namespace eStore_MauiLib.RemoteService
 
         public void SyncDownProductTypes()
         { }
-    }
 
-    public class DatabaseStatus
-    {
-        public static bool VerifyLocalStatus()
+        public async Task<bool> SyncAttendace(UserType role)
         {
-            var keyValue = Preferences.Get("Local", "NO");
-            if (keyValue == "LocalSynced") return true;
-            else return false;
-        }
-
-        public static void VerifyInitialSet()
-        {
-            var keyValue = Preferences.Get(nameof(User), "NO");
-            if (keyValue != "NO")
+            try
             {
-                var values = keyValue.Split('#');
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
+
+                switch (role)
+                {
+                    case UserType.CA:
+                    case UserType.Admin:
+                    case UserType.Owner:
+                    case UserType.StoreManager:
+                    case UserType.Accountant:
+                    case UserType.PowerUser:
+                        int lCount = 0;
+                        int rCount = 0;
+                        var local = db.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        var remote = azure.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+
+                        if (local != remote)
+                        {
+                            var remoteList = azure.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.Attendances.Any(c => c.AttendanceId == att.AttendanceId))
+                                {
+                                    db.Attendances.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(Attendance), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(Attendance));
+                        }
+                       
+                        local = db.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        remote = azure.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.MonthlyAttendances.Any(c => c.MonthlyAttendanceId == att.MonthlyAttendanceId))
+                                {
+                                    db.MonthlyAttendances.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(MonthlyAttendance), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(MonthlyAttendance));
+                        }
+
+                        if (rCount != lCount) return true; else return false;
+
+                    case UserType.Sales:
+                    case UserType.Employees:
+                        lCount = 0;
+                        rCount = 0;
+                        local = db.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+
+                        if (local != remote)
+                        {
+                            var remoteList = azure.Attendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.Attendances.Any(c => c.AttendanceId == att.AttendanceId))
+                                {
+                                    db.Attendances.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+
+                        local = db.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.MonthlyAttendances.Any(c => c.MonthlyAttendanceId == att.MonthlyAttendanceId))
+                                {
+                                    db.MonthlyAttendances.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+                         if (rCount != lCount) return true; else return false;
+
+                    case UserType.Guest:
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                if (ex.InnerException != null)
+                {
+                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                }
+                return false;
             }
         }
 
-        public static bool SyncInitial()
+        public async Task<bool> SyncSalary(UserType role)
         {
-            var sync = new SyncService();
+            try
+            {
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
 
-            sync.SyncDownStoresAsync();
-            sync.SyncDownUsersAsync();
-            sync.SyncDownEmployeesAsync();
-            sync.SyncDownSalesmanAsync();
-            //sync.SyncDownEdcTerminals();
-            //sync.SyncDownEdcTerminals();
-            Preferences.Default.Set("Local", "LocalSynced");
-            CurrentSession.LocalStatus = true;
-            return true;
+                switch (role)
+                {
+                    case UserType.CA:
+                    case UserType.Admin:
+                    case UserType.Owner:
+                    case UserType.StoreManager:
+                    case UserType.Accountant:
+                    case UserType.PowerUser:
+                        int lCount = 0;
+                        int rCount = 0;
+                       
+                       var local = db.Salaries.Count();
+                       var remote = azure.Salaries.Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.Salaries.ToList();
+                            int recordAdded = 0;
+                            foreach (var sal in remoteList)
+                            {
+                                if (!db.Salaries.Any(c => c.SalaryId == sal.SalaryId))
+                                {
+                                    db.Salaries.AddAsync(sal);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = 0;
+                            if (recordAdded > 0)
+                                count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(Salary), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(Salary));
+                        }
+                       
+                        local = db.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        remote = azure.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.PaySlips.Any(c => c.PaySlipId == att.PaySlipId))
+                                {
+                                    db.PaySlips.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(PaySlip), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(PaySlip));
+                        }
+
+                        if (rCount != lCount) return true; else return false;
+
+                    case UserType.Sales:
+                    case UserType.Employees:
+                        lCount = 0;
+                        rCount = 0;
+                        local = db.Salaries.Where(c => c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.Salaries.Where(c => c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.Salaries.Where(c => c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var sal in remoteList)
+                            {
+                                if (!db.Salaries.Any(c => c.SalaryId == sal.SalaryId))
+                                {
+                                    db.Salaries.AddAsync(sal);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+
+                        local = db.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.PaySlips.Any(c => c.PaySlipId == att.PaySlipId))
+                                {
+                                    db.PaySlips.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+                        if (rCount != lCount) return true; else return false;
+
+                    case UserType.Guest:
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                if (ex.InnerException != null)
+                {
+                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                }
+                return false;
+            }
         }
 
-        public static bool SyncInventory()
+        public async Task<bool> SyncSalaryPayment(UserType role)
         {
-            var sync = new SyncService();
-            sync.SyncDownBandandSuppliers();
-            sync.SyncDownProductItems();
-            sync.SyncDownStocks();
-            sync.SyncDownProductSubCategories();
-            sync.SyncDownProductTypes();
-            Preferences.Default.Set("LocalInventory", "LocalSynced");
+            try
+            {
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
 
-            return true;
+                switch (role)
+                {
+                    case UserType.CA:
+                    case UserType.Admin:
+                    case UserType.Owner:
+                    case UserType.StoreManager:
+                    case UserType.Accountant:
+                    case UserType.PowerUser:
+                        int lCount = 0;
+                        int rCount = 0;
+                        var local = db.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        var remote = azure.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.SalaryPayment.Any(c => c.SalaryPaymentId == att.SalaryPaymentId))
+                                {
+                                    db.SalaryPayment.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(SalaryPayment), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(SalaryPayment));
+                        }
+
+                        local = db.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        remote = azure.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.StaffAdvanceReceipt.Any(c => c.StaffAdvanceReceiptId == att.StaffAdvanceReceiptId))
+                                {
+                                    db.StaffAdvanceReceipt.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(StaffAdvanceReceipt), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(StaffAdvanceReceipt));
+                        }
+                        local = db.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        remote = azure.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                            int recordAdded = 0;
+
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.SalaryLedgers.Any(c => c.EmployeeId == att.EmployeeId))
+                                {
+                                    att.Id = 0;
+                                    db.SalaryLedgers.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(SalaryLedger), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(SalaryLedger));
+                        }
+                        if (rCount != lCount) return true; else return false;
+
+                    case UserType.Sales:
+                    case UserType.Employees:
+                        lCount = 0;
+                        rCount = 0;
+                       
+                        local = db.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.SalaryPayment.Any(c => c.SalaryPaymentId == att.SalaryPaymentId))
+                                {
+                                    db.SalaryPayment.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+
+                        local = db.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.StaffAdvanceReceipt.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.StaffAdvanceReceipt.Any(c => c.StaffAdvanceReceiptId == att.StaffAdvanceReceiptId))
+                                {
+                                    db.StaffAdvanceReceipt.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+                        local = db.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        remote = azure.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
+                        if (local != remote)
+                        {
+                            var remoteList = azure.SalaryLedgers.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).ToList();
+                            int recordAdded = 0;
+
+                            foreach (var att in remoteList)
+                            {
+                                if (!db.SalaryLedgers.Any(c => c.EmployeeId == att.EmployeeId))
+                                {
+                                    att.Id = 0;
+                                    db.SalaryLedgers.AddAsync(att);
+                                    recordAdded++;
+                                }
+                            }
+                            int count = await db.SaveChangesAsync();
+                            rCount += recordAdded;
+                            lCount += recordAdded;
+                            if (count == recordAdded)
+                                Preferences.Default.Set(nameof(User), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{role}");
+                            else
+                                Preferences.Remove(nameof(User));
+                        }
+                        if (rCount != lCount) return true; else return false;
+
+                    case UserType.Guest:
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                if (ex.InnerException != null)
+                {
+                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                }
+                return false;
+            }
         }
-        public static bool SyncAccounting()
-        {
-            var sync = new SyncService();
-            sync.SyncDownBanks();
-            sync.SyncDownBankAccounts();
-            sync.SyncDownEdcTerminals();
-            sync.SyncDownVendorsAccount();
-            sync.SyncDownAccountList();
-            Preferences.Default.Set("LocalAccounting", "LocalSynced");
-            return true;
-        }
+
+
     }
 }

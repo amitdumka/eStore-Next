@@ -107,6 +107,7 @@
 	  <None Remove="AlohaKit" />
 	  <None Remove="Pages\Auth\" />
 	  <None Remove="Pages\Payroll\" />
+	  <None Remove="Views\Controls\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -183,6 +184,15 @@
 	  <MauiXaml Update="Pages\Payroll\AttendancePage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\ShellHeader.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\ShellFooter.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="AppShell.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Pages\" />
@@ -196,5 +206,6 @@
 	  <Folder Include="Platforms\Android\Resources\xml\" />
 	  <Folder Include="Pages\Auth\" />
 	  <Folder Include="Pages\Payroll\" />
+	  <Folder Include="Views\Controls\" />
 	</ItemGroup>
 </Project>

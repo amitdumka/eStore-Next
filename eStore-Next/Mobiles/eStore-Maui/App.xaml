@@ -3,14 +3,13 @@
     x:Class="eStore_Maui.App"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:eStore_Maui"
-    xmlns:page="clr-namespace:eStore_Maui.Pages">
+      >
 
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles/DefaultTheme.xaml" />
-    </Application.Resources>
+     </Application.Resources>
 
-    <Application.MainPage>
+    <!--<Application.MainPage>
         <Shell
             FlyoutBackgroundColor="{StaticResource Background_Mid}"
             FlyoutBehavior="{OnIdiom Phone=Disabled,
@@ -37,10 +36,10 @@
 
 
 
-            <!--  Desktop/Tablet  -->
-            <!--<FlyoutItem Title="Login" Style="{StaticResource FavFlyout}">
+              Desktop/Tablet  
+            <FlyoutItem Title="Login" Style="{StaticResource FavFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
-            </FlyoutItem>-->
+            </FlyoutItem>
             <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:DashboardPage}" />
             </FlyoutItem>
@@ -53,9 +52,9 @@
             <FlyoutItem Title="Vouchers" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:VoucherPage}" />
             </FlyoutItem>
-            <!--<FlyoutItem Title="Users" Style="{StaticResource MapFlyout}">
+            <FlyoutItem Title="Users" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:Auth.UsersPage}" />
-            </FlyoutItem>-->
+            </FlyoutItem>
             <FlyoutItem Title="Stores" Style="{StaticResource MapFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:Stores.StorePage}" />
             </FlyoutItem>
@@ -67,7 +66,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
 
-            <!--  Phone  -->
+              Phone  
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Login" Icon="wind_icon.png">
                     <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
@@ -117,5 +116,5 @@
 
             </Shell.ItemTemplate>
         </Shell>
-    </Application.MainPage>
+    </Application.MainPage>-->
 </Application>

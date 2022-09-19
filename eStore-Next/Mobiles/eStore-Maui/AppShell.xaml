@@ -1,78 +1,137 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="eStore_Maui.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:eStore_Maui"
-    xmlns:page="clr-namespace:eStore_Maui.Pages"
-    Shell.FlyoutBackgroundColor="{StaticResource Background_Mid}"
-    Shell.FlyoutBehavior="{OnIdiom Phone=Disabled,
-                             Default=Locked}"
-    Shell.FlyoutWidth="68">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:controls="clr-namespace:eStore_Maui.Views.Controls"
+             x:Class="eStore_Maui.AppShell"
+             Shell.FlyoutBehavior="Flyout"
+             xmlns:pages="clr-namespace:eStore_Maui.Pages"
+       FlyoutBackgroundImage="thearvindstore005.jpg"
+       FlyoutBackgroundImageAspect="Fill"
+       FlyoutHeaderBehavior="CollapseOnScroll"
+             Title="AppShell">
+    <Shell.Resources>
+        <Style x:Key="BaseStyle"
+               TargetType="Element">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#455A64" />
+            <Setter Property="Shell.ForegroundColor"
+                    Value="White" />
+            <Setter Property="Shell.TitleColor"
+                    Value="White" />
+            <Setter Property="Shell.DisabledColor"
+                    Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor"
+                    Value="#95FFFFFF" />
 
-    <Shell.FlyoutFooterTemplate>
-        <DataTemplate>
-            <Grid RowDefinitions="68">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                </Grid.GestureRecognizers>
-                <Image
-                    HeightRequest="40"
-                    HorizontalOptions="Center"
-                    Source="tab_settings.png"
-                    VerticalOptions="Center"
-                    WidthRequest="40" />
-            </Grid>
-        </DataTemplate>
-    </Shell.FlyoutFooterTemplate>
+        </Style>
+        <Style TargetType="ShellItem"
+               BasedOn="{StaticResource BaseStyle}" />
+        <Style x:Key="DomesticShell"
+               TargetType="Element"
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#039BE6" />
+        </Style>
+        <Style x:Key="MonkeysShell"
+               TargetType="Element"
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#689F39" />
+        </Style>
+        <Style x:Key="ElephantsShell"
+               TargetType="Element"
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#ED3B3B" />
+        </Style>
+        <Style x:Key="BearsShell"
+               TargetType="Element"
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#546DFE" />
+        </Style>
+        <Style x:Key="AboutShell"
+               TargetType="Element"
+               BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="#96d1ff" />
+        </Style>
+        </Shell.Resources>
+    <Shell.FlyoutHeader>
+        <controls:ShellHeader />
+    </Shell.FlyoutHeader>
+    <Shell.FlyoutFooter>
+        <controls:ShellFooter />
+    </Shell.FlyoutFooter>
 
-    <!--  Desktop/Tablet  -->
-    <FlyoutItem Title="Home" Style="{StaticResource HomeFlyout}">
-        <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Favorites" Style="{StaticResource FavFlyout}">
-        <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Map" Style="{StaticResource MapFlyout}">
-        <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-    </FlyoutItem>
-    <FlyoutItem
-        Title="Settings"
-        FlyoutItemIsVisible="False"
-        Route="settings">
-        <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+    <FlyoutItem Title="Menu One" FlyoutIcon="{StaticResource SearchIcon}">
+        <ShellContent
+            Title="Main Page"
+            ContentTemplate="{DataTemplate  pages:DashboardPage}"
+            Route="OnePage" />
     </FlyoutItem>
 
-    <!--  Phone  -->
-    <TabBar x:Name="PhoneTabs">
-        <Tab Title="Home" Icon="tab_home.png">
-            <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
+    
+    <FlyoutItem Route="animals"
+                FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Domestic"
+             Route="domestic"
+             Icon="paw.png">
+            <ShellContent Route="cats"
+                          Style="{StaticResource DomesticShell}"
+                          Title="Cats"
+                          Icon="cat.png"
+                          ContentTemplate="{DataTemplate pages:LoginPage}" />
+            <ShellContent Route="dogs"
+                          Style="{StaticResource DomesticShell}"
+                          Title="Dogs"
+                          Icon="dog.png"
+                          ContentTemplate="{DataTemplate pages:Stores.StorePage}" />
         </Tab>
-        <Tab Title="Favorites" Icon="tab_favorites.png">
-            <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-        </Tab>
-        <Tab Title="Map" Icon="tab_map.png">
-            <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-        </Tab>
-        <Tab Title="Settings" Icon="tab_settings.png">
-            <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
-        </Tab>
-    </TabBar>
+         <Tab Title="Tab 1" Icon="{StaticResource CircleIcon}">
+                <ShellContent
+                Title="One"
+                ContentTemplate="{DataTemplate pages:MainPage}"
+                Route="OnePage" />
+             <ShellContent Route="dogs"
+                          Style="{StaticResource DomesticShell}"
+                          Title="Dogs"
+                          Icon="dog.png"
+                          ContentTemplate="{DataTemplate pages:Stores.StorePage}" />
+            </Tab>
+            <Tab Title="Tab 2" Icon="{StaticResource  CircleIconAltDisabled}">
+                <ShellContent
+                Title="Two"
+                ContentTemplate="{DataTemplate pages:DashboardPage}"
+                Route="TwoPage" />
+            </Tab>
+         
+         
+        <!--<ShellContent Route="monkeys"
+                      Style="{StaticResource MonkeysShell}"
+                      Title="Monkeys"
+                      Icon="monkey.png"
+                      ContentTemplate="{DataTemplate pages:AndroidTestPage}" />
+        <ShellContent Route="elephants"
+                      Style="{StaticResource ElephantsShell}"
+                      Title="Elephants"
+                      Icon="elephant.png"
+                      ContentTemplate="{DataTemplate pages:MainPage}" />
+        <ShellContent Route="bears"
+                      Style="{StaticResource BearsShell}"
+                      Title="Bears"
+                      Icon="bear.png"
+                      ContentTemplate="{DataTemplate pages:VoucherPage}" />-->
+    </FlyoutItem>
+    <ShellContent Route="about"
+                  
+                  Title="About"
+                  Icon="wind_icin.png"
+                  ContentTemplate="{DataTemplate pages:LoginPage}" />
 
-    <Shell.ItemTemplate>
-        <DataTemplate>
-            <Grid
-                ColumnDefinitions="44"
-                HeightRequest="68"
-                RowDefinitions="68"
-                WidthRequest="44">
-                <Image
-                    HeightRequest="38"
-                    HorizontalOptions="Center"
-                    Source="{Binding FlyoutIcon}"
-                    VerticalOptions="Center"
-                    WidthRequest="38" />
-            </Grid>
-        </DataTemplate>
-    </Shell.ItemTemplate>
+    <MenuItem Text="Help"
+              IconImageSource="umbrella_icon.png"
+              Command="{Binding HelpCommand}"
+              CommandParameter="https://docs.microsoft.com/dotnet/maui/fundamentals/shell" />
+     
 </Shell>

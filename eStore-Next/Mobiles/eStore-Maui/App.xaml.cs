@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using AKS.Shared.Commons.Ops;
+using eStore_Maui.Pages;
 using eStore_MauiLib.RemoteService;
 using eStore_MauiLib.Services.BackgroundServices;
 
@@ -13,9 +14,10 @@ namespace eStore_Maui
             InitializeComponent();
             //App.Current.UserAppTheme = AppTheme.Dark;
 
-            if (DeviceInfo.Idiom == DeviceIdiom.Phone)
-                Shell.Current.CurrentItem = PhoneTabs;
-            InitialDatabase();
+            //if (DeviceInfo.Idiom == DeviceIdiom.Phone)
+            //    Shell.Current.CurrentItem = PhoneTabs;
+            //InitialDatabase();
+            MainPage = new AppShell();
             //Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
         async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)

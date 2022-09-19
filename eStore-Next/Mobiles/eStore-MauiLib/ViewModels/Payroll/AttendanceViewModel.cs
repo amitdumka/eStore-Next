@@ -1,6 +1,9 @@
 ﻿using System;
+using AKS.Shared.Commons.Models.Auth;
+using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
-
+using CommunityToolkit.Maui.Alerts;
+using eStore_MauiLib.DataModels.Payroll;
 
 namespace eStore_MauiLib.ViewModels.Payroll
 {
@@ -11,11 +14,39 @@ namespace eStore_MauiLib.ViewModels.Payroll
     /// This View Model strictly shoud follow role based only.
     /// // Current Month Attendance of Employee in case of SM and power user other wise employee attendance full .
     /// </summary>
-    public class AttendanceViewModel : BaseViewModel<Attendance, AttendanceViewModel>
+    public class AttendanceViewModel : BaseViewModel<Attendance, AttendanceDataModel>
     {
-        protected override void AddButton()
+
+        public AttendanceViewModel()
         {
-            throw new NotImplementedException();
+            DataModel = new AttendanceDataModel(ConType.Hybrid);
+            DataModel.StoreCode = CurrentSession.StoreCode;
+            Role = CurrentSession.UserType;
+            DataModel.Connect();
+            DataModel.Mode = DBType.Local;
+            Title = "Attendance List";
+            DefaultSortedColName = nameof(Entity.OnDate);
+            InitViewModel();
+
+        }
+
+        protected override async void AddButton()
+        {
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.Accountant:
+                case UserType.PowerUser:
+                case UserType.StoreManager:break;
+                case UserType.Sales:
+                case UserType.CA:
+                case UserType.Guest:
+                case UserType.Employees:
+                default:
+                    Toast.Make("You are not authozie! Access Deninde", CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    break;
+            }
         }
 
         protected override Task<bool> Delete()
@@ -25,7 +56,21 @@ namespace eStore_MauiLib.ViewModels.Payroll
 
         protected override void DeleteButton()
         {
-            throw new NotImplementedException();
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.Accountant:
+                case UserType.PowerUser:
+                case UserType.StoreManager: break;
+                case UserType.Sales:
+                case UserType.CA:
+                case UserType.Guest:
+                case UserType.Employees:
+                default:
+                    Toast.Make("You are not authozie! Access Deninde", CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    break;
+            }
         }
 
         protected override Task<List<Attendance>> Filter(string fitler)
@@ -35,7 +80,34 @@ namespace eStore_MauiLib.ViewModels.Payroll
 
         protected override Task<Attendance> Get(string id)
         {
-            throw new NotImplementedException();
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.Accountant:
+                case UserType.PowerUser:
+                case UserType.CA:
+                case UserType.StoreManager:
+                    return DataModel.GetById(id);
+                    
+                case UserType.Sales:
+                case UserType.Employees:
+                    if (id == CurrentSession.EmployeeId)
+                    {
+                       return DataModel.GetById(id);
+                    }
+                    else
+                    {
+                        Toast.Make("You are not authozie! Access Denide", CommunityToolkit.Maui.Core.ToastDuration.Long);
+                        return null;
+                    }
+                    
+                case UserType.Guest:
+                default:
+                    Toast.Make("You are not authozie! Access Denide", CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    return null;
+                    break;
+            }
         }
 
         protected override Task<Attendance> GetById(int id)
@@ -43,19 +115,111 @@ namespace eStore_MauiLib.ViewModels.Payroll
             throw new NotImplementedException();
         }
 
-        protected override Task<List<Attendance>> GetList()
+        protected override async Task<List<Attendance>> GetList()
         {
-            throw new NotImplementedException();
+            List<Attendance> atts;
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.CA:
+                case UserType.Accountant:
+                    atts = await DataModel.GetItems();
+
+                    break;
+                case UserType.StoreManager:
+                case UserType.PowerUser:
+                    atts = await DataModel.GetItems();
+                    break;
+                case UserType.Guest:
+                    atts = null;
+                    break;
+
+                case UserType.Sales:
+                case UserType.Employees:
+                    atts = await DataModel.GetItems();
+                    break;
+
+                default:
+                    atts = await DataModel.GetItems();
+                    break;
+            }
+            return atts;
         }
 
         protected override void RefreshButton()
         {
-            throw new NotImplementedException();
+            Entities.Clear();
+            InitViewModel();
         }
 
-        protected override Task<bool> Save(bool isNew = false)
+        protected override async Task<bool> Save(bool isNew = false)
         {
-            throw new NotImplementedException();
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.Accountant:
+                case UserType.PowerUser:
+                case UserType.StoreManager:
+
+                   Entity=await DataModel.Save(Entity);
+                    if (Entity != null) return true;
+                    break;
+                case UserType.Sales:
+                case UserType.CA:
+                case UserType.Guest:
+                case UserType.Employees:
+                default:
+                    Toast.Make("You are not authozie! Access Deninde", CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    break;
+            }
+            return false;
+        }
+
+        protected void UpdateEntities(List<Attendance> atts)
+        {
+            if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Attendance>();
+            foreach (var item in atts)
+            {
+                Entities.Add(item);
+            }
+            RecordCount = Entities.Count;
+        }
+        protected async void InitViewModel()
+        {
+            List<Attendance> atts;
+            switch (Role)
+            {
+                case UserType.Admin:
+                case UserType.Owner:
+                case UserType.CA:
+                case UserType.Accountant:
+                    atts= await DataModel.GetItems();
+                    
+                    break;
+                case UserType.StoreManager:
+                case UserType.PowerUser:
+                    atts = await DataModel.GetItems();
+                    break;
+                case UserType.Guest:
+                    atts = null;
+                    break;
+
+                case UserType.Sales:
+                case UserType.Employees:
+                    atts = await DataModel.GetItems();
+                    break;
+               
+                default:
+                    atts = await DataModel.GetItems();
+                    break;
+            }
+
+            if (atts != null)
+            {
+                UpdateEntities(atts);
+            }
         }
     }
 }

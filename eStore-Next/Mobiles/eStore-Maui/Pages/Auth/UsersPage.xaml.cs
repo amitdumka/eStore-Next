@@ -9,6 +9,7 @@ public partial class UsersPage : ContentPage
 {
 	public UsersViewModel viewModel;
     public static ColumnCollection gridColumns;
+
     public UsersPage()
 	{
         InitializeComponent();

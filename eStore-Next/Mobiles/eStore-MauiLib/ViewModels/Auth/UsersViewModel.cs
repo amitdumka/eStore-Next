@@ -52,7 +52,7 @@ namespace eStore_MauiLib.ViewModels.Auth
             DefaultSortedColName = nameof(User.UserName);
             
         }
-        [RelayCommand]
+        //[RelayCommand]
         private void UpdateEntities(List<User> users)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<User>();

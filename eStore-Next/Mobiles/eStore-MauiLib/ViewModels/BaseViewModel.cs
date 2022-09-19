@@ -32,6 +32,9 @@ namespace eStore_MauiLib.ViewModels
         [ObservableProperty]
         protected int _recordCount;
 
+        [ObservableProperty]
+        protected UserType _role;
+
         #endregion
 
 

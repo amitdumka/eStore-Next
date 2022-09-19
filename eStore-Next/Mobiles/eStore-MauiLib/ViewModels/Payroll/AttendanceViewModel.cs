@@ -5,6 +5,7 @@ using AKS.Shared.Payroll.Models;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using eStore_MauiLib.DataModels.Accounting;
 using eStore_MauiLib.DataModels.Payroll;
 using eStore_MauiLib.RemoteService;
 
@@ -22,8 +23,27 @@ namespace eStore_MauiLib.ViewModels.Payroll
         [ObservableProperty]
         //[NotifyCanExecuteChangedFor(nameof(OnLocalDBSyncChanged))]
         private bool _localDBSync;
-       
 
+        [ObservableProperty]
+        private string _employeeId;
+        [ObservableProperty]
+        private string _onDate;
+        [ObservableProperty]
+        private string _remarks;
+        [ObservableProperty]
+        private string _entryTime;
+        [ObservableProperty]
+        private AttUnit _status;
+        
+        [ObservableProperty]
+        private bool _entry;
+
+        public AttendanceViewModel(bool entry)
+        {
+            Entry = entry;
+            InitViewModel();
+        }
+        
         public AttendanceViewModel()
         {
             DataModel = new AttendanceDataModel(ConType.Hybrid);
@@ -31,14 +51,36 @@ namespace eStore_MauiLib.ViewModels.Payroll
             Role = CurrentSession.UserType;
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
-            Title = "Attendance List";
-            DefaultSortedColName = nameof(Entity.OnDate);
-           if(!DatabaseStatus.VerifyPayrollSet())
-            {
-                SyncLocal();
-            }
             InitViewModel();
 
+        }
+        protected async void InitViewModel()
+        {
+            if (!_entry)
+            {
+                Title = "Attendance List";
+                DefaultSortedColName = nameof(Entity.OnDate);
+                if (!DatabaseStatus.VerifyPayrollSet())
+                {
+                    SyncLocal();
+                }
+            }else
+            {
+
+                Title = "Attendance";
+            }
+        }
+
+
+        private void ResetEntryViewModel()
+        {
+            _entry = false; 
+            _employeeId = null;
+            _onDate = null;
+            _entryTime = null;
+            _remarks = null;
+            _status = AttUnit.StoreClosed;
+            _isNew = false;
         }
         protected async void SyncLocal()
         {
@@ -173,7 +215,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
         protected override void RefreshButton()
         {
             Entities.Clear();
-            InitViewModel();
+            Fetch();
         }
 
         protected override async Task<bool> Save(bool isNew = false)
@@ -186,7 +228,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
                 case UserType.PowerUser:
                 case UserType.StoreManager:
 
-                   Entity=await DataModel.Save(Entity);
+                   Entity=await DataModel.Save(Entity, isNew);
                     if (Entity != null) return true;
                     break;
                 case UserType.Sales:
@@ -209,7 +251,8 @@ namespace eStore_MauiLib.ViewModels.Payroll
             }
             RecordCount = Entities.Count;
         }
-        protected async void InitViewModel()
+        
+        protected async void Fetch()
         {
             List<Attendance> atts;
             switch (Role)
@@ -218,8 +261,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
                 case UserType.Owner:
                 case UserType.CA:
                 case UserType.Accountant:
-                    atts= await DataModel.GetItems();
-                    
+                    atts = await DataModel.GetItems();
                     break;
                 case UserType.StoreManager:
                 case UserType.PowerUser:
@@ -228,12 +270,10 @@ namespace eStore_MauiLib.ViewModels.Payroll
                 case UserType.Guest:
                     atts = null;
                     break;
-
                 case UserType.Sales:
                 case UserType.Employees:
                     atts = await DataModel.GetItems();
                     break;
-               
                 default:
                     atts = await DataModel.GetItems();
                     break;

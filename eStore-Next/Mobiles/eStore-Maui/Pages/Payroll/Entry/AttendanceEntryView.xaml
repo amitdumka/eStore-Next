@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <mct:Popup
     x:Class="eStore_Maui.Pages.Payroll.Entry.AttendanceEntryView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -9,10 +9,11 @@
             <ResourceDictionary>
                 <Style x:Key="FieldCombo" TargetType="HorizontalStackLayout">
                     <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
-                    <Setter Property="BackgroundColor" Value="{x:StaticResource Background_Mid}" />
+                    <Setter Property="BackgroundColor" Value="{x:StaticResource Accent_Yellow200}" />
                 </Style>
                 <Style x:Key="FieldLable" TargetType="Label">
-                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="FontSize" Value="18" />
                     <Setter Property="FontAttributes" Value="Bold" />
                     <Setter Property="TextColor" Value="{x:StaticResource Accent_Blue100}" />
                     <Setter Property="VerticalTextAlignment" Value="Center" />

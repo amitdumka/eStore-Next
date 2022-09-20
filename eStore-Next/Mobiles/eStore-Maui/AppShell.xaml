@@ -141,7 +141,7 @@
                 ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
                 Route="Paryroll.Attendance" />
         </Tab>
-        <Tab Title="Monthly Dash" Icon="rain_icon.png">
+        <!--<Tab Title="Monthly Dash" Icon="rain_icon.png">
             <ShellContent
                 Title="Monthly"
                 ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
@@ -158,13 +158,41 @@
                 Title="Advance"
                 ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
                 Route="Paryroll.Attendance" />
-        </Tab>
+        </Tab>-->
     </FlyoutItem>
+    <FlyoutItem Title="Store">
+        <Tab Title="Stores" Icon="rain_icon.png">
+            <ShellContent
+                Title="Store"
+                ContentTemplate="{DataTemplate pages:Stores.StorePage}"
+                Route="Store.Stores" />
+        </Tab>
+        <Tab Title="Users" Icon="rain_icon.png">
+            <ShellContent
+                Title="User"
+                ContentTemplate="{DataTemplate pages:Auth.UsersPage}"
+                Route="Auth.Users" />
+        </Tab>
+        <!--<Tab Title="Salary Dash" Icon="rain_icon.png">
+            <ShellContent
+                Title="Payment"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
+        </Tab>
+        <Tab Title="Advance Dash" Icon="rain_icon.png">
+            <ShellContent
+                Title="Advance"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
+        </Tab>-->
+    </FlyoutItem>
+
+
 
     <!--  Test Menu  -->
     <ShellContent
         Title="About"
-        ContentTemplate="{DataTemplate pages:LoginPage}"
+        ContentTemplate="{DataTemplate pages:AboutPage}"
         Icon="wind_icin.png"
         Route="about" />
     <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->

@@ -25,7 +25,6 @@ namespace eStore_MauiLib.DataModels.Payroll
         {
             throw new NotImplementedException();
         }
-
         public override async Task<List<Attendance>> GetItems(string storeid)
         {
             AppDBContext currDb = null;
@@ -48,7 +47,7 @@ namespace eStore_MauiLib.DataModels.Payroll
             else if (CurrentSession.UserType == UserType.StoreManager)
             {
 
-                return await currDb.Attendances.Where(c => c.StoreId == CurrentSession.StoreCode)
+                return await currDb.Attendances.Where(c => c.StoreId == storeid)
                     .OrderByDescending(c => c.OnDate)
                     .ToListAsync();
 
@@ -56,11 +55,47 @@ namespace eStore_MauiLib.DataModels.Payroll
             else if (CurrentSession.UserType != UserType.Guest)
             {
                 // Admin
-                return await currDb.Attendances
+                return await currDb.Attendances.Where(c=>c.StoreId==storeid)
                     .OrderByDescending(c => c.OnDate)
                     .ToListAsync();
 
 
+            }
+            else return null;
+        }
+        public override async Task<List<Attendance>> GetItems()
+        {
+            AppDBContext currDb = null;
+            //This Approch is not very usefull in event of API or remoteAPI
+            switch (Mode)
+            {
+                case DBType.Local: currDb = _localDb; break;
+                case DBType.Azure: currDb = _azureDb; break;
+                default:
+                    break;
+            }
+
+            if (CurrentSession.UserType == UserType.Employees || CurrentSession.UserType == UserType.Sales)
+            {
+                return await currDb.Attendances.Where(c => c.EmployeeId == CurrentSession.EmployeeId 
+                && c.OnDate.Year==DateTime.Today.Year && c.OnDate.Month==DateTime.Today.Month )
+                    .OrderByDescending(c => c.OnDate)
+                    .ToListAsync();
+
+            }
+            else if (CurrentSession.UserType == UserType.StoreManager)
+            {
+                return await currDb.Attendances.Where(c => c.StoreId == CurrentSession.StoreCode
+                && c.OnDate.Date == DateTime.Today)
+                    .OrderByDescending(c => c.OnDate)
+                    .ToListAsync();
+            }
+            else if (CurrentSession.UserType != UserType.Guest)
+            {
+                // Admin
+                return await currDb.Attendances
+                    .OrderByDescending(c => c.OnDate)
+                    .ToListAsync();
             }
             else return null;
         }

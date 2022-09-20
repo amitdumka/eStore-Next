@@ -51,6 +51,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
             Role = CurrentSession.UserType;
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
+            _entry = false;
             InitViewModel();
 
         }
@@ -64,6 +65,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
                 {
                     SyncLocal();
                 }
+                Fetch();
             }else
             {
 

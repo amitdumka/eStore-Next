@@ -275,7 +275,7 @@ namespace eStore_MauiLib.DataModels
         /// Get all items. It is Expermimental
         /// </summary>
         /// <returns></returns>
-        public async Task<List<T>> GetItems()
+        public virtual async  Task<List<T>> GetItems()
         {
             switch (Mode)
             {

@@ -131,14 +131,39 @@
     <Shell.FlyoutFooter>
         <controls:ShellFooter />
     </Shell.FlyoutFooter>
+
+
+
     <!--Menu Items -->
-    <FlyoutItem Title="Menu One" FlyoutIcon="{StaticResource SearchIcon}">
+    <FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">
         <ShellContent
-            Title="Main Page"
+            Title="Dashboard"
             ContentTemplate="{DataTemplate  pages:DashboardPage}"
-            Route="OnePage" />
+            Route="Dashboard" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Payroll" >
+        <Tab Title="Payroll Dash" Icon="rain_icon.png">
+            <ShellContent Title="Attendance" Route="Paryroll.Attendance"
+                          ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+        </Tab>
+        <Tab Title="Monthly Dash" Icon="rain_icon.png">
+            <ShellContent Title="Monthly" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+        </Tab>
+         <Tab Title="Salary Dash" Icon="rain_icon.png">
+            <ShellContent Title="Payment" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+        </Tab>
+        <Tab Title="Advance Dash" Icon="rain_icon.png">
+            <ShellContent Title="Advance" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+        </Tab>
+
+    </FlyoutItem>
+
+
+    <!-- Test Menu-->
+    
+
+    
     
     <FlyoutItem Route="animals"
                 FlyoutDisplayOptions="AsMultipleItems">

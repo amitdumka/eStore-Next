@@ -10,6 +10,7 @@ public partial class AttendanceEntryView : Popup
 	{
 		InitializeComponent();
 		entryViewModel = vm;
-		this.BindingContext = entryViewModel; 
+		this.BindingContext = entryViewModel;
+		Size = new Microsoft.Maui.Graphics.Size(400, 500);
 	}
 }

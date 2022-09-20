@@ -52,6 +52,8 @@ namespace eStore_Maui.ViewModels.Auth
             Title = "Users";
             GuestName = "No user ";
             DefaultSortedColName = nameof(User.UserName);
+            UserName = "Alok@eStore.in";
+            Password = "Alok";
             
         }
         //[RelayCommand]

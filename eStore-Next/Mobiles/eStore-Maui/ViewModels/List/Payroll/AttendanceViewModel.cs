@@ -1,8 +1,10 @@
 ﻿using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
-using eStore_MauiLib.DataModels;
+using eStore_Maui.Pages.Payroll.Entry;
+using eStore_Maui.ViewModels.Entry;
 using eStore_MauiLib.DataModels.Payroll;
 using eStore_MauiLib.RemoteService;
 
@@ -18,40 +20,8 @@ namespace eStore_Maui.ViewModels.Payroll
     public partial class AttendanceViewModel : BaseViewModel<Attendance, AttendanceDataModel>
     {
         [ObservableProperty]
-        //[NotifyCanExecuteChangedFor(nameof(OnLocalDBSyncChanged))]
         private bool _localDBSync;
 
-        //[ObservableProperty]
-        //private List<DynVM> _employeeList;
-
-        //[ObservableProperty]
-        //private string _employeeId;
-        //[ObservableProperty]
-        //private string _onDate;
-        //[ObservableProperty]
-        //private string _remarks;
-        //[ObservableProperty]
-        //private string _entryTime;
-        //[ObservableProperty]
-        //private AttUnit _status;
-        
-        //[ObservableProperty]
-        //private bool _entry;
-
-       // private CommonDataModel CommonData;
-
-        //public AttendanceViewModel(bool entry)
-        //{
-        //    Entry = entry;
-        //    DataModel = new AttendanceDataModel(ConType.Hybrid);
-        //    DataModel.StoreCode = CurrentSession.StoreCode;
-        //    Role = CurrentSession.UserType;
-        //    DataModel.Connect();
-        //    DataModel.Mode = DBType.Local;
-           
-        //    InitViewModel();
-        //}
-        
         public AttendanceViewModel()
         {
             DataModel = new AttendanceDataModel(ConType.Hybrid);
@@ -59,63 +29,29 @@ namespace eStore_Maui.ViewModels.Payroll
             Role = CurrentSession.UserType;
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
-           // _entry = false;
             InitViewModel();
-
         }
+
         protected async void InitViewModel()
         {
-            //if (!_entry)
-            //{
-                Title = "Attendance List";
-                DefaultSortedColName = nameof(Entity.OnDate);
-                if (!DatabaseStatus.VerifyPayrollSet())
-                {
-                    SyncLocal();
-                }
-                Fetch();
-            //}else
-            //{
-
-            //    Title = "Attendance";
-            //    InitEntryModel();
-            //}
+            Title = "Attendance List";
+            DefaultSortedColName = nameof(Entity.OnDate);
+            if (!DatabaseStatus.VerifyPayrollSet())
+            {
+                SyncLocal();
+            }
+            Fetch();
         }
 
-        private void InitEntryModel()
-        {
-            //EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContextLocal());
-        }
-        //private void ResetEntryViewModel()
-        //{
-        //    _entry = false; 
-        //    _employeeId = null;
-        //    _onDate = null;
-        //    _entryTime = null;
-        //    _remarks = null;
-        //    _status = AttUnit.StoreClosed;
-        //    _isNew = false;
-        //}
         protected async void SyncLocal()
         {
-            LocalDBSync=await DatabaseStatus.SyncAttendance();
-            Toast.Make("LocalDataBase Sync: "+LocalDBSync, CommunityToolkit.Maui.Core.ToastDuration.Long);
+            LocalDBSync = await DatabaseStatus.SyncAttendance();
+            Toast.Make("LocalDataBase Sync: " + LocalDBSync, CommunityToolkit.Maui.Core.ToastDuration.Long);
         }
 
-        //partial void OnEntryChanged(bool value)
-        //{
-        //    if (value)
-        //    {
-
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //}
         partial void OnLocalDBSyncChanged(bool value)
         {
-            if(value)
+            if (value)
                 RefreshButton();
         }
 
@@ -127,7 +63,13 @@ namespace eStore_Maui.ViewModels.Payroll
                 case UserType.Owner:
                 case UserType.Accountant:
                 case UserType.PowerUser:
-                case UserType.StoreManager:break;
+                case UserType.StoreManager:
+                    AttendanceEntryViewModel entryVm = new AttendanceEntryViewModel(DataModel, null);
+                    var entryview = new AttendanceEntryView(entryVm, true);
+                    var result = await CurrentPage.ShowPopupAsync(entryview);
+
+                    break;
+
                 case UserType.Sales:
                 case UserType.CA:
                 case UserType.Guest:
@@ -136,7 +78,6 @@ namespace eStore_Maui.ViewModels.Payroll
                     Toast.Make("You are not authozie! Access Deninde", CommunityToolkit.Maui.Core.ToastDuration.Long);
                     break;
             }
-
         }
 
         protected override Task<bool> Delete()
@@ -179,19 +120,19 @@ namespace eStore_Maui.ViewModels.Payroll
                 case UserType.CA:
                 case UserType.StoreManager:
                     return DataModel.GetById(id);
-                    
+
                 case UserType.Sales:
                 case UserType.Employees:
                     if (id == CurrentSession.EmployeeId)
                     {
-                       return DataModel.GetById(id);
+                        return DataModel.GetById(id);
                     }
                     else
                     {
                         Toast.Make("You are not authozie! Access Denide", CommunityToolkit.Maui.Core.ToastDuration.Long);
                         return null;
                     }
-                    
+
                 case UserType.Guest:
                 default:
                     Toast.Make("You are not authozie! Access Denide", CommunityToolkit.Maui.Core.ToastDuration.Long);
@@ -217,10 +158,12 @@ namespace eStore_Maui.ViewModels.Payroll
                     atts = await DataModel.GetItems();
 
                     break;
+
                 case UserType.StoreManager:
                 case UserType.PowerUser:
                     atts = await DataModel.GetItems();
                     break;
+
                 case UserType.Guest:
                     atts = null;
                     break;
@@ -245,10 +188,9 @@ namespace eStore_Maui.ViewModels.Payroll
 
         protected override async Task<bool> Save(bool isNew = false)
         {
-           // Entry = true;
+            // Entry = true;
             //var entryView = new AttendanceEntryView(vm);
-           // await ShowPopupAsync(entryView);
-
+            // await ShowPopupAsync(entryView);
 
             switch (Role)
             {
@@ -258,9 +200,10 @@ namespace eStore_Maui.ViewModels.Payroll
                 case UserType.PowerUser:
                 case UserType.StoreManager:
 
-                   Entity=await DataModel.Save(Entity, isNew);
+                    Entity = await DataModel.Save(Entity, isNew);
                     if (Entity != null) return true;
                     break;
+
                 case UserType.Sales:
                 case UserType.CA:
                 case UserType.Guest:
@@ -281,7 +224,7 @@ namespace eStore_Maui.ViewModels.Payroll
             }
             RecordCount = Entities.Count;
         }
-        
+
         protected async void Fetch()
         {
             List<Attendance> atts;
@@ -293,17 +236,21 @@ namespace eStore_Maui.ViewModels.Payroll
                 case UserType.Accountant:
                     atts = await DataModel.GetItems();
                     break;
+
                 case UserType.StoreManager:
                 case UserType.PowerUser:
                     atts = await DataModel.GetItems();
                     break;
+
                 case UserType.Guest:
                     atts = null;
                     break;
+
                 case UserType.Sales:
                 case UserType.Employees:
                     atts = await DataModel.GetItems();
                     break;
+
                 default:
                     atts = await DataModel.GetItems();
                     break;
@@ -316,4 +263,3 @@ namespace eStore_Maui.ViewModels.Payroll
         }
     }
 }
-

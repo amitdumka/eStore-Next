@@ -12,7 +12,8 @@ namespace eStore_Maui.ViewModels
     {
         #region Field
         protected DM DataModel;
-
+        [ObservableProperty]
+        protected Page _currentPage;
         [ObservableProperty]
         protected string _defaultSortedColName;
         [ObservableProperty]

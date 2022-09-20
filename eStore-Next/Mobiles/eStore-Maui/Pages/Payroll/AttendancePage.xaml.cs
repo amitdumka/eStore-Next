@@ -17,6 +17,7 @@ public partial class AttendancePage : ContentPage
         RLV.BindingContext = viewModel;
         viewModel.Icon = eStore_Maui.Resources.Styles.IconFont.UserFriends;
         RLV.Cols = SetGridCols();
+        viewModel.CurrentPage = this;
     }
     protected ColumnCollection SetGridCols()
     {

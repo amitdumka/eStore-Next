@@ -32,6 +32,8 @@ namespace eStore_Maui.ViewModels.Entry
 
         [ObservableProperty]
         private bool _isTailor;
+        [ObservableProperty]
+        private List<string> _attUnitList;
 
         public AttendanceEntryViewModel(AttendanceDataModel dm, Attendance toEdit)
         {
@@ -61,11 +63,13 @@ namespace eStore_Maui.ViewModels.Entry
         protected override void Cancle()
         {
             ResetEntryViewModel();
+            //Need to Close pop
         }
 
         protected override void InitViewModel()
         {
             EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContextLocal());
+            AttUnitList = Enum.GetNames(typeof(AttUnit)).ToList();
         }
 
         protected override void Save()
@@ -86,7 +90,7 @@ namespace eStore_Maui.ViewModels.Entry
                     Remarks = Remarks,
                     Status = Status,
                     UserId = CurrentSession.UserName,
-                    AttendanceId = "TODO_GENERATE"
+                    AttendanceId = $"{EmployeeId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{DateTime.Now.Second}"
                 };
             }
             else

@@ -13,7 +13,7 @@
                     <Setter Property="BackgroundColor" Value="{x:StaticResource MidGray}" />
                 </Style>
                 <Style x:Key="FieldLable" TargetType="Label">
-                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="Margin" Value="5" />
                     <Setter Property="FontSize" Value="18" />
                     <Setter Property="FontAttributes" Value="Bold" />
                     <Setter Property="TextColor" Value="{x:StaticResource Accent_Blue100}" />
@@ -57,14 +57,21 @@
                             Title="Staff"
                             ItemDisplayBinding="{Binding DisplayData}"
                             ItemsSource="{Binding EmployeeList}"
-                            SelectedItem="{Binding EmployeeId}" />
+                            SelectedItem="{Binding EmployeeId }" />
                     </HorizontalStackLayout>
 
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
                         <Label Style="{x:StaticResource FieldLable}" Text="Date" />
                         <DatePicker Date="{Binding OnDate}" />
                     </HorizontalStackLayout>
-
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Status" />
+                        <Picker
+                            
+                            Title="Select Status"
+                            ItemsSource="{Binding AttUnitList}"
+                            SelectedIndex="{Binding Status }" />
+                    </HorizontalStackLayout>
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
                         <Label Style="{x:StaticResource FieldLable}" Text="Entry Time" />
                         <TimePicker Time="{Binding EntryTime}" />
@@ -73,6 +80,10 @@
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
                         <Label Style="{x:StaticResource FieldLable}" Text="Remarks" />
                         <Entry Text="{Binding Remarks}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}" >
+                        <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:StaticResource PrimaryButtonOutline}}"/>
+                        <Button Text="Cancle" Command="{Binding CancleCommand}" Style="{x:StaticResource TertiaryButtonOutline}}"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>

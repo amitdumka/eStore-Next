@@ -49,7 +49,13 @@ namespace eStore_Maui.ViewModels.Entry
                 OnDate = toEdit.OnDate;
                 Id = toEdit.AttendanceId;
             }
-            else IsNew = true;
+            else {
+                IsNew = true;
+                OnDate = DateTime.Now; 
+                EntryTime=DateTime.Now.ToShortTimeString();
+
+            }
+            InitViewModel();
         }
 
         protected override void Cancle()

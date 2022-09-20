@@ -32,8 +32,8 @@ namespace eStore_Maui
             builder.ConfigureSyncfusionDataGrid();
             var services = builder.Services;
 #if ANDROID
-            builder.Services.AddTransient<AndroidTestPage>();
-            builder.Services.AddTransient<PrintPageViewModel>();
+           // builder.Services.AddTransient<AndroidTestPage>();
+            //builder.Services.AddTransient<PrintPageViewModel>();
             services.AddTransient<IPrintService, eStore_MauiLib.Services.PrintService>();
             services.AddSingleton<IPrintService, eStore_MauiLib.Services.PrintService>();
             services.AddTransient<IPrinterService, PrinterService>();

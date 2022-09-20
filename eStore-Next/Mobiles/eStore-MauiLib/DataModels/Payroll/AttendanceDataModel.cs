@@ -93,7 +93,8 @@ namespace eStore_MauiLib.DataModels.Payroll
             else if (CurrentSession.UserType != UserType.Guest)
             {
                 // Admin
-                return await currDb.Attendances
+                return await currDb.Attendances.
+                    Where(c =>  c.OnDate.Month == DateTime.Today.Month && c.OnDate.Year == DateTime.Today.Year)
                     .OrderByDescending(c => c.OnDate)
                     .ToListAsync();
             }

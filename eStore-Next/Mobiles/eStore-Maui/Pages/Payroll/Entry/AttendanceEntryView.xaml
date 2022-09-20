@@ -8,11 +8,12 @@
         <VerticalStackLayout.Resources>
             <ResourceDictionary>
                 <Style x:Key="FieldCombo" TargetType="HorizontalStackLayout">
-                    <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
-                    <Setter Property="BackgroundColor" Value="{x:StaticResource Accent_Yellow200}" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+                    <Setter Property="BackgroundColor" Value="{x:StaticResource MidGray}" />
                 </Style>
                 <Style x:Key="FieldLable" TargetType="Label">
-                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Margin" Value="10" />
                     <Setter Property="FontSize" Value="18" />
                     <Setter Property="FontAttributes" Value="Bold" />
                     <Setter Property="TextColor" Value="{x:StaticResource Accent_Blue100}" />
@@ -43,34 +44,38 @@
         </VerticalStackLayout.Resources>
         <Label Style="{StaticResource Title}" Text="{Binding Title}" />
         <BoxView Style="{StaticResource Divider}" />
-        <VerticalStackLayout
-            x:Name="eForm"
-            HorizontalOptions="CenterAndExpand"
-            VerticalOptions="Center">
+        <ScrollView HorizontalOptions="CenterAndExpand" VerticalScrollBarVisibility="Always">
+            <Frame BackgroundColor="{x:StaticResource Accent_Yellow200}" BorderColor="{x:StaticResource Primary}">
+                <VerticalStackLayout
+                    x:Name="eForm"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Center">
 
-            <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
-                <Label Style="{x:StaticResource FieldLable}" Text="Employee" />
-                <Picker
-                    Title="Staff"
-                    ItemDisplayBinding="{Binding EmpployeeList.DisplayMember}"
-                    ItemsSource="{Binding EmployeeList}"
-                    SelectedItem="{Binding EmployeeId}" />
-            </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Employee" />
+                        <Picker
+                            Title="Staff"
+                            ItemDisplayBinding="{Binding DisplayData}"
+                            ItemsSource="{Binding EmployeeList}"
+                            SelectedItem="{Binding EmployeeId}" />
+                    </HorizontalStackLayout>
 
-            <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
-                <Label Style="{x:StaticResource FieldLable}" Text="Date" />
-                <DatePicker Date="{Binding OnDate}" />
-            </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Date" />
+                        <DatePicker Date="{Binding OnDate}" />
+                    </HorizontalStackLayout>
 
-            <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
-                <Label Style="{x:StaticResource FieldLable}" Text="Entry Time" />
-                <TimePicker Time="{Binding EntryTime}" />
-            </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Entry Time" />
+                        <TimePicker Time="{Binding EntryTime}" />
+                    </HorizontalStackLayout>
 
-            <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
-                <Label Style="{x:StaticResource FieldLable}" Text="Remarks" />
-                <Entry Text="{Binding Remarks}" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Remarks" />
+                        <Entry Text="{Binding Remarks}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </ScrollView>
     </VerticalStackLayout>
 </mct:Popup>

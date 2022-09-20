@@ -30,6 +30,7 @@ namespace eStore_Maui
 
         async void InitialDatabase()
         {
+            //new SyncService().SyncDownEmployeesAsync();
             if (!DatabaseStatus.VerifyLocalStatus())
             {
                 BackgroundService service= new SyncDownService();

@@ -6,7 +6,7 @@ using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Payroll;
 using eStore_MauiLib.RemoteService;
 
-namespace eStore_MauiLib.ViewModels.Payroll
+namespace eStore_Maui.ViewModels.Payroll
 {
     /// <summary>
     /// TODO: Implement Role based data listing and manuplication .

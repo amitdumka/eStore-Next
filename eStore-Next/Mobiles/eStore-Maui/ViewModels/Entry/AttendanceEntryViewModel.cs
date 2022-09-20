@@ -4,7 +4,6 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Payroll;
-using eStore_MauiLib.ViewModels;
 
 namespace eStore_Maui.ViewModels.Entry
 {
@@ -44,15 +43,15 @@ namespace eStore_Maui.ViewModels.Entry
                 IsTailor = toEdit.IsTailoring;
                 Status = toEdit.Status;
                 EntryTime = toEdit.EntryTime;
-                EmployeeId = toEdit.EmployeeId; 
+                EmployeeId = toEdit.EmployeeId;
                 Remarks = toEdit.Remarks;
                 Title = "Update Attendance";
                 OnDate = toEdit.OnDate;
                 Id = toEdit.AttendanceId;
-
             }
             else IsNew = true;
         }
+
         protected override void Cancle()
         {
             ResetEntryViewModel();
@@ -108,7 +107,7 @@ namespace eStore_Maui.ViewModels.Entry
                 if (IsNew)
                     Toast.Make("Attendace is saved!", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 else
-                   Toast.Make("Attendace is updated!", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    Toast.Make("Attendace is updated!", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 ResetEntryViewModel();
             }
         }

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection.Metadata;
 
-namespace eStore_MauiLib.ViewModels
+namespace eStore_Maui.ViewModels
 {
     [ObservableRecipient]
     public abstract partial class BaseViewModel<T, DM> : ObservableValidator

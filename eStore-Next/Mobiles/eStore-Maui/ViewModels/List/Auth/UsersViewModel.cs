@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
 using System.ComponentModel.DataAnnotations;
 
-namespace eStore_MauiLib.ViewModels.Auth
+namespace eStore_Maui.ViewModels.Auth
 {
     public partial class UsersViewModel : BaseViewModel<User, AuthDataModel>
     {

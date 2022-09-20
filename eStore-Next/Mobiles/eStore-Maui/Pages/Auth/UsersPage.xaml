@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:rlv="clr-namespace:eStore_Maui.Views.Custom"
-    xmlns:viewModels="clr-namespace:eStore_MauiLib.ViewModels.Auth;assembly=eStore-MauiLib"
+    xmlns:viewModels="clr-namespace:eStore_Maui.ViewModels.Auth"
     Title="{Binding Title, Mode=TwoWay}">
 
     <VerticalStackLayout>

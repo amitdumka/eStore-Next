@@ -35,8 +35,6 @@
 	  <None Remove="CommunityToolkit.Maui.Markup" />
 	  <None Remove="CommunityToolkit.Maui.Core" />
 	  <None Remove="RemoteService\" />
-	  <None Remove="ViewModels\Stores\" />
-	  <None Remove="ViewModels\Payroll\" />
 	  <None Remove="DataModels\Payroll\" />
 	</ItemGroup>
 	<ItemGroup>
@@ -46,8 +44,6 @@
 	  <Folder Include="DataModels\Accounting\" />
 	  <Folder Include="Services\Print\" />
 	  <Folder Include="Platforms\Android\Services\Print\" />
-	  <Folder Include="ViewModels\Stores\" />
-	  <Folder Include="ViewModels\Payroll\" />
 	  <Folder Include="DataModels\Payroll\" />
 	</ItemGroup>
 	<ItemGroup>

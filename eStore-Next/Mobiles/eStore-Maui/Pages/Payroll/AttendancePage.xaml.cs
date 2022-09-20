@@ -1,7 +1,5 @@
-﻿using AKS.Shared.Commons.Models.Auth;
-using AKS.Shared.Payroll.Models;
-using eStore_MauiLib.ViewModels.Auth;
-using eStore_MauiLib.ViewModels.Payroll;
+﻿using AKS.Shared.Payroll.Models;
+using eStore_Maui.ViewModels.Payroll;
 using Syncfusion.Maui.DataGrid;
 
 namespace eStore_Maui.Pages.Payroll;

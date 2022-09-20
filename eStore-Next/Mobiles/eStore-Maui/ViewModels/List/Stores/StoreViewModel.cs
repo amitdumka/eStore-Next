@@ -6,7 +6,7 @@ using eStore_MauiLib.DataModels.Auths;
 using eStore_MauiLib.DataModels.Stores;
 using System.ComponentModel.DataAnnotations;
 
-namespace eStore_MauiLib.ViewModels.Stores
+namespace eStore_Maui.ViewModels.Stores
 {
     public partial class StoreViewModel : BaseViewModel<Store, StoreDataModel>
     {

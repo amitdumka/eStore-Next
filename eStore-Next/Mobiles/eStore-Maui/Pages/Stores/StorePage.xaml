@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:app="clr-namespace:eStore_Maui.Resources.Styles"
     xmlns:sfgrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
-    xmlns:viewModels="clr-namespace:eStore_MauiLib.ViewModels.Stores;assembly=eStore-MauiLib"
+    xmlns:viewModels="clr-namespace:eStore_Maui.ViewModels.Stores"
     Title="Stores">
     <ContentPage.BindingContext>
         <viewModels:StoreViewModel x:Name="viewModel" />

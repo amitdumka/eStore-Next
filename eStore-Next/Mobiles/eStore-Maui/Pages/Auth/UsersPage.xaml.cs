@@ -1,6 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Auth;
-using eStore_MauiLib.ViewModels.Auth;
-using Microsoft.Maui.Controls.Compatibility.Platform.Android.CollectionView;
+using eStore_Maui.ViewModels.Auth;
 using Syncfusion.Maui.DataGrid;
 
 namespace eStore_Maui.Pages.Auth;

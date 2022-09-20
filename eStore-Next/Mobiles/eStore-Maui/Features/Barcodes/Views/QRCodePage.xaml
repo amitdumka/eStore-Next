@@ -1,24 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eStore_Maui.Features.Barcodes.Views.QRCodePage"
-             Title="QRCodePage">
+<ContentPage
+    x:Class="eStore_Maui.Features.Barcodes.Views.QRCodePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI"
+    Title="QRCodePage">
     <VerticalStackLayout>
-        <Label 
+        <Label
+            HorizontalOptions="Center"
             Text="QR Code Genrator"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            VerticalOptions="Center" />
 
 
         <zxing:BarcodeGeneratorView
+            Margin="3"
+            ForegroundColor="DarkBlue"
+            Format="QrCode"
             HeightRequest="100"
             WidthRequest="100"
-            ForegroundColor="DarkBlue"
-            Value="https://dotnet.microsoft.com"
-            Format="QrCode"
-             Margin="3" />
-        <Entry x:Name="qrCodeText"  />
-        <Button x:Name="BTNQRCode" Text="Generate" Clicked="BTNQRCode_Clicked"/>
+            Value="https://dotnet.microsoft.com" />
+        <Entry x:Name="qrCodeText" />
+        <Button
+            x:Name="BTNQRCode"
+            Clicked="BTNQRCode_Clicked"
+            Text="Generate" />
     </VerticalStackLayout>
 </ContentPage>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eStore_MauiLib.ViewModels
+namespace eStore_Maui.ViewModels
 {
     [ObservableRecipient]
     public abstract partial class BaseEntryViewModel<T,DM> : ObservableValidator

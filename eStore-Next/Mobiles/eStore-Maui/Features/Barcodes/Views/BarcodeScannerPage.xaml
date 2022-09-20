@@ -1,22 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI"
-             x:Class="eStore_Maui.Features.Barcodes.Views.BarcodeScannerPage"
-             Title="Stock Scanner">
+<ContentPage
+    x:Class="eStore_Maui.Features.Barcodes.Views.BarcodeScannerPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI"
+    Title="Stock Scanner">
     <VerticalStackLayout>
-        <Label 
+        <Label
+            HorizontalOptions="Center"
             Text="Barcode Scanner!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            VerticalOptions="Center" />
 
-        <zxing:CameraBarcodeReaderView
-            x:Name="cameraBarcodeReaderView"
-            BarcodesDetected="BarcodesDetected" />
-        <Entry x:Name="txtBarcode"  IsEnabled="False"/>
-        <Entry x:Name="txtQty"/>
-        <Entry x:Name="txtPrice"/>
-        <Picker Title="cbUnit" >
+        <zxing:CameraBarcodeReaderView x:Name="cameraBarcodeReaderView" BarcodesDetected="BarcodesDetected" />
+        <Entry x:Name="txtBarcode" IsEnabled="False" />
+        <Entry x:Name="txtQty" />
+        <Entry x:Name="txtPrice" />
+        <Picker Title="cbUnit">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>Meters</x:String>
@@ -27,7 +26,14 @@
                 </x:Array>
             </Picker.ItemsSource>
         </Picker>
-        <Button x:Name="Add" Text="Add Stock" Clicked="Add_Clicked"/>
-        <Label x:Name="lbLastAdd" Text="Last" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand"/>
+        <Button
+            x:Name="Add"
+            Clicked="Add_Clicked"
+            Text="Add Stock" />
+        <Label
+            x:Name="lbLastAdd"
+            HorizontalOptions="CenterAndExpand"
+            HorizontalTextAlignment="Center"
+            Text="Last" />
     </VerticalStackLayout>
 </ContentPage>

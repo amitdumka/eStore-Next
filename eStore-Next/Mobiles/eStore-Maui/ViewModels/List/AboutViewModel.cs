@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace eStore_MauiLib.ViewModels
+namespace eStore_Maui.ViewModels
 {
 
 	[INotifyPropertyChanged]

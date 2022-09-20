@@ -1,6 +1,4 @@
-﻿using Android.Net.Wifi.Aware;
-using Syncfusion.Maui.DataGrid;
-using static Android.Icu.Text.CaseMap;
+﻿using Syncfusion.Maui.DataGrid;
 
 namespace eStore_Maui.Views.Custom;
 

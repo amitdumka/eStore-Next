@@ -9,4 +9,8 @@ public partial class AppShell : Shell
 	{
 		InitializeComponent();
 	}
+
+    void MenuItem_Clicked(System.Object sender, System.EventArgs e)
+    {
+    }
 }

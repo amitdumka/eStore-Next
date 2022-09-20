@@ -10,7 +10,70 @@
        FlyoutHeaderBehavior="CollapseOnScroll"
              Title="AppShell">
     <Shell.Resources>
-        <Style x:Key="BaseStyle"
+        <!-- Move To Default or AKS Theme -->
+         <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+       
+            </Style>
+
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+
+        <Style Class="FlyoutItemLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="FontAttributes"  Value="Italic" />
+                <Setter Property="FontSize" Value="Medium"/>
+        </Style>
+
+        
+           
+
+        <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="Yellow" />
+                                    <!--<Setter TargetName="FlayoutItemLabel" Property="Label" Value="24"/>-->
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+         <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Accent_Yellow100}" />
+                                <!--<Setter TargetName="FlayoutItemLabel" Property="Label.FontSize" Value="18"/>-->
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+        <!-- Monkey Sample for Shell -->
+        <Style x:Key="BaseStyle2"
                TargetType="Element">
             <Setter Property="Shell.BackgroundColor"
                     Value="#455A64" />
@@ -25,45 +88,50 @@
 
         </Style>
         <Style TargetType="ShellItem"
-               BasedOn="{StaticResource BaseStyle}" />
+               BasedOn="{StaticResource BaseStyle2}" />
         <Style x:Key="DomesticShell"
                TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
+               BasedOn="{StaticResource BaseStyle2}">
             <Setter Property="Shell.BackgroundColor"
                     Value="#039BE6" />
         </Style>
         <Style x:Key="MonkeysShell"
                TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
+               BasedOn="{StaticResource BaseStyle2}">
             <Setter Property="Shell.BackgroundColor"
                     Value="#689F39" />
         </Style>
         <Style x:Key="ElephantsShell"
                TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
+               BasedOn="{StaticResource BaseStyle2}">
             <Setter Property="Shell.BackgroundColor"
                     Value="#ED3B3B" />
         </Style>
         <Style x:Key="BearsShell"
                TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
+               BasedOn="{StaticResource BaseStyle2}">
             <Setter Property="Shell.BackgroundColor"
                     Value="#546DFE" />
         </Style>
         <Style x:Key="AboutShell"
                TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
+               BasedOn="{StaticResource BaseStyle2}">
             <Setter Property="Shell.BackgroundColor"
                     Value="#96d1ff" />
         </Style>
+
+
+        <!-- Monkey Sample app end Heres-->
         </Shell.Resources>
+
+    <!--Shell Header and Footer-->
     <Shell.FlyoutHeader>
         <controls:ShellHeader />
     </Shell.FlyoutHeader>
     <Shell.FlyoutFooter>
         <controls:ShellFooter />
     </Shell.FlyoutFooter>
-
+    <!--Menu Items -->
     <FlyoutItem Title="Menu One" FlyoutIcon="{StaticResource SearchIcon}">
         <ShellContent
             Title="Main Page"
@@ -133,5 +201,11 @@
               IconImageSource="umbrella_icon.png"
               Command="{Binding HelpCommand}"
               CommandParameter="https://docs.microsoft.com/dotnet/maui/fundamentals/shell" />
+     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
+    <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="MenuItem_Clicked">
+    </MenuItem>
+    <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate pages:LoginPage}" />
+    </TabBar>
      
 </Shell>

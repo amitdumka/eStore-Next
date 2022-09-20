@@ -4,11 +4,13 @@
               HeightRequest="200"
               x:Class="eStore_Maui.Views.Controls.ShellHeader">
 
-    <Grid BackgroundColor="White">
+    <Grid BackgroundColor="{x:StaticResource Background_Mid}">
+
         <Image Aspect="AspectFill" 
                Source="aprajitaretails.png" 
-               Opacity="0.6" />
-        <Label Text="ARD"
+               Opacity="0.9" />
+
+        <Label Text="eStore"
                Margin="20"
                TextColor="DarkRed" 
                FontAttributes="Bold" 

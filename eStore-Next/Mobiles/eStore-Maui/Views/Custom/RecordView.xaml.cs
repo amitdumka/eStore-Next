@@ -55,6 +55,13 @@ public partial class RecordView : Popup
         scroll.Content = TView;
         ContentFrame.Add(scroll);
     }
+
+    void OnOKButtonClicked(object? sender, EventArgs e) => Close();
+
+    private void OnEditButtonClicked(object sender, EventArgs e)
+    {
+
+    }
 }
 
 [INotifyPropertyChanged]

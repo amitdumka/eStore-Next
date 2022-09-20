@@ -148,6 +148,9 @@
 	  <PackageReference Include="AlohaKit" Version="1.0.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Pages\Payroll\Entry\AttendanceEntryView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -201,7 +204,6 @@
 	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Pages\" />
 	  <Folder Include="Data\" />
 	  <Folder Include="Features\" />
 	  <Folder Include="Features\Barcodes\" />
@@ -211,7 +213,6 @@
 	  <Folder Include="Views\Custom\" />
 	  <Folder Include="Platforms\Android\Resources\xml\" />
 	  <Folder Include="Pages\Auth\" />
-	  <Folder Include="Pages\Payroll\" />
 	  <Folder Include="Views\Controls\" />
 	</ItemGroup>
 </Project>

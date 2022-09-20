@@ -1,11 +1,8 @@
-﻿using System;
-using AKS.Shared.Commons.Models.Auth;
-using AKS.Shared.Commons.Ops;
+﻿using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Payroll;
 using eStore_MauiLib.RemoteService;
 
@@ -24,25 +21,36 @@ namespace eStore_MauiLib.ViewModels.Payroll
         //[NotifyCanExecuteChangedFor(nameof(OnLocalDBSyncChanged))]
         private bool _localDBSync;
 
-        [ObservableProperty]
-        private string _employeeId;
-        [ObservableProperty]
-        private string _onDate;
-        [ObservableProperty]
-        private string _remarks;
-        [ObservableProperty]
-        private string _entryTime;
-        [ObservableProperty]
-        private AttUnit _status;
-        
-        [ObservableProperty]
-        private bool _entry;
+        //[ObservableProperty]
+        //private List<DynVM> _employeeList;
 
-        public AttendanceViewModel(bool entry)
-        {
-            Entry = entry;
-            InitViewModel();
-        }
+        //[ObservableProperty]
+        //private string _employeeId;
+        //[ObservableProperty]
+        //private string _onDate;
+        //[ObservableProperty]
+        //private string _remarks;
+        //[ObservableProperty]
+        //private string _entryTime;
+        //[ObservableProperty]
+        //private AttUnit _status;
+        
+        //[ObservableProperty]
+        //private bool _entry;
+
+       // private CommonDataModel CommonData;
+
+        //public AttendanceViewModel(bool entry)
+        //{
+        //    Entry = entry;
+        //    DataModel = new AttendanceDataModel(ConType.Hybrid);
+        //    DataModel.StoreCode = CurrentSession.StoreCode;
+        //    Role = CurrentSession.UserType;
+        //    DataModel.Connect();
+        //    DataModel.Mode = DBType.Local;
+           
+        //    InitViewModel();
+        //}
         
         public AttendanceViewModel()
         {
@@ -51,14 +59,14 @@ namespace eStore_MauiLib.ViewModels.Payroll
             Role = CurrentSession.UserType;
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
-            _entry = false;
+           // _entry = false;
             InitViewModel();
 
         }
         protected async void InitViewModel()
         {
-            if (!_entry)
-            {
+            //if (!_entry)
+            //{
                 Title = "Attendance List";
                 DefaultSortedColName = nameof(Entity.OnDate);
                 if (!DatabaseStatus.VerifyPayrollSet())
@@ -66,31 +74,45 @@ namespace eStore_MauiLib.ViewModels.Payroll
                     SyncLocal();
                 }
                 Fetch();
-            }else
-            {
+            //}else
+            //{
 
-                Title = "Attendance";
-            }
+            //    Title = "Attendance";
+            //    InitEntryModel();
+            //}
         }
 
-
-        private void ResetEntryViewModel()
+        private void InitEntryModel()
         {
-            _entry = false; 
-            _employeeId = null;
-            _onDate = null;
-            _entryTime = null;
-            _remarks = null;
-            _status = AttUnit.StoreClosed;
-            _isNew = false;
+            //EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContextLocal());
         }
+        //private void ResetEntryViewModel()
+        //{
+        //    _entry = false; 
+        //    _employeeId = null;
+        //    _onDate = null;
+        //    _entryTime = null;
+        //    _remarks = null;
+        //    _status = AttUnit.StoreClosed;
+        //    _isNew = false;
+        //}
         protected async void SyncLocal()
         {
             LocalDBSync=await DatabaseStatus.SyncAttendance();
             Toast.Make("LocalDataBase Sync: "+LocalDBSync, CommunityToolkit.Maui.Core.ToastDuration.Long);
         }
 
+        //partial void OnEntryChanged(bool value)
+        //{
+        //    if (value)
+        //    {
 
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
         partial void OnLocalDBSyncChanged(bool value)
         {
             if(value)
@@ -114,6 +136,7 @@ namespace eStore_MauiLib.ViewModels.Payroll
                     Toast.Make("You are not authozie! Access Deninde", CommunityToolkit.Maui.Core.ToastDuration.Long);
                     break;
             }
+
         }
 
         protected override Task<bool> Delete()
@@ -222,6 +245,11 @@ namespace eStore_MauiLib.ViewModels.Payroll
 
         protected override async Task<bool> Save(bool isNew = false)
         {
+           // Entry = true;
+            //var entryView = new AttendanceEntryView(vm);
+           // await ShowPopupAsync(entryView);
+
+
             switch (Role)
             {
                 case UserType.Admin:

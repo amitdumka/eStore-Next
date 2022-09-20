@@ -4,7 +4,7 @@ using AKS.MAUI.Databases;
 
 namespace eStore_MauiLib.DataModels
 {
-    internal class CommonDataModel
+    public class CommonDataModel
     {
         public static List<DynVM> GetBankAccount(AppDBContext db)
         {

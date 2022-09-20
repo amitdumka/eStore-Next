@@ -10,15 +10,11 @@ namespace eStore_Maui
     {
         public App()
         {
-           ;
             InitializeComponent();
-            //App.Current.UserAppTheme = AppTheme.Dark;
+            InitialDatabase();
+            MainPage = new LoginPage();
 
-            //if (DeviceInfo.Idiom == DeviceIdiom.Phone)
-            //    Shell.Current.CurrentItem = PhoneTabs;
-            //InitialDatabase();
-            MainPage = new AppShell();
-            //Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+        
         }
         async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
         {

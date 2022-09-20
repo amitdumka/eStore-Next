@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using AKS.Shared.Commons.Ops;
+using eStore_Maui.Pages;
+using System.Windows.Input;
 
 namespace eStore_Maui;
 
@@ -10,7 +12,13 @@ public partial class AppShell : Shell
 		InitializeComponent();
 	}
 
-    void MenuItem_Clicked(System.Object sender, System.EventArgs e)
+    async void MenuItem_Clicked(System.Object sender, System.EventArgs e)
     {
+        var result=await DisplayAlert("Logout", "Do you want to Logout!", "Yes", "No");
+        if (result)
+        {
+            CurrentSession.Clear();
+            App.Current.MainPage = new LoginPage();
+        }
     }
 }

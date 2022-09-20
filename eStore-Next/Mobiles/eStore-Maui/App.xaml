@@ -2,12 +2,11 @@
 <Application
     x:Class="eStore_Maui.App"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      >
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles/DefaultTheme.xaml" />
-     </Application.Resources>
+    </Application.Resources>
 
     <!--<Application.MainPage>
         <Shell
@@ -36,7 +35,7 @@
 
 
 
-              Desktop/Tablet  
+              Desktop/Tablet
             <FlyoutItem Title="Login" Style="{StaticResource FavFlyout}">
                 <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />
             </FlyoutItem>
@@ -66,7 +65,7 @@
                 <ShellContent ContentTemplate="{DataTemplate page:MainPage}" />
             </FlyoutItem>
 
-              Phone  
+              Phone
             <TabBar x:Name="PhoneTabs">
                 <Tab Title="Login" Icon="wind_icon.png">
                     <ShellContent ContentTemplate="{DataTemplate page:LoginPage}" />

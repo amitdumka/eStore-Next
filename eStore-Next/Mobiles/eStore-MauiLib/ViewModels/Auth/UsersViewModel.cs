@@ -4,7 +4,6 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
-using Syncfusion.DocIO.DLS;
 using System.ComponentModel.DataAnnotations;
 
 namespace eStore_MauiLib.ViewModels.Auth
@@ -29,6 +28,9 @@ namespace eStore_MauiLib.ViewModels.Auth
         [MinLength(4)]
         [MaxLength(12)]
         private string _password;
+        
+        [ObservableProperty]
+        private static Shell _appShell;
 
         [ObservableProperty]
         private string _guestName;
@@ -113,6 +115,8 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.IsLoggedIn = true;
                     CurrentSession.LoggedTime = DateTime.Now;
                     CurrentSession.UserType = user.UserType;
+                    CurrentSession.EmployeeId = string.IsNullOrEmpty(user.EmployeeId) ? null:user.EmployeeId ;
+                    
                     GuestName = user.GuestName;
                     if (store != null)
                     {
@@ -122,7 +126,7 @@ namespace eStore_MauiLib.ViewModels.Auth
                         CurrentSession.PhoneNo = store.StorePhoneNumber;
                         CurrentSession.CityName = store.City;
                         await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-
+                        Application.Current.MainPage = AppShell;
                         return true;
                     }
                 }
@@ -140,7 +144,11 @@ namespace eStore_MauiLib.ViewModels.Auth
 
         [RelayCommand]
         private async Task<bool> SignUP()
-        { return false; }
+        {
+            await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            Application.Current.MainPage = AppShell;
+            return true;
+        }
 
         [RelayCommand]
         private void ShowErrors()

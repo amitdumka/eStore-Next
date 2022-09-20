@@ -7,6 +7,6 @@
     xmlns:viewModels="clr-namespace:eStore_MauiLib.ViewModels.Payroll;assembly=eStore-MauiLib"
     Title="{Binding Title, Mode=TwoWay}">
     <VerticalStackLayout>
-        <rlv:RecordListingView x:Name="RLV" AddButtonText="Add"  />
+        <rlv:RecordListingView x:Name="RLV" AddButtonText="Add" />
     </VerticalStackLayout>
 </ContentPage>

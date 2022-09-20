@@ -1,130 +1,124 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:controls="clr-namespace:eStore_Maui.Views.Controls"
-             x:Class="eStore_Maui.AppShell"
-             Shell.FlyoutBehavior="Flyout"
-             xmlns:pages="clr-namespace:eStore_Maui.Pages"
-       FlyoutBackgroundImage="thearvindstore005.jpg"
-       FlyoutBackgroundImageAspect="Fill"
-       FlyoutHeaderBehavior="CollapseOnScroll"
-             Title="AppShell">
+<Shell
+    x:Class="eStore_Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:eStore_Maui.Views.Controls"
+    xmlns:pages="clr-namespace:eStore_Maui.Pages"
+    Title="AppShell"
+    FlyoutBackgroundImage="thearvindstore005.jpg"
+    FlyoutBackgroundImageAspect="Fill"
+    FlyoutHeaderBehavior="CollapseOnScroll"
+    Shell.FlyoutBehavior="Flyout">
     <Shell.Resources>
-        <!-- Move To Default or AKS Theme -->
-         <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-       
-            </Style>
+        <!--  Move To Default or AKS Theme  -->
+        <Style x:Key="BaseStyle" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+            <Setter Property="Shell.ForegroundColor" Value="White" />
+            <Setter Property="Shell.TitleColor" Value="White" />
+            <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+            <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="White" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF" />
+            <Setter Property="Shell.TabBarTitleColor" Value="White" />
+        </Style>
 
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
+        <Style BasedOn="{StaticResource BaseStyle}" TargetType="FlyoutItem" />
 
         <Style Class="FlyoutItemLabelStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="White"></Setter>
-                <Setter Property="FontAttributes"  Value="Italic" />
-                <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontAttributes" Value="Italic" />
+            <Setter Property="FontSize" Value="Medium" />
         </Style>
 
-        
-           
-
-        <Style Class="FlyoutItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
-                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="Yellow" />
-                                    <!--<Setter TargetName="FlayoutItemLabel" Property="Label" Value="24"/>-->
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-
-         <Style Class="MenuItemLayoutStyle" TargetType="Layout" ApplyToDerivedTypes="True">
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Accent_Yellow100}" />
-                                <!--<Setter TargetName="FlayoutItemLabel" Property="Label.FontSize" Value="18"/>-->
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-
-        <!-- Monkey Sample for Shell -->
-        <Style x:Key="BaseStyle2"
-               TargetType="Element">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#455A64" />
-            <Setter Property="Shell.ForegroundColor"
-                    Value="White" />
-            <Setter Property="Shell.TitleColor"
-                    Value="White" />
-            <Setter Property="Shell.DisabledColor"
-                    Value="#B4FFFFFF" />
-            <Setter Property="Shell.UnselectedColor"
-                    Value="#95FFFFFF" />
-
-        </Style>
-        <Style TargetType="ShellItem"
-               BasedOn="{StaticResource BaseStyle2}" />
-        <Style x:Key="DomesticShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle2}">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#039BE6" />
-        </Style>
-        <Style x:Key="MonkeysShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle2}">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#689F39" />
-        </Style>
-        <Style x:Key="ElephantsShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle2}">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#ED3B3B" />
-        </Style>
-        <Style x:Key="BearsShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle2}">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#546DFE" />
-        </Style>
-        <Style x:Key="AboutShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle2}">
-            <Setter Property="Shell.BackgroundColor"
-                    Value="#96d1ff" />
+        <Style
+            ApplyToDerivedTypes="True"
+            Class="FlyoutItemLayoutStyle"
+            TargetType="Layout">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
+                                <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="Yellow" />
+                                <!--<Setter TargetName="FlayoutItemLabel" Property="Label" Value="24" />-->
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
         </Style>
 
+        <Style
+            ApplyToDerivedTypes="True"
+            Class="MenuItemLayoutStyle"
+            TargetType="Layout">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Accent_Yellow100}" />
+                                <!--<Setter TargetName="FlayoutItemLabel" Property="Label.FontSize" Value="18" />-->
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
 
-        <!-- Monkey Sample app end Heres-->
-        </Shell.Resources>
+        <!--  Monkey Sample for Shell  -->
+        <Style x:Key="BaseStyle2" TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#455A64" />
+            <Setter Property="Shell.ForegroundColor" Value="White" />
+            <Setter Property="Shell.TitleColor" Value="White" />
+            <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+        </Style>
+        <Style BasedOn="{StaticResource BaseStyle2}" TargetType="ShellItem" />
+        <Style
+            x:Key="DomesticShell"
+            BasedOn="{StaticResource BaseStyle2}"
+            TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#039BE6" />
+        </Style>
+        <Style
+            x:Key="MonkeysShell"
+            BasedOn="{StaticResource BaseStyle2}"
+            TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#689F39" />
+        </Style>
+        <Style
+            x:Key="ElephantsShell"
+            BasedOn="{StaticResource BaseStyle2}"
+            TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#ED3B3B" />
+        </Style>
+        <Style
+            x:Key="BearsShell"
+            BasedOn="{StaticResource BaseStyle2}"
+            TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#546DFE" />
+        </Style>
+        <Style
+            x:Key="AboutShell"
+            BasedOn="{StaticResource BaseStyle2}"
+            TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" Value="#96d1ff" />
+        </Style>
 
-    <!--Shell Header and Footer-->
+        <!--  Monkey Sample app end Heres  -->
+    </Shell.Resources>
+
+    <!--  Shell Header and Footer  -->
     <Shell.FlyoutHeader>
         <controls:ShellHeader />
     </Shell.FlyoutHeader>
@@ -132,105 +126,53 @@
         <controls:ShellFooter />
     </Shell.FlyoutFooter>
 
-
-
-    <!--Menu Items -->
+    <!--  Menu Items  -->
     <FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">
         <ShellContent
             Title="Dashboard"
-            ContentTemplate="{DataTemplate  pages:DashboardPage}"
+            ContentTemplate="{DataTemplate pages:DashboardPage}"
             Route="Dashboard" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Payroll" >
+    <FlyoutItem Title="Payroll">
         <Tab Title="Payroll Dash" Icon="rain_icon.png">
-            <ShellContent Title="Attendance" Route="Paryroll.Attendance"
-                          ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+            <ShellContent
+                Title="Attendance"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
         </Tab>
         <Tab Title="Monthly Dash" Icon="rain_icon.png">
-            <ShellContent Title="Monthly" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+            <ShellContent
+                Title="Monthly"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
         </Tab>
-         <Tab Title="Salary Dash" Icon="rain_icon.png">
-            <ShellContent Title="Payment" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+        <Tab Title="Salary Dash" Icon="rain_icon.png">
+            <ShellContent
+                Title="Payment"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
         </Tab>
         <Tab Title="Advance Dash" Icon="rain_icon.png">
-            <ShellContent Title="Advance" Route="Paryroll.Attendance" ContentTemplate="{DataTemplate pages:Payroll.AttendacePage}"/>
+            <ShellContent
+                Title="Advance"
+                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
+                Route="Paryroll.Attendance" />
         </Tab>
-
     </FlyoutItem>
 
-
-    <!-- Test Menu-->
-    
-
-    
-    
-    <FlyoutItem Route="animals"
-                FlyoutDisplayOptions="AsMultipleItems">
-        <Tab Title="Domestic"
-             Route="domestic"
-             Icon="paw.png">
-            <ShellContent Route="cats"
-                          Style="{StaticResource DomesticShell}"
-                          Title="Cats"
-                          Icon="cat.png"
-                          ContentTemplate="{DataTemplate pages:LoginPage}" />
-            <ShellContent Route="dogs"
-                          Style="{StaticResource DomesticShell}"
-                          Title="Dogs"
-                          Icon="dog.png"
-                          ContentTemplate="{DataTemplate pages:Stores.StorePage}" />
-        </Tab>
-         <Tab Title="Tab 1" Icon="{StaticResource CircleIcon}">
-                <ShellContent
-                Title="One"
-                ContentTemplate="{DataTemplate pages:MainPage}"
-                Route="OnePage" />
-             <ShellContent Route="dogs"
-                          Style="{StaticResource DomesticShell}"
-                          Title="Dogs"
-                          Icon="dog.png"
-                          ContentTemplate="{DataTemplate pages:Stores.StorePage}" />
-            </Tab>
-            <Tab Title="Tab 2" Icon="{StaticResource  CircleIconAltDisabled}">
-                <ShellContent
-                Title="Two"
-                ContentTemplate="{DataTemplate pages:DashboardPage}"
-                Route="TwoPage" />
-            </Tab>
-         
-         
-        <!--<ShellContent Route="monkeys"
-                      Style="{StaticResource MonkeysShell}"
-                      Title="Monkeys"
-                      Icon="monkey.png"
-                      ContentTemplate="{DataTemplate pages:AndroidTestPage}" />
-        <ShellContent Route="elephants"
-                      Style="{StaticResource ElephantsShell}"
-                      Title="Elephants"
-                      Icon="elephant.png"
-                      ContentTemplate="{DataTemplate pages:MainPage}" />
-        <ShellContent Route="bears"
-                      Style="{StaticResource BearsShell}"
-                      Title="Bears"
-                      Icon="bear.png"
-                      ContentTemplate="{DataTemplate pages:VoucherPage}" />-->
-    </FlyoutItem>
-    <ShellContent Route="about"
-                  
-                  Title="About"
-                  Icon="wind_icin.png"
-                  ContentTemplate="{DataTemplate pages:LoginPage}" />
-
-    <MenuItem Text="Help"
-              IconImageSource="umbrella_icon.png"
-              Command="{Binding HelpCommand}"
-              CommandParameter="https://docs.microsoft.com/dotnet/maui/fundamentals/shell" />
-     <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-    <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="MenuItem_Clicked">
-    </MenuItem>
+    <!--  Test Menu  -->
+    <ShellContent
+        Title="About"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Icon="wind_icin.png"
+        Route="about" />
+    <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
+    <MenuItem
+        Clicked="MenuItem_Clicked"
+        StyleClass="MenuItemLayoutStyle"
+        Text="Logout" />
     <TabBar>
-        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate pages:LoginPage}" />
+        <ShellContent ContentTemplate="{DataTemplate pages:LoginPage}" Route="LoginPage" />
     </TabBar>
-     
 </Shell>

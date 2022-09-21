@@ -22,16 +22,17 @@
                 </Style>
 
                 <Style x:Key="Title" TargetType="Label">
+                     <Setter Property="Margin" Value="5" />
                     <Setter Property="FontSize" Value="24" />
                     <Setter Property="FontAttributes" Value="Bold" />
-                    <Setter Property="TextColor" Value="#000" />
+                    <Setter Property="TextColor" Value="{x:StaticResource Tertiary}" />
                     <Setter Property="VerticalTextAlignment" Value="Center" />
                     <Setter Property="HorizontalTextAlignment" Value="Center" />
                 </Style>
                 <Style x:Key="Divider" TargetType="BoxView">
                     <Setter Property="HeightRequest" Value="1" />
                     <Setter Property="Margin" Value="30, 25" />
-                    <Setter Property="Color" Value="#c3c3c3" />
+                    <Setter Property="Color" Value="{x:StaticResource TabOff}" />
                 </Style>
                 <Style x:Key="Content" TargetType="Label">
                     <Setter Property="HorizontalTextAlignment" Value="Start" />

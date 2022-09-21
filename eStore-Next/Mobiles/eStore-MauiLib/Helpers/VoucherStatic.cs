@@ -17,15 +17,19 @@
                     break;
 
                 case VoucherType.Contra:
+                    vNumber = $"{StoreCode}/CON/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
 
                 case VoucherType.DebitNote:
+                    vNumber = $"{StoreCode}/DBN/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
 
                 case VoucherType.CreditNote:
+                    vNumber = $"{StoreCode}/CRN/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
 
                 case VoucherType.JV:
+                    vNumber = $"{StoreCode}/JNV/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
 
                 case VoucherType.Expense:
@@ -41,6 +45,7 @@
                     break;
 
                 default:
+                    vNumber = $"{StoreCode}/GNV/{onDate.Year}/{onDate.Month}/{onDate.Day}/{count}";
                     break;
             }
 

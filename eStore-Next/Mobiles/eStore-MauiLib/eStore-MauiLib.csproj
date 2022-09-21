@@ -47,7 +47,9 @@
 	  <Folder Include="DataModels\Payroll\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
+	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">
+	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
+	  </ProjectReference>
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0" />

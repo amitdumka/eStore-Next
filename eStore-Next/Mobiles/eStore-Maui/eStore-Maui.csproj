@@ -108,6 +108,9 @@
 	  <None Remove="Pages\Auth\" />
 	  <None Remove="Pages\Payroll\" />
 	  <None Remove="Views\Controls\" />
+	  <None Remove="ViewModels\List\Vouchers\" />
+	  <None Remove="ViewModels\List\Accounting\" />
+	  <None Remove="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -214,5 +217,8 @@
 	  <Folder Include="Platforms\Android\Resources\xml\" />
 	  <Folder Include="Pages\Auth\" />
 	  <Folder Include="Views\Controls\" />
+	  <Folder Include="ViewModels\List\Vouchers\" />
+	  <Folder Include="ViewModels\List\Accounting\" />
+	  <Folder Include="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 </Project>

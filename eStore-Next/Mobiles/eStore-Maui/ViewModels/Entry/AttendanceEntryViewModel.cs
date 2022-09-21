@@ -2,6 +2,8 @@
 using AKS.Shared.Payroll.Models;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using eStore_Maui.Pages.Payroll.Entry;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Payroll;
 
@@ -43,6 +45,9 @@ namespace eStore_Maui.ViewModels.Entry
         [ObservableProperty]
         private List<string> _attUnitList;
 
+        [ObservableProperty]
+        private AttendanceEntryView _popUp;
+
         partial void OnSelectedEmployeeChanged(DynVM value)
         {
             EmployeeId = value.ValueData;
@@ -83,7 +88,7 @@ namespace eStore_Maui.ViewModels.Entry
         protected override void Cancle()
         {
             ResetEntryViewModel();
-            //Need to Close pop
+            PopUp.Close("Cancled");
         }
 
         protected override void InitViewModel()
@@ -140,6 +145,8 @@ namespace eStore_Maui.ViewModels.Entry
                     Toast.Make("Attendace is updated!", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 ResetEntryViewModel();
             }
+            PopUp.Close(attendance.AttendanceId);
+            
         }
 
         private void ResetEntryViewModel()
@@ -151,6 +158,7 @@ namespace eStore_Maui.ViewModels.Entry
             _remarks = null;
             _status = AttUnit.StoreClosed;
             _isNew = false;
+           // PopUp.Close();
         }
     }
 }

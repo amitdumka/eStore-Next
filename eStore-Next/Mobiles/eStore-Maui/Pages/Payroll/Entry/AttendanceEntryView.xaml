@@ -88,8 +88,7 @@
                     </HorizontalStackLayout>
 
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}" >
-                        <Button Text="Save" Command="{Binding SaveCommand}"
-                                Style="{x:StaticResource PrimaryButtonOutline}}"/>
+                        <Button Text="Save"  Command="{Binding SaveCommand}"  Style="{x:StaticResource PrimaryButtonOutline}"/>
                         <Button Text="Cancle" Command="{Binding CancleCommand}"
                                 Style="{x:StaticResource TertiaryButtonOutline}}"/>
                     </HorizontalStackLayout>

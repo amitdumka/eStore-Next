@@ -65,10 +65,15 @@ namespace eStore_Maui.ViewModels.Payroll
                 case UserType.PowerUser:
                 case UserType.StoreManager:
                     AttendanceEntryViewModel entryVm = new AttendanceEntryViewModel(DataModel, null);
-                    var entryview = new AttendanceEntryView(entryVm, true);
-                    var result = await CurrentPage.ShowPopupAsync(entryview);
-
-                    break;
+                    entryVm.PopUp = new AttendanceEntryView(entryVm, true);
+                    var result = await CurrentPage.ShowPopupAsync(entryVm.PopUp);
+                    if (result.ToString() != "Cancled")
+                    {
+                        //TODO: Based on id add one unti
+                        Entities.Insert( 0,await DataModel.GetById(result.ToString()));
+                        _ = Toast.Make($"Saved Id: {result}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    }
+                        break;
 
                 case UserType.Sales:
                 case UserType.CA:

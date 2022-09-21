@@ -54,10 +54,10 @@
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
                         <Label Style="{x:StaticResource FieldLable}" Text="Employee" />
                         <Picker
-                            Title="Staff"
+                            Title="Select Staff"
                             ItemDisplayBinding="{Binding DisplayData}"
                             ItemsSource="{Binding EmployeeList}"
-                            SelectedItem="{Binding EmployeeId }" />
+                            SelectedItem="{Binding SelectedEmployee }" />
                     </HorizontalStackLayout>
 
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
@@ -70,7 +70,7 @@
                             
                             Title="Select Status"
                             ItemsSource="{Binding AttUnitList}"
-                            SelectedIndex="{Binding Status }" />
+                            SelectedIndex="{Binding SelectedStatusIndex }" />
                     </HorizontalStackLayout>
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
                         <Label Style="{x:StaticResource FieldLable}" Text="Entry Time" />
@@ -81,9 +81,17 @@
                         <Label Style="{x:StaticResource FieldLable}" Text="Remarks" />
                         <Entry Text="{Binding Remarks}" />
                     </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Tailor" />
+                        <Switch ThumbColor="Red" IsToggled="{Binding IsTailor}"/>
+                    </HorizontalStackLayout>
+
                     <HorizontalStackLayout Style="{x:StaticResource FieldCombo}" >
-                        <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:StaticResource PrimaryButtonOutline}}"/>
-                        <Button Text="Cancle" Command="{Binding CancleCommand}" Style="{x:StaticResource TertiaryButtonOutline}}"/>
+                        <Button Text="Save" Command="{Binding SaveCommand}"
+                                Style="{x:StaticResource PrimaryButtonOutline}}"/>
+                        <Button Text="Cancle" Command="{Binding CancleCommand}"
+                                Style="{x:StaticResource TertiaryButtonOutline}}"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>

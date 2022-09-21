@@ -7,6 +7,9 @@ using eStore_MauiLib.DataModels.Payroll;
 
 namespace eStore_Maui.ViewModels.Entry
 {
+/// <summary>
+/// TODO: Data Entry Validation is needed before saving
+/// </summary>
     public partial class AttendanceEntryViewModel : BaseEntryViewModel<Attendance, AttendanceDataModel>
     {
         [ObservableProperty]
@@ -14,6 +17,11 @@ namespace eStore_Maui.ViewModels.Entry
 
         [ObservableProperty]
         private string _id;
+
+        [ObservableProperty]
+        private DynVM _selectedEmployee;
+        [ObservableProperty]
+        private int _selectedStatusIndex;
 
         [ObservableProperty]
         private string _employeeId;
@@ -35,6 +43,18 @@ namespace eStore_Maui.ViewModels.Entry
         [ObservableProperty]
         private List<string> _attUnitList;
 
+        partial void OnSelectedEmployeeChanged(DynVM value)
+        {
+            EmployeeId = value.ValueData;
+        }
+
+        partial void OnSelectedStatusIndexChanged(int value)
+        {
+            if (value >= 0)
+            {
+                Status = (AttUnit)value;
+            }
+        }
         public AttendanceEntryViewModel(AttendanceDataModel dm, Attendance toEdit)
         {
             DataModel = dm;

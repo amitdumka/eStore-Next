@@ -38,6 +38,7 @@
 	  <None Remove="DataModels\Payroll\" />
 	  <None Remove="DataModels\Inventory\" />
 	  <None Remove="DataModels\Invoicing\" />
+	  <None Remove="DataModels\Base\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DTO\" />
@@ -49,6 +50,7 @@
 	  <Folder Include="DataModels\Payroll\" />
 	  <Folder Include="DataModels\Inventory\" />
 	  <Folder Include="DataModels\Invoicing\" />
+	  <Folder Include="DataModels\Base\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">

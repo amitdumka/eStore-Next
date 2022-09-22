@@ -88,11 +88,11 @@ namespace AKS.MAUI.Databases
 
 
         //tables
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Store> Stores { get; set; } //dm, vm
+        public DbSet<User> Users { get; set; } //dm,vm
         public DbSet<LocalUser> LocalUsers { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }//dm vm
         public DbSet<MonthlyAttendance> MonthlyAttendances { get; set; }
         public DbSet<Salary> Salaries { get; set; }
         public DbSet<SalaryPayment> SalaryPayment { get; set; }
@@ -103,27 +103,23 @@ namespace AKS.MAUI.Databases
 
         public DbSet<SalaryLedger> SalaryLedgers { get; set; }
 
-        //Common Table which will be shared accross Databases.
-       // public DbSet<Store> Stores { get; set; }
-
         public DbSet<Salesman> Salesmen { get; set; }
-        //public DbSet<LocalUser> LocalUsers { get; set; }
-        //public DbSet<User> Users { get; set; }
-
+        
         // Banking  Note: Some of Table will move to other part. 
 
-        public DbSet<Bank> Banks { get; set; }
-        public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }
-        public DbSet<BankAccount> BankAccounts { get; set; }
-        public DbSet<BankAccountList> AccountLists { get; set; }
+        public DbSet<Bank> Banks { get; set; }//dm vm
+        public DbSet<VendorBankAccount> VendorBankAccounts { get; set; }//dm vm
+        public DbSet<BankAccount> BankAccounts { get; set; }//dm vm
+        public DbSet<BankAccountList> AccountLists { get; set; }//dm vm
+
         public DbSet<ChequeBook> ChequeBooks { get; set; }
         public DbSet<ChequeIssued> ChequeIssued { get; set; }
         public DbSet<ChequeLog> ChequeLogs { get; set; }
 
 
         // Vouchers and Notes  Note: Some of the table will move to other parts
-        public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<CashVoucher> CashVouchers { get; set; }
+        public DbSet<Voucher> Vouchers { get; set; }//dm vm
+        public DbSet<CashVoucher> CashVouchers { get; set; }//dm vm
         public DbSet<Note> Notes { get; set; }
 
         public DbSet<TranscationMode> TranscationModes { get; set; }
@@ -133,14 +129,14 @@ namespace AKS.MAUI.Databases
         public DbSet<LedgerMaster> LedgerMasters { get; set; }
 
         // Daily Sales
-        public DbSet<DailySale> DailySales { get; set; }
+        public DbSet<DailySale> DailySales { get; set; }//dm 
         public DbSet<EDCTerminal> EDCTerminals { get; set; }
-        public DbSet<DueRecovery> DueRecovery { get; set; }
-        public DbSet<CustomerDue> CustomerDues { get; set; }
+        public DbSet<DueRecovery> DueRecovery { get; set; }//dm 
+        public DbSet<CustomerDue> CustomerDues { get; set; }//dm 
 
-        public DbSet<PettyCashSheet> PettyCashSheets { get; set; }
+        public DbSet<PettyCashSheet> PettyCashSheets { get; set; }//dm 
         public DbSet<TimeSheet> TimeSheets { get; set; }
-        public DbSet<CashDetail> CashDetails { get; set; }
+        public DbSet<CashDetail> CashDetails { get; set; }//dm 
 
         //Inventory
 
@@ -161,6 +157,6 @@ namespace AKS.MAUI.Databases
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<CustomerSale> CustomerSales { get; set; }
 
-        public DbSet<BankTranscation> BankTranscations { get; set; }
+        public DbSet<BankTranscation> BankTranscations { get; set; }//dm 
     }
 }

@@ -36,6 +36,8 @@
 	  <None Remove="CommunityToolkit.Maui.Core" />
 	  <None Remove="RemoteService\" />
 	  <None Remove="DataModels\Payroll\" />
+	  <None Remove="DataModels\Inventory\" />
+	  <None Remove="DataModels\Invoicing\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="DTO\" />
@@ -45,6 +47,8 @@
 	  <Folder Include="Services\Print\" />
 	  <Folder Include="Platforms\Android\Services\Print\" />
 	  <Folder Include="DataModels\Payroll\" />
+	  <Folder Include="DataModels\Inventory\" />
+	  <Folder Include="DataModels\Invoicing\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">

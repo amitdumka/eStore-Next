@@ -24,5 +24,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ops\InternetStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Accounts\VoucherVM.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Widgets\FirstPageVM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Helpers\Auth\AuthHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Data\Helpers\Auth\" />
   </ItemGroup>
 </Project>

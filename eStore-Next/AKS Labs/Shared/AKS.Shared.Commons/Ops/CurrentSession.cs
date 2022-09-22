@@ -1,5 +1,6 @@
 ﻿
 
+using AKS.Shared.Commons.Data.Helpers.Auth;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace AKS.Shared.Commons.Ops
@@ -19,6 +20,7 @@ namespace AKS.Shared.Commons.Ops
         public static string GuestName { get; set; } = "Admin";
         public static UserType UserType { get; set; } = UserType.StoreManager;
         public static string EmployeeId { get; set; }
+        public static Permission Role { get; set; } = Permission.Read;
 
         public static DateTime LoggedTime { get; set; } = DateTime.Now;
 
@@ -29,7 +31,7 @@ namespace AKS.Shared.Commons.Ops
         {
             IsLoggedIn = false;
             UserName = GuestName = StoreCode = StoreName = CityName=Address=TaxNumber=PhoneNo="";
-            UserType = UserType.Guest;
+            UserType = UserType.Guest;Role = Permission.None;
 
         }
     }

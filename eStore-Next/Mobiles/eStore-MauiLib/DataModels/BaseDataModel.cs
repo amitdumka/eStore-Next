@@ -79,19 +79,13 @@ namespace eStore_MauiLib.DataModels
             switch (Mode)
             {
                 case DBType.Local:
-
                     var element = await _localDb.FindAsync<T>(id);
                     _localDb.Remove<T>(element);
                     return (await _localDb.SaveChangesAsync()) > 0;
-
                 case DBType.Azure:
                     var azureEle = await _azureDb.FindAsync<T>(id);
                     _azureDb.Remove<T>(azureEle);
                     return (await _azureDb.SaveChangesAsync()) > 0;
-
-                //case DBType.API:
-                //    return await _service.DeleteAsync(id);
-                //    break;
                 default:
                     return false;
             }
@@ -159,21 +153,16 @@ namespace eStore_MauiLib.DataModels
         /// <returns></returns>
         public async Task<T> GetById(int id)
         {
+           
             switch (Mode)
             {
                 case DBType.Local:
-                    return await _localDb.FindAsync<T>(id);
-                    break;
-
+                    return await _localDb.FindAsync<T>(id);                  
                 case DBType.Azure:
-                    return await _azureDb.FindAsync<T>(id);
-                    break;
-                //case DBType.API:
-                //    return await _service.GetByIdAsync(id);
-                //    break;
+                    return await _azureDb.FindAsync<T>(id);                
                 default:
                     return null;
-                    break;
+                     
             }
         }
 
@@ -281,68 +270,13 @@ namespace eStore_MauiLib.DataModels
             {
                 case DBType.Local:
                     return await _localDb.Set<T>().ToListAsync();
-                    
-
                 case DBType.Azure:
                     return await _azureDb.Set<T>().ToListAsync();
-                    
-                //case DBType.API:
-                //    return await _service.RefreshDataAsync();
-                //    break;
                 default:
                     return await _localDb.Set<T>().ToListAsync();
-
             }
         }
-
-        /// <summary>
-        /// Init database based on Contype
-        /// </summary>
-        /// <returns></returns>
-        //protected bool InitDatabase()
-        //{
-        //    try
-        //    {
-        //        switch (this.ConType)
-        //        {
-        //            case ConType.Local:
-        //                _localDb = new AppDBContext();
-        //                break;
-        //            case ConType.Remote:
-        //                if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
-        //                    _service = new RemoteServer<T>(_url, _name);
-        //                else return false;
-        //                break;
-        //            case ConType.RemoteDb:
-        //                _azureDb = new AzureDBContext();
-        //                break;
-        //            case ConType.HybridApi:
-        //                if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
-        //                    _service = new RemoteServer<T>(_url, _name);
-        //                _localDb = new AppDBContext();
-        //                break;
-        //            case ConType.HybridDB:
-        //                _azureDb = new AzureDBContext();
-        //                _localDb = new AppDBContext();
-        //                break;
-        //            case ConType.Hybrid:
-        //                _localDb = new AppDBContext();
-        //                _azureDb = new AzureDBContext();
-        //                if (!string.IsNullOrEmpty(_url) && !string.IsNullOrEmpty(_name))
-        //                    _service = new RemoteServer<T>(_url, _name);
-        //                break;
-        //            default:
-        //                return false;
-        //                break;
-        //        }
-
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return false;
-        //    }
-        //}
+        
     }
 
     public abstract class BaseDataModel<T, Y> : BaseDataModel<T> where Y : class where T : class

@@ -1,6 +1,9 @@
 ﻿/// <summary>
 /// These are data type(s) enum used in the projects.
 /// </summary>
+
+public enum Permission { Read,Write,Modify,Delete, ReadWrite,ReadWriteModify,All,None,Self}
+
 public enum ConType { Local, Remote, RemoteDb, HybridApi, HybridDB, Hybrid }
 public enum DBType { Local, Azure, API, Remote, Mango, Others }
 public enum CRUD { Create, Update, Delete, Invalid }

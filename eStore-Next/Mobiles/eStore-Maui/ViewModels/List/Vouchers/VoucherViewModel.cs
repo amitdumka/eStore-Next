@@ -21,7 +21,7 @@ namespace eStore_Maui.ViewModels.List.Vouchers
             Role = CurrentSession.UserType;
             InitViewModel();
         }
-        protected void InitViewModel()
+        protected override void InitViewModel()
         {
             Title = "Vouchers";
             DataModel.Connect();
@@ -75,13 +75,9 @@ namespace eStore_Maui.ViewModels.List.Vouchers
         }
 
 
-        [Obsolete]
-        protected override Task<bool> Save(bool isNew = false)
-        {
-            throw new NotImplementedException();
-        }
+         
 
-        protected void UpdateEntities(List<Voucher> vouchers)
+        protected override void UpdateEntities(List<Voucher> vouchers)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
             foreach (var item in vouchers)
@@ -110,6 +106,13 @@ namespace eStore_Maui.ViewModels.List.Vouchers
                     break;
             }
         }
+
+        protected override Task<bool> Edit(Voucher value)
+        {
+            throw new NotImplementedException();
+        }
+
+         
     }
     public partial class CashVoucherViewModel : BaseViewModel<CashVoucher, VoucherDataModel>
     {
@@ -123,7 +126,7 @@ namespace eStore_Maui.ViewModels.List.Vouchers
             Role = CurrentSession.UserType;
             InitViewModel();
         }
-        protected void InitViewModel()
+        protected override void InitViewModel()
         {
             Title = "Cash Vouchers";
             DataModel.Connect();
@@ -137,7 +140,7 @@ namespace eStore_Maui.ViewModels.List.Vouchers
             throw new NotImplementedException();
         }
 
-        protected void UpdateEntities(List<CashVoucher> vouchers)
+        protected override void UpdateEntities(List<CashVoucher> vouchers)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
             foreach (var item in vouchers)
@@ -166,10 +169,7 @@ namespace eStore_Maui.ViewModels.List.Vouchers
             }
         }
 
-        protected override Task<bool> Save(bool isNew = false)
-        {
-            throw new NotImplementedException();
-        }
+          
 
         protected override Task<bool> Delete()
         {
@@ -210,6 +210,13 @@ namespace eStore_Maui.ViewModels.List.Vouchers
         {
             throw new NotImplementedException();
         }
+
+        protected override Task<bool> Edit(CashVoucher value)
+        {
+            throw new NotImplementedException();
+        }
+
+         
     }
 }
 

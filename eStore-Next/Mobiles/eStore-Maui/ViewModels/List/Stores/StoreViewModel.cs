@@ -54,7 +54,7 @@ namespace eStore_Maui.ViewModels.Stores
 
         public StoreViewModel() : base()
         {
-            InitViewModelAsync();
+            InitViewModel();
         }
 
         #endregion Constructors
@@ -63,7 +63,7 @@ namespace eStore_Maui.ViewModels.Stores
 
         
 
-        protected async Task InitViewModelAsync()
+        protected override async void InitViewModel()
         {
             _title = "Stores";
             DataModel = new StoreDataModel(ConType.Hybrid);
@@ -72,7 +72,7 @@ namespace eStore_Maui.ViewModels.Stores
             var x = await DataModel.GetItems();
             UpdateEntities(x);
         }
-        protected void UpdateEntities(List<Store> stores)
+        protected override void UpdateEntities(List<Store> stores)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Store>();
             foreach (var store in stores)
@@ -82,10 +82,7 @@ namespace eStore_Maui.ViewModels.Stores
             RecordCount = Entities.Count;
         }
 
-        protected override async Task<bool> Save(bool isNew = true)
-        {
-            return false;
-        }
+         
 
         protected override Task<bool> Delete()
         {
@@ -129,6 +126,13 @@ namespace eStore_Maui.ViewModels.Stores
         {
             Toast.Make("Button Pressed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
+
+        protected override Task<bool> Edit(Store value)
+        {
+            throw new NotImplementedException();
+        }
+
+         
 
         #endregion Methods
     }

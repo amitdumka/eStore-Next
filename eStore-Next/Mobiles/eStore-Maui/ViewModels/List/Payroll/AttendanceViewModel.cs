@@ -32,7 +32,7 @@ namespace eStore_Maui.ViewModels.Payroll
             InitViewModel();
         }
 
-        protected async void InitViewModel()
+        protected override async void InitViewModel()
         {
             Title = "Attendance List";
             DefaultSortedColName = nameof(Entity.OnDate);
@@ -191,7 +191,7 @@ namespace eStore_Maui.ViewModels.Payroll
             Fetch();
         }
 
-        protected override async Task<bool> Save(bool isNew = false)
+        protected   async Task<bool> Save(bool isNew = false)
         {
             // Entry = true;
             //var entryView = new AttendanceEntryView(vm);
@@ -220,7 +220,7 @@ namespace eStore_Maui.ViewModels.Payroll
             return false;
         }
 
-        protected void UpdateEntities(List<Attendance> atts)
+        protected override void UpdateEntities(List<Attendance> atts)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Attendance>();
             foreach (var item in atts)
@@ -266,5 +266,12 @@ namespace eStore_Maui.ViewModels.Payroll
                 UpdateEntities(atts);
             }
         }
+
+        protected override Task<bool> Edit(Attendance value)
+        {
+            throw new NotImplementedException();
+        }
+
+         
     }
 }

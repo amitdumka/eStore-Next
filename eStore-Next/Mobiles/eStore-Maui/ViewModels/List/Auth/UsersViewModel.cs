@@ -42,8 +42,8 @@ namespace eStore_Maui.ViewModels.Auth
             InitViewModel();
         }
 
-        [RelayCommand]
-        private async void InitViewModel()
+        
+        protected override async void InitViewModel()
         {
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
@@ -56,8 +56,8 @@ namespace eStore_Maui.ViewModels.Auth
             Password = "Alok";
             
         }
-        //[RelayCommand]
-        private void UpdateEntities(List<User> users)
+        
+        protected override void UpdateEntities(List<User> users)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<User>();
             foreach (var user in users)
@@ -91,10 +91,7 @@ namespace eStore_Maui.ViewModels.Auth
             throw new NotImplementedException();
         }
 
-        protected override Task<bool> Save(bool isNew = false)
-        {
-            throw new NotImplementedException();
-        }
+         
 
         [RelayCommand]
         private async Task<bool> SignIn()
@@ -175,6 +172,11 @@ namespace eStore_Maui.ViewModels.Auth
             Toast.Make("Refresh Button Presed", CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
         }
 
-        
+        protected override Task<bool> Edit(User value)
+        {
+            throw new NotImplementedException();
+        }
+
+         
     }
 }

@@ -11,21 +11,27 @@ namespace eStore_Maui.ViewModels
     public abstract partial class BaseViewModel<T, DM> : ObservableValidator
     {
         #region Field
+
         protected DM DataModel;
+
         [ObservableProperty]
         protected Page _currentPage;
+
         [ObservableProperty]
         protected string _defaultSortedColName;
+
         [ObservableProperty]
         protected string _icon;
 
         [ObservableProperty]
         protected string _title;
-        [ObservableProperty]
-        protected bool _isNew;
+
+        //[ObservableProperty]
+        //protected bool _isNew;
 
         [ObservableProperty]
         protected T _entity;
+
 
         [ObservableProperty]
         protected ObservableCollection<T> _entities;
@@ -45,62 +51,42 @@ namespace eStore_Maui.ViewModels
 
         }
         #endregion
-        #region EventHandler
-        #endregion
-        #region Commands
 
-        #endregion
 
-        #region Methods
-
-        #endregion
 
         #region Abstractfunctions
+
         [RelayCommand]
-        protected abstract Task<bool> Save(bool isNew = false);
+        protected abstract Task<bool> Edit(T value);
+
         [RelayCommand]
         protected abstract Task<bool> Delete();
+
         [RelayCommand]
         protected abstract Task<T> Get(string id);
+
         [RelayCommand]
         protected abstract Task<T> GetById(int id);
+
         [RelayCommand]
         protected abstract Task<List<T>> GetList();
+
         [RelayCommand]
         protected abstract Task<List<T>> Filter(string fitler);
 
         [RelayCommand]
         protected abstract void AddButton();
+
         [RelayCommand]
         protected abstract void DeleteButton();
+
         [RelayCommand]
         protected abstract void RefreshButton();
+
+        protected abstract void InitViewModel();
+        protected abstract void UpdateEntities(List<T> values);
         #endregion
 
 
     }
 }
-
-//public class <ClassName> : BaseViewModel<T>
-//{
-//    #region Field
-
-//    #endregion
-//    #region Constructors
-
-//    #endregion
-//    #region EventHandler
-//    #endregion
-//    #region Commands
-
-//    #endregion
-
-//    #region Methods
-
-//    #endregion
-//    #region Abstractfunctions
-
-//    #endregion
-//}
-
-

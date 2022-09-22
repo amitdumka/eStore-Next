@@ -25,6 +25,11 @@ namespace eStore_Maui.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
+        protected override Task<bool> Edit(Bank value)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Task<List<Bank>> Filter(string fitler)
         {
             throw new NotImplementedException();
@@ -45,12 +50,19 @@ namespace eStore_Maui.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
+        protected override void InitViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void RefreshButton()
         {
             throw new NotImplementedException();
         }
 
-        protected override Task<bool> Save(bool isNew = false)
+         
+
+        protected override void UpdateEntities(List<Bank> values)
         {
             throw new NotImplementedException();
         }

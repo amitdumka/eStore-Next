@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using AKS.Shared.Commons.Ops;
 using eStore_Maui.Pages;
+using eStore_MauiLib.Pages.Auth;
 using eStore_MauiLib.RemoteService;
 using eStore_MauiLib.Services.BackgroundServices;
 
@@ -12,7 +13,7 @@ namespace eStore_Maui
         {
             InitializeComponent();
             InitialDatabase();
-            MainPage = new LoginPage();
+            MainPage = new LoginPage(new AppShell());
 
         
         }

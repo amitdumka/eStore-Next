@@ -1,6 +1,7 @@
 ﻿using System;
 using AKS.Shared.Commons.Models.Banking;
 using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.ViewModels;
 
 namespace eStore_Maui.ViewModels.List.Accounting.Banking
 {

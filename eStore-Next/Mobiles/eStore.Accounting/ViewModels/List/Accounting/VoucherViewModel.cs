@@ -2,8 +2,8 @@
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
-using eStore_Maui.ViewModels;
 using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.ViewModels;
 
 namespace eStore.Accounting.ViewModels.List.Accounting
 {

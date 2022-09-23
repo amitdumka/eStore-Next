@@ -117,21 +117,21 @@
 	  <AndroidResource Include="Resources\xml\provider_path.xml" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.ListView" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Gauges" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Sliders" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Barcode" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.SignaturePad" Version="20.2.46" />
-	  <PackageReference Include="Syncfusion.Maui.Maps" Version="20.2.46" />
+	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.ListView" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Gauges" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Sliders" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Barcode" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.SignaturePad" Version="20.2.50" />
+	  <PackageReference Include="Syncfusion.Maui.Maps" Version="20.2.50" />
 	  <PackageReference Include="SharedMauiXamlStylesLibrary" Version="1.0.1" />
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
-	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.2.0" />
-	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.3.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.1.1" />
 	  <PackageReference Include="FreshMvvm.Maui" Version="0.0.4" />
 	  <!--<PackageReference Include="BarcodeScanner.Mobile.Maui" Version="6.3.0.22-pre" />
 	  <PackageReference Include="ZXing.Net.Maui.Jgdev" Version="1.0.5" />-->
@@ -141,13 +141,13 @@
 	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.4" />
 	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.4" />-->
-	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 	  <PackageReference Include="System.Text.Json" Version="7.0.0-preview.7.22375.6" />
 	  <PackageReference Include="AutoMapper" Version="11.0.1" />
-	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.48" />
+	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.50" />
 	  <PackageReference Include="ZXing.Net.Maui" Version="0.1.0-preview.7" />
-	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />
-	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.48" />
+	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.50" />
+	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.50" />
 	  <PackageReference Include="AlohaKit" Version="1.0.0" />
 	</ItemGroup>
 	<ItemGroup>
@@ -156,9 +156,6 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\LoginPage.xaml">
-	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\VoucherPage.xaml">
 	    <SubType></SubType>
@@ -179,9 +176,6 @@
 	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Custom\RecordListingView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Auth\UsersPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Custom\RecordView.xaml">
@@ -215,9 +209,7 @@
 	  <Folder Include="Views\" />
 	  <Folder Include="Views\Custom\" />
 	  <Folder Include="Platforms\Android\Resources\xml\" />
-	  <Folder Include="Pages\Auth\" />
 	  <Folder Include="Views\Controls\" />
-	  <Folder Include="ViewModels\List\Vouchers\" />
 	  <Folder Include="ViewModels\List\Accounting\" />
 	  <Folder Include="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>

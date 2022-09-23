@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
 using eStore_MauiLib.DataModels.Stores;
+using eStore_MauiLib.ViewModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace eStore_Maui.ViewModels.Stores

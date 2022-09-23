@@ -7,6 +7,7 @@ using eStore_Maui.Pages.Payroll.Entry;
 using eStore_Maui.ViewModels.Entry;
 using eStore_MauiLib.DataModels.Payroll;
 using eStore_MauiLib.RemoteService;
+using eStore_MauiLib.ViewModels;
 
 namespace eStore_Maui.ViewModels.Payroll
 {

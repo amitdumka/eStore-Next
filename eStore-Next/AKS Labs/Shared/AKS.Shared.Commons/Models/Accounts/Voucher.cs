@@ -88,7 +88,7 @@ namespace AKS.Shared.Commons.Models.Accounts
         [Key]
         public string NoteNumber { get; set; }
         public NotesType NotesType { get; set; }
-        public DateTime dateTime { get; set; }
+        public DateTime OnDate { get; set; }
 
         public string PartyName { get; set; }
         public bool WithGST { get; set; }

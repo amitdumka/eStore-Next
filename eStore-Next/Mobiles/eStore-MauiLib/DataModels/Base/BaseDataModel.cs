@@ -6,7 +6,11 @@ using System.Reflection.PortableExecutable;
 
 namespace eStore_MauiLib.DataModels.Base
 {
-
+    /// <summary>
+    /// Base Data Model Version:2
+    /// With Role access restricted
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class BaseDataModel<T> where T : class
     {
         #region Fields
@@ -81,6 +85,21 @@ namespace eStore_MauiLib.DataModels.Base
         }
         public abstract Task<bool> InitContext();
         public abstract Task<string> GenrateID();
+
+        public AppDBContext GetContext()
+        {
+            AppDBContext db;
+            switch (Mode)
+            {
+                case DBType.Local: db = _localDb; break;
+                case DBType.Azure: db = _azureDb; break;
+                default:
+                    db = _localDb;
+                    break;
+            }
+            return db;
+        }
+
 
         public int Count()
         {
@@ -441,9 +460,9 @@ namespace eStore_MauiLib.DataModels.Base
         }
 
         //Get Items
-        protected abstract List<Y> GetYItems(string storeid);
-        protected abstract List<Y> GetYFiltered(QueryParam query);
-        protected async Task<List<Y>> GetYItemsAsync()
+        protected abstract Task< List<Y>> GetYItems(string storeid);
+        protected abstract Task<List<Y>> GetYFiltered(QueryParam query);
+        protected async    Task<List<Y>> GetYItemsAsync()
         {
             if (Permissions.Contains("R"))
             {
@@ -608,8 +627,8 @@ namespace eStore_MauiLib.DataModels.Base
         }
 
         //YearList
-        protected abstract List<int> GetYearListY(string storeid);
-        protected abstract List<int> GetYearListY();
+        protected abstract Task<List<int>> GetYearListY(string storeid);
+        protected abstract Task<List<int>> GetYearListY();
 
         //Exsits
         public async Task<bool> IsYExists(string id)
@@ -730,9 +749,9 @@ namespace eStore_MauiLib.DataModels.Base
         }
 
         //Get Items
-        protected abstract List<Z> GetZItems(string storeid);
-        protected abstract List<Z> GetZFiltered(QueryParam query);
-        protected async Task<List<Z>> GetZItemsAsync()
+        protected abstract Task<List<Z>> GetZItemsAsync(string storeid);
+        protected abstract Task<List<Z>> GetZFiltered(QueryParam query);
+        protected async    Task<List<Z>> GetZItemsAsync()
         {
             if (Permissions.Contains('R'))
             switch (Mode)
@@ -899,8 +918,8 @@ namespace eStore_MauiLib.DataModels.Base
 
         #region YearList
         //YearList
-        protected abstract List<int> GetYearListZ(string storeid);
-        protected abstract List<int> GetYearListZ();
+        protected abstract Task<List<int>> GetYearListZ(string storeid);
+        protected abstract Task<List<int>> GetYearListZ();
         #endregion
 
         #region Exsits

@@ -1,6 +1,8 @@
 ﻿
 using AKS.MAUI.Databases;
+using AKS.Shared.Commons.Data.Helpers.Auth;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.PortableExecutable;
 
 namespace eStore_MauiLib.DataModels.Base
 {
@@ -10,10 +12,14 @@ namespace eStore_MauiLib.DataModels.Base
         #region Fields
         public string StoreCode;
         public Permission Role;
+        public string Permissions;
 
         public DBType Mode { get; set; }
         public ConType ConType { get; set; }
         public List<T> Entity { get; set; }
+
+        public bool IsError { get; set; }
+        public string ErrorMsg { get; set; }
 
         // Currently local and azure sql db
         protected AppDBContext _localDb, _azureDb;
@@ -28,12 +34,14 @@ namespace eStore_MauiLib.DataModels.Base
         public BaseDataModel(ConType conType)
         {
             ConType = conType;
-            Role = Permission.Read;
+            Role = Permission.R;
+            Permissions = "R";
         }
         public BaseDataModel(ConType conType, Permission role)
         {
             ConType = conType;
             Role = role;
+            Permissions = AuthHelper.GetPermission(role);
         }
         #endregion
 
@@ -97,24 +105,31 @@ namespace eStore_MauiLib.DataModels.Base
         //Get By ID
         protected async Task<T> GetAsync(string id)
         {
-            if (Role == Permission.None || Role == Permission.Write || Role == Permission.Self)
-                return null;
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.FindAsync<T>(id);
-                case DBType.Azure:
-                    return await _azureDb.FindAsync<T>(id);
-                default:
-                    return null;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.FindAsync<T>(id);
+                    case DBType.Azure:
+                        return await _azureDb.FindAsync<T>(id);
+                    default:
+                        return null;
 
+                }
+            }
+            else
+            {
+                IsError = true;
+                ErrorMsg = "Not Authozised to access!";
+                return null;
             }
         }
         protected async Task<T> GetAsync(int id)
         {
-            if (Role == Permission.None || Role == Permission.Write || Role == Permission.Self)
-                return null;
-            switch (Mode)
+            if (Permissions.Contains("R"))
+            {
+                switch (Mode)
             {
                 case DBType.Local:
                     return await _localDb.FindAsync<T>(id);
@@ -123,6 +138,12 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return null;
 
+            } }
+            else
+            {
+                IsError = true;
+                ErrorMsg = "Not Authozised to access!";
+                return null;
             }
         }
 
@@ -131,16 +152,23 @@ namespace eStore_MauiLib.DataModels.Base
         protected abstract List<T> GetFiltered(QueryParam query);
         protected async Task<List<T>> GetItemsAsync()
         {
-            if (Role == Permission.None || Role == Permission.Write || Role == Permission.Self)
-                return null;
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.Set<T>().ToListAsync();
-                case DBType.Azure:
-                    return await _azureDb.Set<T>().ToListAsync();
-                default:
-                    return await _localDb.Set<T>().ToListAsync();
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.Set<T>().ToListAsync();
+                    case DBType.Azure:
+                        return await _azureDb.Set<T>().ToListAsync();
+                    default:
+                        return await _localDb.Set<T>().ToListAsync();
+                }
+            }
+            else
+            {
+                IsError = true;
+                ErrorMsg = "Not Authozised to access!";
+                return null;
             }
         }
 
@@ -148,30 +176,39 @@ namespace eStore_MauiLib.DataModels.Base
         //Save
         protected async Task<T> SaveAsync(T value, bool isNew = true)
         {
-            AppDBContext db;
-            switch (Mode)
+            if (Permissions.Contains("W"))
             {
-                case DBType.Local:
-                    db = _localDb;
-                    break;
 
-                case DBType.Azure:
-                    db = _azureDb;
-                    break;
-                default:
-                    return null;
+
+                AppDBContext db;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        db = _localDb;
+                        break;
+
+                    case DBType.Azure:
+                        db = _azureDb;
+                        break;
+                    default:
+                        return null;
+                }
+                if (isNew)
+                    await db.AddAsync<T>(value);
+                else
+                    db.Update<T>(value);
+                if (await db.SaveChangesAsync() > 0) return value;
             }
-            if (isNew)
-                await db.AddAsync<T>(value);
-            else
-                db.Update<T>(value);
-            if (await db.SaveChangesAsync() > 0) return value;
+            IsError = true;
+            ErrorMsg = "Access Denied";
             return null;
         }
 
         protected async Task<List<T>> SaveAllAsync(List<T> values, bool isNew = true)
         {
-            AppDBContext db;
+            if (Permissions.Contains("W"))
+            {
+                AppDBContext db;
             switch (Mode)
             {
                 case DBType.Local:
@@ -188,28 +225,39 @@ namespace eStore_MauiLib.DataModels.Base
             else
                 db.UpdateRange(values);
             if (await db.SaveChangesAsync() > 0) return values;
+            }
+            IsError = true;
+            ErrorMsg = "Access Denied";
             return null;
+            
         }
 
         //Delete
         protected async Task<bool> DeleteAsync(string id)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
-                    var element = await _localDb.FindAsync<T>(id);
-                    _localDb.Remove<T>(element);
-                    return (await _localDb.SaveChangesAsync()) > 0;
-                case DBType.Azure:
-                    var azureEle = await _azureDb.FindAsync<T>(id);
-                    _azureDb.Remove<T>(azureEle);
-                    return (await _azureDb.SaveChangesAsync()) > 0;
-                default:
-                    return false;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        var element = await _localDb.FindAsync<T>(id);
+                        _localDb.Remove<T>(element);
+                        return (await _localDb.SaveChangesAsync()) > 0;
+                    case DBType.Azure:
+                        var azureEle = await _azureDb.FindAsync<T>(id);
+                        _azureDb.Remove<T>(azureEle);
+                        return (await _azureDb.SaveChangesAsync()) > 0;
+                    default:return false;
+             
+                }
             }
+            IsError=true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> Delete(int id)
         {
+            if (Permissions.Contains("D")) { 
             switch (Mode)
             {
                 case DBType.Local:
@@ -224,24 +272,36 @@ namespace eStore_MauiLib.DataModels.Base
                     return false;
             }
         }
+        IsError=true;
+            ErrorMsg = "Access Denied";
+            return false;
+        }
         protected async Task<bool> DeleteAsync(T value)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
+                switch (Mode)
+                {
+                    case DBType.Local:
 
-                    _localDb.Remove<T>(value);
-                    return (await _localDb.SaveChangesAsync()) > 0;
-                case DBType.Azure:
+                        _localDb.Remove<T>(value);
+                        return (await _localDb.SaveChangesAsync()) > 0;
+                    case DBType.Azure:
 
-                    _azureDb.Remove<T>(value);
-                    return (await _azureDb.SaveChangesAsync()) > 0;
-                default:
-                    return false;
+                        _azureDb.Remove<T>(value);
+                        return (await _azureDb.SaveChangesAsync()) > 0;
+                    default:
+                        return false;
+                }
             }
+        
+        IsError=true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteAsync(List<T> values)
         {
+            if (Permissions.Contains("D")) { 
             switch (Mode)
             {
                 case DBType.Local:
@@ -255,6 +315,10 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return false;
             }
+            }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
 
         //YearList
@@ -268,19 +332,19 @@ namespace eStore_MauiLib.DataModels.Base
             {
                 case DBType.Local:
                     if (await _localDb.FindAsync<T>(id) != null) return true; else return false;
-                    break;
+                    
 
                 case DBType.Azure:
                     if (await _azureDb.FindAsync<T>(id) != null) return true; else return false;
-                    break;
+                    
 
                 case DBType.API:
                     return false;
-                    break;
+                    
 
                 default:
                     return false;
-                    break;
+                    
             }
         }
 
@@ -290,19 +354,14 @@ namespace eStore_MauiLib.DataModels.Base
             {
                 case DBType.Local:
                     if (await _localDb.FindAsync<T>(id) != null) return true; else return false;
-                    break;
-
                 case DBType.Azure:
                     if (await _azureDb.FindAsync<T>(id) != null) return true; else return false;
-                    break;
 
                 case DBType.API:
                     return false;
-                    break;
-
                 default:
                     return false;
-                    break;
+                    
             }
         }
 
@@ -344,29 +403,41 @@ namespace eStore_MauiLib.DataModels.Base
         //Get By ID
         protected async Task<Y> GetYAsync(string id)
         {
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.FindAsync<Y>(id);
-                case DBType.Azure:
-                    return await _azureDb.FindAsync<Y>(id);
-                default:
-                    return null;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.FindAsync<Y>(id);
+                    case DBType.Azure:
+                        return await _azureDb.FindAsync<Y>(id);
+                    default:
+                        return null;
 
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
         protected async Task<Y> GetYAsync(int id)
         {
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.FindAsync<Y>(id);
-                case DBType.Azure:
-                    return await _azureDb.FindAsync<Y>(id);
-                default:
-                    return null;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.FindAsync<Y>(id);
+                    case DBType.Azure:
+                        return await _azureDb.FindAsync<Y>(id);
+                    default:
+                        return null;
 
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
 
         //Get Items
@@ -374,127 +445,166 @@ namespace eStore_MauiLib.DataModels.Base
         protected abstract List<Y> GetYFiltered(QueryParam query);
         protected async Task<List<Y>> GetYItemsAsync()
         {
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.Set<Y>().ToListAsync();
-                case DBType.Azure:
-                    return await _azureDb.Set<Y>().ToListAsync();
-                default:
-                    return await _localDb.Set<Y>().ToListAsync();
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.Set<Y>().ToListAsync();
+                    case DBType.Azure:
+                        return await _azureDb.Set<Y>().ToListAsync();
+                    default:
+                        return await _localDb.Set<Y>().ToListAsync();
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
 
         //Save
         protected async Task<Y> SaveAsync(Y value, bool isNew = true)
         {
-
-            AppDBContext db;
-            switch (Mode)
+            if (Permissions.Contains("W"))
             {
-                case DBType.Local:
-                    db = _localDb;
-                    break;
+                AppDBContext db;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        db = _localDb;
+                        break;
 
-                case DBType.Azure:
-                    db = _azureDb;
-                    break;
-                default:
-                    return null;
+                    case DBType.Azure:
+                        db = _azureDb;
+                        break;
+                    default:
+                        return null;
+                }
+                if (isNew)
+                    await db.AddAsync<Y>(value);
+                else
+                    db.Update<Y>(value);
+                if (await db.SaveChangesAsync() > 0) return value;
             }
-            if (isNew)
-                await db.AddAsync<Y>(value);
-            else
-                db.Update<Y>(value);
-            if (await db.SaveChangesAsync() > 0) return value;
+            IsError = true;
+            ErrorMsg = "Access Denied";
             return null;
         }
         protected async Task<List<Y>> SaveAllAsync(List<Y> values, bool isNew = true)
         {
-            AppDBContext db;
-            switch (Mode)
+            if (Permissions.Contains("W"))
             {
-                case DBType.Local:
-                    db = _localDb;
-                    break;
-                case DBType.Azure:
-                    db = _azureDb;
-                    break;
-                default:
-                    return null;
+                AppDBContext db;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        db = _localDb;
+                        break;
+                    case DBType.Azure:
+                        db = _azureDb;
+                        break;
+                    default:
+                        return null;
+                }
+                if (isNew)
+                    await db.AddRangeAsync(values);
+                else
+                    db.UpdateRange(values);
+                if (await db.SaveChangesAsync() > 0) return values;
             }
-            if (isNew)
-                await db.AddRangeAsync(values);
-            else
-                db.UpdateRange(values);
-            if (await db.SaveChangesAsync() > 0) return values;
+            IsError = true;
+            ErrorMsg = "Access Denied";
             return null;
         }
 
         //Delete
         protected async Task<bool> DeleteYAsync(string id)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
-                    var element = await _localDb.FindAsync<Y>(id);
-                    _localDb.Remove<Y>(element);
-                    return (await _localDb.SaveChangesAsync()) > 0;
-                case DBType.Azure:
-                    var azureEle = await _azureDb.FindAsync<Y>(id);
-                    _azureDb.Remove<Y>(azureEle);
-                    return (await _azureDb.SaveChangesAsync()) > 0;
-                default:
-                    return false;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        var element = await _localDb.FindAsync<Y>(id);
+                        _localDb.Remove<Y>(element);
+                        return (await _localDb.SaveChangesAsync()) > 0;
+                    case DBType.Azure:
+                        var azureEle = await _azureDb.FindAsync<Y>(id);
+                        _azureDb.Remove<Y>(azureEle);
+                        return (await _azureDb.SaveChangesAsync()) > 0;
+                    default:
+                        return false;
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteY(int id)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
-                    var element = await _localDb.FindAsync<Y>(id);
-                    _localDb.Remove<Y>(element);
-                    return (await _localDb.SaveChangesAsync()) > 0;
-                case DBType.Azure:
-                    var azureEle = await _azureDb.FindAsync<Y>(id);
-                    _azureDb.Remove<Y>(azureEle);
-                    return (await _azureDb.SaveChangesAsync()) > 0;
-                default:
-                    return false;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        var element = await _localDb.FindAsync<Y>(id);
+                        _localDb.Remove<Y>(element);
+                        return (await _localDb.SaveChangesAsync()) > 0;
+                    case DBType.Azure:
+                        var azureEle = await _azureDb.FindAsync<Y>(id);
+                        _azureDb.Remove<Y>(azureEle);
+                        return (await _azureDb.SaveChangesAsync()) > 0;
+                    default:
+                        return false;
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteAsync(Y value)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
+                switch (Mode)
+                {
+                    case DBType.Local:
 
-                    _localDb.Remove<Y>(value);
-                    return (await _localDb.SaveChangesAsync()) > 0;
-                case DBType.Azure:
+                        _localDb.Remove<Y>(value);
+                        return (await _localDb.SaveChangesAsync()) > 0;
+                    case DBType.Azure:
 
-                    _azureDb.Remove<Y>(value);
-                    return (await _azureDb.SaveChangesAsync()) > 0;
-                default:
-                    return false;
+                        _azureDb.Remove<Y>(value);
+                        return (await _azureDb.SaveChangesAsync()) > 0;
+                    default:
+                        return false;
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteAsync(List<Y> values)
         {
-            switch (Mode)
+            if (Permissions.Contains("D"))
             {
-                case DBType.Local:
+                switch (Mode)
+                {
+                    case DBType.Local:
 
-                    _localDb.RemoveRange(values);
-                    return (await _localDb.SaveChangesAsync()) == values.Count;
-                case DBType.Azure:
+                        _localDb.RemoveRange(values);
+                        return (await _localDb.SaveChangesAsync()) == values.Count;
+                    case DBType.Azure:
 
-                    _azureDb.RemoveRange(values);
-                    return (await _azureDb.SaveChangesAsync()) == values.Count;
-                default:
-                    return false;
+                        _azureDb.RemoveRange(values);
+                        return (await _azureDb.SaveChangesAsync()) == values.Count;
+                    default:
+                        return false;
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
 
         //YearList
@@ -584,19 +694,26 @@ namespace eStore_MauiLib.DataModels.Base
         //Get By ID
         protected async Task<Z> GetZAsync(string id)
         {
-            switch (Mode)
+            if (Permissions.Contains("R"))
             {
-                case DBType.Local:
-                    return await _localDb.FindAsync<Z>(id);
-                case DBType.Azure:
-                    return await _azureDb.FindAsync<Z>(id);
-                default:
-                    return null;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        return await _localDb.FindAsync<Z>(id);
+                    case DBType.Azure:
+                        return await _azureDb.FindAsync<Z>(id);
+                    default:
+                        return null;
 
+                }
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
         protected async Task<Z> GetZAsync(int id)
         {
+            if(Permissions.Contains('R'))
             switch (Mode)
             {
                 case DBType.Local:
@@ -607,6 +724,9 @@ namespace eStore_MauiLib.DataModels.Base
                     return null;
 
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
 
         //Get Items
@@ -614,6 +734,7 @@ namespace eStore_MauiLib.DataModels.Base
         protected abstract List<Z> GetZFiltered(QueryParam query);
         protected async Task<List<Z>> GetZItemsAsync()
         {
+            if (Permissions.Contains('R'))
             switch (Mode)
             {
                 case DBType.Local:
@@ -623,6 +744,9 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return await _localDb.Set<Z>().ToListAsync();
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return null;
         }
 
         #endregion  Get
@@ -632,46 +756,58 @@ namespace eStore_MauiLib.DataModels.Base
         //Save
         protected async Task<Z> SaveAsync(Z value, bool isNew = true)
         {
-            AppDBContext db;
-            switch (Mode)
+            if (Permissions.Contains("W"))
             {
-                case DBType.Local:
-                    db = _localDb;
-                    break;
+                AppDBContext db;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        db = _localDb;
+                        break;
 
-                case DBType.Azure:
-                    db = _azureDb;
-                    break;
-                default:
-                    return null;
+                    case DBType.Azure:
+                        db = _azureDb;
+                        break;
+                    default:
+                        return null;
+                }
+                if (isNew)
+                    await db.AddAsync<Z>(value);
+                else
+                    db.Update<Z>(value);
+                if (await db.SaveChangesAsync() > 0) return value;
             }
-            if (isNew)
-                await db.AddAsync<Z>(value);
-            else
-                db.Update<Z>(value);
-            if (await db.SaveChangesAsync() > 0) return value;
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            
             return null;
         }
         protected async Task<List<Z>> SaveAllAsync(List<Z> values, bool isNew = true)
         {
 
-            AppDBContext db;
-            switch (Mode)
+            if (Permissions.Contains("W"))
             {
-                case DBType.Local:
-                    db = _localDb;
-                    break;
-                case DBType.Azure:
-                    db = _azureDb;
-                    break;
-                default:
-                    return null;
+                AppDBContext db;
+                switch (Mode)
+                {
+                    case DBType.Local:
+                        db = _localDb;
+                        break;
+                    case DBType.Azure:
+                        db = _azureDb;
+                        break;
+                    default:
+                        return null;
+                }
+                if (isNew)
+                    await db.AddRangeAsync(values);
+                else
+                    db.UpdateRange(values);
+                if (await db.SaveChangesAsync() > 0) return values;
             }
-            if (isNew)
-                await db.AddRangeAsync(values);
-            else
-                db.UpdateRange(values);
-            if (await db.SaveChangesAsync() > 0) return values;
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            
             return null;
         }
 
@@ -680,6 +816,7 @@ namespace eStore_MauiLib.DataModels.Base
         //Delete
         protected async Task<bool> DeleteZAsync(string id)
         {
+            if (Permissions.Contains("D")) 
             switch (Mode)
             {
                 case DBType.Local:
@@ -693,9 +830,13 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return false;
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> Delete(int id)
         {
+            if(Permissions.Contains("D"))
             switch (Mode)
             {
                 case DBType.Local:
@@ -709,9 +850,13 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return false;
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteAsync(Z value)
         {
+            if(Permissions.Contains("D"))
             switch (Mode)
             {
                 case DBType.Local:
@@ -725,9 +870,13 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return false;
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return false;
         }
         protected async Task<bool> DeleteAsync(List<Z> values)
         {
+            if(Permissions.Contains("D"))
             switch (Mode)
             {
                 case DBType.Local:
@@ -741,6 +890,9 @@ namespace eStore_MauiLib.DataModels.Base
                 default:
                     return false;
             }
+            IsError = true;
+            ErrorMsg = "Access Denied";
+            return true;
         }
 
         #endregion Delete

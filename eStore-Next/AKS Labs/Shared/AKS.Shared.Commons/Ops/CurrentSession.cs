@@ -20,7 +20,8 @@ namespace AKS.Shared.Commons.Ops
         public static string GuestName { get; set; } = "Admin";
         public static UserType UserType { get; set; } = UserType.StoreManager;
         public static string EmployeeId { get; set; }
-        public static Permission Role { get; set; } = Permission.Read;
+        public static Permission Role { get; set; } = Permission.R;
+        public static string Perimissions { get; set; } = "R";
 
         public static DateTime LoggedTime { get; set; } = DateTime.Now;
 
@@ -31,7 +32,7 @@ namespace AKS.Shared.Commons.Ops
         {
             IsLoggedIn = false;
             UserName = GuestName = StoreCode = StoreName = CityName=Address=TaxNumber=PhoneNo="";
-            UserType = UserType.Guest;Role = Permission.None;
+            UserType = UserType.Guest;Role = Permission.N;
 
         }
     }

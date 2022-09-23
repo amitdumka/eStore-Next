@@ -1,4 +1,5 @@
-﻿using DevExpress.Maui;
+﻿using CommunityToolkit.Maui;
+using DevExpress.Maui;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace eStore.Dev
@@ -10,7 +11,7 @@ namespace eStore.Dev
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseDevExpress()
+                .UseDevExpress().UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -24,7 +24,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiImage Include="Resources\appicon.svg" IsAppIcon="true" ForegroundFile="Resources\splashscreen.svg" Color="#FFFFFF"/>
+		<MauiImage Include="Resources\appicon.svg" IsAppIcon="true" ForegroundFile="Resources\splashscreen.svg" Color="#FFFFFF" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\splashscreen.svg" Color="#5B27D9" />
@@ -45,6 +45,14 @@
 		<PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5" />
 		<PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5" />
 	</ItemGroup>	
+	<ItemGroup>
+	  <MauiXaml Update="Views\TestFormPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\eStore-MauiLib\eStore-MauiLib.csproj" />
+	</ItemGroup>
 	<PropertyGroup>
 		<UseInterpreter Condition="$(TargetFramework.Contains('-ios'))">True</UseInterpreter>
 		<UseInterpreter Condition="$(TargetFramework.Contains('-android'))">False</UseInterpreter>

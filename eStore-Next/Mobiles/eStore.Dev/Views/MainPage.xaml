@@ -26,6 +26,8 @@
                   ContentTemplate="{DataTemplate local:ChartsPage}" />
     <ShellContent Title="Popup" Icon="popup"
                   ContentTemplate="{DataTemplate local:PopupPage}" />
+    <ShellContent Title="Test" Icon="popup"
+                  ContentTemplate="{DataTemplate local:TestFormPage}" />
     
     <MenuItem Text="Logout" IconImageSource="logout" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked"/>
 

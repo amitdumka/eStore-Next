@@ -14,9 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{49F74354-F9B6-4D2F-8B8C-01D9284FB597}"
 	ProjectSection(SolutionItems) = preProject
 		C:\Users\amitn\Downloads\AppIcons.zip = C:\Users\amitn\Downloads\AppIcons.zip
-		C:\Users\amitn\Downloads\IconKitchen-Output (1).zip = C:\Users\amitn\Downloads\IconKitchen-Output (1).zip
+		C:\Users\amitn\Downloads\IconKitchen-Output %281%29.zip = C:\Users\amitn\Downloads\IconKitchen-Output %281%29.zip
 		C:\Users\amitn\Downloads\IconKitchen-Output.zip = C:\Users\amitn\Downloads\IconKitchen-Output.zip
-		C:\Users\amitn\Downloads\ic_launcher (1).zip = C:\Users\amitn\Downloads\ic_launcher (1).zip
+		C:\Users\amitn\Downloads\ic_launcher %281%29.zip = C:\Users\amitn\Downloads\ic_launcher %281%29.zip
 		C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip = C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip
 		C:\Users\amitn\Downloads\ic_launcher.zip = C:\Users\amitn\Downloads\ic_launcher.zip
 	EndProjectSection
@@ -44,6 +44,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevExp", "DevExp", "{477A889C-495B-43A5-8D86-DDAF85E83B50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Dev", "..\eStore.Dev\eStore.Dev.csproj", "{98514857-EE32-4079-B2E3-9E44EF538407}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{CE332F78-567A-4D4E-99F1-25A138AF14A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,9 @@ Global
 		{7C7136C0-E788-4129-853D-01897F0CF120} = {E81AEBEB-2F07-471E-8194-7231F159AEE2}
 		{477A889C-495B-43A5-8D86-DDAF85E83B50} = {D877FD48-2808-4872-84D1-F1F18D53D3BD}
 		{98514857-EE32-4079-B2E3-9E44EF538407} = {477A889C-495B-43A5-8D86-DDAF85E83B50}
+		{02253509-2104-498D-B18A-2B72CA189FA8} = {CE332F78-567A-4D4E-99F1-25A138AF14A2}
+		{DA1CEF62-2CF0-46FE-805B-6BF951B33074} = {CE332F78-567A-4D4E-99F1-25A138AF14A2}
+		{EE018BAE-4550-4B0E-85A0-45B5D7549198} = {CE332F78-567A-4D4E-99F1-25A138AF14A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DFCAD0F-DB8E-49C5-9FBD-07EC062D77F4}

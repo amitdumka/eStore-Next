@@ -1,4 +1,5 @@
-﻿namespace eStore_MauiLib.DataModels
+﻿public enum Order { Asc, Desc }
+namespace eStore_MauiLib.DataModels
 {
     public class QueryParam
     {
@@ -7,11 +8,14 @@
         /// Use this when ID is of string type
         /// </summary>
         public string Ids { get; set; }
+
         public List<string> Command { get; set; }
         public List<string> Query { get; set; }
-        public int Order { get; set; }
+        
+        public Order Order { get; set; }
         public List<string> Filters { get; set; }
-        public int StoreId { get; set; }
+        
+        public string StoreId { get; set; }
 
     }
 

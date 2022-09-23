@@ -1,9 +1,6 @@
-﻿using System;
-using AKS.MAUI.Databases;
-using AKS.Shared.Commons.Models;
-using AKS.Shared.Commons.Models.Accounts;
-using eStore_MauiLib.DataModels.Base;
+﻿using AKS.Shared.Commons.Models.Accounts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Maui.Platform;
 
 namespace eStore_MauiLib.DataModels.Accounting
 {
@@ -18,6 +15,7 @@ namespace eStore_MauiLib.DataModels.Accounting
         }
 
         #region IDGen
+
         public override Task<string> GenrateID()
         {
             throw new NotImplementedException();
@@ -32,109 +30,152 @@ namespace eStore_MauiLib.DataModels.Accounting
         {
             throw new NotImplementedException();
         }
-        #endregion
+
+        #endregion IDGen
 
         public override async Task<bool> InitContext()
         {
             return Connect();
         }
 
-
         #region Vouchers
-        protected override List<Voucher> GetFiltered(QueryParam query)
+
+        public override List<Voucher> GetFiltered(QueryParam query)
         {
+            
+             //public int Id { get; set; }
+             //public string Ids { get; set; }
+             //public List<string> Command { get; set; }
+             //public List<string> Query { get; set; }
+             //public int Order { get; set; }
+             //public List<string> Filters { get; set; }
+             //public int StoreId { get; set; }
+
+
             throw new NotImplementedException();
         }
 
-        protected override async Task<List<Voucher>> GetItemsAsync(string storeid)
+        public IQueryable<Voucher> WhereO(System.Linq.Expressions.Expression<Func<Voucher,bool>> predict) 
         {
-            if (Permissions.Contains("R"))
+            return GetContext().Vouchers.Where(predict);
+            
+        }
+        public IQueryable<CashVoucher> WhereO(System.Linq.Expressions.Expression<Func<CashVoucher, bool>> predict)
+        {
+            return GetContext().CashVouchers.Where(predict);
+
+        }
+        public IQueryable<Note> WhereO(System.Linq.Expressions.Expression<Func<Note, bool>> predict)
+        {
+            return GetContext().Notes.Where(predict);
+
+        }
+
+        public override async Task<List<Voucher>> GetItemsAsync(string storeid)
+        {
+            if (Permissions.Contains("RW"))
             {
                 var db = GetContext();
+               
                 return await db.Vouchers.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
                                   .OrderByDescending(c => c.OnDate)
                                   .ToListAsync();
-
             }
             IsError = true;
             ErrorMsg = "Access Deninde";
             return null;
         }
-        #endregion
+
+        #endregion Vouchers
+
         #region YearList
-        protected override List<int> GetYearList(string storeid)
+
+        public override List<int> GetYearList(string storeid)
         {
             var db = GetContext();
             return db.Vouchers.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
-        protected override List<int> GetYearList()
+        public override List<int> GetYearList()
         {
             var db = GetContext();
             return db.Vouchers.Select(c => c.OnDate.Year).Distinct().ToList();
-
         }
-        protected override Task<List<int>> GetYearListY(string storeid)
+
+        public override Task<List<int>> GetYearListY(string storeid)
         {
             var db = GetContext();
             return db.CashVouchers.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToListAsync();
-
         }
 
-        protected override Task<List<int> >GetYearListY()
+        public override Task<List<int>> GetYearListY()
         {
             var db = GetContext();
             return db.CashVouchers.Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
-        protected override Task<List<int>> GetYearListZ(string storeid)
+        public override Task<List<int>> GetYearListZ(string storeid)
         {
             var db = GetContext();
             return db.Notes.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
-        protected override Task<List<int>> GetYearListZ()
+        public override Task<List<int>> GetYearListZ()
         {
             var db = GetContext();
             return db.Notes.Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
-        #endregion
 
+        #endregion YearList
 
         #region CashVouchers
-        protected override Task<List<CashVoucher>> GetYFiltered(QueryParam query)
+
+        public override Task<List<CashVoucher>> GetYFiltered(QueryParam query)
         {
             throw new NotImplementedException();
         }
 
-        protected override async Task<List<CashVoucher>> GetYItems(string storeid)
+        public override async Task<List<CashVoucher>> GetYItems(string storeid)
         {
-            if (Permissions.Contains("R"))
+            if (Permissions.Contains("RW"))
             {
                 var db = GetContext();
-              return await db.CashVouchers.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
-                    .OrderByDescending(c => c.OnDate).ToListAsync();
-
+                return await db.CashVouchers.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
+                      .OrderByDescending(c => c.OnDate).ToListAsync();
             }
             IsError = true;
             ErrorMsg = "Access Deninde";
             return null;
         }
 
-        #endregion
+        #endregion CashVouchers
+
         #region Notes
-        protected override Task<List<Note>> GetZFiltered(QueryParam query)
+
+        public override Task<List<Note>> GetZFiltered(QueryParam query)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task<List<Note>> GetZItemsAsync(string storeid)
+        public override Task<List<Note>> GetZItems(string storeid)
         {
-            throw new NotImplementedException();
+            if (Permissions.Contains("RW"))
+            {
+                var db = GetContext();
+                return   db.Notes.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
+                      .OrderByDescending(c => c.OnDate).ToListAsync();
+            }
+            IsError = true;
+            ErrorMsg = "Access Deninde";
+            return null;
         }
 
-
-        #endregion
+        #endregion Notes
+    }
+    public class Filter
+    {
+        public string PropertyName { get; set; }
+       // public Op Operation { get; set; }
+        public object Value { get; set; }
     }
 }
-

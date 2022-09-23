@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>eStore.Accounting</ApplicationTitle>
+		<ApplicationTitle>eStore Accounting</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.estore.accounting</ApplicationId>
+		<ApplicationId>com.aks.estore.accounting</ApplicationId>
 		<ApplicationIdGuid>F9416A4A-35CF-4805-B866-0F210A08956E</ApplicationIdGuid>
 
 		<!-- Versions -->

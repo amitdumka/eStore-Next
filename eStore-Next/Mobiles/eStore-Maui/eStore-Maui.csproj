@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>eStore-Maui</ApplicationTitle>
+		<ApplicationTitle>eStore</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.estore_maui</ApplicationId>
+		<ApplicationId>com.aks.estore_maui</ApplicationId>
 		<ApplicationIdGuid>AA0E54FB-5452-4F2E-8B2E-51A660341645</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -33,19 +33,21 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png">
+		  <Color>#512BD4</Color>
+		</MauiIcon>
+		
 		<!--<MauiIcon Include="Resources\AppIcon\arlogo.png" ForegroundFile="Resources\AppIcon\appiconfg.svg" TintColor="Yellow" Color="#512BD4" />-->
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-		<!--<MauiSplashScreen Include="Resources\Splash\arlogo.png" BaseSize="1024,1024" Resize="false" />-->
+		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
+		<MauiSplashScreen Include="Resources\Splash\arlogo.png" BaseSize="128,128" Resize="true" />
 
 		<MauiImage Include="Resources\Images\*" />
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-		<MauiImage Include="Resources\AppIcon\arlogo.png" />
 		<MauiImage Include="Resources\Splash\arlogo.png" />
 	</ItemGroup>
 
@@ -59,9 +61,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\arlogo.png" />
+	  <None Remove="Resources\AppIcon\appicon.png" />
 	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
-	  <None Remove="Resources\xml\provider_path.xml" />
 	  <None Remove="Syncfusion.Maui.Core" />
 	  <None Remove="Syncfusion.Maui.TabView" />
 	  <None Remove="Syncfusion.Maui.ListView" />
@@ -111,10 +112,6 @@
 	  <None Remove="ViewModels\List\Vouchers\" />
 	  <None Remove="ViewModels\List\Accounting\" />
 	  <None Remove="ViewModels\List\Accounting\Banking\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <AndroidResource Include="Resources\xml\provider_path.xml" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.50" />
@@ -208,7 +205,6 @@
 	  <Folder Include="Pages\Stores\" />
 	  <Folder Include="Views\" />
 	  <Folder Include="Views\Custom\" />
-	  <Folder Include="Platforms\Android\Resources\xml\" />
 	  <Folder Include="Views\Controls\" />
 	  <Folder Include="ViewModels\List\Accounting\" />
 	  <Folder Include="ViewModels\List\Accounting\Banking\" />

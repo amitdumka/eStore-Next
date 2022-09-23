@@ -29,4 +29,12 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Data\Helpers\Auth\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Icons\AppIcons.zip" />
+    <None Include="$(MSBuildThisFileDirectory)Icons\IconKitchen-Output (1).zip" />
+    <None Include="$(MSBuildThisFileDirectory)Icons\IconKitchen-Output.zip" />
+    <None Include="$(MSBuildThisFileDirectory)Icons\ic_launcher (1).zip" />
+    <None Include="$(MSBuildThisFileDirectory)Icons\ic_launcher-632dddc8716b8.zip" />
+    <None Include="$(MSBuildThisFileDirectory)Icons\ic_launcher.zip" />
+  </ItemGroup>
 </Project>

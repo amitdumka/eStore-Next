@@ -12,6 +12,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AKSLabs", "AKSLabs", "{B2642C04-AA23-4240-A1FA-2E04F6D232B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{49F74354-F9B6-4D2F-8B8C-01D9284FB597}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\amitn\Downloads\AppIcons.zip = C:\Users\amitn\Downloads\AppIcons.zip
+		C:\Users\amitn\Downloads\IconKitchen-Output (1).zip = C:\Users\amitn\Downloads\IconKitchen-Output (1).zip
+		C:\Users\amitn\Downloads\IconKitchen-Output.zip = C:\Users\amitn\Downloads\IconKitchen-Output.zip
+		C:\Users\amitn\Downloads\ic_launcher (1).zip = C:\Users\amitn\Downloads\ic_launcher (1).zip
+		C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip = C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip
+		C:\Users\amitn\Downloads\ic_launcher.zip = C:\Users\amitn\Downloads\ic_launcher.zip
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.shproj", "{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C}"
 EndProject
@@ -21,17 +29,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.Printers", "..\..\AKS L
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{D877FD48-2808-4872-84D1-F1F18D53D3BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Accounting", "..\eStore.Accounting\eStore.Accounting.csproj", "{044980AF-62A8-4D86-8D9B-3A3B5AC665CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Accounting", "..\eStore.Accounting\eStore.Accounting.csproj", "{044980AF-62A8-4D86-8D9B-3A3B5AC665CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Payroll", "..\eStore.Payroll\eStore.Payroll.csproj", "{AD34F939-E82A-46C9-9F6E-724044D17929}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Payroll", "..\eStore.Payroll\eStore.Payroll.csproj", "{AD34F939-E82A-46C9-9F6E-724044D17929}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.POS", "..\eStore.POS\eStore.POS.csproj", "{3C1A7820-F9C4-4EC0-9F42-76B0617E85B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.POS", "..\eStore.POS\eStore.POS.csproj", "{3C1A7820-F9C4-4EC0-9F42-76B0617E85B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.Admin", "..\eStore.Admin\eStore.Admin.csproj", "{6C5EE648-387A-4D8E-89F7-0608CE5E9CAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Admin", "..\eStore.Admin\eStore.Admin.csproj", "{6C5EE648-387A-4D8E-89F7-0608CE5E9CAC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{E81AEBEB-2F07-471E-8194-7231F159AEE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreBlazor", "..\eStoreBlazor\eStoreBlazor.csproj", "{7C7136C0-E788-4129-853D-01897F0CF120}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStoreBlazor", "..\eStoreBlazor\eStoreBlazor.csproj", "{7C7136C0-E788-4129-853D-01897F0CF120}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

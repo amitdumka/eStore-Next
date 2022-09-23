@@ -1,5 +1,5 @@
 ﻿using AKS.Shared.Commons.Ops;
-using eStore_Maui.Pages;
+using eStore_MauiLib.Pages.Auth;
 using System.Windows.Input;
 
 namespace eStore_Maui;
@@ -18,7 +18,7 @@ public partial class AppShell : Shell
         if (result)
         {
             CurrentSession.Clear();
-            App.Current.MainPage = new LoginPage();
+            App.Current.MainPage = new LoginPage(new AppShell());
         }
     }
 }

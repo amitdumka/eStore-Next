@@ -2,7 +2,7 @@
 using eStore_MauiLib.ViewModels.Auth;
 using Syncfusion.Maui.DataGrid;
 
-namespace eStore_Maui.Pages.Auth;
+namespace eStore_MauiLib.Pages.Auth;
 
 public partial class UsersPage : ContentPage
 {
@@ -15,7 +15,7 @@ public partial class UsersPage : ContentPage
         viewModel = new UsersViewModel();
         BindingContext = viewModel;
         RLV.BindingContext = viewModel;
-        viewModel.Icon = eStore_Maui.Resources.Styles.IconFont.UserFriends;
+        viewModel.Icon = eStore_MauiLib.Resources.Styles.IconFont.UserFriends;
         RLV.Cols = SetGridCols();
     }
 

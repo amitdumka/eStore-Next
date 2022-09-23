@@ -21,6 +21,17 @@
 
 	<ItemGroup>
 	  <None Remove="DataModels\" />
+	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+	  <None Remove="Resources\Fonts\OpenSans-Regular.ttf" />
+	  <None Remove="Resources\Fonts\OpenSans-Semibold.ttf" />
+	  <None Remove="Resources\Images\add_icon2.svg" />
+	  <None Remove="Resources\Images\add_location.png" />
+	  <None Remove="Resources\Images\amit.jpg" />
+	  <None Remove="Resources\Images\aprajitaretails.png" />
+	  <None Remove="Resources\Images\arlogo.png" />
+	  <None Remove="Resources\Images\shalini.jpg" />
+	  <None Remove="Resources\Images\thearvindstore004.jpg" />
+	  <None Remove="Resources\Images\thearvindstore005.jpg" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="DTO\" />
 	  <None Remove="DataModels\Auths\" />
@@ -53,6 +64,21 @@
 	  <Folder Include="DataModels\Base\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiFont Include="Resources\Fonts\fa-solid-900.ttf" />
+	  <MauiFont Include="Resources\Fonts\OpenSans-Regular.ttf" />
+	  <MauiFont Include="Resources\Fonts\OpenSans-Semibold.ttf" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\add_icon2.svg" />
+	  <MauiImage Include="Resources\Images\add_location.png" />
+	  <MauiImage Include="Resources\Images\amit.jpg" />
+	  <MauiImage Include="Resources\Images\aprajitaretails.png" />
+	  <MauiImage Include="Resources\Images\arlogo.png" />
+	  <MauiImage Include="Resources\Images\shalini.jpg" />
+	  <MauiImage Include="Resources\Images\thearvindstore004.jpg" />
+	  <MauiImage Include="Resources\Images\thearvindstore005.jpg" />
+	</ItemGroup>
+	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">
 	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
 	  </ProjectReference>
@@ -61,18 +87,40 @@
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0" />
 	  <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
 	  <PackageReference Include="CommunityToolkit.HighPerformance" Version="8.0.0" />
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
-	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
-	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.2.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.1.1" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.3.0" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.48" />
+	  <PackageReference Include="Syncfusion.DocIO.NET" Version="20.2.0.50" />
 	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.50" />
-	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.48" />
-	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />
+	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.50" />
+	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.50" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Pages\Auth\UsersPage.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\DefaultTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\Controls\ShellFooter.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\Controls\ShellHeader.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\Custom\RecordListingView.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="Views\Custom\RecordView.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	    <SubType>Code</SubType>
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
@@ -82,6 +130,25 @@
 	  <MauiXaml Update="Pages\Auth\UsersPage.xaml">
 	    <SubType></SubType>
 	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\ShellFooter.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Controls\ShellHeader.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Custom\RecordListingView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Custom\RecordView.xaml">
+	    <SubType></SubType>
 	  </MauiXaml>
 	</ItemGroup>
 </Project>

@@ -167,12 +167,12 @@
                 ContentTemplate="{DataTemplate pages:Stores.StorePage}"
                 Route="Store.Stores" />
         </Tab>
-        <Tab Title="Users" Icon="rain_icon.png">
+        <!--<Tab Title="Users" Icon="rain_icon.png">
             <ShellContent
                 Title="User"
                 ContentTemplate="{DataTemplate pages:Auth.UsersPage}"
                 Route="Auth.Users" />
-        </Tab>
+        </Tab>-->
         <!--<Tab Title="Salary Dash" Icon="rain_icon.png">
             <ShellContent
                 Title="Payment"
@@ -200,7 +200,7 @@
         Clicked="MenuItem_Clicked"
         StyleClass="MenuItemLayoutStyle"
         Text="Logout" />
-    <TabBar>
+    <!--<TabBar>
         <ShellContent ContentTemplate="{DataTemplate pages:LoginPage}" Route="LoginPage" />
-    </TabBar>
+    </TabBar>-->
 </Shell>

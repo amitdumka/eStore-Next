@@ -69,4 +69,9 @@
 	  <PackageReference Include="Syncfusion.Pdf.NET" Version="20.2.0.48" />
 	  <PackageReference Include="Syncfusion.XlsIO.NET" Version="20.2.0.48" />
 	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Pages\Auth\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>

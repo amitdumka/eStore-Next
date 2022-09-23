@@ -2,7 +2,7 @@
 /// These are data type(s) enum used in the projects.
 /// </summary>
 
-public enum Permission { Read,Write,Modify,Delete, ReadWrite,ReadWriteModify,All,None,Self}
+public enum Permission { R,W,M,D, RW,RWM,RWMD,N,S}
 
 public enum ConType { Local, Remote, RemoteDb, HybridApi, HybridDB, Hybrid }
 public enum DBType { Local, Azure, API, Remote, Mango, Others }

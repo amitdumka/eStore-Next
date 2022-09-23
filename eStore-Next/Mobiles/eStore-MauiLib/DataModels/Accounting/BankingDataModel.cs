@@ -14,6 +14,11 @@ namespace eStore_MauiLib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
+        public override Task<List<BankAccount>> FindYAsync(QueryParam query)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Task<List<BankTranscation>> FindZAsync(QueryParam query)
         {
             throw new NotImplementedException();
@@ -30,6 +35,16 @@ namespace eStore_MauiLib.DataModels.Accounting
         }
 
         public override List<int> GetYearList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<BankAccount>> GetYItems(int storeid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<BankAccount>> GetYItems(string storeid)
         {
             throw new NotImplementedException();
         }

@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Maui;
-using eStore_Maui.Pages;
 using eStore_MauiLib.Helpers.Interfaces;
+#if ANDROID
 using eStore_MauiLib.Platforms.Android.Services.Print;
-using eStore_MauiLib.Services;
 using eStore_MauiLib.Services.Print;
+
+#endif
+using eStore_MauiLib.Services;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
 using Syncfusion.Maui.SignaturePad.Hosting;
@@ -18,7 +20,10 @@ namespace eStore_Maui
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiCommunityToolkit()
-                .UseMauiApp<App>().UseBarcodeReader()
+                .UseMauiApp<App>()
+#if ANDROID
+                .UseBarcodeReader()
+#endif
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

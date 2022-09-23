@@ -20,6 +20,11 @@ namespace eStore_MauiLib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
+        public override Task<List<CashVoucher>> FindYAsync(QueryParam query)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Notes
         /// </summary>
@@ -60,6 +65,16 @@ namespace eStore_MauiLib.DataModels.Accounting
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public override List<int> GetYearList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<CashVoucher>> GetYItems(int storeid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<CashVoucher>> GetYItems(string storeid)
         {
             throw new NotImplementedException();
         }

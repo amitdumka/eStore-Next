@@ -226,9 +226,11 @@ namespace eStore_Maui.Test
                 workbook.SaveAs(ms);
                 ms.Position = 0;
 
+#if ANDROID
                 //Saves the memory stream as a file.
                 SaveService saveService = new SaveService();
                 saveService.SaveAndView("Output.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ms);
+#endif
             }
         }
     }

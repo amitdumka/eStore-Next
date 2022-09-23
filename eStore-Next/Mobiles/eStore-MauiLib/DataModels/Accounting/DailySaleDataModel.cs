@@ -14,6 +14,11 @@ namespace eStore_MauiLib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
+        public override Task<List<CustomerDue>> FindYAsync(QueryParam query)
+        {
+            throw new NotImplementedException();
+        }
+
         public override Task<List<DueRecovery>> FindZAsync(QueryParam query)
         {
             throw new NotImplementedException();
@@ -30,6 +35,16 @@ namespace eStore_MauiLib.DataModels.Accounting
         }
 
         public override List<int> GetYearList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<CustomerDue>> GetYItems(int storeid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<List<CustomerDue>> GetYItems(string storeid)
         {
             throw new NotImplementedException();
         }

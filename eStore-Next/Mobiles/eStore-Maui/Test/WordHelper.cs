@@ -236,8 +236,10 @@ namespace eStore_Maui.Test
             document.Save(ms, FormatType.Docx);
             ms.Position = 0;
             //Saves the memory stream as file.
+#if ANDROID
             SaveService saveService = new();
             saveService.SaveAndView("Sample.docx", "application/msword", ms);
+#endif
         }
     }
 }

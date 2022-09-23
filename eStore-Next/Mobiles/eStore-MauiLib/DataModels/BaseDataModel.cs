@@ -512,7 +512,7 @@ namespace eStore_MauiLib.DataModels
         }
     }
 
-    public abstract class BaseDataModel<T, Y, Z> : BaseDataModel<T> where Y : class where T : class where Z : class
+    public abstract class BaseDataModel<T, Y, Z> : BaseDataModel<T,Y> where Y : class where T : class where Z : class
     {
         public BaseDataModel(ConType conType) : base(conType)
         {

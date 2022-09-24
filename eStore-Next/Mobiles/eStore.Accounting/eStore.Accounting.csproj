@@ -55,43 +55,48 @@
 	  <BundleResource Include="Resources\Images\dotnet_bot.svg" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
-	  <PackageReference Include="DevExpress.Maui.Charts">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Charts" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.CollectionView">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.CollectionView" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Controls">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.DataGrid">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Editors">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Scheduler">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5">
 	  </PackageReference>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-ios'">
-	  <PackageReference Include="DevExpress.Maui.Charts">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Charts" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.CollectionView">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.CollectionView" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Controls">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.DataGrid">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.DataGrid" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Editors">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5">
 	  </PackageReference>
-	  <PackageReference Include="DevExpress.Maui.Scheduler">
-	    <Version>22.1.5</Version>
+	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5">
 	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="ViewModels\Entry\" />
+	  <None Remove="ViewModels\Entry\Accounting\" />
+	  <None Remove="Pages\" />
+	  <None Remove="Pages\Entry\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ViewModels\Entry\" />
+	  <Folder Include="ViewModels\Entry\Accounting\" />
+	  <Folder Include="Pages\" />
+	  <Folder Include="Pages\Entry\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Pages\Entry\VoucherEntryPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 </Project>

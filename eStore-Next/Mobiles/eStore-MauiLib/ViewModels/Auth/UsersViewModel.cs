@@ -1,4 +1,5 @@
-﻿using AKS.Shared.Commons.Models.Auth;
+﻿using AKS.Shared.Commons.Data.Helpers.Auth;
+using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -115,7 +116,8 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.LoggedTime = DateTime.Now;
                     CurrentSession.UserType = user.UserType;
                     CurrentSession.EmployeeId = string.IsNullOrEmpty(user.EmployeeId) ? null:user.EmployeeId ;
-                    
+                    CurrentSession.Role = AuthHelper.GetPermission(user.UserType);
+                    CurrentSession.Perimissions = AuthHelper.GetPermission(CurrentSession.Role);
                     GuestName = user.GuestName;
                     if (store != null)
                     {

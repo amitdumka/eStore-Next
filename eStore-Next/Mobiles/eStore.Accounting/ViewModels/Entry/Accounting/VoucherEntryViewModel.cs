@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using AKS.Shared.Commons.Models.Accounts;
-using AKS.Shared.Payroll.Models;
+﻿using AKS.Shared.Commons.Models.Accounts;
+using AKS.Shared.Commons.Ops;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Accounting;
 using eStore_MauiLib.ViewModels;
+using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace eStore.Accounting.ViewModels.Entry.Accounting
 {
@@ -15,109 +16,228 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
     {
         #region Field
 
-        [DataFormDisplayOptions(IsVisible = false)]
+        //[ObservableProperty]
+        //private string _voucherNumber;
+
+        //[ObservableProperty]
+        //private VoucherType _voucherType;
+
+        //[ObservableProperty]
+        //private DateTime _onDate;
+
+        //[ObservableProperty]
+        //private string _slipNumber;
+
+        //[ObservableProperty]
+        //private string _partyName;
+
+        //[ObservableProperty]
+        //private string _particulars;
+
+        //[ObservableProperty]
+        //private decimal _amount;
+        // [ObservableProperty]
+        // private string _remarks;
+        // [ObservableProperty]
+        // private PaymentMode _paymentMode;
+        //[ObservableProperty]
+        //        private string _paymentDetails;
+        //[ObservableProperty]
+        //private string _accountId;
+        //[ObservableProperty]
+        //private string _employeeId;
+        //[ObservableProperty]
+
+        //private string _partyId;
         [ObservableProperty]
-        private string _voucherNumber;
+        private List<DynVM> _employeeList;
 
-        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 1)]
-        [DataFormDisplayOptions(LabelIcon = "editors_name", GroupName = "Basic")]
         [ObservableProperty]
-        private VoucherType _voucherType;
+        private List<DynVM> _partyList;
 
-        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 2)]
-        [DataFormDisplayOptions(LabelIcon = "editors_name", GroupName = "Basic")]
         [ObservableProperty]
-        private DateTime _onDate;
+        private List<DynVM> _bankList;
 
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Basic")]
         [ObservableProperty]
-        private string _slipNumber;
-
-        [Required(ErrorMessage = "Party name is Required")]
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Basic")]
-        [ObservableProperty]
-        private string _partyName;
-
-        [Required(ErrorMessage = "Particulars is Required")]
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Voucher Details")]
-        [ObservableProperty]
-        private string _particulars;
-
-        
-        [Required(ErrorMessage = "Amount is Required")]
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Voucher Details")]
-        [ObservableProperty]
-        private decimal _amount;
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Voucher Details")]
-        [ObservableProperty]
-        private string _remarks;
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Payment")]
-        [ObservableProperty]
-        private PaymentMode _paymentMode;
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Payment")]
-        [ObservableProperty]
-        private string _paymentDetails;
-
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Payment")]
-        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        [ObservableProperty]
-        private string _accountId;
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Issued By")]
-        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        [ObservableProperty]
-        private string _employeeId;
-
-        [DataFormDisplayOptions(LabelIcon = "editors_email", GroupName = "Ledger")]
-        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        [ObservableProperty]
-        private string _partyId;
-
+        private VoucherEntry _voucherEntry;
 
         public IEnumerable GetSource(string propertyName)
         {
-            if (propertyName == "EmployeeId")
+            try
             {
-                return CommonDataModel.GetEmployeeList(DataModel.GetContext());
-            }
-            if (propertyName == "PartyId")
-            {
-                return CommonDataModel.GetParty(DataModel.GetContext());
-            }
+                if (propertyName == "EmployeeId")
+                {
+                    if (EmployeeList == null)
+                        EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContext());
+                    return EmployeeList;
+                }
+                if (propertyName == "PartyId")
+                {
+                    if (PartyList == null)
+                        PartyList = CommonDataModel.GetParty(DataModel.GetContext());
+                    return PartyList;
+                }
 
-            if (propertyName == "AccountId")
-            {
-                return CommonDataModel.GetBankAccount(DataModel.GetContext());
+                if (propertyName == "AccountId")
+                {
+                    if (BankList == null)
+                        BankList = CommonDataModel.GetBankAccount(DataModel.GetContext());
+                    return BankList;
+                }
+                return null;
             }
-            return null;
+            catch (NullReferenceException e)
+            {
+                Toast.Make(e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Toast.Make(e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                return null;
+            }
         }
 
-
-        #endregion
+        #endregion Field
 
         public VoucherEntryViewModel()
         {
-            OnDate = DateTime.Now;
+            VoucherEntry = new VoucherEntry
+            {
+                Amount = 100,
+                OnDate = DateTime.Now,
+                Particulars = "das",
+                PartyName = "dasdasd",
+                PaymentDetails = "dasdas",
+                PaymentMode = PaymentMode.Cash,
+                Remarks = "dasd12313",
+                SlipNumber = "ddddaaa",
+                VoucherType = VoucherType.Payment
+            };
+            VoucherEntry.OnDate = DateTime.Now;
+            InitViewModel();
+        }
+
+        public VoucherEntryViewModel(VoucherDataModel dm)
+        {
+            VoucherEntry = new VoucherEntry { Amount=100, OnDate= DateTime.Now, Particulars="das",
+            PartyName="dasdasd", PaymentDetails="dasdas", PaymentMode=PaymentMode.Cash, 
+            Remarks="dasd12313", SlipNumber="ddddaaa", VoucherType=VoucherType.Payment
+            };
+           // VoucherEntry.OnDate = DateTime.Now;
+            DataModel = dm;
+            InitViewModel();
         }
 
         protected override void Cancle()
         {
-            throw new NotImplementedException();
+            Toast.Make("Cancel", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
         }
 
         protected override void InitViewModel()
         {
-            throw new NotImplementedException();
+            if (DataModel == null)
+                DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            DataModel.InitContext();
         }
 
-        protected override void Save()
+        protected override async void Save()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var v = await DataModel.SaveAsync(
+                           new Voucher
+                           {
+                               EmployeeId = VoucherEntry.EmployeeId,
+                               OnDate = VoucherEntry.OnDate,
+                               EntryStatus = EntryStatus.Added,
+                               AccountId = VoucherEntry.AccountId??VoucherEntry.AccountId,
+                               Amount = VoucherEntry.Amount,
+                               IsReadOnly = false,
+                               MarkedDeleted = false,
+                               Particulars = VoucherEntry.Particulars,
+                               PartyId = VoucherEntry.PartyId??VoucherEntry.PartyId,
+                               PartyName = VoucherEntry.PartyName,
+                               PaymentDetails = VoucherEntry.PaymentDetails,
+                               PaymentMode = VoucherEntry.PaymentMode,
+                               Remarks = VoucherEntry.Remarks,
+                               SlipNumber = VoucherEntry.SlipNumber ??VoucherEntry.SlipNumber,
+                               StoreId = CurrentSession.StoreCode,
+                               UserId = CurrentSession.UserName,
+                               VoucherType = VoucherEntry.VoucherType,
+                               VoucherNumber = $"ARD{DateTime.Now}"
+                           });
+                if (v != null)
+                    await Toast.Make($"Save Voucher :{v.VoucherNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                else
+                    await Toast.Make($"Error on save Voucher :{VoucherEntry.SlipNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+
+            }
+            catch (NullReferenceException e)
+            {
+
+                await Toast.Make($"Error  :{e.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            }
+            catch (Exception e)
+            {
+
+                await Toast.Make($"Error  :{e.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            }
         }
     }
-}
 
+    public class VoucherEntry
+    {
+        [Key]
+        [DataFormDisplayOptions(IsVisible = false)]
+        public string VoucherNumber { get; set; }
+
+        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 1)]
+        [DataFormDisplayOptions(LabelText = "Type", GroupName = "Basic")]
+        public VoucherType VoucherType { get; set; }
+
+        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 2)]
+        [DataFormDisplayOptions(LabelText = "Date", GroupName = "Basic")]
+        public DateTime OnDate { get; set; }
+
+        [DataFormDisplayOptions(GroupName = "Basic")]
+        public string SlipNumber { get; set; }
+
+        [Required(ErrorMessage = "Party name is Required")]
+        [DataFormDisplayOptions(LabelText = "Name", GroupName = "Basic")]
+        public string PartyName { get; set; }
+
+        [Required(ErrorMessage = "Particulars is Required")]
+        [DataFormDisplayOptions(GroupName = "Voucher Details")]
+        public string Particulars { get; set; }
+
+        [Required(ErrorMessage = "Amount is Required")]
+        [DataFormDisplayOptions(LabelText = "$", GroupName = "Voucher Details")]
+        public decimal Amount { get; set; }
+
+        [DataFormDisplayOptions(LabelText = "Pay Mode", GroupName = "Payment")]
+        public PaymentMode PaymentMode { get; set; }
+
+        [DataFormDisplayOptions(LabelText = "Pay Details", GroupName = "Payment")]
+        public string PaymentDetails { get; set; }
+
+        [DataFormDisplayOptions(GroupName = "Voucher Details")]
+        public string Remarks { get; set; }
+
+        [DataFormDisplayOptions(LabelText = "Bank", GroupName = "Payment")]
+        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
+        public string AccountId { get; set; }
+
+        [DataFormDisplayOptions(LabelText = "Issued By", GroupName = "Issued By")]
+        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
+        public string EmployeeId { get; set; }
+
+        // public virtual Employee Employee { get; set; }
+
+        [DataFormDisplayOptions(LabelText = "Ledger", GroupName = "Ledger")]
+        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
+        public string PartyId { get; set; }
+
+        //public virtual Party Partys { get; set; }
+    }
+}

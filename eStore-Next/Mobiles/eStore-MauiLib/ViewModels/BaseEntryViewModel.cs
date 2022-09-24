@@ -15,16 +15,16 @@ namespace eStore_MauiLib.ViewModels
     {
         
         protected DM DataModel;
-   //     [DataFormDisplayOptions(IsVisible = false)]
+   
         [ObservableProperty]
         protected string _title;
-     //   [DataFormDisplayOptions(IsVisible = false)]
+   
         [ObservableProperty]
         protected string _icon;
-       // [DataFormDisplayOptions(IsVisible = false)]
+   
         [ObservableProperty]
         protected bool _isNew;
-       // [DataFormDisplayOptions(IsVisible = false)]
+   
         [ObservableProperty]
         protected UserType _role;
 

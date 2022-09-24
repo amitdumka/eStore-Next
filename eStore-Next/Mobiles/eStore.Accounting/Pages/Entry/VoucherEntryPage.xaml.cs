@@ -8,8 +8,9 @@ public partial class VoucherEntryPage : ContentPage
 	public VoucherEntryPage()
 	{
 		InitializeComponent();
-		BindingContext = viewModel = new VoucherEntryViewModel();
-		dataForm.DataObject = viewModel;
+		 viewModel = new VoucherEntryViewModel();
+		BindingContext = viewModel;
+		dataForm.DataObject =  viewModel.VoucherEntry;
 		dataForm.PickerSourceProvider = viewModel;
     }
 }

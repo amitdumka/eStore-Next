@@ -99,7 +99,10 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         #endregion
 
-
+        public VoucherEntryViewModel()
+        {
+            OnDate = DateTime.Now;
+        }
 
         protected override void Cancle()
         {

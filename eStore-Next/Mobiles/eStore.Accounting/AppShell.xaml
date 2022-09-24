@@ -150,24 +150,7 @@
                 ContentTemplate="{DataTemplate pages:Entry.VoucherEntryPage}"
                 Route="Voucher.Entry" />
         </Tab>
-        <!--<Tab Title="Monthly Dash" Icon="rain_icon.png">
-            <ShellContent
-                Title="Monthly"
-                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
-                Route="Paryroll.Attendance" />
-        </Tab>
-        <Tab Title="Salary Dash" Icon="rain_icon.png">
-            <ShellContent
-                Title="Payment"
-                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
-                Route="Paryroll.Attendance" />
-        </Tab>
-        <Tab Title="Advance Dash" Icon="rain_icon.png">
-            <ShellContent
-                Title="Advance"
-                ContentTemplate="{DataTemplate pages:Payroll.AttendancePage}"
-                Route="Paryroll.Attendance" />
-        </Tab>-->
+       
     </FlyoutItem>
     <FlyoutItem Title="Cash Voucher">
         <Tab Title="Stores" Icon="rain_icon.png">

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.Services;
 using eStore_MauiLib.ViewModels;
 using System;
 using System.Collections;
@@ -132,6 +133,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         protected override void Cancle()
         {
             Toast.Make("Cancel", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            ASpeak.Speak("Cancel Button is pressed");
         }
 
         protected override void InitViewModel()
@@ -168,10 +170,15 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                                VoucherNumber = $"ARD{DateTime.Now}"
                            });
                 if (v != null)
+                {
                     await Toast.Make($"Save Voucher :{v.VoucherNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    ASpeak.Speak($"Save Voucher :{v.VoucherNumber}");
+                }
                 else
+                {
                     await Toast.Make($"Error on save Voucher :{VoucherEntry.SlipNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-
+                    ASpeak.Speak($"Error on save Voucher :{VoucherEntry.SlipNumber}");
+                }
             }
             catch (NullReferenceException e)
             {

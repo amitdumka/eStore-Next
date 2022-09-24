@@ -5,6 +5,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
+using eStore_MauiLib.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace eStore_MauiLib.ViewModels.Auth
@@ -119,6 +120,7 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.Role = AuthHelper.GetPermission(user.UserType);
                     CurrentSession.Perimissions = AuthHelper.GetPermission(CurrentSession.Role);
                     GuestName = user.GuestName;
+                    ASpeak.Speak($"Welcome, {GuestName}!, Now you can operate in , {user.UserType}, mode. ");
                     if (store != null)
                     {
                         CurrentSession.Address = store.City + "\t" + store.State;

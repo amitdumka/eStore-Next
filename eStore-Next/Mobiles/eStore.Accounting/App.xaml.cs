@@ -7,11 +7,14 @@ namespace eStore.Accounting
 {
     public partial class App : Application
     {
+        protected override void OnStart()
+        {
+            base.OnStart();
+            InitialDatabase();
+        }
         public App()
         {
             InitializeComponent();
-
-            InitialDatabase();
             MainPage = new LoginPage(new AppShell());
         }
         async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
@@ -28,13 +31,16 @@ namespace eStore.Accounting
 
         async void InitialDatabase()
         {
-            new SyncService().SyncDownEmployeesAsync();
+            
             if (!DatabaseStatus.VerifyLocalStatus())
             {
                 BackgroundService service = new SyncDownService();
                 service.InitService();
                 service.GetInstance.RunWorkerAsync(LocalSync.Initial);
+                new SyncService().SyncDownEmployeesAsync();
             }
+           
         }
+       
     }
 }

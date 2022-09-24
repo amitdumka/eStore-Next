@@ -10,6 +10,10 @@ namespace eStore.Accounting
 {
     public partial class AppShell : Shell
     {
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+        }
         public ICommand HelpCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
         public AppShell()
         {

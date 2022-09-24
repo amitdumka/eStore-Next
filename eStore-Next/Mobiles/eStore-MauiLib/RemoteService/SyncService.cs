@@ -268,7 +268,7 @@ namespace eStore_MauiLib.RemoteService
                             else
                                 Preferences.Remove(nameof(Attendance));
                         }
-                       
+
                         local = db.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
                         remote = azure.MonthlyAttendances.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
                         if (local != remote)
@@ -344,7 +344,7 @@ namespace eStore_MauiLib.RemoteService
                             else
                                 Preferences.Remove(nameof(User));
                         }
-                         if (rCount != lCount) return true; else return false;
+                        if (rCount != lCount) return true; else return false;
 
                     case UserType.Guest:
                     default:
@@ -381,9 +381,9 @@ namespace eStore_MauiLib.RemoteService
                     case UserType.PowerUser:
                         int lCount = 0;
                         int rCount = 0;
-                       
-                       var local = db.Salaries.Count();
-                       var remote = azure.Salaries.Count();
+
+                        var local = db.Salaries.Count();
+                        var remote = azure.Salaries.Count();
                         if (local != remote)
                         {
                             var remoteList = azure.Salaries.ToList();
@@ -406,7 +406,7 @@ namespace eStore_MauiLib.RemoteService
                             else
                                 Preferences.Remove(nameof(Salary));
                         }
-                       
+
                         local = db.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
                         remote = azure.PaySlips.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
                         if (local != remote)
@@ -593,7 +593,7 @@ namespace eStore_MauiLib.RemoteService
                     case UserType.Employees:
                         lCount = 0;
                         rCount = 0;
-                       
+
                         local = db.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
                         remote = azure.SalaryPayment.Where(c => c.OnDate.Year == DateTime.Today.Year && c.EmployeeId == CurrentSession.EmployeeId).Count();
                         if (local != remote)
@@ -680,7 +680,5 @@ namespace eStore_MauiLib.RemoteService
                 return false;
             }
         }
-
-
     }
 }

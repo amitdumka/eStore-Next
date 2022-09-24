@@ -45,7 +45,7 @@ namespace eStore_MauiLib.Services.BackgroundServices
                     Toast.Make("It failed to sync Local database with remote latest data", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 }
             }
-            Toast.Make($" ObjectSender:{sender.ToString()}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            //Toast.Make($" ObjectSender:{sender.ToString()}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
 
             //TODO: basic cleanup or reset main thread ui
         }

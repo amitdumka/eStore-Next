@@ -95,6 +95,14 @@
 	  <Folder Include="Pages\Entry\" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\DefaultTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
 	  <MauiXaml Update="Pages\Entry\VoucherEntryPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
@@ -106,6 +114,13 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\NotesPage.xaml">
 	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 </Project>

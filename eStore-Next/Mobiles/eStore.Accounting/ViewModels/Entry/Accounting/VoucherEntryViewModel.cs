@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.Helpers;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.ViewModels;
 using System;
@@ -103,6 +104,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         public VoucherEntryViewModel()
         {
+            IsNew = true;
             VoucherEntry = new VoucherEntry
             {
                 Amount = 100,
@@ -121,11 +123,34 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         public VoucherEntryViewModel(VoucherDataModel dm)
         {
+            IsNew = true;
             VoucherEntry = new VoucherEntry { Amount=100, OnDate= DateTime.Now, Particulars="das",
             PartyName="dasdasd", PaymentDetails="dasdas", PaymentMode=PaymentMode.Cash, 
             Remarks="dasd12313", SlipNumber="ddddaaa", VoucherType=VoucherType.Payment
             };
            // VoucherEntry.OnDate = DateTime.Now;
+            DataModel = dm;
+            InitViewModel();
+        }
+        public VoucherEntryViewModel(VoucherDataModel dm, Voucher v)
+        {
+            IsNew = false;
+            //TODO: Use of AutoMapper is required.
+            VoucherEntry = new VoucherEntry
+            {
+                Amount = v.Amount,
+                OnDate = v.OnDate,
+                Particulars = v.Particulars,
+                PartyName = v.PartyName,
+                PaymentDetails = v.PaymentDetails,
+                PaymentMode = v.PaymentMode,
+                Remarks = v.Remarks,
+                SlipNumber = v.SlipNumber,
+                VoucherType = v.VoucherType,
+                AccountId=v.AccountId, EmployeeId=v.EmployeeId, PartyId=v.PartyId, VoucherNumber=v.VoucherNumber
+               
+            };
+            // VoucherEntry.OnDate = DateTime.Now;
             DataModel = dm;
             InitViewModel();
         }
@@ -147,28 +172,29 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         {
             try
             {
+
                 var v = await DataModel.SaveAsync(
                            new Voucher
                            {
                                EmployeeId = VoucherEntry.EmployeeId,
                                OnDate = VoucherEntry.OnDate,
                                EntryStatus = EntryStatus.Added,
-                               AccountId = VoucherEntry.AccountId??VoucherEntry.AccountId,
+                               AccountId = VoucherEntry.AccountId ?? VoucherEntry.AccountId,
                                Amount = VoucherEntry.Amount,
                                IsReadOnly = false,
                                MarkedDeleted = false,
                                Particulars = VoucherEntry.Particulars,
-                               PartyId = VoucherEntry.PartyId??VoucherEntry.PartyId,
+                               PartyId = VoucherEntry.PartyId ?? VoucherEntry.PartyId,
                                PartyName = VoucherEntry.PartyName,
                                PaymentDetails = VoucherEntry.PaymentDetails,
                                PaymentMode = VoucherEntry.PaymentMode,
                                Remarks = VoucherEntry.Remarks,
-                               SlipNumber = VoucherEntry.SlipNumber ??VoucherEntry.SlipNumber,
+                               SlipNumber = VoucherEntry.SlipNumber ?? VoucherEntry.SlipNumber,
                                StoreId = CurrentSession.StoreCode,
                                UserId = CurrentSession.UserName,
                                VoucherType = VoucherEntry.VoucherType,
-                               VoucherNumber = $"ARD{DateTime.Now}"
-                           });
+                               VoucherNumber =IsNew?AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType,  VoucherEntry.OnDate, CurrentSession.StoreCode, DataModel.Count()+1):VoucherEntry.VoucherNumber
+                           }); ;
                 if (v != null)
                 {
                     await Toast.Make($"Save Voucher :{v.VoucherNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();

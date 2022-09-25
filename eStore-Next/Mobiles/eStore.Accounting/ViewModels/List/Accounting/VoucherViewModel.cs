@@ -13,19 +13,44 @@ namespace eStore.Accounting.ViewModels.List.Accounting
         [ObservableProperty]
         private VoucherType _voucherType;
 
-        protected override void AddButton()
+        public VoucherViewModel():base()
         {
-            throw new NotImplementedException();
+            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            DataModel.StoreCode = CurrentSession.StoreCode;
+            Role = CurrentSession.UserType;
+            DataModel.Connect();
+            DataModel.Mode = DBType.Local;
+            InitViewModel();
         }
 
-        protected override Task<bool> Delete()
+        //public void VoucherViewModel():base()
+        //{
+        //    DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+        //    DataModel.StoreCode = CurrentSession.StoreCode;
+        //    Role = CurrentSession.UserType;
+        //    DataModel.Connect();
+        //    DataModel.Mode = DBType.Local;
+        //    InitViewModel();
+        //}
+
+
+        protected override void AddButton()
         {
-            throw new NotImplementedException();
+            var c =  Delete();
+            Toast.Make("Delete: " + c.Result, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+        }
+
+        protected override async Task<bool> Delete()
+        {
+            DataModel.GetContextLocal().Vouchers.RemoveRange(DataModel.GetContextLocal().Vouchers.ToList());
+            return await DataModel.GetContextLocal().SaveChangesAsync() > 0;
         }
 
         protected override void DeleteButton()
         {
-            throw new NotImplementedException();
+            var c = Delete();
+            Toast.Make("Delete: " + c.Result, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+           
         }
 
         protected override Task<bool> Edit(Voucher value)

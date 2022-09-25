@@ -84,7 +84,7 @@
             FontAttributes="Bold,Italic"
             FontAutoScalingEnabled="True"
             HorizontalTextAlignment="End"
-            Text="{Binding RecordCount, StringFormat='No Of Users : {0} ', Mode=TwoWay}"
+            Text="{Binding RecordCount, StringFormat='No Of Users : {0}  .', Mode=TwoWay}"
             TextColor="{x:StaticResource TextOnSolid_Light}" />
     </VerticalStackLayout>
 </ContentView>

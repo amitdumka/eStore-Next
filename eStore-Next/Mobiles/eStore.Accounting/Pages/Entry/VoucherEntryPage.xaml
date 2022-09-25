@@ -23,6 +23,7 @@
                 ContentPadding="10"
                 x:Name="dataForm"
                 Margin="5"
+                DataObject="{Binding .}" CommitMode="PropertyChanged"
                 IsLastRowSeparatorVisible="True"
                 EditorLabelColor="{x:StaticResource Tertiary}"
                 EditorLabelWidth="80"

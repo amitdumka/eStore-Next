@@ -1,9 +1,10 @@
-﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:effects="clr-namespace:eStore.Dev.Effects"             
-             x:Class="eStore.Dev.App"
-             windows:Application.ImageDirectory="Assets">
+﻿<Application
+    x:Class="eStore.Dev.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:effects="clr-namespace:eStore.Dev.Effects"
+    xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
+    windows:Application.ImageDirectory="Assets">
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#512BD4</Color>
@@ -14,44 +15,55 @@
             <Color x:Key="DrawerTitleTextColor">White</Color>
             <Color x:Key="NormalBackgroundColor">White</Color>
             <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}"/>
-                <Setter Property="BarTextColor" Value="{StaticResource DrawerTitleTextColor}"/>
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="BarTextColor" Value="{StaticResource DrawerTitleTextColor}" />
             </Style>
             <Style x:Key="PrimaryButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
-                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="TextColor" Value="White" />
             </Style>
-            <Style TargetType="Shell" ApplyToDerivedTypes="True">
+            <Style ApplyToDerivedTypes="True" TargetType="Shell">
                 <Setter Property="Shell.TitleColor" Value="{StaticResource DrawerTitleTextColor}" />
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.ForegroundColor" Value="{StaticResource DrawerTitleTextColor}" />
             </Style>
-            <DataTemplate x:Key="ShellMenuItemTemplate">            
-                <Grid ColumnDefinitions="51,*" ColumnSpacing="0" RowSpacing="0" Margin="0" Padding="0, 15, 0, 15" BackgroundColor="White">
+            <DataTemplate x:Key="ShellMenuItemTemplate">
+                <Grid
+                    Margin="0"
+                    Padding="0,15,0,15"
+                    BackgroundColor="White"
+                    ColumnDefinitions="51,*"
+                    ColumnSpacing="0"
+                    RowSpacing="0">
+                    <Image
+                        x:Name="Image"
+                        effects:TintEffect.TintColor="{StaticResource Primary}"
+                        HorizontalOptions="Center"
+                        Source="{Binding Icon}" />
+                    <Label
+                        x:Name="FlyoutItemLabel"
+                        Grid.Column="1"
+                        Margin="0,0,0,0"
+                        FontFamily="Roboto"
+                        HorizontalOptions="StartAndExpand"
+                        Text="{Binding Title}"
+                        TextColor="{StaticResource NormalText}"
+                        VerticalOptions="Center" />
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Normal" />
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
                                         <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
-                                        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />                                            
+                                        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryLight}" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateGroupList>
                     </VisualStateManager.VisualStateGroups>
-                    <Image x:Name="Image" Source="{Binding Icon}" HorizontalOptions="Center" effects:TintEffect.TintColor="{StaticResource Primary}"/>
-                    <Label x:Name="FlyoutItemLabel" Text="{Binding Title}"
-                        Grid.Column="1"
-                        TextColor="{StaticResource NormalText}"
-                        Margin="0,0,0,0"
-                        VerticalOptions="Center"
-                        FontFamily="Roboto"
-                        HorizontalOptions="StartAndExpand">                            
-                    </Label>
                 </Grid>
-           </DataTemplate>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

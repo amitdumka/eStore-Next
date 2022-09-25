@@ -8,7 +8,6 @@ using eStore_MauiLib.DataModels.Accounting;
 using eStore_MauiLib.Helpers;
 using eStore_MauiLib.Services;
 using eStore_MauiLib.ViewModels;
-using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,39 +17,6 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
     {
         #region Field
 
-        //[ObservableProperty]
-        //private string _voucherNumber;
-
-        //[ObservableProperty]
-        //private VoucherType _voucherType;
-
-        //[ObservableProperty]
-        //private DateTime _onDate;
-
-        //[ObservableProperty]
-        //private string _slipNumber;
-
-        //[ObservableProperty]
-        //private string _partyName;
-
-        //[ObservableProperty]
-        //private string _particulars;
-
-        //[ObservableProperty]
-        //private decimal _amount;
-        // [ObservableProperty]
-        // private string _remarks;
-        // [ObservableProperty]
-        // private PaymentMode _paymentMode;
-        //[ObservableProperty]
-        //        private string _paymentDetails;
-        //[ObservableProperty]
-        //private string _accountId;
-        //[ObservableProperty]
-        //private string _employeeId;
-        //[ObservableProperty]
-
-        //private string _partyId;
         [ObservableProperty]
         private List<DynVM> _employeeList;
 
@@ -124,14 +90,23 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         public VoucherEntryViewModel(VoucherDataModel dm)
         {
             IsNew = true;
-            VoucherEntry = new VoucherEntry { Amount=100, OnDate= DateTime.Now, Particulars="das",
-            PartyName="dasdasd", PaymentDetails="dasdas", PaymentMode=PaymentMode.Cash, 
-            Remarks="dasd12313", SlipNumber="ddddaaa", VoucherType=VoucherType.Payment
+            VoucherEntry = new VoucherEntry
+            {
+                Amount = 100,
+                OnDate = DateTime.Now,
+                Particulars = "das",
+                PartyName = "dasdasd",
+                PaymentDetails = "dasdas",
+                PaymentMode = PaymentMode.Cash,
+                Remarks = "dasd12313",
+                SlipNumber = "ddddaaa",
+                VoucherType = VoucherType.Payment
             };
-           // VoucherEntry.OnDate = DateTime.Now;
+            // VoucherEntry.OnDate = DateTime.Now;
             DataModel = dm;
             InitViewModel();
         }
+
         public VoucherEntryViewModel(VoucherDataModel dm, Voucher v)
         {
             IsNew = false;
@@ -147,8 +122,10 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 Remarks = v.Remarks,
                 SlipNumber = v.SlipNumber,
                 VoucherType = v.VoucherType,
-                AccountId=v.AccountId, EmployeeId=v.EmployeeId, PartyId=v.PartyId, VoucherNumber=v.VoucherNumber
-               
+                AccountId = v.AccountId,
+                EmployeeId = v.EmployeeId,
+                PartyId = v.PartyId,
+                VoucherNumber = v.VoucherNumber
             };
             // VoucherEntry.OnDate = DateTime.Now;
             DataModel = dm;
@@ -167,12 +144,11 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             DataModel.InitContext();
         }
-
+        
         protected override async void Save()
         {
             try
             {
-
                 var v = await DataModel.SaveAsync(
                            new Voucher
                            {
@@ -193,7 +169,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                                StoreId = CurrentSession.StoreCode,
                                UserId = CurrentSession.UserName,
                                VoucherType = VoucherEntry.VoucherType,
-                               VoucherNumber =IsNew?AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType,  VoucherEntry.OnDate, CurrentSession.StoreCode, DataModel.Count()+1):VoucherEntry.VoucherNumber
+                               VoucherNumber = IsNew ? AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType, VoucherEntry.OnDate, CurrentSession.StoreCode, DataModel.Count(VoucherEntry.VoucherType) + 1) : VoucherEntry.VoucherNumber
                            }); ;
                 if (v != null)
                 {
@@ -208,12 +184,10 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
             }
             catch (NullReferenceException e)
             {
-
                 await Toast.Make($"Error  :{e.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
             }
             catch (Exception e)
             {
-
                 await Toast.Make($"Error  :{e.Message}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
             }
         }

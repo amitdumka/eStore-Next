@@ -51,22 +51,7 @@ namespace eStore_MauiLib.DataModels.Accounting
 
             throw new NotImplementedException();
         }
-
-        public IQueryable<Voucher> WhereO(System.Linq.Expressions.Expression<Func<Voucher, bool>> predict)
-        {
-            return GetContext().Vouchers.Where(predict);
-        }
-
-        public IQueryable<CashVoucher> WhereO(System.Linq.Expressions.Expression<Func<CashVoucher, bool>> predict)
-        {
-            return GetContext().CashVouchers.Where(predict);
-        }
-
-        public IQueryable<Note> WhereO(System.Linq.Expressions.Expression<Func<Note, bool>> predict)
-        {
-            return GetContext().Notes.Where(predict);
-        }
-
+      
         public override async Task<List<Voucher>> GetItemsAsync(string storeid)
         {
             if (Permissions.Contains("RW"))
@@ -84,6 +69,22 @@ namespace eStore_MauiLib.DataModels.Accounting
 
         #endregion Vouchers
 
+        #region WhereQuerry
+        public IQueryable<Voucher> WhereO(System.Linq.Expressions.Expression<Func<Voucher, bool>> predict)
+        {
+            return GetContext().Vouchers.Where(predict);
+        }
+
+        public IQueryable<CashVoucher> WhereO(System.Linq.Expressions.Expression<Func<CashVoucher, bool>> predict)
+        {
+            return GetContext().CashVouchers.Where(predict);
+        }
+
+        public IQueryable<Note> WhereO(System.Linq.Expressions.Expression<Func<Note, bool>> predict)
+        {
+            return GetContext().Notes.Where(predict);
+        }
+        #endregion
         #region YearList
 
         public override List<int> GetYearList(string storeid)
@@ -167,13 +168,46 @@ namespace eStore_MauiLib.DataModels.Accounting
         }
 
         #endregion Notes
+
+        #region CustomCount
+
+        public  int Count(VoucherType type)
+        {
+            int count = 0;  
+            switch (type)
+            {
+                case VoucherType.Payment:
+                case VoucherType.Receipt:
+                case VoucherType.Expense:
+                    count = GetContextAzure().Vouchers.Count(c => c.VoucherType == type);
+                    break;
+
+                //case VoucherType.Contra:
+                //    break;
+                //case VoucherType.DebitNote:
+                //    break;
+                //case VoucherType.CreditNote:
+                //    break;
+                //case VoucherType.JV:
+                //    count = GetContextAzure().Notes.Count(c => c.NotesType == type);
+                //    break;
+                
+                case VoucherType.CashReceipt:
+                case VoucherType.CashPayment:
+                   count=GetContextAzure().CashVouchers.Count(c => c.VoucherType == type);
+                    break;
+                default:
+
+                    break;
+            }
+            return count;
+        }
+        #endregion
     }
 
     public class Filter
     {
         public string PropertyName { get; set; }
-
-        // public Op Operation { get; set; }
         public object Value { get; set; }
     }
 }

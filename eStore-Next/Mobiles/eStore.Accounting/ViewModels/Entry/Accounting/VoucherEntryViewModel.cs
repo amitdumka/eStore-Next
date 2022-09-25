@@ -29,6 +29,15 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         [ObservableProperty]
         private VoucherEntry _voucherEntry;
 
+        [ObservableProperty]
+        private int[] _lastCount= new int[3];
+
+        public int Count(VoucherType type)
+        {
+            var x = _lastCount[(int)type];
+            if (x > 0) { _lastCount[(int)type] = ++x+10; return x+10; }
+            else { return _lastCount[(int)type] = DataModel.Count(type); }
+        }
         public IEnumerable GetSource(string propertyName)
         {
             try
@@ -169,7 +178,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                                StoreId = CurrentSession.StoreCode,
                                UserId = CurrentSession.UserName,
                                VoucherType = VoucherEntry.VoucherType,
-                               VoucherNumber = IsNew ? AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType, VoucherEntry.OnDate, CurrentSession.StoreCode, DataModel.Count(VoucherEntry.VoucherType) + 1) : VoucherEntry.VoucherNumber
+                               VoucherNumber = IsNew ? AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType, VoucherEntry.OnDate, CurrentSession.StoreCode, Count(VoucherEntry.VoucherType) + 1) : VoucherEntry.VoucherNumber
                            }); ;
                 if (v != null)
                 {

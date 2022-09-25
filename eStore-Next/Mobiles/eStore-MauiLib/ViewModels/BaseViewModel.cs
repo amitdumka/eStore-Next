@@ -10,6 +10,9 @@ namespace eStore_MauiLib.ViewModels
     [ObservableRecipient]
     public abstract partial class BaseViewModel<T, DM> : ObservableValidator
     {
+        public const string Descending = "Descending";
+        public const string Ascending = "Ascending";
+
         #region Field
 
         protected DM DataModel;
@@ -19,6 +22,9 @@ namespace eStore_MauiLib.ViewModels
 
         [ObservableProperty]
         protected string _defaultSortedColName;
+
+        [ObservableProperty]
+        protected string _defaultSortedOrder=Descending;
 
         [ObservableProperty]
         protected string _icon;
@@ -44,12 +50,15 @@ namespace eStore_MauiLib.ViewModels
 
         #endregion
 
+        public DM GetDataModel() => DataModel;
 
         #region Constructors
         public BaseViewModel()
         {
 
         }
+
+        
         #endregion
 
 

@@ -1,19 +1,18 @@
 ﻿using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
-using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using eStore_MauiLib.DataModels.Accounting;
+using eStore_MauiLib.Helpers;
 using eStore_MauiLib.ViewModels;
 
 namespace eStore.Accounting.ViewModels.List.Accounting
 {
     public partial class VoucherViewModel : BaseViewModel<Voucher, VoucherDataModel>
     {
-
         [ObservableProperty]
         private VoucherType _voucherType;
 
-        public VoucherViewModel():base()
+        public VoucherViewModel() : base()
         {
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             DataModel.StoreCode = CurrentSession.StoreCode;
@@ -23,34 +22,40 @@ namespace eStore.Accounting.ViewModels.List.Accounting
             InitViewModel();
         }
 
-        //public void VoucherViewModel():base()
-        //{
-        //    DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-        //    DataModel.StoreCode = CurrentSession.StoreCode;
-        //    Role = CurrentSession.UserType;
-        //    DataModel.Connect();
-        //    DataModel.Mode = DBType.Local;
-        //    InitViewModel();
-        //}
-
-
         protected override void AddButton()
         {
-            var c =  Delete();
-            Toast.Make("Delete: " + c.Result, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+            var c = Delete();
+            Notify.NotifyLong("Delete: ");
         }
 
         protected override async Task<bool> Delete()
         {
-            DataModel.GetContextLocal().Vouchers.RemoveRange(DataModel.GetContextLocal().Vouchers.ToList());
-            return await DataModel.GetContextLocal().SaveChangesAsync() > 0;
+            var dl = DataModel.GetContextLocal()
+                .Vouchers.Where(c => c.UserId.Contains("#TESTING")).ToList();
+
+            DataModel.GetContextLocal().Vouchers.RemoveRange(dl);
+            DataModel.GetContextAzure().Vouchers.RemoveRange(dl);
+            try
+            {
+                bool local = await DataModel.GetContextLocal().SaveChangesAsync() > 0;
+                bool azure = DataModel.GetContextAzure().SaveChanges() > 0;
+                if (!azure)
+                {
+                    Notify.NotifyVLong("Failed to remove on remote");
+                }
+                return local;
+            }
+            catch (Exception e)
+            {
+                Notify.NotifyLong($"Error: {e.Message} ");
+                return false;
+            }
         }
 
         protected override void DeleteButton()
         {
             var c = Delete();
-            Toast.Make("Delete: " + c.Result, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-           
+            Notify.NotifyLong("Deleted: " + c.Result);
         }
 
         protected override Task<bool> Edit(Voucher value)
@@ -87,6 +92,8 @@ namespace eStore.Accounting.ViewModels.List.Accounting
             Role = CurrentSession.UserType;
             Title = "Vouchers";
             DataModel.Connect();
+            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedOrder = Descending;
             FetchAsync();
             //Icon = eStore_Maui.Resources.Styles.IconFont.FileInvoice;
         }
@@ -105,6 +112,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
             }
             RecordCount = _entities.Count;
         }
+
         protected async Task FetchAsync()
         {
             switch (Role)
@@ -118,14 +126,16 @@ namespace eStore.Accounting.ViewModels.List.Accounting
                     var data = await DataModel.GetItemsAsync();
                     UpdateEntities(data);
                     break;
+
                 default:
-                    Toast.Make("You are not authorised to access!", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                    Notify.NotifyVLong("You are not authorised to access!");
                     break;
             }
         }
-        partial void OnVoucherTypeChanged(VoucherType value)
+
+         partial void OnVoucherTypeChanged(VoucherType value)
         {
-            // Use filter here to change the view. 
+            // Use filter here to change the view.
             throw new NotImplementedException();
         }
     }

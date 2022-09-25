@@ -72,8 +72,9 @@
                         SelectionBackground="{x:StaticResource Accent_Yellow200}" />
                 </sfgrid:SfDataGrid.DefaultStyle>
                 <sfgrid:SfDataGrid.Columns />
+
                 <!--<sfgrid:SfDataGrid.SortColumnDescriptions>
-                    <sfgrid:SortColumnDescription ColumnName="{Binding  DefaultSortedColName}" />
+                    <sfgrid:SortColumnDescription ColumnName="{Binding DefaultSortedColName}" SortDirection="{Binding DefaultSortedOrder}" />
                 </sfgrid:SfDataGrid.SortColumnDescriptions>-->
 
             </sfgrid:SfDataGrid>

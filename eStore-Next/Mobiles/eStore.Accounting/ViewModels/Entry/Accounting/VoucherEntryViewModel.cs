@@ -3,6 +3,7 @@ using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
+using eStore.Accounting.ViewModels.List.Accounting;
 using eStore_MauiLib.DataModels;
 using eStore_MauiLib.DataModels.Accounting;
 using eStore_MauiLib.Helpers;
@@ -18,6 +19,9 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         #region Field
 
         [ObservableProperty]
+        private DataFormView _dfv;
+
+        [ObservableProperty]
         private List<DynVM> _employeeList;
 
         [ObservableProperty]
@@ -30,14 +34,21 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         private VoucherEntry _voucherEntry;
 
         [ObservableProperty]
-        private int[] _lastCount= new int[8];
+        private int[] _lastCount = new int[8];
+
+        [ObservableProperty]
+        private VoucherViewModel _voucherViewModel;
+
+        [ObservableProperty]
+        private string _lastvoucherNumber;
 
         public int Count(VoucherType type)
         {
             var x = _lastCount[(int)type];
-            if (x > 0) { _lastCount[(int)type] = ++x+10; return x+10; }
+            if (x > 0) { _lastCount[(int)type] = ++x; return x; }
             else { return _lastCount[(int)type] = DataModel.Count(type); }
         }
+
         public IEnumerable GetSource(string propertyName)
         {
             try
@@ -96,6 +107,32 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
             InitViewModel();
         }
 
+        protected void ResetView()
+        {
+            Dfv.DataObject = VoucherEntry = new VoucherEntry { OnDate = DateTime.Now, VoucherType = VoucherEntry.VoucherType };
+        }
+
+        public VoucherEntryViewModel(VoucherViewModel vm)
+        {
+            IsNew = true;
+            VoucherEntry = new VoucherEntry
+            {
+                Amount = 100,
+                OnDate = DateTime.Now,
+                Particulars = "das",
+                PartyName = "dasdasd",
+                PaymentDetails = "dasdas",
+                PaymentMode = PaymentMode.Cash,
+                Remarks = "dasd12313",
+                SlipNumber = "ddddaaa",
+                VoucherType = VoucherType.Payment
+            };
+            // VoucherEntry.OnDate = DateTime.Now;
+            DataModel = vm.GetDataModel();
+            InitViewModel();
+            this.VoucherViewModel = vm;
+        }
+
         public VoucherEntryViewModel(VoucherDataModel dm)
         {
             IsNew = true;
@@ -143,8 +180,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         protected override void Cancle()
         {
-            Toast.Make("Cancel", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-            ASpeak.Speak("Cancel Button is pressed");
+            ResetView();
         }
 
         protected override void InitViewModel()
@@ -153,11 +189,12 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             DataModel.InitContext();
         }
-        
+
         protected override async void Save()
         {
             try
             {
+                //TODO: need automapper here.
                 var v = await DataModel.SaveAsync(
                            new Voucher
                            {
@@ -182,8 +219,19 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                            }); ;
                 if (v != null)
                 {
-                    await Toast.Make($"Save Voucher :{v.VoucherNumber}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-                    ASpeak.Speak($"Save Voucher :{v.VoucherNumber}");
+                    Notify.NotifyVLong($"Save Voucher :{v.VoucherNumber}");
+                    LastvoucherNumber = v.VoucherNumber;
+                    //Update view model on add/update.
+                    if (this._voucherViewModel != null)
+                    {
+                        if (!IsNew)
+                            _voucherViewModel.Entities
+                                .Remove(_voucherViewModel.Entities.FirstOrDefault(c => c.VoucherNumber == v.VoucherNumber));
+                        _voucherViewModel.Entities.Add(v);
+                    }
+
+                    DataModel.SyncUp(v, IsNew, false);
+                    ResetView();
                 }
                 else
                 {
@@ -205,7 +253,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
     public class VoucherEntry
     {
         [Key]
-        [DataFormDisplayOptions(IsVisible = false)]
+        [DataFormDisplayOptions(LabelText = "ID", IsVisible = false)]
         public string VoucherNumber { get; set; }
 
         [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 1)]

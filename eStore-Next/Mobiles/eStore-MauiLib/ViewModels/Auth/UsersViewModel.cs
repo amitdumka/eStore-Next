@@ -111,7 +111,7 @@ namespace eStore_MauiLib.ViewModels.Auth
                 {
                     var store = await DataModel.GetStore(user.StoreId);
                     CurrentSession.StoreCode = user.StoreId;
-                    CurrentSession.UserName = user.UserName;
+                    CurrentSession.UserName = user.UserName + "#TESTING";
                     CurrentSession.GuestName = user.GuestName;
                     CurrentSession.IsLoggedIn = true;
                     CurrentSession.LoggedTime = DateTime.Now;
@@ -119,7 +119,8 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.EmployeeId = string.IsNullOrEmpty(user.EmployeeId) ? null:user.EmployeeId ;
                     CurrentSession.Role = AuthHelper.GetPermission(user.UserType);
                     CurrentSession.Perimissions = AuthHelper.GetPermission(CurrentSession.Role);
-                    GuestName = user.GuestName;
+                    GuestName = user.GuestName ;
+
                     ASpeak.Speak($"Welcome, {GuestName}!, Now you can operate in , {user.UserType}, mode. ");
                     if (store != null)
                     {

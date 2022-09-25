@@ -51,7 +51,7 @@ namespace eStore_MauiLib.DataModels.Accounting
 
             throw new NotImplementedException();
         }
-      
+
         public override async Task<List<Voucher>> GetItemsAsync(string storeid)
         {
             if (Permissions.Contains("RW"))
@@ -70,6 +70,7 @@ namespace eStore_MauiLib.DataModels.Accounting
         #endregion Vouchers
 
         #region WhereQuerry
+
         public IQueryable<Voucher> WhereO(System.Linq.Expressions.Expression<Func<Voucher, bool>> predict)
         {
             return GetContext().Vouchers.Where(predict);
@@ -84,7 +85,9 @@ namespace eStore_MauiLib.DataModels.Accounting
         {
             return GetContext().Notes.Where(predict);
         }
-        #endregion
+
+        #endregion WhereQuerry
+
         #region YearList
 
         public override List<int> GetYearList(string storeid)
@@ -171,9 +174,9 @@ namespace eStore_MauiLib.DataModels.Accounting
 
         #region CustomCount
 
-        public  int Count(VoucherType type)
+        public int Count(VoucherType type)
         {
-            int count = 0;  
+            int count = 0;
             switch (type)
             {
                 case VoucherType.Payment:
@@ -191,18 +194,69 @@ namespace eStore_MauiLib.DataModels.Accounting
                 //case VoucherType.JV:
                 //    count = GetContextAzure().Notes.Count(c => c.NotesType == type);
                 //    break;
-                
+
                 case VoucherType.CashReceipt:
                 case VoucherType.CashPayment:
-                   count=GetContextAzure().CashVouchers.Count(c => c.VoucherType == type);
+                    count = GetContextAzure().CashVouchers.Count(c => c.VoucherType == type);
                     break;
+
                 default:
 
                     break;
             }
             return count;
         }
-        #endregion
+
+        #endregion CustomCount
+
+        #region SyncUp
+
+        //Todo in add/update
+        public void SyncUp(Voucher v, bool isnew = true, bool delete = false)
+        {
+            if (delete)
+                GetContextAzure().Vouchers.Remove(v);
+            else
+            {
+                if (isnew)
+                    GetContextAzure().Vouchers.AddAsync(v);
+                else
+                    GetContextAzure().Vouchers.Update(v);
+            }
+            GetContextAzure().SaveChangesAsync();
+        }
+
+        public void SyncUp(CashVoucher v, bool isnew = true, bool delete = false)
+        {
+            if (delete)
+            {
+                GetContextAzure().CashVouchers.Remove(v);
+                if (isnew)
+                    GetContextAzure().CashVouchers.AddAsync(v);
+                else
+                    GetContextAzure().CashVouchers.Update(v);
+            }
+            GetContextAzure().SaveChangesAsync();
+        }
+
+        public void SyncUp(Note n, bool isnew = true, bool delete = false)
+        {
+            if (delete)
+                GetContextAzure().Notes.Remove(n);
+            {
+                if (isnew)
+                    GetContextAzure().Notes.AddAsync(n);
+                else
+                    GetContextAzure().Notes.Update(n);
+            }
+            GetContextAzure().SaveChangesAsync();
+        }
+
+        public void SyncUp()
+        {
+        }
+
+        #endregion SyncUp
     }
 
     public class Filter

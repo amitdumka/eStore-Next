@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using DevExpress.Maui;
+using eStore.Accounting.Pages;
+using eStore.Accounting.Pages.Entry;
+using eStore.Accounting.ViewModels.List.Accounting;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
@@ -29,6 +32,9 @@ namespace eStore.Accounting
             //builder.ConfigureSyncfusionSignaturePad();
             builder.ConfigureSyncfusionDataGrid();
             var services = builder.Services;
+            builder.Services.AddSingleton<VoucherViewModel>();
+            builder.Services.AddSingleton<VoucherPage>();
+            builder.Services.AddSingleton<VoucherEntryPage>();
             return builder.Build();
         }
     }

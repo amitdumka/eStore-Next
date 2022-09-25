@@ -15,7 +15,7 @@
         <ScrollView
             BackgroundColor="{x:StaticResource Background_Mid}"
             HorizontalOptions="CenterAndExpand"
-            MaximumHeightRequest="700"
+            MaximumHeightRequest="690"
             VerticalOptions="Start"
             VerticalScrollBarVisibility="Always">
             <dxdf:DataFormView
@@ -23,7 +23,7 @@
                 Margin="5"
                 CommitMode="PropertyChanged"
                 ContentPadding="10"
-                DataObject="{Binding .}"
+                DataObject="{Binding ., Mode=TwoWay}"
                 EditorLabelColor="{x:StaticResource Tertiary}"
                 EditorLabelWidth="80"
                 EditorPadding="10"
@@ -39,7 +39,7 @@
         </ScrollView>
         <Label
             HorizontalOptions="End"
-            Text="{Binding Role, StringFormat='User Type: {0}. '}"
+            Text="{Binding LastVoucherNumber, StringFormat='Last Voucher: {0}. '}"
             TextColor="{x:StaticResource Accent_Yellow200}"
             VerticalOptions="EndAndExpand" />
     </VerticalStackLayout>

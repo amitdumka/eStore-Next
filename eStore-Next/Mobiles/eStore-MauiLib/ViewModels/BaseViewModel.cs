@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using eStore_MauiLib.DataModels;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,7 +25,7 @@ namespace eStore_MauiLib.ViewModels
         protected string _defaultSortedColName;
 
         [ObservableProperty]
-        protected string _defaultSortedOrder=Descending;
+        protected string _defaultSortedOrder = Descending;
 
         [ObservableProperty]
         protected string _icon;
@@ -58,7 +59,7 @@ namespace eStore_MauiLib.ViewModels
 
         }
 
-        
+
         #endregion
 
 
@@ -96,6 +97,48 @@ namespace eStore_MauiLib.ViewModels
         protected abstract void UpdateEntities(List<T> values);
         #endregion
 
+
+    }
+
+    [ObservableRecipient]
+    public abstract partial class BaseDashoardViewModel<T> : ObservableObject
+    {
+        public const string Descending = "Descending";
+        public const string Ascending = "Ascending";
+        protected DashboardDataModel DataModel;
+
+        [ObservableProperty]
+        protected Page _currentPage;
+
+        [ObservableProperty]
+        protected string _defaultSortedColName;
+
+        [ObservableProperty]
+        protected string _defaultSortedOrder = Descending;
+
+        [ObservableProperty]
+        protected string _icon;
+
+        [ObservableProperty]
+        protected string _title;
+
+        //[ObservableProperty]
+        //protected bool _isNew;
+
+        [ObservableProperty]
+        protected T _entity;
+
+
+        // [ObservableProperty]
+        // protected ObservableCollection<T> _entities;
+
+        // [ObservableProperty]
+        //  protected int _recordCount;
+
+        [ObservableProperty]
+        protected UserType _role;
+
+        public DashboardDataModel GetDataModel() => DataModel;
 
     }
 }

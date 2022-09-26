@@ -34,7 +34,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         private VoucherEntry _voucherEntry;
 
         [ObservableProperty]
-        private int[] _lastCount = new int[8];
+        private int[] _lastCount = new int[9];
 
         [ObservableProperty]
         private VoucherViewModel _voucherViewModel;

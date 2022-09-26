@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="eStore.Accounting.Pages.AccountingDashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModel="clr-namespace:eStore.Accounting.ViewModels.List.Dashboard"
+    Title="{Binding Title}">
+    <!--<ContentPage.BindingContext>
+        <viewModel:AccountingDashboardViewModel x:Name="viewModel" />
+    </ContentPage.BindingContext>-->
+    <VerticalStackLayout BackgroundColor="{x:StaticResource LightGray}">
+        <Label
+            HorizontalOptions="Center"
+            Text="Accounting Dashboard"
+            VerticalOptions="Center" />
+        <ScrollView
+            BackgroundColor="{x:StaticResource Accent_Yellow200}"
+            HorizontalScrollBarVisibility="Always"
+            MaximumHeightRequest="650"
+            VerticalScrollBarVisibility="Always">
+            <TableView HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <TableRoot>
+                    <TableSection Title="Vouchers">
+                        <TextCell Detail="" Text="{Binding Entity.TotalReceipt, StringFormat='Receipts: Rs. {0}'}" />
+                        <TextCell Detail="" Text="{Binding Entity.TotalExpenses, StringFormat='Expenses: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.TotalPayment, StringFormat='Payment: Rs. {0}'}" />
+                    </TableSection>
+                    <TableSection Title="Cash Vouchers" TextColor="Red">
+                        <TextCell Text="{Binding Entity.TotalCashPayment, StringFormat='Cash Payment: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.TotalCashReceipt, StringFormat='Cash Receipt: Rs. {0}'}" />
+                    </TableSection>
+                    <TableSection Title="Bank" TextColor="Red">
+                        <TextCell Text="{Binding Entity.BankDeposit, StringFormat='Bank Deposit: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.BankWithdrwal, StringFormat='Bankl Withdrawal: Rs. {0}'}" />
+                    </TableSection>
+                    <TableSection Title="Income/Expenses" TextColor="Red">
+                        <TextCell Text="{Binding Entity.TotalIncome, StringFormat='Total Income: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.TotalExpense, StringFormat='Total Expense: Rs. {0}'}" />
+                    </TableSection>
+                    <TableSection Title="Customer Due" TextColor="Red">
+                        <TextCell Text="{Binding Entity.TotalDueAmount, StringFormat='Total Due: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.TotalDueRecorver, StringFormat='Recovered: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.TotalDuePending, StringFormat='Current Due: Rs. {0}'}" />
+                    </TableSection>
+                    <!--<TableSection Title="Cash" TextColor="Red">
+                        <TextCell Text="{Binding Entity.CashInHand, StringFormat='Cash In hand: Rs. {0}'}" />
+                        <TextCell Text="{Binding Entity.CashInBank, StringFormat='Cash In Bank: Rs. {0}'}" />
+
+                    </TableSection>-->
+
+
+
+                </TableRoot>
+            </TableView>
+        </ScrollView>
+
+
+    </VerticalStackLayout>
+</ContentPage>

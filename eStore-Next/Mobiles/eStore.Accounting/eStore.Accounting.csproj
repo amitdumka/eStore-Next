@@ -100,6 +100,9 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Pages\AccountingDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Entry\CashVoucherEntryPage.xaml">
 	    <SubType></SubType>
 	    <Generator>MSBuild:Compile</Generator>

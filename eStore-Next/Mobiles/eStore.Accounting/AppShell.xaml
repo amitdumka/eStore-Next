@@ -129,12 +129,12 @@
     </Shell.FlyoutFooter>
 
     <!--  Menu Items  -->
-    <!--<FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">
+    <FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">
         <ShellContent
             Title="Dashboard"
-            ContentTemplate="{DataTemplate pages:Entry.VoucherEntryPage}"
+            ContentTemplate="{DataTemplate pages:AccountingDashboardPage}"
             Route="Dashboard" />
-    </FlyoutItem>-->
+    </FlyoutItem>
 
     <FlyoutItem Title="Voucher">
         <Tab Title="Voucher" Icon="rain_icon.png">

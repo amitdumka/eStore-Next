@@ -43,6 +43,10 @@ namespace eStore.Accounting.ViewModels.List.Accounting
                 {
                     Notify.NotifyVLong("Failed to remove on remote");
                 }
+                if (local)
+                {
+                    Entities.Clear();
+                }
                 return local;
             }
             catch (Exception e)

@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels;
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection.Metadata;
 
 namespace eStore_MauiLib.ViewModels
 {
@@ -105,6 +102,7 @@ namespace eStore_MauiLib.ViewModels
     {
         public const string Descending = "Descending";
         public const string Ascending = "Ascending";
+
         protected DashboardDataModel DataModel;
 
         [ObservableProperty]
@@ -122,18 +120,8 @@ namespace eStore_MauiLib.ViewModels
         [ObservableProperty]
         protected string _title;
 
-        //[ObservableProperty]
-        //protected bool _isNew;
-
         [ObservableProperty]
         protected T _entity;
-
-
-        // [ObservableProperty]
-        // protected ObservableCollection<T> _entities;
-
-        // [ObservableProperty]
-        //  protected int _recordCount;
 
         [ObservableProperty]
         protected UserType _role;

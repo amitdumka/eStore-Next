@@ -1,10 +1,5 @@
 ﻿using AKS.Shared.Commons.Ops;
 using eStore_MauiLib.Pages.Auth;
-using eStore.Accounting;
-using System.Windows.Input;
-using AKS.Shared.Commons.Ops;
-using eStore_MauiLib.Pages.Auth;
-using System.Windows.Input;
 
 namespace eStore.Accounting
 {
@@ -14,11 +9,13 @@ namespace eStore.Accounting
         {
             base.OnAppearing();
         }
-        public ICommand HelpCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
+
+        //public ICommand HelpCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
         public AppShell()
         {
             InitializeComponent();
         }
+
         async void MenuItem_Clicked(System.Object sender, System.EventArgs e)
         {
             var result = await DisplayAlert("Logout", "Do you want to Logout!", "Yes", "No");
@@ -30,6 +27,3 @@ namespace eStore.Accounting
         }
     }
 }
-
-
-

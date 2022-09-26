@@ -2,7 +2,7 @@
 using eStore_MauiLib.RemoteService;
 using eStore_MauiLib.Services.BackgroundServices;
 using System.Diagnostics;
-using AKS.Shared.Commons.Ops;
+
 namespace eStore.Accounting
 {
     public partial class App : Application
@@ -12,12 +12,14 @@ namespace eStore.Accounting
             base.OnStart();
             InitialDatabase();
         }
+
         public App()
         {
             InitializeComponent();
             MainPage = new LoginPage(new AppShell());
         }
-        async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
+
+        private async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
         {
             try
             {
@@ -29,22 +31,17 @@ namespace eStore.Accounting
             }
         }
 
-        async void InitialDatabase()
+         async void InitialDatabase()
         {
             var x = new SyncService();
-            x.SyncDownTranscationsAsync();
             if (!DatabaseStatus.VerifyLocalStatus())
             {
                 BackgroundService service = new SyncDownService();
                 service.InitService();
                 service.GetInstance.RunWorkerAsync(LocalSync.Initial);
-                
+                x.SyncDownTranscationsAsync();
                 x.SyncDownEmployeesAsync();
-                
-
             }
-           
         }
-       
     }
 }

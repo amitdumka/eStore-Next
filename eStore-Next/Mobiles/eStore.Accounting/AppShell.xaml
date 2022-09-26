@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:eStore_MauiLib.Views.Controls;assembly=eStore-MauiLib"
+    xmlns:libpage="clr-namespace:eStore_MauiLib.Pages;assembly=eStore-MauiLib"
     xmlns:local="clr-namespace:eStore.Accounting"
     xmlns:pages="clr-namespace:eStore.Accounting.Pages"
     Title="eStore"
@@ -78,7 +79,7 @@
         </Style>
 
         <!--  Monkey Sample for Shell  -->
-        <Style x:Key="BaseStyle2" TargetType="Element">
+        <!--<Style x:Key="BaseStyle2" TargetType="Element">
             <Setter Property="Shell.BackgroundColor" Value="#455A64" />
             <Setter Property="Shell.ForegroundColor" Value="White" />
             <Setter Property="Shell.TitleColor" Value="White" />
@@ -115,7 +116,7 @@
             BasedOn="{StaticResource BaseStyle2}"
             TargetType="Element">
             <Setter Property="Shell.BackgroundColor" Value="#96d1ff" />
-        </Style>
+        </Style>-->
 
         <!--  Monkey Sample app end Heres  -->
     </Shell.Resources>
@@ -129,14 +130,18 @@
     </Shell.FlyoutFooter>
 
     <!--  Menu Items  -->
-    <FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">
-        <ShellContent
-            Title="Dashboard"
-            ContentTemplate="{DataTemplate pages:AccountingDashboardPage}"
-            Route="Dashboard" />
-    </FlyoutItem>
+    <!--<FlyoutItem Title="Dashboard" FlyoutIcon="{StaticResource CircleIcon}">-->
+    <ShellContent
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate pages:AccountingDashboardPage}"
+        FlyoutIcon="{StaticResource CircleIcon}"
+        Route="Dashboard" />
+    <!--</FlyoutItem>-->
 
-    <FlyoutItem Title="Voucher">
+    <FlyoutItem
+        Title="Voucher"
+        FlyoutIcon="rain_icon.png"
+        Icon="rain_icon.png">
         <Tab Title="Voucher" Icon="rain_icon.png">
             <ShellContent
                 Title="Voucher List"
@@ -148,6 +153,19 @@
                 Title="Add"
                 ContentTemplate="{DataTemplate pages:Entry.VoucherEntryPage}"
                 Route="Voucher.Entry" />
+        </Tab>
+
+        <Tab Title="Notes" Icon="rain_icon.png">
+            <ShellContent
+                Title="Note(s) List"
+                ContentTemplate="{DataTemplate pages:NotesPage}"
+                Route="Notes" />
+        </Tab>
+        <Tab Title="Notes Entry" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:Entry.NotesEntryPage}"
+                Route="Note.Entry" />
         </Tab>
 
     </FlyoutItem>
@@ -162,27 +180,82 @@
             <ShellContent
                 Title="Add"
                 ContentTemplate="{DataTemplate pages:Entry.CashVoucherEntryPage}"
-                Route="Voucher.Entry" />
+                Route="CashVoucher.Entry" />
         </Tab>
 
     </FlyoutItem>
 
+    <FlyoutItem Title="Banking">
+        <Tab Title="Bank" Icon="rain_icon.png">
+            <ShellContent
+                Title="Store"
+                ContentTemplate="{DataTemplate pages:BankPage}"
+                Route="Banks" />
+        </Tab>
+        <Tab Title="Bank Account" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:BankAccountPage}"
+                Route="Banks.Account" />
+        </Tab>
+        <Tab Title="Vendor Account" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:VendorBankAccountPage}"
+                Route="Banks.VendorAccounts" />
+        </Tab>
+        <Tab Title="Transcation" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:BankTranscationPage}"
+                Route="Bank.Transcation" />
+        </Tab>
 
+    </FlyoutItem>
+    <FlyoutItem Title="Customer Dues">
+        <Tab Title="Due" Icon="rain_icon.png">
+            <ShellContent
+                Title="Store"
+                ContentTemplate="{DataTemplate pages:CustomerDuesPage}"
+                Route="CustomerDue" />
+        </Tab>
+        <Tab Title="Recovery" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:DueRecoveryPage}"
+                Route="CustomerRecovery" />
+        </Tab>
 
+    </FlyoutItem>
+    <FlyoutItem Title="Cash Book">
+        <Tab Title="Petty Cash" Icon="rain_icon.png">
+            <ShellContent
+                Title="Store"
+                ContentTemplate="{DataTemplate pages:PettyCashSheetPage}"
+                Route="PettyCashBook" />
+        </Tab>
+        <Tab Title="Cash Detail" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:CashDetailPage}"
+                Route="PettyCashBook.CashDetails" />
+        </Tab>
+
+    </FlyoutItem>
     <!--  Test Menu  -->
-    <!--<ShellContent
+    <ShellContent
         Title="About"
-        ContentTemplate="{DataTemplate pages:AboutPage}"
+        ContentTemplate="{DataTemplate libpage:AboutUsPage}"
         Icon="wind_icin.png"
-        Route="about" />-->
+        Route="about" />
     <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
     <MenuItem
         Clicked="MenuItem_Clicked"
         StyleClass="MenuItemLayoutStyle"
         Text="Logout" />
-    <!--<TabBar>
-        <ShellContent ContentTemplate="{DataTemplate pages:LoginPage}" Route="LoginPage" />
-    </TabBar>-->
+    <TabBar>
+        <ShellContent ContentTemplate="{DataTemplate libpage:Auth.LoginPage}" Route="LoginPage" />
+    </TabBar>
 </Shell>
 
 

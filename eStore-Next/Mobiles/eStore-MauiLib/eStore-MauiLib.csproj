@@ -124,6 +124,9 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Pages\AboutUsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Auth\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -66,10 +66,10 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                     return PartyList;
                 }
 
-                if (propertyName == "AccountId")
+                if (propertyName == "TranscationId")
                 {
                     if (BankList == null)
-                        BankList = CommonDataModel.GetBankAccount(DataModel.GetContext());
+                        BankList = CommonDataModel.GetTranscation(DataModel.GetContext());
                     return BankList;
                 }
                 return null;

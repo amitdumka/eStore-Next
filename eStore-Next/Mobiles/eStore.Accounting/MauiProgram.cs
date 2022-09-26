@@ -15,23 +15,20 @@ namespace eStore.Accounting
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
-            builder.UseMauiApp<App>()
-                 .UseMauiCompatibility()
-                .UseDevExpress().UseMauiCommunityToolkit()
-                .ConfigureFonts(fonts =>
+
+            builder.UseMauiApp<App>() .UseMauiCompatibility() .UseDevExpress().UseMauiCommunityToolkit()
+            .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
-                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
             }).ConfigureEffects((effects) =>
             {
                 effects.AddCompatibilityEffects(AppDomain.CurrentDomain.GetAssemblies());
             });
             builder.ConfigureSyncfusionCore();
-            //builder.ConfigureSyncfusionSignaturePad();
             builder.ConfigureSyncfusionDataGrid();
+            
             var services = builder.Services;
             builder.Services.AddSingleton<VoucherViewModel>();
             builder.Services.AddSingleton<VoucherPage>();

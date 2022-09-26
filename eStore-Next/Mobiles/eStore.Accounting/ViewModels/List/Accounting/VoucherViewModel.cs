@@ -104,7 +104,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
 
         protected override void RefreshButton()
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         protected override void UpdateEntities(List<Voucher> values)

@@ -290,7 +290,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         [DataFormDisplayOptions(LabelText = "Bank", GroupName = "Payment")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        public string AccountId { get; set; }
+        public string AccountId { get; set; } 
 
         [DataFormDisplayOptions(LabelText = "Issued By", GroupName = "Issued By")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
@@ -300,7 +300,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         [DataFormDisplayOptions(LabelText = "Ledger", GroupName = "Ledger")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        public string PartyId { get; set; }
+        public string PartyId { get; set; } 
 
         //public virtual Party Partys { get; set; }
     }

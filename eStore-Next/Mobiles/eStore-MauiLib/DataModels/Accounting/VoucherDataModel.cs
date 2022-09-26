@@ -214,16 +214,27 @@ namespace eStore_MauiLib.DataModels.Accounting
         //Todo in add/update
         public void SyncUp(Voucher v, bool isnew = true, bool delete = false)
         {
+            var db = GetContextAzure();
             if (delete)
-                GetContextAzure().Vouchers.Remove(v);
+               db.Vouchers.Remove(v);
             else
             {
+                if (v.AccountId == null)
+                    v.AccountId = "";
+                if(v.PartyId==null) 
+                    v.PartyId = "ARD/PTY/43";
                 if (isnew)
-                    GetContextAzure().Vouchers.AddAsync(v);
+                    db.Vouchers.Add(v);
                 else
-                    GetContextAzure().Vouchers.Update(v);
+                    db.Vouchers.Update(v);
             }
-            GetContextAzure().SaveChangesAsync();
+           var x= db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else 
+                Console.WriteLine("e");
         }
 
         public void SyncUp(CashVoucher v, bool isnew = true, bool delete = false)

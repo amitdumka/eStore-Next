@@ -240,6 +240,7 @@ namespace eStore_MauiLib.DataModels.Base
             if (Permissions.Contains("W"))
             {
                 AppDBContext db;
+                
                 switch (Mode)
                 {
                     case DBType.Local:

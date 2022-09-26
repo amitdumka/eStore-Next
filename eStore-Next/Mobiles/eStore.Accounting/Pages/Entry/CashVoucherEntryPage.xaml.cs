@@ -6,7 +6,6 @@ namespace eStore.Accounting.Pages.Entry;
 public partial class CashVoucherEntryPage : ContentPage
 {
     private CashVoucherEntryViewModel viewModel;
-
     public CashVoucherEntryPage(CashVoucherViewModel vm)
     {
         InitializeComponent();

@@ -31,13 +31,17 @@ namespace eStore.Accounting
 
         async void InitialDatabase()
         {
-            
+            var x = new SyncService();
+            x.SyncDownTranscationsAsync();
             if (!DatabaseStatus.VerifyLocalStatus())
             {
                 BackgroundService service = new SyncDownService();
                 service.InitService();
                 service.GetInstance.RunWorkerAsync(LocalSync.Initial);
-                new SyncService().SyncDownEmployeesAsync();
+                
+                x.SyncDownEmployeesAsync();
+                
+
             }
            
         }

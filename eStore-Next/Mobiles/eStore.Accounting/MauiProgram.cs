@@ -35,6 +35,7 @@ namespace eStore.Accounting
             builder.Services.AddSingleton<VoucherViewModel>();
             builder.Services.AddSingleton<VoucherPage>();
             builder.Services.AddSingleton<VoucherEntryPage>();
+            builder.Services.AddSingleton<CashVoucherViewModel>();
             builder.Services.AddSingleton<CashVoucherPage>();
             builder.Services.AddSingleton<CashVoucherEntryPage>();
             return builder.Build();

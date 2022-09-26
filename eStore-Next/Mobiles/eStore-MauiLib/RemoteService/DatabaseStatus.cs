@@ -80,13 +80,26 @@ namespace eStore_MauiLib.RemoteService
         public static bool SyncAccounting()
         {
             var sync = new SyncService();
+            sync.SyncDownTranscationsAsync();
             sync.SyncDownBanks();
             sync.SyncDownBankAccounts();
             sync.SyncDownEdcTerminals();
-            sync.SyncDownVendorsAccount();
-            sync.SyncDownAccountList();
+            //sync.SyncDownVendorsAccount();
+            //sync.SyncDownAccountList();
             Preferences.Default.Set("LocalAccounting", "LocalSynced");
             return true;
+        }
+        public static bool VerifyOrSyncInitalAccounting()
+        {
+            var keyValue = Preferences.Get("LocalAccounting", "NO");
+            if (keyValue == "LocalSynced")
+            {
+                return true;
+            }
+            else {
+                SyncAccounting();
+                return false; 
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using AKS.Shared.Commons.Data.Helpers.Auth;
+﻿using AKS.MAUI.Databases;
+using AKS.Shared.Commons.Data.Helpers.Auth;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore_MauiLib.DataModels.Auths;
+using eStore_MauiLib.Helpers;
 using eStore_MauiLib.Services;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,7 +32,7 @@ namespace eStore_MauiLib.ViewModels.Auth
         [MinLength(4)]
         [MaxLength(12)]
         private string _password;
-        
+
         [ObservableProperty]
         private static Shell _appShell;
 
@@ -44,7 +46,7 @@ namespace eStore_MauiLib.ViewModels.Auth
             InitViewModel();
         }
 
-        
+
         protected override async void InitViewModel()
         {
             DataModel.Connect();
@@ -56,9 +58,12 @@ namespace eStore_MauiLib.ViewModels.Auth
             DefaultSortedColName = nameof(User.UserName);
             UserName = "Alok@eStore.in";
             Password = "Alok";
-            
+            // Notify.NotifyVLong("Database Path is, "+ MUAIConstant.DatabasePath);
+
+
+
         }
-        
+
         protected override void UpdateEntities(List<User> users)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<User>();
@@ -66,7 +71,7 @@ namespace eStore_MauiLib.ViewModels.Auth
             {
                 Entities.Add(user);
             }
-            RecordCount=Entities.Count();
+            RecordCount = Entities.Count();
         }
         protected override Task<bool> Delete()
         {
@@ -93,7 +98,7 @@ namespace eStore_MauiLib.ViewModels.Auth
             throw new NotImplementedException();
         }
 
-         
+
 
         [RelayCommand]
         private async Task<bool> SignIn()
@@ -116,10 +121,10 @@ namespace eStore_MauiLib.ViewModels.Auth
                     CurrentSession.IsLoggedIn = true;
                     CurrentSession.LoggedTime = DateTime.Now;
                     CurrentSession.UserType = user.UserType;
-                    CurrentSession.EmployeeId = string.IsNullOrEmpty(user.EmployeeId) ? null:user.EmployeeId ;
+                    CurrentSession.EmployeeId = string.IsNullOrEmpty(user.EmployeeId) ? null : user.EmployeeId;
                     CurrentSession.Role = AuthHelper.GetPermission(user.UserType);
                     CurrentSession.Perimissions = AuthHelper.GetPermission(CurrentSession.Role);
-                    GuestName = user.GuestName ;
+                    GuestName = user.GuestName;
 
                     ASpeak.Speak($"Welcome, {GuestName}!, Now you can operate in , {user.UserType}, mode. ");
                     if (store != null)
@@ -149,6 +154,14 @@ namespace eStore_MauiLib.ViewModels.Auth
         [RelayCommand]
         private async Task<bool> SignUP()
         {
+            //foreach (var item in Enum.GetValues(typeof( Environment.SpecialFolder)))
+            //{
+            //    var x = Environment.GetFolderPath((Environment.SpecialFolder)item);
+            //    Console.WriteLine("AKSPATH="+x);
+            //    //Notify.NotifyVLong( x);
+            //    //Thread.Sleep(4000);
+            //}
+
             await Toast.Make($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
             Application.Current.MainPage = AppShell;
             return true;
@@ -182,6 +195,6 @@ namespace eStore_MauiLib.ViewModels.Auth
             throw new NotImplementedException();
         }
 
-         
+
     }
 }

@@ -41,8 +41,7 @@ namespace eStore_MauiLib.RemoteService
             sync.SyncDownUsersAsync();
             sync.SyncDownEmployeesAsync();
             sync.SyncDownSalesmanAsync();
-            //sync.SyncDownEdcTerminals();
-            //sync.SyncDownEdcTerminals();
+            
             Preferences.Default.Set("Local", "LocalSynced");
             CurrentSession.LocalStatus = true;
             return true;
@@ -81,9 +80,22 @@ namespace eStore_MauiLib.RemoteService
         {
             var sync = new SyncService();
             sync.SyncDownTranscationsAsync();
-            sync.SyncDownBanks();
-            sync.SyncDownBankAccounts();
-            sync.SyncDownEdcTerminals();
+            sync.SyncDownBanksAsync();
+            sync.SyncDownPartiesAsync();
+            Thread.Sleep(30000);
+            UserType userType = UserType.Guest;
+            if (CurrentSession.IsLoggedIn) { 
+                userType=CurrentSession.UserType;
+            }else
+            {
+                Thread.Sleep(30000);
+                userType = CurrentSession.UserType;
+            }
+            
+            
+            
+            sync.SyncDownBankAccountsAsync(userType);
+            sync.SyncDownEdcTerminalsAsync(userType);
             //sync.SyncDownVendorsAccount();
             //sync.SyncDownAccountList();
             Preferences.Default.Set("LocalAccounting", "LocalSynced");

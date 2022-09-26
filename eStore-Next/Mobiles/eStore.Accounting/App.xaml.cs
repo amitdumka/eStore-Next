@@ -38,7 +38,7 @@ namespace eStore.Accounting
             {
                 BackgroundService service = new SyncDownService();
                 service.InitService();
-                service.GetInstance.RunWorkerAsync(LocalSync.Initial);
+                service.GetInstance.RunWorkerAsync(LocalSync.InitialAccounting);
                 x.SyncDownTranscationsAsync();
                 x.SyncDownEmployeesAsync();
             }

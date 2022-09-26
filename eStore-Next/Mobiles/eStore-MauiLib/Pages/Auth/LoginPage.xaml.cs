@@ -30,5 +30,6 @@ public partial class LoginPage : ContentPage
         CurrentSession.LocalStatus = true;
         ButtonControls.IsVisible = CurrentSession.LocalStatus;
         signInButton.IsEnabled = true;
+
     }
 }

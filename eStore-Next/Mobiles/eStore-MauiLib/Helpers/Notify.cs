@@ -21,8 +21,11 @@ namespace eStore_MauiLib.Helpers
         }
 
         public static void NotifyVLong(string msg) {
-            Toast.Make(msg, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-            ASpeak.Speak(msg);
+            if (!string.IsNullOrEmpty(msg))
+            {
+                Toast.Make(msg, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                ASpeak.Speak(msg);
+            }
         }
         public static void NotifyVShort(string msg) {
             Toast.Make(msg, CommunityToolkit.Maui.Core.ToastDuration.Short).Show();

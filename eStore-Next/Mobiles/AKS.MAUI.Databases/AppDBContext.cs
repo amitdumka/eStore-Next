@@ -46,6 +46,7 @@ namespace AKS.MAUI.Databases
             if (dBType == DBType.Local)
             {
                 DatabasePath = MUAIConstant.DatabasePath;
+                Console.WriteLine("DBPath:" + DatabasePath);
                 SQLitePCL.Batteries_V2.Init();
                 this.Database.EnsureCreated();
             }

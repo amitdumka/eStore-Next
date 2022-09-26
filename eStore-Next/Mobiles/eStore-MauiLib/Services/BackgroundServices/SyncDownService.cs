@@ -117,6 +117,7 @@ namespace eStore_MauiLib.Services.BackgroundServices
                             worker.ReportProgress(40);
                             CurrentSession.LocalStatus = true;
                             worker.ReportProgress(50);
+                            Thread.Sleep(10000);
                             if (worker.CancellationPending == true)
                             {
                                 e.Cancel = true;

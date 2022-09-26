@@ -89,12 +89,9 @@
 	  <None Remove="Pages\Entry\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="ViewModels\Entry\" />
-	  <Folder Include="ViewModels\Entry\Accounting\" />
-	  <Folder Include="Pages\" />
-	  <Folder Include="Pages\Entry\" />
-	</ItemGroup>
-	<ItemGroup>
+	  <Compile Update="Pages\Entry\CashVoucherEntryPage.xaml.cs">
+	    <DependentUpon>CashVoucherEntryPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
@@ -103,6 +100,10 @@
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup>
+	  <MauiXaml Update="Pages\Entry\CashVoucherEntryPage.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Entry\VoucherEntryPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>

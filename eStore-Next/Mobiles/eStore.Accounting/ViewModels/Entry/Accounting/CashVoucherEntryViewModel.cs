@@ -97,8 +97,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 OnDate = DateTime.Now,
                 Particulars = "das",
                 PartyName = "dasdasd",
-                PaymentDetails = "dasdas",
-                PaymentMode = PaymentMode.Cash,
+                 
                 Remarks = "dasd12313",
                 SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
@@ -121,8 +120,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 OnDate = DateTime.Now,
                 Particulars = "das",
                 PartyName = "dasdasd",
-                PaymentDetails = "dasdas",
-                PaymentMode = PaymentMode.Cash,
+                
                 Remarks = "dasd12313",
                 SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
@@ -142,8 +140,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 OnDate = DateTime.Now,
                 Particulars = "das",
                 PartyName = "dasdasd",
-                PaymentDetails = "dasdas",
-                PaymentMode = PaymentMode.Cash,
+                 
                 Remarks = "dasd12313",
                 SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
@@ -153,7 +150,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
             InitViewModel();
         }
 
-        public CashVoucherEntryViewModel(VoucherDataModel dm, Voucher v)
+        public CashVoucherEntryViewModel(VoucherDataModel dm, CashVoucher v)
         {
             IsNew = false;
             //TODO: Use of AutoMapper is required.
@@ -163,12 +160,12 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
                 OnDate = v.OnDate,
                 Particulars = v.Particulars,
                 PartyName = v.PartyName,
-                PaymentDetails = v.PaymentDetails,
-                PaymentMode = v.PaymentMode,
+                //PaymentDetails = v.PaymentDetails,
+                //PaymentMode = v.PaymentMode,
                 Remarks = v.Remarks,
                 SlipNumber = v.SlipNumber,
                 VoucherType = v.VoucherType,
-                AccountId = v.AccountId,
+                TranscationId = v.TranscationId,
                 EmployeeId = v.EmployeeId,
                 PartyId = v.PartyId,
                 VoucherNumber = v.VoucherNumber
@@ -196,20 +193,21 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
             {
                 //TODO: need automapper here.
                 var v = await DataModel.SaveAsync(
-                           new Voucher
+                           new CashVoucher
                            {
+                               TranscationId=VoucherEntry.TranscationId,
                                EmployeeId = VoucherEntry.EmployeeId,
                                OnDate = VoucherEntry.OnDate,
                                EntryStatus = EntryStatus.Added,
-                               AccountId = VoucherEntry.AccountId ?? VoucherEntry.AccountId,
+                               //AccountId = VoucherEntry.AccountId ?? VoucherEntry.AccountId,
                                Amount = VoucherEntry.Amount,
                                IsReadOnly = false,
                                MarkedDeleted = false,
                                Particulars = VoucherEntry.Particulars,
                                PartyId = VoucherEntry.PartyId ?? VoucherEntry.PartyId,
                                PartyName = VoucherEntry.PartyName,
-                               PaymentDetails = VoucherEntry.PaymentDetails,
-                               PaymentMode = VoucherEntry.PaymentMode,
+                               //PaymentDetails = VoucherEntry.PaymentDetails,
+                               //PaymentMode = VoucherEntry.PaymentMode,
                                Remarks = VoucherEntry.Remarks,
                                SlipNumber = VoucherEntry.SlipNumber ?? VoucherEntry.SlipNumber,
                                StoreId = CurrentSession.StoreCode,
@@ -267,6 +265,11 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         [DataFormDisplayOptions(GroupName = "Basic")]
         public string SlipNumber { get; set; }
 
+
+        [DataFormDisplayOptions(LabelText = "Category")]
+        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
+        public string TranscationId { get; set; }
+
         [Required(ErrorMessage = "Party name is Required")]
         [DataFormDisplayOptions(LabelText = "Name", GroupName = "Basic")]
         public string PartyName { get; set; }
@@ -279,29 +282,26 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
         [DataFormDisplayOptions(LabelText = "$", GroupName = "Voucher Details")]
         public decimal Amount { get; set; }
 
-        [DataFormDisplayOptions(LabelText = "Pay Mode", GroupName = "Payment")]
-        public PaymentMode PaymentMode { get; set; }
+        //[DataFormDisplayOptions(LabelText = "Pay Mode", GroupName = "Payment")]
+        //public PaymentMode PaymentMode { get; set; }
 
-        [DataFormDisplayOptions(LabelText = "Pay Details", GroupName = "Payment")]
-        public string PaymentDetails { get; set; }
+        //[DataFormDisplayOptions(LabelText = "Pay Details", GroupName = "Payment")]
+        //public string PaymentDetails { get; set; }
 
         [DataFormDisplayOptions(GroupName = "Voucher Details")]
         public string Remarks { get; set; }
 
-        [DataFormDisplayOptions(LabelText = "Bank", GroupName = "Payment")]
-        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        public string AccountId { get; set; }
+        
 
         [DataFormDisplayOptions(LabelText = "Issued By", GroupName = "Issued By")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
         public string EmployeeId { get; set; }
 
-        // public virtual Employee Employee { get; set; }
-
+       
         [DataFormDisplayOptions(LabelText = "Ledger", GroupName = "Ledger")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
         public string PartyId { get; set; }
 
-        //public virtual Party Partys { get; set; }
+         
     }
 }

@@ -158,7 +158,12 @@
                 ContentTemplate="{DataTemplate pages:CashVoucherPage}"
                 Route="CashVoucher" />
         </Tab>
-
+        <Tab Title="Voucher Entry" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate pages:Entry.CashVoucherEntryPage}"
+                Route="Voucher.Entry" />
+        </Tab>
 
     </FlyoutItem>
 

@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>eStore</ApplicationTitle>
+		<ApplicationTitle>eStore NeXT</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.aks.estore</ApplicationId>

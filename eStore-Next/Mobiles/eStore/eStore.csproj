@@ -52,6 +52,15 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-ios|AnyCPU'">
 	  <EnableCodeSigning>false</EnableCodeSigning>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <CustomCommands>
+	    <CustomCommands>
+	      <Command>
+	        <type>BeforeBuild</type>
+	      </Command>
+	    </CustomCommands>
+	  </CustomCommands>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png">
@@ -86,14 +95,20 @@
 	  <None Remove="Resources\Raw\AboutAssets.txt" />
 	  <None Remove="Resources\Raw\FeatureText.txt" />
 	  <None Remove="Resources\Splash\arlogo.png" />
-	  <None Remove="Resources\Images\amit.jpg" />
-	  <None Remove="Resources\Images\aprajitaretails.png" />
-	  <None Remove="Resources\Images\arlogo.png" />
 	  <None Remove="Resources\Images\rain_icon.svg" />
 	  <None Remove="Resources\Images\search_icon.svg" />
-	  <None Remove="Resources\Images\shalini.jpg" />
-	  <None Remove="Resources\Images\thearvindstore004.jpg" />
-	  <None Remove="Resources\Images\thearvindstore005.jpg" />
+	  <None Remove="Resources\Images\one\" />
+	  <None Remove="Resources\Images\one\amit.jpg" />
+	  <None Remove="Resources\Images\one\aprajitaretails.png" />
+	  <None Remove="Resources\Images\one\arlogo.png" />
+	  <None Remove="Resources\Images\one\shalini.jpg" />
+	  <None Remove="Resources\Images\one\thearvindstore004.jpg" />
+	  <None Remove="Resources\Images\one\thearvindstore005.jpg" />
+	  <None Remove="Pages\" />
+	  <None Remove="Pages\Accounting\" />
+	  <None Remove="Pages\Accounting\Banking\" />
+	  <None Remove="Pages\Accounting\Entry\" />
+	  <None Remove="ViewModels\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -107,14 +122,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
-	    <DependentUpon>%(Filename)</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Styles\DefaultTheme.xaml.cs">
-	    <DependentUpon>%(Filename)</DependentUpon>
-	  </Compile>
+	  <Compile Remove="Resources\Styles\AKSTheme.xaml.cs" />
+	  <Compile Remove="Resources\Styles\DefaultTheme.xaml.cs" />
 	</ItemGroup>
-
 	<ItemGroup>
 	  <MauiAsset Update="Resources\Raw\AboutAssets.txt">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
@@ -135,19 +145,91 @@
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\AccountingDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\CashDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\CashVoucherPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\CustomerDuesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\DueRecoveryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\NotesPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\PettyCashSheetPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\VoucherPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Banking\BankAccountPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Banking\BankPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Banking\BankTranscationPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Banking\VendorBankAccountPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Entry\CashVoucherEntryPage.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Entry\NotesEntryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Entry\VoucherEntryPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\eStore.MAUILib\eStore.MAUILib.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <BundleResource Include="Resources\Images\amit.jpg" />
-	  <BundleResource Include="Resources\Images\aprajitaretails.png" />
-	  <BundleResource Include="Resources\Images\arlogo.png" />
 	  <BundleResource Include="Resources\Images\rain_icon.svg" />
 	  <BundleResource Include="Resources\Images\search_icon.svg" />
-	  <BundleResource Include="Resources\Images\shalini.jpg" />
-	  <BundleResource Include="Resources\Images\thearvindstore004.jpg" />
-	  <BundleResource Include="Resources\Images\thearvindstore005.jpg" />
+	  <BundleResource Include="Resources\Images\one\amit.jpg" />
+	  <BundleResource Include="Resources\Images\one\aprajitaretails.png" />
+	  <BundleResource Include="Resources\Images\one\arlogo.png" />
+	  <BundleResource Include="Resources\Images\one\shalini.jpg" />
+	  <BundleResource Include="Resources\Images\one\thearvindstore004.jpg" />
+	  <BundleResource Include="Resources\Images\one\thearvindstore005.jpg" />
+	  <BundleResource Include="Resources\Styles\AKSTheme.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
+	    <DependentUpon>..\..\..\..\eStore.Accounting\Pages\Entry\VoucherEntryPage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </BundleResource>
+	  <BundleResource Include="Resources\Styles\DefaultTheme.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
+	    <DependentUpon>..\..\..\..\eStore.Accounting\Pages\Entry\VoucherEntryPage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </BundleResource>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Resources\Images\one\" />
+	  <Folder Include="Pages\" />
+	  <Folder Include="Pages\Accounting\" />
+	  <Folder Include="Pages\Accounting\Banking\" />
+	  <Folder Include="Pages\Accounting\Entry\" />
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5" />
+	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5" />
+	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.5" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-ios'">
+	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5" />
+	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5" />
+	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.5" />
 	</ItemGroup>
 </Project>

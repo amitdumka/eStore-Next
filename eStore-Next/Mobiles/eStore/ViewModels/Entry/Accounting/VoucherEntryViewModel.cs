@@ -93,14 +93,9 @@ namespace eStore.ViewModels.Entry.Accounting
             IsNew = true;
             VoucherEntry = new VoucherEntry
             {
-                Amount = 100,
+                Amount = 0,
                 OnDate = DateTime.Now,
-                Particulars = "das",
-                PartyName = "dasdasd",
-                PaymentDetails = "dasdas",
                 PaymentMode = PaymentMode.Cash,
-                Remarks = "dasd12313",
-                SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
             };
             VoucherEntry.OnDate = DateTime.Now;
@@ -117,17 +112,12 @@ namespace eStore.ViewModels.Entry.Accounting
             IsNew = true;
             VoucherEntry = new VoucherEntry
             {
-                Amount = 100,
+                Amount = 0,
                 OnDate = DateTime.Now,
-                Particulars = "das",
-                PartyName = "dasdasd",
                 PaymentDetails = "dasdas",
                 PaymentMode = PaymentMode.Cash,
-                Remarks = "dasd12313",
-                SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
             };
-            // VoucherEntry.OnDate = DateTime.Now;
             DataModel = vm.GetDataModel();
             InitViewModel();
             this.VoucherViewModel = vm;
@@ -138,17 +128,11 @@ namespace eStore.ViewModels.Entry.Accounting
             IsNew = true;
             VoucherEntry = new VoucherEntry
             {
-                Amount = 100,
+                Amount = 0,
                 OnDate = DateTime.Now,
-                Particulars = "das",
-                PartyName = "dasdasd",
-                PaymentDetails = "dasdas",
                 PaymentMode = PaymentMode.Cash,
-                Remarks = "dasd12313",
-                SlipNumber = "ddddaaa",
                 VoucherType = VoucherType.Payment
             };
-            // VoucherEntry.OnDate = DateTime.Now;
             DataModel = dm;
             InitViewModel();
         }
@@ -173,7 +157,6 @@ namespace eStore.ViewModels.Entry.Accounting
                 PartyId = v.PartyId,
                 VoucherNumber = v.VoucherNumber
             };
-            // VoucherEntry.OnDate = DateTime.Now;
             DataModel = dm;
             InitViewModel();
         }

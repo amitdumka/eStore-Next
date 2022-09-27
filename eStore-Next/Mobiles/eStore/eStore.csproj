@@ -36,6 +36,13 @@
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	  <WarningLevel>4</WarningLevel>
+<CustomCommands>
+  <CustomCommands>
+    <Command>
+      <type>BeforeBuild</type>
+    </Command>
+  </CustomCommands>
+</CustomCommands>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-maccatalyst|AnyCPU'">
 	  <EnableCodeSigning>false</EnableCodeSigning>
@@ -79,6 +86,14 @@
 	  <None Remove="Resources\Raw\AboutAssets.txt" />
 	  <None Remove="Resources\Raw\FeatureText.txt" />
 	  <None Remove="Resources\Splash\arlogo.png" />
+	  <None Remove="Resources\Images\amit.jpg" />
+	  <None Remove="Resources\Images\aprajitaretails.png" />
+	  <None Remove="Resources\Images\arlogo.png" />
+	  <None Remove="Resources\Images\rain_icon.svg" />
+	  <None Remove="Resources\Images\search_icon.svg" />
+	  <None Remove="Resources\Images\shalini.jpg" />
+	  <None Remove="Resources\Images\thearvindstore004.jpg" />
+	  <None Remove="Resources\Images\thearvindstore005.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -124,5 +139,15 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\eStore.MAUILib\eStore.MAUILib.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\Images\amit.jpg" />
+	  <BundleResource Include="Resources\Images\aprajitaretails.png" />
+	  <BundleResource Include="Resources\Images\arlogo.png" />
+	  <BundleResource Include="Resources\Images\rain_icon.svg" />
+	  <BundleResource Include="Resources\Images\search_icon.svg" />
+	  <BundleResource Include="Resources\Images\shalini.jpg" />
+	  <BundleResource Include="Resources\Images\thearvindstore004.jpg" />
+	  <BundleResource Include="Resources\Images\thearvindstore005.jpg" />
 	</ItemGroup>
 </Project>

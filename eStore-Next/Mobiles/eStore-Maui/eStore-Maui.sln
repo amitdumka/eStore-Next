@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore-Maui", "eStore-Maui.csproj", "{DA1CEF62-2CF0-46FE-805B-6BF951B33074}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.MAUI.Databases", "..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj", "{02253509-2104-498D-B18A-2B72CA189FA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AKS.MAUI.Databases", "..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj", "{02253509-2104-498D-B18A-2B72CA189FA8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore-MauiLib", "..\eStore-MauiLib\eStore-MauiLib.csproj", "{EE018BAE-4550-4B0E-85A0-45B5D7549198}"
 EndProject
@@ -14,9 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{49F74354-F9B6-4D2F-8B8C-01D9284FB597}"
 	ProjectSection(SolutionItems) = preProject
 		C:\Users\amitn\Downloads\AppIcons.zip = C:\Users\amitn\Downloads\AppIcons.zip
-		C:\Users\amitn\Downloads\IconKitchen-Output %281%29.zip = C:\Users\amitn\Downloads\IconKitchen-Output %281%29.zip
+		C:\Users\amitn\Downloads\IconKitchen-Output %25281%2529.zip = C:\Users\amitn\Downloads\IconKitchen-Output %25281%2529.zip
 		C:\Users\amitn\Downloads\IconKitchen-Output.zip = C:\Users\amitn\Downloads\IconKitchen-Output.zip
-		C:\Users\amitn\Downloads\ic_launcher %281%29.zip = C:\Users\amitn\Downloads\ic_launcher %281%29.zip
+		C:\Users\amitn\Downloads\ic_launcher %25281%2529.zip = C:\Users\amitn\Downloads\ic_launcher %25281%2529.zip
 		C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip = C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip
 		C:\Users\amitn\Downloads\ic_launcher.zip = C:\Users\amitn\Downloads\ic_launcher.zip
 	EndProjectSection
@@ -47,11 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.Dev", "..\eStore.Dev
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{CE332F78-567A-4D4E-99F1-25A138AF14A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore", "..\eStore\eStore.csproj", "{AE31ABD8-278F-402B-B80E-465BFC7F72DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore", "..\eStore\eStore.csproj", "{AE31ABD8-278F-402B-B80E-465BFC7F72DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eStoreMobileApp", "eStoreMobileApp", "{08D54F23-E454-4C18-B384-FB8632D500DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.MAUILib", "..\eStore.MAUILib\eStore.MAUILib.csproj", "{2606A71A-FEE5-4F1E-9D98-BF3FB86FD107}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.MAUILib", "..\eStore.MAUILib\eStore.MAUILib.csproj", "{2606A71A-FEE5-4F1E-9D98-BF3FB86FD107}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.DatabaseSyncService", "..\eStore.DatabaseSyncService\eStore.DatabaseSyncService.csproj", "{15B13196-59DB-45F8-B8FE-16114CCEC61C}"
 EndProject
@@ -160,5 +160,16 @@ Global
 		..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{02253509-2104-498d-b18a-2b72ca189fa8}*SharedItemsImports = 5
 		..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
 		..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = null
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.scope = text/x-csharp
+		$0.StandardHeader = $4
 	EndGlobalSection
 EndGlobal

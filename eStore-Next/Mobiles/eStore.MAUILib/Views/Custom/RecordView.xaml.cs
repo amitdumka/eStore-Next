@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace eStore.MAUILib.Views.Custom;
 

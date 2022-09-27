@@ -1,6 +1,4 @@
-﻿//using static Android.Telephony.CarrierConfigManager;
-
-namespace eStore.MAUILib.Helpers
+﻿namespace eStore.MAUILib.Helpers
 {
     public class FileHelper
     {

@@ -6,16 +6,16 @@ namespace eStore.MAUILib.Pages.Auth;
 
 public partial class UsersPage : ContentPage
 {
-    public UsersViewModel viewModel;
+    public AuthViewModel viewModel;
     public static ColumnCollection gridColumns;
 
     public UsersPage()
     {
         InitializeComponent();
-        viewModel = new UsersViewModel();
+        viewModel = new AuthViewModel();
         BindingContext = viewModel;
         RLV.BindingContext = viewModel;
-        viewModel.Icon = eStore_MauiLib.Resources.Styles.IconFont.UserFriends;
+        viewModel.Icon = eStore.MAUILib.Resources.Styles.IconFont.UserFriends;
         RLV.Cols = SetGridCols();
     }
 

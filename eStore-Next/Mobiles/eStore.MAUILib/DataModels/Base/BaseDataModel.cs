@@ -26,9 +26,10 @@ namespace eStore.MAUILib.DataModels.Base
 
         public string GetError()
         {
-            if (IsError) return ErrorMsg; 
+            if (IsError) return ErrorMsg;
             else return "OK";
         }
+
         // Currently local and azure sql db
         protected AppDBContext _localDb, _azureDb;
 
@@ -240,7 +241,7 @@ namespace eStore.MAUILib.DataModels.Base
             if (Permissions.Contains("W"))
             {
                 AppDBContext db;
-                
+
                 switch (Mode)
                 {
                     case DBType.Local:

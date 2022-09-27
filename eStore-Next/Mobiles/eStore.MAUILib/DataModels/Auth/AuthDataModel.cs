@@ -1,5 +1,4 @@
-﻿using System;
-using AKS.Shared.Commons.Models.Auth;
+﻿using AKS.Shared.Commons.Models.Auth;
 using eStore.MAUILib.DataModels.Base;
 
 namespace eStore.MAUILib.DataModels.Auth
@@ -45,4 +44,3 @@ namespace eStore.MAUILib.DataModels.Auth
         }
     }
 }
-

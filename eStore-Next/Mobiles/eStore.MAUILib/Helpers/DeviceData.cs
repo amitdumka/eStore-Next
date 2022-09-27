@@ -1,7 +1,4 @@
-﻿using System;
-//using static Android.Telephony.CarrierConfigManager;
-
-namespace eStore.MAUILib.Helpers
+﻿namespace eStore.MAUILib.Helpers
 {
     public class DeviceData
     {
@@ -57,4 +54,3 @@ namespace eStore.MAUILib.Helpers
         };
     }
 }
-

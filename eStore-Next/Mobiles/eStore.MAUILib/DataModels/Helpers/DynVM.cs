@@ -15,4 +15,3 @@
         public bool BoolValue { get; set; }
     }
 }
-

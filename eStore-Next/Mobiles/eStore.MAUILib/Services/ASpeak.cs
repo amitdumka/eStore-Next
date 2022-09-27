@@ -22,21 +22,20 @@
 
             cts.Cancel();
         }
-        bool isBusy = false;
+
+        private bool isBusy = false;
 
         public void SpeakMultiple(List<string> texts)
         {
             isBusy = true;
-           Task[] tList = new Task[texts.Count];
-           
+            Task[] tList = new Task[texts.Count];
+
             int i = 0;
             foreach (var text in texts)
-                tList[i++]=(TextToSpeech.Default.SpeakAsync(text));
+                tList[i++] = (TextToSpeech.Default.SpeakAsync(text));
 
             Task.WhenAll(tList).ContinueWith((t) => { isBusy = false; },
                 TaskScheduler.FromCurrentSynchronizationContext());
-
-            
         }
     }
 }

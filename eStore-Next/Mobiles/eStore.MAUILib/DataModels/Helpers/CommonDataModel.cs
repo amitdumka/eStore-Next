@@ -1,26 +1,27 @@
-﻿using System.Data;
-using AKS.MAUI.Databases;
-using Microsoft.Identity.Client;
+﻿using AKS.MAUI.Databases;
+using System.Data;
 
 namespace eStore.MAUILib.DataModels
 {
-
     public class DashboardDataModel
     {
         public string StoreCode = "ARD";
 
         public DBType Mode { get; set; }
         public ConType ConType { get; set; }
+
         // Currently local and azure sql db
         protected AppDBContext _localDb, _azureDb;
 
         public AppDBContext GetContextLocal() => _localDb;
 
         public AppDBContext GetContextAzure() => _azureDb;
+
         public DashboardDataModel(ConType conType)
         {
             ConType = conType;
         }
+
         public DashboardDataModel(ConType conType, AppDBContext db)
         {
             ConType = conType;
@@ -29,22 +30,29 @@ namespace eStore.MAUILib.DataModels
                 case ConType.Local:
                     _localDb = db;
                     break;
+
                 case ConType.Remote:
                     break;
+
                 case ConType.RemoteDb:
                     _azureDb = db;
                     break;
+
                 case ConType.HybridApi:
                     break;
+
                 case ConType.HybridDB:
                     break;
+
                 case ConType.Hybrid:
-                    _azureDb = db;_localDb = db;
+                    _azureDb = db; _localDb = db;
                     break;
+
                 default:
                     break;
             }
         }
+
         public DashboardDataModel(ConType conType, AppDBContext local, AppDBContext azure)
         {
             ConType = conType;
@@ -58,23 +66,30 @@ namespace eStore.MAUILib.DataModels
                 case DBType.Local:
                     return _localDb;
                     break;
+
                 case DBType.Azure:
                     return _azureDb;
                     break;
+
                 case DBType.API:
                     break;
+
                 case DBType.Remote:
                     break;
+
                 case DBType.Mango:
                     break;
+
                 case DBType.Others:
                     break;
+
                 default:
                     return _localDb;
                     break;
             }
             return null;
         }
+
         public bool Connect()
         {
             switch (ConType)
@@ -86,12 +101,14 @@ namespace eStore.MAUILib.DataModels
 
                 case ConType.Remote:
                     break;
+
                 case ConType.RemoteDb:
                     _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
                     return (_azureDb != null);
 
                 case ConType.HybridApi:
                     break;
+
                 case ConType.HybridDB:
                     _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
                     _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
@@ -109,6 +126,7 @@ namespace eStore.MAUILib.DataModels
             return false;
         }
     }
+
     public class CommonDataModel
     {
         public static List<DynVM> GetBankAccount(AppDBContext db)
@@ -162,6 +180,7 @@ namespace eStore.MAUILib.DataModels
                 BoolMember = "IsActive"
             }).ToList();
         }
+
         public static List<DynVM> GetTranscation(AppDBContext db)
         {
             return db.TranscationModes.Select(c => new DynVM
@@ -189,4 +208,3 @@ namespace eStore.MAUILib.DataModels
         }
     }
 }
-

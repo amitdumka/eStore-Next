@@ -15,7 +15,7 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.BindingContext>
-        <viewModel:UsersViewModel x:Name="viewModel" />
+        <viewModel:AuthViewModel x:Name="viewModel" />
     </ContentPage.BindingContext>
     <StackLayout
         Margin="20,0,20,0"

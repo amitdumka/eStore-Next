@@ -1,14 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="eStore.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
     xmlns:local="clr-namespace:eStore"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
+    FlyoutBackgroundImage="thearvindstore005.jpg"
+    FlyoutBackgroundImageAspect="Fill"
+    FlyoutHeaderBehavior="CollapseOnScroll"
+    Title="eStore-NXT"
+    Shell.FlyoutBehavior="Flyout">
 
+    <!--  Shell Header and Footer  -->
+    <Shell.FlyoutHeader>
+        <controls:ShellHeader />
+    </Shell.FlyoutHeader>
+    <Shell.FlyoutFooter>
+        <controls:ShellFooter />
+    </Shell.FlyoutFooter>
+
+    <!--Menu Items -->
     <ShellContent
-        Title="Home"
+        Title="Main Page Test"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Icon="wind_icin.png"
+        Route="Test" />
+    <!-- Adding Menu Item here based on Role/Access-->
+    <!--Menu Items End Here-->
+   
+    <!--Common Menu Items -->
+    <ShellContent
+        Title="About"
+        ContentTemplate="{DataTemplate libpage:AboutUsPage}"
+        Icon="wind_icin.png"
+        Route="about" />
+    <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
+    <MenuItem
+        Clicked="MenuItem_Clicked"
+        StyleClass="MenuItemLayoutStyle"
+        Text="Logout" />
+    <TabBar>
+        <ShellContent ContentTemplate="{DataTemplate libpage:Auth.LoginPage}" Route="LoginPage" />
+    </TabBar>
+    <!--Common Menu items End Here-->
 
 </Shell>

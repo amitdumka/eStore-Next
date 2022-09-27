@@ -17,4 +17,86 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Helpers\" />
+	  <None Remove="CommunityToolkit.Maui" />
+	  <None Remove="Services\" />
+	  <None Remove="Pages\" />
+	  <None Remove="Pages\Auth\" />
+	  <None Remove="DataModels\" />
+	  <None Remove="DataModels\Base\" />
+	  <None Remove="DataModels\Accounting\" />
+	  <None Remove="DataModels\Inventory\" />
+	  <None Remove="DataModels\Payroll\" />
+	  <None Remove="DataModels\Stores\" />
+	  <None Remove="DataModels\Auth\" />
+	  <None Remove="ViewModels\" />
+	  <None Remove="ViewModels\Auth\" />
+	  <None Remove="DataModels\Helpers\" />
+	  <None Remove="Views\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Helpers\" />
+	  <Folder Include="Services\" />
+	  <Folder Include="Pages\" />
+	  <Folder Include="Pages\Auth\" />
+	  <Folder Include="DataModels\" />
+	  <Folder Include="DataModels\Base\" />
+	  <Folder Include="DataModels\Accounting\" />
+	  <Folder Include="DataModels\Inventory\" />
+	  <Folder Include="DataModels\Payroll\" />
+	  <Folder Include="DataModels\Stores\" />
+	  <Folder Include="DataModels\Auth\" />
+	  <Folder Include="ViewModels\" />
+	  <Folder Include="ViewModels\Auth\" />
+	  <Folder Include="DataModels\Helpers\" />
+	  <Folder Include="Views\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Auth\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\AboutUsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Auth\UsersPage.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\Controls\ShellFooter.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\Controls\ShellHeader.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\Custom\RecordListingView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\Custom\RecordView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\eStoreMainPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Controls\ShellFooter.xaml.cs">
+	    <DependentUpon>..\..\..\eStore-MauiLib\Views\Controls\ShellFooter.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Controls\ShellHeader.xaml.cs">
+	    <DependentUpon>..\..\..\eStore-MauiLib\Views\Controls\ShellHeader.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Custom\RecordListingView.xaml.cs">
+	    <DependentUpon>..\..\..\eStore-MauiLib\Views\Custom\RecordListingView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Custom\RecordView.xaml.cs">
+	    <DependentUpon>..\..\..\eStore-MauiLib\Views\Custom\RecordView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
 </Project>

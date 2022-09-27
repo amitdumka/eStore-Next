@@ -96,6 +96,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
+	  <ProjectReference Include="..\eStore.DatabaseSyncService\eStore.DatabaseSyncService.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">

@@ -99,7 +99,7 @@
         <Grid
             x:Name="ButtonControls"
             ColumnDefinitions="*, *"
-            IsVisible="False">
+            IsVisible="true">
             <Button
                 x:Name="signInButton"
                 Margin="5"
@@ -114,7 +114,7 @@
                 Margin="5"
                 BackgroundColor="{StaticResource Accent_Yellow100}"
                 Command="{Binding SignUPCommand}"
-                IsEnabled="False"
+                
                 Text="Sign Up" />
         </Grid>
 

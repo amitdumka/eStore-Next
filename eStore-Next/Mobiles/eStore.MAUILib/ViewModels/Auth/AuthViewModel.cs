@@ -1,6 +1,7 @@
 ﻿using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
+using eStore.DatabaseSyncService.Services;
 using eStore.MAUILib.DataModels.Auth;
 using eStore.MAUILib.ViewModels.Base;
 using System;
@@ -42,14 +43,15 @@ namespace eStore.MAUILib.ViewModels.Auth
         {
             throw new NotImplementedException();
         }
+
         public async void SyncLocal()
         {
             if (!CurrentSession.LocalStatus)
             {
                 if (!DatabaseStatus.VerifyLocalStatus())
                 {
-                    DatabaseStatus.SyncInitial();
-                    IsEnableSign = CurrentSession.LocalStatus;
+                   await DatabaseStatus.SyncInitial();
+                    IsEnableSign = CurrentSession.LocalStatus=true;
                 }
                 
                 IsEnableSign = CurrentSession.LocalStatus=true;

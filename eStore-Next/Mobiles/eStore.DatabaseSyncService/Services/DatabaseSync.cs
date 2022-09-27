@@ -2,6 +2,7 @@
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,14 +23,32 @@ namespace eStore.DatabaseSyncService.Services
     public class SyncDownService : BackgroundService { }
     public class DatabaseStatus
     {
+        public static async Task<bool> SyncInitial()
+        {
+            var sync = new SyncService();
 
+            await sync.SyncDownStoresAsync();
+            sync.SyncDownEmployeesAsync();
+            await sync.SyncDownUsersAsync();
+            sync.SyncDownSalesmanAsync();
+
+            Preferences.Default.Set("Local", "LocalSynced");
+            CurrentSession.LocalStatus = true;
+            return true;
+        }
+        public static bool VerifyLocalStatus()
+        {
+            var keyValue = Preferences.Get("Local", "NO");
+            if (keyValue == "LocalSynced") return true;
+            else return false;
+        }
     }
-    
+
     public class SyncService
     {
         private AppDBContext azure;
         private AppDBContext db;
-    
+
         // Initial 
 
         /// <summary>
@@ -235,7 +254,7 @@ namespace eStore.DatabaseSyncService.Services
         // Payroll
 
         //Banking
-      
+
         // Accouting 
 
 

@@ -105,7 +105,8 @@
                 Margin="5"
                 BackgroundColor="{StaticResource Accent_Blue100}"
                 Command="{Binding SignInCommand}"
-                IsEnabled="False"
+                IsEnabled="{Binding IsEnableSign}"
+                IsVisible="{Binding IsEnableSign}"
                 Text="Sign In" />
             <Button
                 x:Name="signUpButton"

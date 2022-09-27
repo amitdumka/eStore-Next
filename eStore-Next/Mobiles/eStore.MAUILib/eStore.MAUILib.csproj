@@ -47,8 +47,6 @@
 	  <Folder Include="DataModels\Payroll\" />
 	  <Folder Include="DataModels\Stores\" />
 	  <Folder Include="DataModels\Auth\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="ViewModels\Auth\" />
 	  <Folder Include="DataModels\Helpers\" />
 	  <Folder Include="Views\" />
 	</ItemGroup>
@@ -66,6 +64,18 @@
 	  </MauiXaml>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Auth\UsersPage.xaml">
 	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Colors.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Styles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\Controls\ShellFooter.xaml">
@@ -88,6 +98,12 @@
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\DefaultTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
 	  <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\Controls\ShellFooter.xaml.cs">
 	    <DependentUpon>..\..\..\eStore-MauiLib\Views\Controls\ShellFooter.xaml</DependentUpon>
 	  </Compile>

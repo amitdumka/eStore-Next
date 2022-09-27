@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using DevExpress.Maui;
+using eStore.Pages;
 using eStore.Pages.Accounting;
 using eStore.Pages.Accounting.Entry;
 using eStore.ViewModels.List.Accounting;
@@ -34,7 +35,7 @@ namespace eStore
             builder.Services.AddSingleton<CashVoucherPage>();
             builder.Services.AddSingleton<CashVoucherEntryPage>();
             builder.Services.AddSingleton<AccountingDashboardViewModel>();
-            builder.Services.AddSingleton<AccountingDashboardPage>();
+            builder.Services.AddSingleton<DashboardPage>();
 
             return builder.Build();
         }

@@ -64,7 +64,7 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png">
-		  <Color>#512BD4</Color>
+		  <Color>#ffffff </Color>
 		</MauiIcon>
 		<!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->
 		
@@ -74,7 +74,7 @@
 		<MauiSplashScreen Include="Resources\Splash\arlogo1.png" BaseSize="128,128" Resize="true" />
 
 		<!-- Images -->
-		<MauiFont Include="Resources\Fonts\*" />
+		<MauiFont Include="Resources\Images\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
@@ -116,11 +116,6 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.50" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Resources\Styles\AKSTheme.xaml.cs" />
-	  <Compile Remove="Resources\Styles\DefaultTheme.xaml.cs" />
-	</ItemGroup>
 	<ItemGroup>
 	  <MauiAsset Update="Resources\Raw\AboutAssets.txt">
 	    <LogicalName>%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
@@ -134,14 +129,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
-	    <SubType></SubType>
+	  <MauiXaml Update="Pages\DashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\AccountingDashboardPage.xaml">
+	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\AccountingDashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\CashDetailPage.xaml">
@@ -187,6 +178,13 @@
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Accounting\Entry\VoucherEntryPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
+	    <SubType></SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -201,17 +199,8 @@
 	  <BundleResource Include="Resources\Images\one\shalini.jpg" />
 	  <BundleResource Include="Resources\Images\one\thearvindstore004.jpg" />
 	  <BundleResource Include="Resources\Images\one\thearvindstore005.jpg" />
-	  <BundleResource Include="Resources\Styles\AKSTheme.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
-	    <DependentUpon>..\..\..\..\eStore.Accounting\Pages\Entry\VoucherEntryPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </BundleResource>
-	  <BundleResource Include="Resources\Styles\DefaultTheme.xaml.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' ">
-	    <DependentUpon>..\..\..\..\eStore.Accounting\Pages\Entry\VoucherEntryPage.xaml</DependentUpon>
-	    <SubType>Code</SubType>
-	  </BundleResource>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Pages\" />
 	  <Folder Include="Pages\Accounting\" />
 	  <Folder Include="Pages\Accounting\Banking\" />
 	  <Folder Include="Pages\Accounting\Entry\" />
@@ -226,5 +215,13 @@
 	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5" />
 	  <PackageReference Include="DevExpress.Maui.Scheduler" Version="22.1.5" />
 	  <PackageReference Include="DevExpress.Maui.Controls" Version="22.1.5" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Resources\Styles\AKSTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Styles\DefaultTheme.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 </Project>

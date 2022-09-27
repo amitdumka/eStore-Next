@@ -1,21 +1,20 @@
 ﻿using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
-using eStore.MAUILib.ViewModels.Base;
 using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.Helpers;
-using eStore.MAUILib.ViewModels;
+using eStore.MAUILib.ViewModels.Base;
 
-namespace eStore.Accounting.ViewModels.List.Accounting
+namespace eStore.ViewModels.List.Accounting
 {
-    public partial class CashVoucherViewModel : BaseViewModel<CashVoucher,  VoucherDataModel>
+    public partial class CashVoucherViewModel : BaseViewModel<CashVoucher, VoucherDataModel>
     {
         [ObservableProperty]
         private VoucherType _voucherType;
 
         public CashVoucherViewModel() : base()
         {
-            DataModel = new  VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             DataModel.Connect();
@@ -86,7 +85,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
 
         protected override void InitViewModel()
         {
-            DataModel = new  VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
             DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
@@ -134,7 +133,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
             }
         }
 
-         partial void OnVoucherTypeChanged(VoucherType value)
+        partial void OnVoucherTypeChanged(VoucherType value)
         {
             // Use filter here to change the view.
             throw new NotImplementedException();

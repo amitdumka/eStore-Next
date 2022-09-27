@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Maui;
 using DevExpress.Maui;
-using eStore.Accounting.Pages;
-using eStore.Accounting.Pages.Entry;
-using eStore.Accounting.ViewModels.List.Accounting;
-using eStore.Accounting.ViewModels.List.Dashboard;
+using eStore.Pages.Accounting;
+using eStore.Pages.Accounting.Entry;
+using eStore.ViewModels.List.Accounting;
+using eStore.ViewModels.List.Dashboard;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
 

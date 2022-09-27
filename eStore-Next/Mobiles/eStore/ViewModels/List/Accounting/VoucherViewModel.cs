@@ -1,12 +1,11 @@
 ﻿using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
-using eStore.MAUILib.ViewModels.Base;
 using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.Helpers;
-using eStore.MAUILib.ViewModels;
+using eStore.MAUILib.ViewModels.Base;
 
-namespace eStore.Accounting.ViewModels.List.Accounting
+namespace eStore.ViewModels.List.Accounting
 {
     public partial class VoucherViewModel : BaseViewModel<Voucher, VoucherDataModel>
     {
@@ -25,7 +24,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
 
         protected override void AddButton()
         {
-          //  var c = Delete();
+            //  var c = Delete();
             Notify.NotifyLong("Delete: ");
         }
 
@@ -60,7 +59,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
         protected override void DeleteButton()
         {
             //var c = Delete();
-           // Notify.NotifyLong("Deleted: " + c.Result);
+            // Notify.NotifyLong("Deleted: " + c.Result);
         }
 
         //protected override Task<bool> Edit(Voucher value)
@@ -105,7 +104,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
 
         protected override void RefreshButton()
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         protected override void UpdateEntities(List<Voucher> values)
@@ -138,7 +137,7 @@ namespace eStore.Accounting.ViewModels.List.Accounting
             }
         }
 
-         partial void OnVoucherTypeChanged(VoucherType value)
+        partial void OnVoucherTypeChanged(VoucherType value)
         {
             // Use filter here to change the view.
             throw new NotImplementedException();

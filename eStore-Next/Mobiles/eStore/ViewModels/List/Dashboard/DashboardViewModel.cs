@@ -1,6 +1,5 @@
 ﻿using AKS.Shared.Commons.Ops;
 using eStore.MAUILib.ViewModels.Base;
-using eStore.MAUILib.ViewModels;
 
 namespace eStore.ViewModels.List.Dashboard
 {
@@ -16,26 +15,28 @@ namespace eStore.ViewModels.List.Dashboard
             this.Icon = eStore.Resources.Styles.IconFont.BookReader;
             this.Title = "Dashboard";
         }
+
         protected void InitView()
         {
             DataModel.Connect();
             Fetch();
         }
+
         protected void Fetch()
         {
             if (Entity == null)
             {
                 var voucherData = DataModel.GetContext().Vouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
-                    .GroupBy(c =>   c.VoucherType ).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
+                    .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
                 var cashVoucherData = DataModel.GetContext().CashVouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
                     .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
                 var due = DataModel.GetContext().CustomerDues.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
                 var rec = DataModel.GetContext().DueRecovery.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
 
-                Entity =   new AccountWidget
+                Entity = new AccountWidget
                 {
                     OnDate = DateTime.Now,
-                    TotalReceipt =   voucherData.Where(c => c.VT == VoucherType.Receipt).FirstOrDefault().TAmount,
+                    TotalReceipt = voucherData.Where(c => c.VT == VoucherType.Receipt).FirstOrDefault().TAmount,
                     TotalCashPayment = cashVoucherData.Where(c => c.VT == VoucherType.CashPayment).FirstOrDefault().TAmount,
                     TotalCashReceipt = cashVoucherData.Where(c => c.VT == VoucherType.CashReceipt).FirstOrDefault().TAmount,
                     TotalExpenses = voucherData.Where(c => c.VT == VoucherType.Expense).FirstOrDefault().TAmount,
@@ -43,18 +44,15 @@ namespace eStore.ViewModels.List.Dashboard
                     BankDeposit = -1,
                     BankWithdrwal = -1,
                     CashInBank = -1,
-                    TotalDueRecorver =rec,
+                    TotalDueRecorver = rec,
                     TotalDueAmount = due,
                     CashInHand = -1,
                     TotalSale = 0,
                     TotalCashSale = 0,
                     TotalMonthlyCashSale = 0,
                     TotalMonthlySale = 0
-
                 };
-                
             }
-            
         }
     }
 
@@ -77,18 +75,22 @@ namespace eStore.ViewModels.List.Dashboard
 
         public decimal TotalDueAmount { get; set; }
         public decimal TotalDueRecorver { get; set; }
-        public decimal TotalDuePending { get { return TotalDueAmount - TotalDueRecorver; } }
+        public decimal TotalDuePending
+        { get { return TotalDueAmount - TotalDueRecorver; } }
 
         public decimal TotalSale { get; set; }
-        public decimal TotalNonCashSale { get { return TotalSale - TotalCashSale; } }
+        public decimal TotalNonCashSale
+        { get { return TotalSale - TotalCashSale; } }
         public decimal TotalCashSale { get; set; }
 
         public decimal TotalMonthlySale { get; set; }
-        public decimal TotalMonthlyNonCashSale { get { return TotalMonthlySale - TotalMonthlyCashSale; } }
+        public decimal TotalMonthlyNonCashSale
+        { get { return TotalMonthlySale - TotalMonthlyCashSale; } }
         public decimal TotalMonthlyCashSale { get; set; }
 
-        public decimal TotalIncome { get { return TotalSale + TotalCashReceipt + TotalReceipt; } }
-        public decimal TotalExpense { get { return TotalPayment + TotalCashPayment + TotalExpenses; } }
-
+        public decimal TotalIncome
+        { get { return TotalSale + TotalCashReceipt + TotalReceipt; } }
+        public decimal TotalExpense
+        { get { return TotalPayment + TotalCashPayment + TotalExpenses; } }
     }
 }

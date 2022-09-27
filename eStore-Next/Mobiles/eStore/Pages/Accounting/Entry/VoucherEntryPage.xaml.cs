@@ -1,7 +1,7 @@
-﻿using eStore.Accounting.ViewModels.Entry.Accounting;
-using eStore.Accounting.ViewModels.List.Accounting;
+﻿using eStore.ViewModels.Entry.Accounting;
+using eStore.ViewModels.List.Accounting;
 
-namespace eStore.Accounting.Pages.Entry;
+namespace eStore.Pages.Accounting.Entry;
 
 public partial class VoucherEntryPage : ContentPage
 {

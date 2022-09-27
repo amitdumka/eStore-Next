@@ -41,7 +41,6 @@
 	  <None Remove="Resources\Images\arlogo.png" />
 	  <None Remove="Resources\Images\shalini.jpg" />
 	  <None Remove="Resources\Images\thearvindstore004.jpg" />
-	  <None Remove="Resources\Images\thearvindstore005.jpg" />
 	  <None Remove="Resources\Images\" />
 	</ItemGroup>
 	<ItemGroup>
@@ -136,6 +135,5 @@
 	  <MauiImage Include="Resources\Images\arlogo.png" />
 	  <MauiImage Include="Resources\Images\shalini.jpg" />
 	  <MauiImage Include="Resources\Images\thearvindstore004.jpg" />
-	  <MauiImage Include="Resources\Images\thearvindstore005.jpg" />
 	</ItemGroup>
 </Project>

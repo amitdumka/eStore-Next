@@ -3,14 +3,14 @@
     x:Class="eStore.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:accpages="clr-namespace:eStore.Pages.Accounting"
     xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
-    xmlns:local="clr-namespace:eStore"
     xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
-    xmlns:accpages="clr-namespace:eStore.Accounting.Pages"
+    xmlns:local="clr-namespace:eStore"
+    Title="eStore-NXT"
     FlyoutBackgroundImage="thearvindstore005.jpg"
     FlyoutBackgroundImageAspect="Fill"
     FlyoutHeaderBehavior="CollapseOnScroll"
-    Title="eStore-NXT"
     Shell.FlyoutBehavior="Flyout">
     <Shell.Resources>
 
@@ -30,9 +30,9 @@
             <Setter Property="FontAttributes" Value="Italic" />
             <Setter Property="FontSize" Value="Medium" />
         </Style>
-         <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
+        <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
         <Style BasedOn="{StaticResource BaseStyle}" TargetType="FlyoutItem" />
-         <Style
+        <Style
             ApplyToDerivedTypes="True"
             Class="FlyoutItemLayoutStyle"
             TargetType="Layout">
@@ -83,19 +83,19 @@
         <controls:ShellFooter />
     </Shell.FlyoutFooter>
 
-    <!--Menu Items -->
+    <!--  Menu Items  -->
     <ShellContent
         Title="Main Page Test"
         ContentTemplate="{DataTemplate local:MainPage}"
         Icon="wind_icin.png"
         Route="Test" />
-    <!-- Adding Menu Item here based on Role/Access-->
-    <!--Menu Items End Here-->
+    <!--  Adding Menu Item here based on Role/Access  -->
+    <!--  Menu Items End Here  -->
 
-    <!-- Admin/Owner-->
-    <!--Store Manager-->
-    <!--Accountant-->
-     <ShellContent
+    <!--  Admin/Owner  -->
+    <!--  Store Manager  -->
+    <!--  Accountant  -->
+    <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate accpages:AccountingDashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
@@ -203,12 +203,12 @@
         </Tab>
 
     </FlyoutItem>
-   
-    <!--CA-->
-    <!--Employee-->
 
-    <!--Common Menu Items -->
-    <ShellContent 
+    <!--  CA  -->
+    <!--  Employee  -->
+
+    <!--  Common Menu Items  -->
+    <ShellContent
         Title="About"
         ContentTemplate="{DataTemplate libpage:AboutUsPage}"
         Icon="wind_icin.png"
@@ -221,6 +221,6 @@
     <TabBar>
         <ShellContent ContentTemplate="{DataTemplate libpage:Auth.LoginPage}" Route="LoginPage" />
     </TabBar>
-    <!--Common Menu items End Here-->
-   
+    <!--  Common Menu items End Here  -->
+
 </Shell>

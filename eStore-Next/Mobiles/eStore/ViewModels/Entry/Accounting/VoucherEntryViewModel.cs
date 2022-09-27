@@ -3,17 +3,16 @@ using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
-using eStore.Accounting.ViewModels.List.Accounting;
 using eStore.MAUILib.DataModels;
 using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.Services;
-using eStore.MAUILib.ViewModels;
 using eStore.MAUILib.ViewModels.Base;
+using eStore.ViewModels.List.Accounting;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace eStore.Accounting.ViewModels.Entry.Accounting
+namespace eStore.ViewModels.Entry.Accounting
 {
     public partial class VoucherEntryViewModel : BaseEntryViewModel<Voucher, VoucherDataModel>, IPickerSourceProvider
     {
@@ -291,7 +290,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         [DataFormDisplayOptions(LabelText = "Bank", GroupName = "Payment")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        public string AccountId { get; set; } 
+        public string AccountId { get; set; }
 
         [DataFormDisplayOptions(LabelText = "Issued By", GroupName = "Issued By")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
@@ -301,7 +300,7 @@ namespace eStore.Accounting.ViewModels.Entry.Accounting
 
         [DataFormDisplayOptions(LabelText = "Ledger", GroupName = "Ledger")]
         [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
-        public string PartyId { get; set; } 
+        public string PartyId { get; set; }
 
         //public virtual Party Partys { get; set; }
     }

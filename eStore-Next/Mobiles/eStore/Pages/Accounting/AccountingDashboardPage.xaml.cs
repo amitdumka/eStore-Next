@@ -1,7 +1,7 @@
 using eStore.ViewModels;
 using eStore.ViewModels.List.Dashboard;
 
-namespace eStore.Accounting.Pages;
+namespace eStore.Pages.Accounting;
 
 public partial class AccountingDashboardPage : ContentPage
 {

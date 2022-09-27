@@ -3,15 +3,16 @@ using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
-using eStore.Accounting.ViewModels.List.Accounting;
+using eStore.ViewModels.List.Accounting;
 using eStore.MAUILib.DataModels;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.Services;
 using eStore.MAUILib.ViewModels.Base;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using eStore.MAUILib.DataModels.Accounting;
 
-namespace eStore.Accounting.ViewModels.Entry.Accounting
+namespace eStore.ViewModels.Entry.Accounting
 {
     public partial class CashVoucherEntryViewModel : BaseEntryViewModel<CashVoucher, VoucherDataModel>, IPickerSourceProvider
     {

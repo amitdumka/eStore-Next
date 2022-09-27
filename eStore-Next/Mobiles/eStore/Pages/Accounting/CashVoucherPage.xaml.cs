@@ -1,7 +1,7 @@
-﻿namespace eStore.Accounting.Pages;
+﻿namespace eStore.Pages.Accounting;
 
 using AKS.Shared.Commons.Models.Accounts;
-using eStore.Accounting.ViewModels.List.Accounting;
+using eStore.ViewModels.List.Accounting;
 using Syncfusion.Maui.DataGrid;
 
 public partial class CashVoucherPage : ContentPage

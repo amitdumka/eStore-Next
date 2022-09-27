@@ -1,4 +1,4 @@
-namespace eStore.Accounting.Pages;
+namespace eStore.Pages.Accounting;
 
 public partial class BankTranscationPage : ContentPage
 {

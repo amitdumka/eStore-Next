@@ -1,4 +1,4 @@
-namespace eStore.Accounting.Pages.Entry;
+namespace eStore.Pages.Accounting.Entry;
 
 public partial class NotesEntryPage : ContentPage
 {

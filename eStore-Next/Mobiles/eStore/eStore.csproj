@@ -71,7 +71,7 @@
 
 		<!-- Splash Screen -->
 		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\Splash\arlogo.png" BaseSize="128,128" Resize="true" />
+		<MauiSplashScreen Include="Resources\Splash\arlogo1.png" BaseSize="128,128" Resize="true" />
 
 		<!-- Images -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -92,27 +92,23 @@
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appicon.png" />
 	  <None Remove="Resources\Images\appicon.png" />
+	  <None Remove="Resources\Images\thearvindstore005.jpg" />
 	  <None Remove="Resources\Raw\AboutAssets.txt" />
 	  <None Remove="Resources\Raw\FeatureText.txt" />
-	  <None Remove="Resources\Splash\arlogo.png" />
 	  <None Remove="Resources\Images\rain_icon.svg" />
 	  <None Remove="Resources\Images\search_icon.svg" />
 	  <None Remove="Resources\Images\one\" />
-	  <None Remove="Resources\Images\one\amit.jpg" />
-	  <None Remove="Resources\Images\one\aprajitaretails.png" />
-	  <None Remove="Resources\Images\one\arlogo.png" />
-	  <None Remove="Resources\Images\one\shalini.jpg" />
-	  <None Remove="Resources\Images\one\thearvindstore004.jpg" />
-	  <None Remove="Resources\Images\one\thearvindstore005.jpg" />
 	  <None Remove="Pages\" />
 	  <None Remove="Pages\Accounting\" />
 	  <None Remove="Pages\Accounting\Banking\" />
 	  <None Remove="Pages\Accounting\Entry\" />
+	  <None Remove="Resources\Splash\arlogo1.png" />
 	  <None Remove="ViewModels\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Include="Resources\Splash\arlogo.png" />
+	  <MauiImage Include="Resources\Images\thearvindstore005.jpg" />
+	  <MauiImage Include="Resources\Splash\arlogo1.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -215,7 +211,6 @@
 	  </BundleResource>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Resources\Images\one\" />
 	  <Folder Include="Pages\" />
 	  <Folder Include="Pages\Accounting\" />
 	  <Folder Include="Pages\Accounting\Banking\" />

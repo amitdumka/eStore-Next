@@ -13,12 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AKSLabs", "AKSLabs", "{B264
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{49F74354-F9B6-4D2F-8B8C-01D9284FB597}"
 	ProjectSection(SolutionItems) = preProject
-		C:\Users\amitn\Downloads\AppIcons.zip = C:\Users\amitn\Downloads\AppIcons.zip
-		C:\Users\amitn\Downloads\IconKitchen-Output %25281%2529.zip = C:\Users\amitn\Downloads\IconKitchen-Output %25281%2529.zip
-		C:\Users\amitn\Downloads\IconKitchen-Output.zip = C:\Users\amitn\Downloads\IconKitchen-Output.zip
-		C:\Users\amitn\Downloads\ic_launcher %25281%2529.zip = C:\Users\amitn\Downloads\ic_launcher %25281%2529.zip
-		C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip = C:\Users\amitn\Downloads\ic_launcher-632dddc8716b8.zip
-		C:\Users\amitn\Downloads\ic_launcher.zip = C:\Users\amitn\Downloads\ic_launcher.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\AppIcons.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\AppIcons.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\IconKitchen-Output %25281%2529.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\IconKitchen-Output %25281%2529.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\IconKitchen-Output.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\IconKitchen-Output.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher %25281%2529.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher %25281%2529.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher-632dddc8716b8.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher-632dddc8716b8.zip
+		..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher.zip = ..\..\..\..\..\..\..\..\amitn\Downloads\ic_launcher.zip
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.shproj", "{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C}"

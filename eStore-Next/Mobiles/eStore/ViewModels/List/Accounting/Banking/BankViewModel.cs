@@ -27,6 +27,11 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
+        protected override Task<global::Syncfusion.Maui.DataGrid.ColumnCollection> SetGridCols()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void UpdateEntities(List<Bank> values)
         {
             throw new NotImplementedException();

@@ -6,14 +6,9 @@ using CommunityToolkit.Mvvm.Input;
 using eStore.DatabaseSyncService.Services;
 using eStore.MAUILib.DataModels.Auth;
 using eStore.MAUILib.Helpers;
-using eStore.MAUILib.Services;
 using eStore.MAUILib.ViewModels.Base;
-using System;
-using System.Collections.Generic;
+using Syncfusion.Maui.DataGrid;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eStore.MAUILib.ViewModels.Auth
 {
@@ -180,6 +175,11 @@ namespace eStore.MAUILib.ViewModels.Auth
             Notify.NotifyVLong($"Welcome {CurrentSession.GuestName}, from {CurrentSession.StoreName}");
             Application.Current.MainPage = AppShell;
             return true;
+        }
+
+        protected override Task<ColumnCollection> SetGridCols()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Accounting
 { 
@@ -9,6 +10,10 @@ namespace eStore.MAUILib.DataModels.Accounting
     {
         public PettyCashDataModel(ConType conType) : base(conType)
         {
+        }
+        public PettyCashDataModel(ConType conType, Permission role):base(conType, role)
+        {
+
         }
 
          
@@ -32,7 +37,10 @@ namespace eStore.MAUILib.DataModels.Accounting
 
         public override Task<List<PettyCashSheet>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            var db=GetContext();
+            return db.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year)
+                .OrderByDescending(c => c.OnDate).ToListAsync();
+
         }
 
         public override List<int> GetYearList()

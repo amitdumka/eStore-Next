@@ -131,7 +131,7 @@ namespace eStore.ViewModels.List.Accounting
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetItemsAsync();
+                    var data = await DataModel.GetItemsAsync(CurrentSession.StoreCode);
                     UpdateEntities(data);
                     break;
 

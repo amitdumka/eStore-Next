@@ -1,11 +1,14 @@
-﻿namespace eStore;
+﻿using eStore.MAUILib.Pages.Auth;
 
-public partial class App : Application
+namespace eStore
 {
-	public App()
-	{
-		InitializeComponent();
+    public partial class App : Application
+    {
+        public App()
+        {
+            InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+            MainPage = new LoginPage(new AppShell());
+        }
+    }
 }

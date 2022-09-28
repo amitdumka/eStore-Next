@@ -33,6 +33,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
 	  <EnableCodeSigning>false</EnableCodeSigning>
 	  <CodesignKey>Apple Development: amitdumka@icloud.com (67P297XMD4)</CodesignKey>
+	  <CustomCommands>
+	    <CustomCommands>
+	      <Command>
+	        <type>BeforeBuild</type>
+	      </Command>
+	    </CustomCommands>
+	  </CustomCommands>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	  <WarningLevel>4</WarningLevel>
@@ -104,6 +111,7 @@
 	  <None Remove="Pages\Accounting\Entry\" />
 	  <None Remove="Resources\Splash\arlogo1.png" />
 	  <None Remove="ViewModels\" />
+	  <None Remove="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -205,6 +213,7 @@
 	  <Folder Include="Pages\Accounting\Banking\" />
 	  <Folder Include="Pages\Accounting\Entry\" />
 	  <Folder Include="ViewModels\" />
+	  <Folder Include="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
 	  <PackageReference Include="DevExpress.Maui.Editors" Version="22.1.5" />

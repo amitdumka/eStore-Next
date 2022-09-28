@@ -11,6 +11,7 @@ public partial class VoucherPage : ContentPage
 
     public VoucherPage(VoucherViewModel vm)
     {
+        //TODO: Need to send every thing to viewmodel to set 
         InitializeComponent();
         viewModel = vm;
         BindingContext = vm;

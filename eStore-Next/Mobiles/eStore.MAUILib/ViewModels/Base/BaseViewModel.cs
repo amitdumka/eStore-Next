@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore.MAUILib.DataModels;
+using eStore.MAUILib.Views.Custom;
+using Syncfusion.Maui.DataGrid;
 using System.Collections.ObjectModel;
 
 namespace eStore.MAUILib.ViewModels.Base
@@ -14,6 +16,9 @@ namespace eStore.MAUILib.ViewModels.Base
         #region Field
 
         protected DM DataModel;
+
+        [ObservableProperty]
+        protected RecordListingView _rlv;
 
         [ObservableProperty]
         protected Page _currentPage;
@@ -75,6 +80,9 @@ namespace eStore.MAUILib.ViewModels.Base
         protected abstract void InitViewModel();
 
         protected abstract void UpdateEntities(List<T> values);
+
+        [RelayCommand]
+        protected abstract Task<ColumnCollection> SetGridCols();
 
         #endregion Abstractfunctions
     }

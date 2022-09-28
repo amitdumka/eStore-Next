@@ -82,6 +82,7 @@
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">
 	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
 	  </ProjectReference>
+	  <ProjectReference Include="..\eStore.DatabaseSyncService\eStore.DatabaseSyncService.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Common" Version="8.0.0" />

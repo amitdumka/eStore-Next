@@ -5,6 +5,20 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore", "eStore\eStore.csproj", "{4431A0E9-10CE-4A60-96AF-2FD020220D13}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DFB6EE85-8DE1-4167-98C7-31D31130FFE3}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Payrolls", "..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.shproj", "{062A8AC3-2766-4147-8809-9E46C9C71B34}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Commons", "..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.shproj", "{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{C46034CB-0F1B-4226-A73B-EFF56A0B59BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AKS.MAUI.Databases", "..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj", "{64196AC8-93F5-4041-84DC-5E8640D94D67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.DatabaseSyncService", "..\eStore.DatabaseSyncService\eStore.DatabaseSyncService.csproj", "{A55984B0-1348-4F93-9FE4-485C906D83B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore-MauiLib", "..\eStore-MauiLib\eStore-MauiLib.csproj", "{83B78CAA-78EE-4B78-B3B2-DB56597E7F25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,11 +31,36 @@ Global
 		{4431A0E9-10CE-4A60-96AF-2FD020220D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4431A0E9-10CE-4A60-96AF-2FD020220D13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4431A0E9-10CE-4A60-96AF-2FD020220D13}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{64196AC8-93F5-4041-84DC-5E8640D94D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64196AC8-93F5-4041-84DC-5E8640D94D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64196AC8-93F5-4041-84DC-5E8640D94D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64196AC8-93F5-4041-84DC-5E8640D94D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55984B0-1348-4F93-9FE4-485C906D83B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55984B0-1348-4F93-9FE4-485C906D83B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55984B0-1348-4F93-9FE4-485C906D83B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55984B0-1348-4F93-9FE4-485C906D83B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B78CAA-78EE-4B78-B3B2-DB56597E7F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B78CAA-78EE-4B78-B3B2-DB56597E7F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B78CAA-78EE-4B78-B3B2-DB56597E7F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B78CAA-78EE-4B78-B3B2-DB56597E7F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{062A8AC3-2766-4147-8809-9E46C9C71B34} = {DFB6EE85-8DE1-4167-98C7-31D31130FFE3}
+		{9EE7A62A-E3CD-4C07-BC43-AA6AFB980C8C} = {DFB6EE85-8DE1-4167-98C7-31D31130FFE3}
+		{64196AC8-93F5-4041-84DC-5E8640D94D67} = {C46034CB-0F1B-4226-A73B-EFF56A0B59BC}
+		{A55984B0-1348-4F93-9FE4-485C906D83B4} = {C46034CB-0F1B-4226-A73B-EFF56A0B59BC}
+		{83B78CAA-78EE-4B78-B3B2-DB56597E7F25} = {C46034CB-0F1B-4226-A73B-EFF56A0B59BC}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{062a8ac3-2766-4147-8809-9e46c9c71b34}*SharedItemsImports = 13
+		..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems*{64196ac8-93f5-4041-84dc-5e8640d94d67}*SharedItemsImports = 5
+		..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{64196ac8-93f5-4041-84dc-5e8640d94d67}*SharedItemsImports = 5
+		..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems*{9ee7a62a-e3cd-4c07-bc43-aa6afb980c8c}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

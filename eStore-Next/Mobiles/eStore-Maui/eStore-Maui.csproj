@@ -32,26 +32,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png">
-		  <Color>#512BD4</Color>
-		</MauiIcon>
-		
-		<!--<MauiIcon Include="Resources\AppIcon\arlogo.png" ForegroundFile="Resources\AppIcon\appiconfg.svg" TintColor="Yellow" Color="#512BD4" />-->
-
-		<!-- Splash Screen -->
-		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\Splash\arlogo.png" BaseSize="128,128" Resize="true" />
-
-		<MauiImage Include="Resources\Images\*" />
-		<MauiFont Include="Resources\Fonts\*" />
-
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-		<MauiImage Include="Resources\Splash\arlogo.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj">
 	    <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
 	  </ProjectReference>
@@ -61,8 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\appicon.png" />
-	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
 	  <None Remove="Syncfusion.Maui.Core" />
 	  <None Remove="Syncfusion.Maui.TabView" />
 	  <None Remove="Syncfusion.Maui.ListView" />
@@ -98,20 +76,16 @@
 	  <None Remove="Features\Barcodes\" />
 	  <None Remove="ZXing.Net.Maui" />
 	  <None Remove="Features\Barcodes\Views\" />
-	  <None Remove="Resources\Splash\arlogo.png" />
 	  <None Remove="Pages\Stores\" />
 	  <None Remove="Views\" />
-	  <None Remove="Views\Custom\" />
 	  <None Remove="Syncfusion.XlsIO.NET" />
 	  <None Remove="Platforms\Android\Resources\xml\" />
 	  <None Remove="Syncfusion.DocIO.NET" />
 	  <None Remove="AlohaKit" />
 	  <None Remove="Pages\Auth\" />
 	  <None Remove="Pages\Payroll\" />
-	  <None Remove="Views\Controls\" />
 	  <None Remove="ViewModels\List\Vouchers\" />
 	  <None Remove="ViewModels\List\Accounting\" />
-	  <None Remove="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.50" />
@@ -151,9 +125,6 @@
 	  <MauiXaml Update="Pages\Payroll\Entry\AttendanceEntryView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\VoucherPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
@@ -172,25 +143,7 @@
 	  <MauiXaml Update="Pages\Stores\StorePage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Custom\RecordListingView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Custom\RecordView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\Payroll\AttendancePage.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Controls\ShellHeader.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Controls\ShellFooter.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="AppShell.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\AboutPage.xaml">
@@ -203,10 +156,5 @@
 	  <Folder Include="Features\Barcodes\" />
 	  <Folder Include="Features\Barcodes\Views\" />
 	  <Folder Include="Pages\Stores\" />
-	  <Folder Include="Views\" />
-	  <Folder Include="Views\Custom\" />
-	  <Folder Include="Views\Controls\" />
-	  <Folder Include="ViewModels\List\Accounting\" />
-	  <Folder Include="ViewModels\List\Accounting\Banking\" />
 	</ItemGroup>
 </Project>

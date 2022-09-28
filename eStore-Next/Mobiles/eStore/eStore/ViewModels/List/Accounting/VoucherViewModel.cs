@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.ViewModels.Base;
+using eStore.MAUILib.Views.Custom;
 using Syncfusion.Maui.DataGrid;
 
 namespace eStore.ViewModels.List.Accounting
@@ -12,6 +13,7 @@ namespace eStore.ViewModels.List.Accounting
     {
         [ObservableProperty]
         private VoucherType _voucherType;
+        //public static ColumnCollection gridColumns;
 
         public VoucherViewModel() : base()
         {
@@ -90,6 +92,7 @@ namespace eStore.ViewModels.List.Accounting
 
         protected override void InitViewModel()
         {
+            Icon = Resources.Styles.IconFont.MoneyBillWave;
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
             DataModel.Mode = DBType.Local;
@@ -100,7 +103,7 @@ namespace eStore.ViewModels.List.Accounting
             DefaultSortedColName = nameof(Voucher.OnDate);
             DefaultSortedOrder = Descending;
             FetchAsync();
-            //Icon = eStore_Maui.Resources.Styles.IconFont.FileInvoice;
+            
         }
 
         protected override void RefreshButton()
@@ -143,9 +146,17 @@ namespace eStore.ViewModels.List.Accounting
             // Use filter here to change the view.
             throw new NotImplementedException();
         }
-        protected override Task<ColumnCollection> SetGridCols()
-        {
-            throw new NotImplementedException();
+        protected override async Task<ColumnCollection> SetGridCols()
+        { 
+            ColumnCollection gridColumns= new();
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.VoucherNumber), MappingName = nameof(Voucher.VoucherNumber) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.OnDate), MappingName = nameof(Voucher.OnDate), Format = "dd/MMM/yyyy" });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.VoucherType), MappingName = nameof(Voucher.VoucherType) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.PartyName), MappingName = nameof(Voucher.PartyName) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.Particulars), MappingName = nameof(Voucher.Particulars) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.Remarks), MappingName = nameof(Voucher.Remarks) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Voucher.Amount), MappingName = nameof(Voucher.Amount) });
+            return gridColumns;
         }
     }
 }

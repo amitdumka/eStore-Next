@@ -83,7 +83,15 @@ namespace eStore.MAUILib.ViewModels.Base
 
         [RelayCommand]
         protected abstract Task<ColumnCollection> SetGridCols();
+        // public abstract void Setup(Page page, RecordListingView rlv);
+        public async void Setup(Page page, RecordListingView rlv)
+        {
+            CurrentPage = page;
+            Rlv = rlv;
+            Rlv.BindingContext = this;
+            Rlv.Cols = await SetGridCols();
 
+        }
         #endregion Abstractfunctions
     }
 

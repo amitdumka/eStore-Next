@@ -563,7 +563,7 @@ namespace eStore.DatabaseSyncService.Services
                                 Preferences.Remove(nameof(PaySlip));
                         }
 
-                        if (rCount != lCount) return true; else return false;
+                        if (rCount == lCount) return true; else return false;
 
                     case UserType.Sales:
                     case UserType.Employees:

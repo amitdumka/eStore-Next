@@ -40,7 +40,6 @@ namespace AKS.Shared.Commons.Models.Auth
     }
 }
 
-public enum UserType { Admin, Owner, StoreManager, Sales, Accountant, CA, Guest, PowerUser, Employees }
 //public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccountant, Member, PowerUser };
 //insert Users Values('Admin@estore.in',1, 'Admin', 1,'2022-01-01',0,'ARD','',    'Amit Kumar',   0	);
 //insert Users Values('Amit@estore.in',2, 'Dumka', 1,'2022-01-01',1,'ARD','',     'Amit Kumar',   0	);

@@ -24,6 +24,8 @@ public enum SalaryComponet { NetSalary, LastPcs, WOWBill, SundaySalary, Incentiv
 public enum EmpType { Salesman, StoreManager, HouseKeeping, Owner, Accounts, TailorMaster, Tailors, TailoringAssistance, Others }
 public enum TaxType { GST, SGST, CGST, IGST, VAT, CST }
 public enum LoginRole { Admin, StoreManager, Salesman, Accountant, RemoteAccountant, Member, PowerUser };
+public enum UserType  { Admin, Owner, StoreManager, Sales, Accountant, CA, Guest, PowerUser, Employees }
+
 public enum AccountType { Saving, Current, CashCredit, OverDraft, Others, Loan, CF }
 public enum HolidayReason { GovertmentHoliday, Bandha, Festivals, WeeklyOff, ApproveHoliday, Other }
 public enum SlipBookType { Payment, Reciept, PaymentRecieptCombo, DailyBook, DebitNote, CreditNote, TailoringBook }

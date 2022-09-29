@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Ops;
+using eStore.DatabaseSyncService.Services;
 using eStore.MAUILib.Pages.Auth;
 
 namespace eStore
@@ -22,7 +23,9 @@ namespace eStore
 
         private void SyncDown_Clicked(object sender, EventArgs e)
         {
-
+            BackgroundService service = new SyncDownService();
+            service.InitService();
+            service.GetInstance.RunWorkerAsync(LocalSync.All);
         }
     }
 }

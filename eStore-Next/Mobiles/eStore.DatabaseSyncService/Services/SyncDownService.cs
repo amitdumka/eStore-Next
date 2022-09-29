@@ -1,9 +1,5 @@
-﻿using eStore.DatabaseSyncService.Services.eStore_MauiLib.Services.BackgroundServices;
-using System.ComponentModel;
-using AKS.Shared.Commons.Ops;
+﻿using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
-using eStore_MauiLib.RemoteService;
-using Microsoft.Maui.Platform;
 using System.ComponentModel;
 
 namespace eStore.DatabaseSyncService.Services
@@ -15,7 +11,6 @@ namespace eStore.DatabaseSyncService.Services
             BackgroundWorker worker = sender as BackgroundWorker;
             //e.Result = Job((int)e.Argument, worker, e);
             e.Result = Job((LocalSync)e.Argument, worker, e);
-
         }
 
         public override void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -52,7 +47,7 @@ namespace eStore.DatabaseSyncService.Services
             //TODO: basic cleanup or reset main thread ui
         }
 
-        public bool Job(LocalSync sync, BackgroundWorker worker, DoWorkEventArgs e)
+        public async Task<bool> Job(LocalSync sync, BackgroundWorker worker, DoWorkEventArgs e)
         {
             bool result = false;
             switch (sync)
@@ -67,12 +62,13 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = DatabaseStatus.SyncInitial();
+                        result = await DatabaseStatus.SyncInitial();
                         worker.ReportProgress(90);
                         if (result) CurrentSession.LocalStatus = true;
                         worker.ReportProgress(100);
                     }
                     break;
+
                 case LocalSync.Accounting:
                     if (worker.CancellationPending == true)
                     {
@@ -85,9 +81,9 @@ namespace eStore.DatabaseSyncService.Services
                         worker.ReportProgress(20);
                         result = DatabaseStatus.SyncAccounting();
                         worker.ReportProgress(100);
-
                     }
                     break;
+
                 case LocalSync.Inventory:
                     if (worker.CancellationPending == true)
                     {
@@ -102,6 +98,7 @@ namespace eStore.DatabaseSyncService.Services
                         worker.ReportProgress(100);
                     }
                     break;
+
                 case LocalSync.InitialAccounting:
                     if (worker.CancellationPending == true)
                     {
@@ -112,7 +109,7 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = DatabaseStatus.SyncInitial();
+                        result = await DatabaseStatus.SyncInitial();
 
                         if (result)
                         {
@@ -135,6 +132,7 @@ namespace eStore.DatabaseSyncService.Services
                         }
                     }
                     break;
+
                 case LocalSync.InitialInventory:
                     if (worker.CancellationPending == true)
                     {
@@ -145,7 +143,7 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = DatabaseStatus.SyncInitial();
+                        result = await DatabaseStatus.SyncInitial();
                         if (result)
                         {
                             worker.ReportProgress(25);
@@ -166,6 +164,7 @@ namespace eStore.DatabaseSyncService.Services
                         }
                     }
                     break;
+
                 case LocalSync.All:
                     worker.ReportProgress(1);
                     if (worker.CancellationPending == true)
@@ -177,42 +176,13 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = DatabaseStatus.SyncInitial();
-                        if (result)
-                        {
-                            worker.ReportProgress(20);
-                            CurrentSession.LocalStatus = true;
-                            worker.ReportProgress(30);
-                            if (worker.CancellationPending == true)
-                            {
-                                e.Cancel = true;
-                                result = false;
-                                break;
-                            }
-                            else
-                            {
-                                worker.ReportProgress(40);
-                                result = DatabaseStatus.SyncAccounting();
-                                worker.ReportProgress(60);
-                            }
-                            if (worker.CancellationPending == true)
-                            {
-                                e.Cancel = true;
-                                result = false;
-                                break;
-                            }
-                            else
-                            {
-                                worker.ReportProgress(80);
-                                result = DatabaseStatus.SyncInventory();
-                                worker.ReportProgress(100);
-                            }
-                        }
+                        result = await Sync.Down();
                     }
                     break;
+
                 default:
                     worker.ReportProgress(10);
-                    result = DatabaseStatus.SyncInitial();
+                    result = await DatabaseStatus.SyncInitial();
                     worker.ReportProgress(70);
                     if (result) CurrentSession.LocalStatus = true;
                     worker.ReportProgress(100);

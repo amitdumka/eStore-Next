@@ -18,6 +18,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\AKS.MAUI.Databases\AKS.MAUI.Databases.csproj" />
 	</ItemGroup>
 

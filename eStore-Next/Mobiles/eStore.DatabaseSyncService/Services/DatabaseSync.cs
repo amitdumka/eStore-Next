@@ -42,11 +42,6 @@ namespace eStore.DatabaseSyncService.Services
         }
 
     }
-    public class BackgroundService
-    {
-
-    }
-    public class SyncDownService : BackgroundService { }
     public class DatabaseStatus
     {
         public static async Task<bool> SyncInitial()

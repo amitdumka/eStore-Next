@@ -44,8 +44,6 @@
 	  <None Remove="Resources\Images\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Helpers\" />
-	  <Folder Include="Services\" />
 	  <Folder Include="Pages\" />
 	  <Folder Include="Pages\Auth\" />
 	  <Folder Include="DataModels\" />

@@ -1,4 +1,4 @@
-﻿namespace eStore_MauiLib.Helpers.Interfaces
+﻿namespace eStore.MAUILib.Helpers
 {
     public interface ISave
     {

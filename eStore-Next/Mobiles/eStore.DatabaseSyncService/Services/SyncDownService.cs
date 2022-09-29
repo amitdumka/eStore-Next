@@ -1,10 +1,12 @@
-﻿using AKS.Shared.Commons.Ops;
+﻿using eStore.DatabaseSyncService.Services.eStore_MauiLib.Services.BackgroundServices;
+using System.ComponentModel;
+using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Maui.Alerts;
 using eStore_MauiLib.RemoteService;
 using Microsoft.Maui.Platform;
 using System.ComponentModel;
 
-namespace eStore_MauiLib.Services.BackgroundServices
+namespace eStore.DatabaseSyncService.Services
 {
     public class SyncDownService : BackgroundService
     {
@@ -13,7 +15,7 @@ namespace eStore_MauiLib.Services.BackgroundServices
             BackgroundWorker worker = sender as BackgroundWorker;
             //e.Result = Job((int)e.Argument, worker, e);
             e.Result = Job((LocalSync)e.Argument, worker, e);
-            
+
         }
 
         public override void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -50,9 +52,9 @@ namespace eStore_MauiLib.Services.BackgroundServices
             //TODO: basic cleanup or reset main thread ui
         }
 
-        public  bool Job(LocalSync sync,  BackgroundWorker worker, DoWorkEventArgs e)
+        public bool Job(LocalSync sync, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            bool result=false;
+            bool result = false;
             switch (sync)
             {
                 case LocalSync.Initial:
@@ -111,7 +113,7 @@ namespace eStore_MauiLib.Services.BackgroundServices
                     {
                         worker.ReportProgress(10);
                         result = DatabaseStatus.SyncInitial();
-                     
+
                         if (result)
                         {
                             worker.ReportProgress(40);

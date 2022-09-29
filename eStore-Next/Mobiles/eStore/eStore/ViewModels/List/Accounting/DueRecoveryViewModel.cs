@@ -7,7 +7,7 @@ using Syncfusion.Maui.DataGrid;
 
 namespace eStore.ViewModels.List.Accounting
 {
-    public class DailySaleViewMoldel : BaseViewModel<DailySale, DailySaleDataModel>
+    public class DueRecoveryViewModel : BaseViewModel<DueRecovery, DailySaleDataModel>
     {
         protected override void AddButton()
         {
@@ -21,13 +21,13 @@ namespace eStore.ViewModels.List.Accounting
 
         protected override void InitViewModel()
         {
-            Icon = Resources.Styles.IconFont.FileInvoiceDollar;
+            Icon = Resources.Styles.IconFont.ChalkboardTeacher;
             DataModel = new DailySaleDataModel(ConType.Hybrid, CurrentSession.Role);
-            Entities = new System.Collections.ObjectModel.ObservableCollection<DailySale>();
+            Entities = new System.Collections.ObjectModel.ObservableCollection<DueRecovery>();
             DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
-            Title = "Daiy Sale";
+            Title = "Dues Recovered";
             DataModel.Connect();
             DefaultSortedColName = nameof(DailySale.OnDate);
             DefaultSortedOrder = Descending;
@@ -44,7 +44,7 @@ namespace eStore.ViewModels.List.Accounting
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetItemsAsync(CurrentSession.StoreCode);
+                    var data = await DataModel.GetZItems(CurrentSession.StoreCode);
                     UpdateEntities(data);
                     break;
 
@@ -62,15 +62,13 @@ namespace eStore.ViewModels.List.Accounting
         protected override async Task<ColumnCollection> SetGridCols()
         {
             ColumnCollection gridColumns = new();
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.InvoiceNumber), MappingName = nameof(DailySale.InvoiceNumber) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.ManualBill), MappingName = nameof(DailySale.ManualBill) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.OnDate), MappingName = nameof(DailySale.OnDate), Format = "dd/MMM/yyyy" });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.Amount), MappingName = nameof(DailySale.Amount) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.CashAmount), MappingName = nameof(DailySale.CashAmount) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.NonCashAmount), MappingName = nameof(DailySale.NonCashAmount) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.Remarks), MappingName = nameof(DailySale.Remarks) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.IsDue), MappingName = nameof(DailySale.IsDue) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DailySale.SalesReturn), MappingName = nameof(DailySale.SalesReturn) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.InvoiceNumber), MappingName = nameof(DueRecovery.InvoiceNumber) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.OnDate), MappingName = nameof(DueRecovery.OnDate), Format = "dd/MMM/yyyy" });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.Amount), MappingName = nameof(DueRecovery.Amount) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.Due), MappingName = nameof(DueRecovery.Due) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.ParticialPayment), MappingName = nameof(DueRecovery.ParticialPayment) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.PayMode), MappingName = nameof(DueRecovery.PayMode) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(DueRecovery.Remarks), MappingName = nameof(DueRecovery.Remarks) });
             return gridColumns;
         }
     }

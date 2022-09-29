@@ -45,7 +45,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CashDetailPage>();
         //DailySale 
         builder.Services.AddSingleton<DailySaleViewMoldel>();
-        //builder.Services.AddSingleton <DailySalePage>();
+        builder.Services.AddSingleton <DailySalePage>();
         //CashDetails
         builder.Services.AddSingleton<CashDetailViewModel>();
         builder.Services.AddSingleton<CashDetailPage>();

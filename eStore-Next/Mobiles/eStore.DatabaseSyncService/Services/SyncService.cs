@@ -51,7 +51,41 @@ namespace eStore.DatabaseSyncService.Services
             }
             return true;
         }
+        public async Task<bool> SyncDownPOSAsync()
+        {
+            if (db == null)
+                db = new AppDBContext(DBType.Local);
+            if (azure == null)
+                azure = new AppDBContext(DBType.Azure);
 
+            var local = db.EDCTerminals.Count();
+            var remote = azure.EDCTerminals.Count();
+            if (local != remote)
+            {
+                var lists = azure.EDCTerminals.ToList();
+                int recordAdded = 0;
+                foreach (var item in lists)
+                {
+                    if (!db.EDCTerminals.Any(c => c.EDCTerminalId == item.EDCTerminalId))
+                    {
+                        db.EDCTerminals.AddAsync(item);
+                        recordAdded++;
+                    }
+                }
+                int count = await db.SaveChangesAsync();
+                if (count == recordAdded)
+                {
+                    Preferences.Default.Set(nameof(EDCTerminal), $"{DateTime.Today}#R:{remote}#{local + recordAdded}#L");
+                    return true;
+                }
+                else
+                {
+                    Preferences.Remove(nameof(EDCTerminal));
+                    return false;
+                }
+            }
+            return true;
+        }
         public async Task<bool> SyncDownEmployeesAsync()
         {
             if (db == null)
@@ -1029,6 +1063,10 @@ namespace eStore.DatabaseSyncService.Services
                             recordAdded++;
                         }
                     }
+                    try
+                    {
+
+                    
                     int count = await db.SaveChangesAsync();
                     rCount += recordAdded;
                     lCount += recordAdded;
@@ -1037,6 +1075,12 @@ namespace eStore.DatabaseSyncService.Services
                         Preferences.Default.Set(nameof(DailySale), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
                     else
                         Preferences.Remove(nameof(DailySale));
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(e.Message);
+                        return false;
+                    }
                 }
 
                 if (lCount == rCount) return true; else return true;

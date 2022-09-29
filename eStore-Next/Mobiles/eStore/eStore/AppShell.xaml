@@ -101,7 +101,21 @@
         ContentTemplate="{DataTemplate pages:DashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
         Route="Dashboard" />
+    <FlyoutItem Title="Daily Sale">
+        <Tab Title="Daily Sale" Icon="rain_icon.png">
+            <ShellContent
+                Title="Daily Sale"
+                ContentTemplate="{DataTemplate accpages:DailySalePage}"
+                Route="DailySale" />
+        </Tab>
+        <!--<Tab Title="Sale Entry" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate accpages:Entry.DailySaleEntryPage}"
+                Route="Sale.Entry" />
+        </Tab>-->
 
+    </FlyoutItem>
     <FlyoutItem
         Title="Voucher"
         FlyoutIcon="rain_icon.png"

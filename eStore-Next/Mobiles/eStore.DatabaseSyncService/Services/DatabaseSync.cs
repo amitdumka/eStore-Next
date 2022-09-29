@@ -18,6 +18,7 @@ namespace eStore.DatabaseSyncService.Services
             success = await sync.SyncDownUsersAsync();
             success = await sync.SyncDownSalesmanAsync();
             success = await sync.SyncDownTranscationsAsync();
+            success = await sync.SyncDownPOSAsync();
             success = await sync.SyncVoucherAsync();
             success= await sync.SyncCashAsync();
             success = await sync.SyncDuesAsync();

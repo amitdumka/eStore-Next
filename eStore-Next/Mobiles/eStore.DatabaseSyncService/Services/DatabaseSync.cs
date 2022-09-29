@@ -16,6 +16,32 @@ public enum LocalSync
 
 namespace eStore.DatabaseSyncService.Services
 {
+    public static class Sync
+    {
+        public static async Task<bool> Down() {
+
+            var sync = new SyncService();
+
+            await sync.SyncDownStoresAsync();
+            sync.SyncDownEmployeesAsync();
+            await sync.SyncDownUsersAsync();
+            sync.SyncDownSalesmanAsync();
+            sync.SyncDownTranscationsAsync();
+            await sync.SyncDownBanksAsync();
+            
+
+            
+            
+            
+            
+            
+            Preferences.Default.Set("Local", "LocalSynced");
+            CurrentSession.LocalStatus = true;
+            return true;
+
+        }
+
+    }
     public class BackgroundService
     {
 
@@ -285,6 +311,8 @@ namespace eStore.DatabaseSyncService.Services
             }
             return true;
         }
+
+
 
     }
 }

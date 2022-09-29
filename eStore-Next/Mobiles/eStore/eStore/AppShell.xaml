@@ -217,6 +217,10 @@
         Route="about" />
     <!--  When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
     <MenuItem
+        Clicked="SyncDown_Clicked"
+        StyleClass="MenuItemLayoutStyle"
+        Text="Sync Down" />
+    <MenuItem
         Clicked="MenuItem_Clicked"
         StyleClass="MenuItemLayoutStyle"
         Text="Logout" />

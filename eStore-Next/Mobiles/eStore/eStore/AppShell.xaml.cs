@@ -19,5 +19,10 @@ namespace eStore
                 App.Current.MainPage = new LoginPage(new AppShell());
             }
         }
+
+        private void SyncDown_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

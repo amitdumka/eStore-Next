@@ -5,9 +5,7 @@ using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
 using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
-using CommunityToolkit.Maui.Alerts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace eStore.DatabaseSyncService.Services
 {
@@ -126,7 +124,7 @@ namespace eStore.DatabaseSyncService.Services
             return true;
         }
 
-        public async Task SyncDownBanksAsync()
+        public async Task<bool> SyncDownBanksAsync()
         {
             try
             {
@@ -156,13 +154,21 @@ namespace eStore.DatabaseSyncService.Services
                     rCount += recordAdded;
                     lCount += recordAdded;
                     if (count == recordAdded)
+                    {
                         Preferences.Default.Set(nameof(Bank), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:ALL");
+
+                        return false;
+                    }
                     else
-                        Preferences.Remove(nameof(Bank));
+                    {
+                        Preferences.Remove(nameof(Bank)); return false;
+                    }
                 }
+                return true;
             }
             catch (Exception e)
             {
+                return false;
                 //Toast//ake("Failed to sync bank List with error: " + e.Message, );
             }
         }
@@ -357,8 +363,8 @@ namespace eStore.DatabaseSyncService.Services
             }
             catch (Exception ex)
             {
-               // Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
-               System.Diagnostics.Debug.WriteLine(ex.Message);
+                // Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     //   Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
@@ -368,7 +374,7 @@ namespace eStore.DatabaseSyncService.Services
             }
         }
 
-        public async Task SyncDownBankAccountsAsync()
+        public async Task<bool> SyncDownBankAccountsAsync()
         {
             try
             {
@@ -412,9 +418,16 @@ namespace eStore.DatabaseSyncService.Services
                             rCount += recordAdded;
                             lCount += recordAdded;
                             if (count == recordAdded)
+                            {
                                 Preferences.Default.Set(nameof(BankAccount), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+
+                                return true;
+                            }
                             else
+                            {
                                 Preferences.Remove(nameof(BankAccount));
+                                return false;
+                            }
                         }
 
                         break;
@@ -426,14 +439,15 @@ namespace eStore.DatabaseSyncService.Services
 
                         break;
                 }
+                return false;
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
-        public async Task SyncDownPartiesAsync()
+        public async Task<bool> SyncDownPartiesAsync()
         {
             try
             {
@@ -463,15 +477,20 @@ namespace eStore.DatabaseSyncService.Services
                     rCount += recordAdded;
                     lCount += recordAdded;
                     if (count == recordAdded)
+                    {
                         Preferences.Default.Set(nameof(Party), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:ALL");
+                        return true;
+                    }
                     else
-                        Preferences.Remove(nameof(Party));
+                    { Preferences.Remove(nameof(Party)); return false; }
                 }
+                return true;
             }
             catch (Exception e)
             {
                 //Toast.Make("Failed to sync bank List with error: " + e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-                System.Diagnostics.Debug.WriteLine("Bank "+e.Message);
+                System.Diagnostics.Debug.WriteLine("parties " + e.Message);
+                return false;
             }
         }
 

@@ -12,21 +12,22 @@ namespace eStore.DatabaseSyncService.Services
         public static async Task<bool> Down()
         {
             var sync = new SyncService();
-            await sync.SyncDownStoresAsync();
-            sync.SyncDownEmployeesAsync();
-            await sync.SyncDownUsersAsync();
-            sync.SyncDownSalesmanAsync();
-            sync.SyncDownTranscationsAsync();
-            await sync.SyncDownBanksAsync();
-            sync.SyncDownAttendace(CurrentSession.UserType);
-            sync.SyncDownBankAccountsAsync();
-            sync.SyncDownPartiesAsync();
-            sync.SyncSalary(CurrentSession.UserType);
-            sync.SyncSalaryPayment(CurrentSession.UserType);
+            bool success = false;
+            success= await sync.SyncDownStoresAsync();
+            success = await sync.SyncDownEmployeesAsync();
+            success = await sync.SyncDownUsersAsync();
+            success = await sync.SyncDownSalesmanAsync();
+            success = await sync.SyncDownTranscationsAsync();
+            success= await sync.SyncDownBanksAsync();
+            success = await sync.SyncDownAttendace(CurrentSession.UserType);
+            success= await sync.SyncDownBankAccountsAsync();
+             await sync.SyncDownPartiesAsync();
+            success = await sync.SyncSalary(CurrentSession.UserType);
+            success = await sync.SyncSalaryPayment(CurrentSession.UserType);
 
             Preferences.Default.Set("Local", "LocalSynced");
             CurrentSession.LocalStatus = true;
-            return true;
+            return success;
         }
     }
 

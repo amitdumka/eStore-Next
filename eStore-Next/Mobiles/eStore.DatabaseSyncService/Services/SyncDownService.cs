@@ -42,12 +42,10 @@ namespace eStore.DatabaseSyncService.Services
                     Toast.Make("It failed to sync Local database with remote latest data", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 }
             }
-            //Toast.Make($" ObjectSender:{sender.ToString()}", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
-
-            //TODO: basic cleanup or reset main thread ui
+            
         }
 
-        public async Task<bool> Job(LocalSync sync, BackgroundWorker worker, DoWorkEventArgs e)
+        public bool Job(LocalSync sync, BackgroundWorker worker, DoWorkEventArgs e)
         {
             bool result = false;
             switch (sync)
@@ -62,7 +60,7 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = await DatabaseStatus.SyncInitial();
+                        result = DatabaseStatus.SyncInitial().Result;
                         worker.ReportProgress(90);
                         if (result) CurrentSession.LocalStatus = true;
                         worker.ReportProgress(100);
@@ -109,7 +107,7 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = await DatabaseStatus.SyncInitial();
+                        result =  DatabaseStatus.SyncInitial().Result;
 
                         if (result)
                         {
@@ -143,7 +141,7 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = await DatabaseStatus.SyncInitial();
+                        result =  DatabaseStatus.SyncInitial().Result;
                         if (result)
                         {
                             worker.ReportProgress(25);
@@ -176,13 +174,34 @@ namespace eStore.DatabaseSyncService.Services
                     else
                     {
                         worker.ReportProgress(10);
-                        result = await Sync.Down();
+                        result = Sync.Down().Result;
+                        worker.ReportProgress(85);
+                        if(result)
+                        {
+                            worker.ReportProgress(100);
+                            
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                Toast.Make("Database  is Synced. ", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                            });
+
+                        }
+                        else
+                        {
+                            worker.ReportProgress(100);
+                           
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                Toast.Make("Database  is Synced. ", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                            });
+
+                        }
                     }
                     break;
 
                 default:
                     worker.ReportProgress(10);
-                    result = await DatabaseStatus.SyncInitial();
+                    result =  DatabaseStatus.SyncInitial().Result;
                     worker.ReportProgress(70);
                     if (result) CurrentSession.LocalStatus = true;
                     worker.ReportProgress(100);
@@ -193,7 +212,12 @@ namespace eStore.DatabaseSyncService.Services
 
         public override void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Toast.Make($"Progress:{e.ProgressPercentage}% Completed,Sender:{sender.ToString()} ").Show();
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Toast.Make($"Progress:{e.ProgressPercentage}% Completed,Sender:{sender.ToString()} ").Show();
+            });
+            
+            
         }
     }
 }

@@ -357,10 +357,12 @@ namespace eStore.DatabaseSyncService.Services
             }
             catch (Exception ex)
             {
-                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+               // Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+               System.Diagnostics.Debug.WriteLine(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    //   Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    System.Diagnostics.Debug.WriteLine(ex.InnerException.Message);
                 }
                 return false;
             }
@@ -468,7 +470,8 @@ namespace eStore.DatabaseSyncService.Services
             }
             catch (Exception e)
             {
-                Toast.Make("Failed to sync bank List with error: " + e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                //Toast.Make("Failed to sync bank List with error: " + e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                System.Diagnostics.Debug.WriteLine("Bank "+e.Message);
             }
         }
 
@@ -599,12 +602,14 @@ namespace eStore.DatabaseSyncService.Services
                         return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
-                if (ex.InnerException != null)
+                //Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                System.Diagnostics.Debug.WriteLine("Err " + e.Message);
+                if (e.InnerException != null)
                 {
-                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    System.Diagnostics.Debug.WriteLine("err " + e.InnerException.Message);
+                    //Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
                 }
                 return false;
             }
@@ -781,12 +786,14 @@ namespace eStore.DatabaseSyncService.Services
                         return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
-                if (ex.InnerException != null)
+                //Toast.Make("Error: " + ex.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                System.Diagnostics.Debug.WriteLine("err " + e.Message);
+                if (e.InnerException != null)
                 {
-                    Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
+                    System.Diagnostics.Debug.WriteLine("err " + e.InnerException.Message);
+                    //Toast.Make("Error Inner: " + ex.InnerException.Message, CommunityToolkit.Maui.Core.ToastDuration.Long);
                 }
                 return false;
             }

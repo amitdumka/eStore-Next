@@ -9,7 +9,6 @@ public partial class NotesPage : ContentPage
 	public NotesPage(NotesViewModel vm)
 	{
 		InitializeComponent();
-        InitializeComponent();
         BindingContext = viewModel = vm;
         viewModel.Setup(this, RLV);
     }

@@ -1,6 +1,8 @@
 ﻿using System;
+using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Sales;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Accounting
 {
@@ -34,39 +36,47 @@ namespace eStore.MAUILib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
-        public override Task<List<DailySale>> GetItemsAsync(string storeid)
+        public override async Task<List<DailySale>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.DailySales.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
+                 .OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+           return db.DailySales.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
         public override List<int> GetYearList()
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return db.DailySales.Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
-        public override Task<List<int>> GetYearListY(string storeid)
+        public override async Task<List<int>> GetYearListY(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.CustomerDues.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
-        public override Task<List<int>> GetYearListY()
+        public override async Task<List<int>> GetYearListY()
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.CustomerDues.Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
-        public override Task<List<int>> GetYearListZ(string storeid)
+        public override async Task<List<int>> GetYearListZ(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.DueRecovery.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
-        public override Task<List<int>> GetYearListZ()
+        public override async Task<List<int>> GetYearListZ()
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.DueRecovery.Select(c => c.OnDate.Year).Distinct().ToListAsync();
         }
 
         public override Task<List<CustomerDue>> GetYFiltered(QueryParam query)
@@ -74,9 +84,11 @@ namespace eStore.MAUILib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
-        public override Task<List<CustomerDue>> GetYItems(string storeid)
+        public override async Task<List<CustomerDue>> GetYItems(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.CustomerDues.Where(c => c.StoreId == storeid && !c.Paid && c.OnDate.Year == DateTime.Today.Year)
+                 .OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
         public override Task<List<DueRecovery>> GetZFiltered(QueryParam query)
@@ -84,14 +96,16 @@ namespace eStore.MAUILib.DataModels.Accounting
             throw new NotImplementedException();
         }
 
-        public override Task<List<DueRecovery>> GetZItems(string storeid)
+        public override async Task<List<DueRecovery>> GetZItems(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.DueRecovery.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
+                 .OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
-        public override Task<bool> InitContext()
+        public override async Task<bool> InitContext()
         {
-            throw new NotImplementedException();
+            return Connect();
         }
     }
 }

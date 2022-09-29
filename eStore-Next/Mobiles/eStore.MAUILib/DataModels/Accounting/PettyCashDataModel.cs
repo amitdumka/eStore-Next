@@ -70,14 +70,16 @@ namespace eStore.MAUILib.DataModels.Accounting
 
          
 
-        public override Task<List<CashDetail>> GetYItems(string storeid)
+        public override async Task<List<CashDetail>> GetYItems(string storeid)
         {
-            throw new NotImplementedException();
+            var db = GetContext();
+            return await db.CashDetails.Where(c => c.OnDate.Year == DateTime.Today.Year)
+                .OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
-        public override Task<bool> InitContext()
+        public override async Task<bool> InitContext()
         {
-            throw new NotImplementedException();
+            return Connect();
         }
     }
 }

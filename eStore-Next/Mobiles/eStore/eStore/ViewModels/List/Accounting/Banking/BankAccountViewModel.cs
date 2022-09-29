@@ -1,5 +1,4 @@
-﻿using System;
-using AKS.Shared.Commons.Models.Accounts;
+﻿using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Banking;
 using AKS.Shared.Commons.Ops;
 using eStore.MAUILib.DataModels.Accounting;
@@ -9,7 +8,7 @@ using Syncfusion.Maui.DataGrid;
 
 namespace eStore.ViewModels.List.Accounting.Banking
 {
-    public class BankViewModel : BaseViewModel<Bank, BankingDataModel>
+    public class BankAccountViewModel : BaseViewModel<BankAccount, BankingDataModel>
     {
         protected override void AddButton()
         {
@@ -25,11 +24,11 @@ namespace eStore.ViewModels.List.Accounting.Banking
         {
             Icon = Resources.Styles.IconFont.MoneyCheck;
             DataModel = new BankingDataModel(ConType.Hybrid, CurrentSession.Role);
-            Entities = new System.Collections.ObjectModel.ObservableCollection<Bank>();
+            Entities = new System.Collections.ObjectModel.ObservableCollection<BankAccount>();
             DataModel.Mode = DBType.Azure;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
-            Title = "Bank";
+            Title = "Bank Account";
             DataModel.Connect();
             DefaultSortedColName = nameof(Voucher.OnDate);
             DefaultSortedOrder = Descending;
@@ -45,7 +44,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetItemsAsync();
+                    var data = await DataModel.GetYItems(CurrentSession.StoreCode);
                     UpdateEntities(data);
                     break;
 
@@ -60,16 +59,14 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override Task<global::Syncfusion.Maui.DataGrid.ColumnCollection> SetGridCols()
+        protected override void UpdateEntities(List<BankAccount> values)
         {
             throw new NotImplementedException();
         }
-
-        protected override void UpdateEntities(List<Bank> values)
+        protected override Task<ColumnCollection> SetGridCols()
         {
             throw new NotImplementedException();
         }
-        
     }
 }
 

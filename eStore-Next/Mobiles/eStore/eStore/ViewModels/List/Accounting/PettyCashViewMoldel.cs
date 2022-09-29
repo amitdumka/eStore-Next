@@ -9,6 +9,10 @@ namespace eStore.ViewModels.List.Accounting
 {
     public class PettyCashViewMoldel : BaseViewModel<PettyCashSheet, PettyCashDataModel>
     {
+        public PettyCashViewMoldel()
+        {
+            InitViewModel();
+        }
         protected override void AddButton()
         {
             throw new NotImplementedException();
@@ -24,7 +28,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.MoneyCheck;
             DataModel = new PettyCashDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<PettyCashSheet>();
-            DataModel.Mode = DBType.Local;
+            DataModel.Mode = DBType.Azure;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Vouchers";

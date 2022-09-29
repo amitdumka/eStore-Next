@@ -15,11 +15,6 @@ namespace eStore.ViewModels.List.Accounting
 
         public NotesViewModel() : base()
         {
-            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-            DataModel.StoreCode = CurrentSession.StoreCode;
-            Role = CurrentSession.UserType;
-            DataModel.Connect();
-            DataModel.Mode = DBType.Local;
             InitViewModel();
         }
 
@@ -90,6 +85,7 @@ namespace eStore.ViewModels.List.Accounting
 
         protected override void InitViewModel()
         {
+            Icon = Resources.Styles.IconFont.MoneyCheck;
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<Note>();
             DataModel.Mode = DBType.Local;
@@ -97,10 +93,10 @@ namespace eStore.ViewModels.List.Accounting
             Role = CurrentSession.UserType;
             Title = "Vouchers";
             DataModel.Connect();
-            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedColName = nameof(Note.OnDate);
             DefaultSortedOrder = Descending;
             FetchAsync();
-            //Icon = eStore_Maui.Resources.Styles.IconFont.FileInvoice;
+             
         }
 
         protected override void RefreshButton()
@@ -128,7 +124,7 @@ namespace eStore.ViewModels.List.Accounting
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetZItemsAsync();
+                    var data = await DataModel.GetZItems(CurrentSession.StoreCode);
                     UpdateEntities(data);
                     break;
 
@@ -137,16 +133,24 @@ namespace eStore.ViewModels.List.Accounting
                     break;
             }
         }
-
+        
         partial void OnVoucherTypeChanged(VoucherType value)
         {
             // Use filter here to change the view.
             throw new NotImplementedException();
         }
 
-        protected override Task<ColumnCollection> SetGridCols()
+        protected override async Task<ColumnCollection> SetGridCols()
         {
-            throw new NotImplementedException();
+            ColumnCollection gridColumns = new();
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.NoteNumber), MappingName = nameof(Note.NoteNumber) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.OnDate), MappingName = nameof(Note.OnDate), Format = "dd/MMM/yyyy" });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.NotesType), MappingName = nameof(Note.NotesType) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.PartyName), MappingName = nameof(Note.PartyName) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.Reason), MappingName = nameof(Note.Reason) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.Remarks), MappingName = nameof(Note.Remarks) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Note.Amount), MappingName = nameof(Note.Amount) });
+            return gridColumns;
         }
     }
 }

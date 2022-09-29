@@ -15,7 +15,7 @@ public partial class UsersPage : ContentPage
         viewModel = new AuthViewModel();
         BindingContext = viewModel;
         RLV.BindingContext = viewModel;
-        viewModel.Icon = eStore.MAUILib.Resources.Styles.IconFont.UserFriends;
+        viewModel.Icon = MAUILib.Resources.Styles.IconFont.UserFriends;
         RLV.Cols = SetGridCols();
     }
 

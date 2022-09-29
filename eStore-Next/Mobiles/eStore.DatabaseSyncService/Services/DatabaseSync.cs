@@ -91,7 +91,7 @@ namespace eStore.DatabaseSyncService.Services
         public static async Task<bool> SyncAttendance()
         {
             var sync = new SyncService();
-            return await sync.SyncAttendace(CurrentSession.UserType);
+            return await sync.SyncDownAttendace(CurrentSession.UserType);
         }
 
         public static async Task<bool> SyncSalary()
@@ -124,7 +124,7 @@ namespace eStore.DatabaseSyncService.Services
                 userType = CurrentSession.UserType;
             }
 
-            sync.SyncDownBankAccountsAsync(userType);
+            sync.SyncDownBankAccountsAsync();
             //sync.SyncDownEdcTermianl(userType);
             //sync.SyncDownVendorsAccount();
             //sync.SyncDownAccountList();

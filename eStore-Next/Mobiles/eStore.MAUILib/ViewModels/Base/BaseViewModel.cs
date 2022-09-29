@@ -79,7 +79,16 @@ namespace eStore.MAUILib.ViewModels.Base
 
         protected abstract void InitViewModel();
 
-        protected abstract void UpdateEntities(List<T> values);
+        //protected abstract void UpdateEntities(List<T> values);
+        protected void UpdateEntities(List<T> values)
+        {
+            if (Entities == null) Entities = new ObservableCollection<T>();
+            foreach (var item in values)
+            {
+                Entities.Add(item);
+            }
+            RecordCount = _entities.Count;
+        }
 
         [RelayCommand]
         protected abstract Task<ColumnCollection> SetGridCols();

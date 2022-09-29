@@ -15,14 +15,22 @@ namespace eStore.ViewModels.List.Accounting
 
         public CashVoucherViewModel() : base()
         {
-            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-            DataModel.StoreCode = CurrentSession.StoreCode;
-            Role = CurrentSession.UserType;
-            DataModel.Connect();
-            DataModel.Mode = DBType.Local;
             InitViewModel();
         }
-
+        protected override void InitViewModel()
+        {
+            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
+            DataModel.Mode = DBType.Azure;
+            DataModel.StoreCode = CurrentSession.StoreCode;
+            Role = CurrentSession.UserType;
+            Title = "CashVouchers";
+            DataModel.Connect();
+            DefaultSortedColName = nameof(CashVoucher.OnDate);
+            DefaultSortedOrder = Descending;
+            FetchAsync();
+            //Icon = eStore_Maui.Resources.Styles.IconFont.FileInvoice;
+        }
         protected override void AddButton()
         {
             //var c = Delete();
@@ -84,27 +92,14 @@ namespace eStore.ViewModels.List.Accounting
         //    throw new NotImplementedException();
         //}
 
-        protected override void InitViewModel()
-        {
-            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-            Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
-            DataModel.Mode = DBType.Local;
-            DataModel.StoreCode = CurrentSession.StoreCode;
-            Role = CurrentSession.UserType;
-            Title = "CashVouchers";
-            DataModel.Connect();
-            DefaultSortedColName = nameof(CashVoucher.OnDate);
-            DefaultSortedOrder = Descending;
-            FetchAsync();
-            //Icon = eStore_Maui.Resources.Styles.IconFont.FileInvoice;
-        }
+        
 
         protected override void RefreshButton()
         {
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<CashVoucher> values)
+        protected new void UpdateEntities(List<CashVoucher> values)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
             foreach (var item in values)

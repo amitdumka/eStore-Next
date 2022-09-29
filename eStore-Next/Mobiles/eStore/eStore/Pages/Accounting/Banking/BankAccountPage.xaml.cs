@@ -1,9 +1,14 @@
+using eStore.ViewModels.List.Accounting.Banking;
+
 namespace eStore.Pages.Accounting;
 
 public partial class BankAccountPage : ContentPage
 {
-	public BankAccountPage()
+    BankAccountViewModel viewModel;
+	public BankAccountPage(BankAccountViewModel vm)
 	{
-		InitializeComponent();
-	}
+        InitializeComponent();
+        BindingContext = viewModel = vm;
+        viewModel.Setup(this, RLV);
+    }
 }

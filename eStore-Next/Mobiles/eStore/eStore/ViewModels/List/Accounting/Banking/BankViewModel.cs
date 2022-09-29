@@ -65,10 +65,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<Bank> values)
-        {
-            throw new NotImplementedException();
-        }
+         
         
     }
 }

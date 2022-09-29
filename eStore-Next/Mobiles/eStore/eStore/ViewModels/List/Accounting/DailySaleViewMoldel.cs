@@ -66,10 +66,7 @@ namespace eStore.ViewModels.List.Accounting
 
          
 
-        protected override void UpdateEntities(List<DailySale> values)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         protected override  async Task<ColumnCollection> SetGridCols()
         {
@@ -156,9 +153,14 @@ namespace eStore.ViewModels.List.Accounting
             return gridColumns;
         }
 
-        protected override void UpdateEntities(List<CustomerDue> values)
+        protected new void UpdateEntities(List<CustomerDue> values)
         {
-            throw new NotImplementedException();
+            if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<CustomerDue>();
+            foreach (var item in values)
+            {
+                Entities.Add(item);
+            }
+            RecordCount = _entities.Count;
         }
     }
     public class DueRecoveryViewModel : BaseViewModel<DueRecovery, DailySaleDataModel>
@@ -212,10 +214,7 @@ namespace eStore.ViewModels.List.Accounting
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<DueRecovery> values)
-        {
-            throw new NotImplementedException();
-        }
+         
         protected override async Task<ColumnCollection> SetGridCols()
         {
             ColumnCollection gridColumns = new();

@@ -23,12 +23,12 @@ namespace eStore.ViewModels.List.Accounting.Banking
         protected override void InitViewModel()
         {
             Icon = Resources.Styles.IconFont.MoneyCheck;
-            DataModel = new PettyCashDataModel(ConType.Hybrid, CurrentSession.Role);
-            Entities = new System.Collections.ObjectModel.ObservableCollection<PettyCashSheet>();
+            DataModel = new BankingDataModel(ConType.Hybrid, CurrentSession.Role);
+            Entities = new System.Collections.ObjectModel.ObservableCollection<BankTranscation>();
             DataModel.Mode = DBType.Azure;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
-            Title = "Vouchers";
+            Title = "Transcations";
             DataModel.Connect();
             DefaultSortedColName = nameof(Voucher.OnDate);
             DefaultSortedOrder = Descending;
@@ -44,7 +44,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetItemsAsync(CurrentSession.StoreCode);
+                    var data = await DataModel.GetZItems (CurrentSession.StoreCode);
                     UpdateEntities(data);
                     break;
 
@@ -58,10 +58,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<BankTranscation> values)
-        {
-            throw new NotImplementedException();
-        }
+         
         protected override Task<ColumnCollection> SetGridCols()
         {
             throw new NotImplementedException();

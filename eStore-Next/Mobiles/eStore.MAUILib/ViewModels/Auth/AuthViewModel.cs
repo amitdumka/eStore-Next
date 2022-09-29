@@ -78,7 +78,7 @@ namespace eStore.MAUILib.ViewModels.Auth
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<User> users)
+        protected new void UpdateEntities(List<User> users)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<User>();
             foreach (var user in users)

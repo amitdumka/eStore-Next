@@ -31,7 +31,7 @@ namespace eStore.ViewModels.List.Accounting
             DataModel.Mode = DBType.Azure;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
-            Title = "Vouchers";
+            Title = "Petty Cash Sheet";
             DataModel.Connect();
             DefaultSortedColName = nameof(Voucher.OnDate);
             DefaultSortedOrder = Descending;
@@ -61,10 +61,7 @@ namespace eStore.ViewModels.List.Accounting
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<PettyCashSheet> values)
-        {
-            throw new NotImplementedException();
-        }
+         
         protected override async Task<ColumnCollection> SetGridCols()
         {
             ColumnCollection gridColumns = new();

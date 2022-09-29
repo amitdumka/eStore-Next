@@ -17,14 +17,23 @@ namespace eStore.ViewModels.List.Accounting
 
         public VoucherViewModel() : base()
         {
-            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-            DataModel.StoreCode = CurrentSession.StoreCode;
-            Role = CurrentSession.UserType;
-            DataModel.Connect();
-            DataModel.Mode = DBType.Local;
             InitViewModel();
         }
+        protected override void InitViewModel()
+        {
+            Icon = Resources.Styles.IconFont.MoneyBillWave;
+            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
+            Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
+            DataModel.Mode = DBType.Azure;
+            DataModel.StoreCode = CurrentSession.StoreCode;
+            Role = CurrentSession.UserType;
+            Title = "Vouchers";
+            DataModel.Connect();
+            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedOrder = Descending;
+            FetchAsync();
 
+        }
         protected override void AddButton()
         {
             //  var c = Delete();
@@ -90,28 +99,14 @@ namespace eStore.ViewModels.List.Accounting
         //    throw new NotImplementedException();
         //}
 
-        protected override void InitViewModel()
-        {
-            Icon = Resources.Styles.IconFont.MoneyBillWave;
-            DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
-            Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
-            DataModel.Mode = DBType.Local;
-            DataModel.StoreCode = CurrentSession.StoreCode;
-            Role = CurrentSession.UserType;
-            Title = "Vouchers";
-            DataModel.Connect();
-            DefaultSortedColName = nameof(Voucher.OnDate);
-            DefaultSortedOrder = Descending;
-            FetchAsync();
-            
-        }
+        
 
         protected override void RefreshButton()
         {
             // throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<Voucher> values)
+        protected new void UpdateEntities(List<Voucher> values)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
             foreach (var item in values)

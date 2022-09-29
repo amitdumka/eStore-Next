@@ -101,6 +101,7 @@
         ContentTemplate="{DataTemplate pages:DashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
         Route="Dashboard" />
+
     <FlyoutItem
         Title="Voucher"
         FlyoutIcon="rain_icon.png"

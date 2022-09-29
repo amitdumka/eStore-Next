@@ -59,10 +59,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<BankAccount> values)
-        {
-            throw new NotImplementedException();
-        }
+         
         protected override Task<ColumnCollection> SetGridCols()
         {
             throw new NotImplementedException();

@@ -11,6 +11,10 @@ namespace eStore.ViewModels.List.Accounting
 {
     public class CashDetailViewModel : BaseViewModel<CashDetail, PettyCashDataModel>
     {
+        public CashDetailViewModel()
+        {
+            InitViewModel();
+        }
         protected override void AddButton()
         {
             throw new NotImplementedException();
@@ -77,10 +81,7 @@ namespace eStore.ViewModels.List.Accounting
             return gridColumns;
         }
 
-        protected override void UpdateEntities(List<CashDetail> values)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
 

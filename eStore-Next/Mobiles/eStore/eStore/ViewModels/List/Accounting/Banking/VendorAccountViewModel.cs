@@ -8,7 +8,7 @@ using Syncfusion.Maui.DataGrid;
 
 namespace eStore.ViewModels.List.Accounting.Banking
 {
-    public class VendorAccountViewModel : BaseViewModel<VendorBankAccount, BankingDataModel>
+    public class VendorAccountViewModel : BaseViewModel<VendorBankAccount, BankInfoDataModel>
     {
         protected override void AddButton()
         {
@@ -59,10 +59,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<VendorBankAccount> values)
-        {
-            throw new NotImplementedException();
-        }
+        
         protected override Task<ColumnCollection> SetGridCols()
         {
             throw new NotImplementedException();

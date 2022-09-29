@@ -104,7 +104,7 @@ namespace eStore.ViewModels.List.Accounting
             // throw new NotImplementedException();
         }
 
-        protected override void UpdateEntities(List<Note> values)
+        protected new void UpdateEntities(List<Note> values)
         {
             if (Entities == null) Entities = new System.Collections.ObjectModel.ObservableCollection<Note>();
             foreach (var item in values)

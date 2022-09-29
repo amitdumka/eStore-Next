@@ -1,9 +1,16 @@
+ 
+using eStore.ViewModels.List.Accounting;
+
 namespace eStore.Pages.Accounting;
 
 public partial class DueRecoveryPage : ContentPage
 {
-	public DueRecoveryPage()
+    DueRecoveryViewModel viewModel;
+	public DueRecoveryPage(DueRecoveryViewModel vm)
 	{
-		InitializeComponent();
-	}
+		 
+        InitializeComponent();
+        BindingContext = viewModel = vm;
+        viewModel.Setup(this, RLV);
+    }
 }

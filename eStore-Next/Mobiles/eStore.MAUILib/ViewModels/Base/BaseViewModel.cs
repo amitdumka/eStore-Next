@@ -85,7 +85,8 @@ namespace eStore.MAUILib.ViewModels.Base
         //protected abstract void UpdateEntities(List<T> values);
         protected void UpdateEntities(List<T> values)
         {
-            if (Entities == null) Entities = new ObservableCollection<T>();
+            if (Entities == null) 
+                Entities = new ObservableCollection<T>();
             foreach (var item in values)
             {
                 Entities.Add(item);

@@ -3,9 +3,11 @@ using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Accounts;
 using AKS.Shared.Commons.Models.Auth;
 using AKS.Shared.Commons.Models.Banking;
+using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace eStore.DatabaseSyncService.Services
 {
@@ -634,6 +636,7 @@ namespace eStore.DatabaseSyncService.Services
             }
         }
 
+       
         public async Task<bool> SyncSalaryPayment(UserType role)
         {
             try
@@ -818,6 +821,233 @@ namespace eStore.DatabaseSyncService.Services
             }
         }
 
-        ///
+        public async Task<bool> SyncVoucherAsync()
+        {
+            try
+            {
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
+
+                int lCount = 0;
+                int rCount = 0;
+                var local = db.Vouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                var remote = azure.Vouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.Vouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.Vouchers.Any(c => c.VoucherNumber == att.VoucherNumber))
+                        {
+                            db.Vouchers.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(Voucher), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(Voucher));
+                }
+                // lCount = 0;
+                // rCount = 0;
+                local = db.CashVouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                remote = azure.CashVouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.CashVouchers.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.CashVouchers.Any(c => c.VoucherNumber == att.VoucherNumber))
+                        {
+                            db.CashVouchers.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(CashVoucher), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(CashVoucher));
+                }
+                if (lCount == rCount) return true; else return true;
+
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+        public async Task<bool> SyncCashAsync()
+        {
+            try
+            {
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
+
+                int lCount = 0;
+                int rCount = 0;
+                var local = db.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                var remote = azure.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.PettyCashSheets.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.PettyCashSheets.Any(c => c.Id == att.Id))
+                        {
+                            db.PettyCashSheets.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(PettyCashSheet), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(PettyCashSheet));
+                }
+                // lCount = 0;
+                // rCount = 0;
+                local = db.CashDetails.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                remote = azure.CashDetails.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.CashDetails.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.CashDetails.Any(c => c.CashDetailId == att.CashDetailId))
+                        {
+                            db.CashDetails.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(CashDetail), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(CashDetail));
+                }
+                if (lCount == rCount) return true; else return true;
+
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+        public async Task<bool> SyncDuesAsync()
+        {
+            try
+            {
+                if (db == null)
+                    db = new AppDBContext(DBType.Local);
+                if (azure == null)
+                    azure = new AppDBContext(DBType.Azure);
+
+                int lCount = 0;
+                int rCount = 0;
+                var local = db.CustomerDues.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                var remote = azure.CustomerDues.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.CustomerDues.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.CustomerDues.Any(c => c.InvoiceNumber == att.InvoiceNumber))
+                        {
+                            db.CustomerDues.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(CustomerDue), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(CustomerDue));
+                }
+                // lCount = 0;
+                // rCount = 0;
+                local = db.DueRecovery.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                remote = azure.DueRecovery.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.DueRecovery.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.DueRecovery.Any(c => c.Id == att.Id))
+                        {
+                            db.DueRecovery.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(DueRecovery), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(DueRecovery));
+                }
+                // lCount = 0;
+                // rCount = 0;
+                local = db.DailySales.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                remote = azure.DailySales.Where(c => c.OnDate.Year == DateTime.Today.Year).Count();
+                if (local < remote)
+                {
+                    var remoteList = azure.DailySales.Where(c => c.OnDate.Year == DateTime.Today.Year).ToList();
+                    int recordAdded = 0;
+                    foreach (var att in remoteList)
+                    {
+                        if (!db.DailySales.Any(c => c.InvoiceNumber == att.InvoiceNumber))
+                        {
+                            db.DailySales.AddAsync(att);
+                            recordAdded++;
+                        }
+                    }
+                    int count = await db.SaveChangesAsync();
+                    rCount += recordAdded;
+                    lCount += recordAdded;
+
+                    if (count == recordAdded)
+                        Preferences.Default.Set(nameof(DailySale), $"{DateTime.Today}#R:{remote}#L:{local + recordAdded}#U:{CurrentSession.UserType}");
+                    else
+                        Preferences.Remove(nameof(DailySale));
+                }
+
+                if (lCount == rCount) return true; else return true;
+
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+
     }
 }

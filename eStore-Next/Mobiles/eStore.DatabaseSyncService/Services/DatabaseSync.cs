@@ -18,13 +18,15 @@ namespace eStore.DatabaseSyncService.Services
             success = await sync.SyncDownUsersAsync();
             success = await sync.SyncDownSalesmanAsync();
             success = await sync.SyncDownTranscationsAsync();
-            success= await sync.SyncDownBanksAsync();
+            success = await sync.SyncVoucherAsync();
+            success= await sync.SyncCashAsync();
+            success = await sync.SyncDuesAsync();
+            success = await sync.SyncDownBanksAsync();
             success = await sync.SyncDownAttendace(CurrentSession.UserType);
             success= await sync.SyncDownBankAccountsAsync();
              await sync.SyncDownPartiesAsync();
             success = await sync.SyncSalary(CurrentSession.UserType);
             success = await sync.SyncSalaryPayment(CurrentSession.UserType);
-
             Preferences.Default.Set("Local", "LocalSynced");
             CurrentSession.LocalStatus = true;
             return success;

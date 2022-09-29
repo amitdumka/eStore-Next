@@ -8,7 +8,7 @@ public partial class VendorBankAccountPage : ContentPage
     VendorAccountViewModel viewModel;
 	public VendorBankAccountPage(VendorAccountViewModel vm)
 	{
-		InitializeComponent();
+		
         InitializeComponent();
         BindingContext = viewModel = vm;
         viewModel.Setup(this, RLV);

@@ -9,7 +9,6 @@ public partial class CashDetailPage : ContentPage
 	public CashDetailPage(CashDetailViewModel vm)
 	{
 		InitializeComponent();
-        InitializeComponent();
         BindingContext = viewModel = vm;
         viewModel.Setup(this, RLV);
     }

@@ -13,10 +13,7 @@ namespace eStore.ViewModels.List.Accounting
         [ObservableProperty]
         private VoucherType _voucherType;
 
-        public NotesViewModel() : base()
-        {
-            InitViewModel();
-        }
+        
 
         protected override void AddButton()
         {

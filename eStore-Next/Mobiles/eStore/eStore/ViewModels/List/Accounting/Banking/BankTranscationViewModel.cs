@@ -30,7 +30,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             Role = CurrentSession.UserType;
             Title = "Transcations";
             DataModel.Connect();
-            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedColName = nameof(BankTranscation.OnDate);
             DefaultSortedOrder = Descending;
             FetchAsync();
         }
@@ -58,10 +58,18 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-         
-        protected override Task<ColumnCollection> SetGridCols()
+
+        protected override async Task<ColumnCollection> SetGridCols()
         {
-            throw new NotImplementedException();
+            ColumnCollection gridColumns = new();
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.OnDate), MappingName = nameof(BankTranscation.OnDate), Format = "dd/MMM/yyyy" });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.AccountNumber), MappingName = nameof(BankTranscation.AccountNumber) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.Amount), MappingName = nameof(BankTranscation.Amount) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.Balance), MappingName = nameof(BankTranscation.Balance) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.DebitCredit), MappingName = nameof(BankTranscation.DebitCredit) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.Naration), MappingName = nameof(BankTranscation.Naration) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankTranscation.Verified), MappingName = nameof(BankTranscation.Verified) });
+            return gridColumns;
         }
     }
 }

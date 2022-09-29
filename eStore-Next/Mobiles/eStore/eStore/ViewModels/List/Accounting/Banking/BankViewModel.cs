@@ -29,9 +29,9 @@ namespace eStore.ViewModels.List.Accounting.Banking
             DataModel.Mode = DBType.Azure;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
-            Title = "Bank";
+            Title = "Banks";
             DataModel.Connect();
-            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedColName = nameof(Bank.Name);
             DefaultSortedOrder = Descending;
             FetchAsync();
         }
@@ -60,13 +60,16 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-        protected override Task<global::Syncfusion.Maui.DataGrid.ColumnCollection> SetGridCols()
+        protected override async Task<ColumnCollection> SetGridCols()
         {
-            throw new NotImplementedException();
+            ColumnCollection gridColumns = new();
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Bank.BankId), MappingName = nameof(Bank.BankId) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Bank.Name), MappingName = nameof(Bank.Name) });
+
+            return gridColumns;
         }
 
-         
-        
+
     }
 }
 

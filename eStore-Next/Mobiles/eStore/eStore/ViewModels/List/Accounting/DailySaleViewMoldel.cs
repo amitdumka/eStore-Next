@@ -11,10 +11,7 @@ namespace eStore.ViewModels.List.Accounting
 {
     public class DailySaleViewMoldel : BaseViewModel<DailySale, DailySaleDataModel>
     {
-        public DailySaleViewMoldel()
-        {
-            InitViewModel();
-        }
+        
         protected override void AddButton()
         {
             throw new NotImplementedException();

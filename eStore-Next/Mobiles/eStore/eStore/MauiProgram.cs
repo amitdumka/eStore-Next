@@ -56,19 +56,23 @@ public static class MauiProgram
         //Banking 
         builder.Services.AddSingleton<BankViewModel>();
         builder.Services.AddSingleton<BankPage>();
+
         builder.Services.AddSingleton<BankAccountViewModel>();
         builder.Services.AddSingleton<BankAccountPage>();
+
         builder.Services.AddSingleton<VendorAccountViewModel>();
         builder.Services.AddSingleton<VendorBankAccountPage>();
 
-        //Info bankig
+        //due
         builder.Services.AddSingleton<CustomerDueViewModel>();
         builder.Services.AddSingleton<CustomerDuesPage>();
-        //Due
+        
+        //Due rec
         builder.Services.AddSingleton<DueRecoveryViewModel>();
         builder.Services.AddSingleton<DueRecoveryPage>();
-        //Reciv
-        builder.Services.AddSingleton<BankInfoDataModel>();
+        
+        //Bankfino
+        builder.Services.AddSingleton<BankTranscationViewModel>();
         builder.Services.AddSingleton<BankTranscationPage>();
 
 

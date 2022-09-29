@@ -53,7 +53,10 @@ namespace eStore.MAUILib.ViewModels.Base
         #endregion Field
 
         public DM GetDataModel() => DataModel;
-
+        public BaseViewModel()
+        {
+            InitViewModel();
+        }
         #region Abstractfunctions
 
         // [RelayCommand]

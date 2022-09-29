@@ -45,8 +45,8 @@ namespace eStore.MAUILib.ViewModels.Auth
 
         public AuthViewModel()
         {
-            DataModel = new AuthDataModel(ConType.Hybrid);
-            InitViewModel();
+            
+            //InitViewModel();
         }
 
 
@@ -63,6 +63,7 @@ namespace eStore.MAUILib.ViewModels.Auth
 
         protected override void InitViewModel()
         {
+            DataModel = new AuthDataModel(ConType.Hybrid);
             DataModel.Connect();
             DataModel.Mode = DBType.Local;
             //UpdateEntities(await DataModel.GetItems());

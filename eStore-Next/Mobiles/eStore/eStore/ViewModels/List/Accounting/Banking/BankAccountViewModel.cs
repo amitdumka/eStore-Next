@@ -30,7 +30,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             Role = CurrentSession.UserType;
             Title = "Bank Account";
             DataModel.Connect();
-            DefaultSortedColName = nameof(Voucher.OnDate);
+            DefaultSortedColName = nameof(BankAccount.AccountType);
             DefaultSortedOrder = Descending;
             FetchAsync();
         }
@@ -59,10 +59,18 @@ namespace eStore.ViewModels.List.Accounting.Banking
             throw new NotImplementedException();
         }
 
-         
-        protected override Task<ColumnCollection> SetGridCols()
+
+        protected override async Task<ColumnCollection> SetGridCols()
         {
-            throw new NotImplementedException();
+            ColumnCollection gridColumns = new();
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankAccount.AccountNumber), MappingName = nameof(BankAccount.AccountNumber) });
+            
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankAccount.AccountHolderName), MappingName = nameof(BankAccount.AccountHolderName) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankAccount.AccountType), MappingName = nameof(BankAccount.AccountType) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankAccount.BankId), MappingName = nameof(BankAccount.BankId) });
+           // gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(BankAccount.Bank.Name), MappingName = nameof(BankAccount.Bank.Name) });
+            
+            return gridColumns;
         }
     }
 }

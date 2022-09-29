@@ -9,10 +9,7 @@ namespace eStore.ViewModels.List.Accounting
 {
     public class PettyCashViewMoldel : BaseViewModel<PettyCashSheet, PettyCashDataModel>
     {
-        public PettyCashViewMoldel()
-        {
-            InitViewModel();
-        }
+       
         protected override void AddButton()
         {
             throw new NotImplementedException();

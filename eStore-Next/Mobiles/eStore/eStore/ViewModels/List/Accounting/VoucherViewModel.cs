@@ -15,10 +15,7 @@ namespace eStore.ViewModels.List.Accounting
         private VoucherType _voucherType;
         //public static ColumnCollection gridColumns;
 
-        public VoucherViewModel() : base()
-        {
-            InitViewModel();
-        }
+        
         protected override void InitViewModel()
         {
             Icon = Resources.Styles.IconFont.MoneyBillWave;

@@ -13,10 +13,7 @@ namespace eStore.ViewModels.List.Accounting
         [ObservableProperty]
         private VoucherType _voucherType;
 
-        public CashVoucherViewModel() : base()
-        {
-            InitViewModel();
-        }
+        
         protected override void InitViewModel()
         {
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);

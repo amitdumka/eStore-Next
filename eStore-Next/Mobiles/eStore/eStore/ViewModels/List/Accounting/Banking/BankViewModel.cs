@@ -26,7 +26,7 @@ namespace eStore.ViewModels.List.Accounting.Banking
             Icon = Resources.Styles.IconFont.MoneyCheck;
             DataModel = new BankingDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<Bank>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Banks";

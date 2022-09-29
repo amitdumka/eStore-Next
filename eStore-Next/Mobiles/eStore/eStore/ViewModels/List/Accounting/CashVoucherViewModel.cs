@@ -18,7 +18,7 @@ namespace eStore.ViewModels.List.Accounting
         {
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<CashVoucher>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "CashVouchers";

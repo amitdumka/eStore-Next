@@ -21,7 +21,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.MoneyBillWave;
             DataModel = new VoucherDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<Voucher>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Vouchers";

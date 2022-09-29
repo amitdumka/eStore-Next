@@ -27,7 +27,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.FileInvoiceDollar;
             DataModel = new DailySaleDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<DailySale>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Daiy Sale";
@@ -103,7 +103,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.ChalkboardTeacher;
             DataModel = new DailySaleDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<CustomerDue>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Customer Dues";
@@ -177,7 +177,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.ChalkboardTeacher;
             DataModel = new DailySaleDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<DueRecovery>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Dues Recovered";

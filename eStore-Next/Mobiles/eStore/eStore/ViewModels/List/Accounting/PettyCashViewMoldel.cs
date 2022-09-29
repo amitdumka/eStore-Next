@@ -25,7 +25,7 @@ namespace eStore.ViewModels.List.Accounting
             Icon = Resources.Styles.IconFont.MoneyCheck;
             DataModel = new PettyCashDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<PettyCashSheet>();
-            DataModel.Mode = DBType.Azure;
+            DataModel.Mode = DBType.Local;
             DataModel.StoreCode = CurrentSession.StoreCode;
             Role = CurrentSession.UserType;
             Title = "Petty Cash Sheet";

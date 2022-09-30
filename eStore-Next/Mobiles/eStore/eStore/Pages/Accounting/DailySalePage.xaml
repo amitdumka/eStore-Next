@@ -5,11 +5,11 @@
  xmlns:rlv="clr-namespace:eStore.MAUILib.Views.Custom;assembly=eStore.MAUILib"
     Title="{Binding Title, Mode=TwoWay}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Monthly" Command="{Binding MonthlyCommand}"  CommandParameter="0"/>
-        <ToolbarItem Text="Today" Command="{Binding TodayCommand}" CommandParameter="0"/>
-        <ToolbarItem Text="Sync" Command="{Binding SyncCommand}"/>
-        <ToolbarItem Text="Last Month" Command="{Binding MonthlyCommand}"  CommandParameter="-1"/>
-        <ToolbarItem Text="Yesterday" Command="{Binding TodayCommand}" CommandParameter="-1" />
+        <ToolbarItem Text="Monthly" Command="{Binding MonthlyCommand}"  CommandParameter="0" Order="Primary"/>
+        <ToolbarItem Text="Today" Command="{Binding TodayCommand}" CommandParameter="0" Order="Primary"/>
+        <ToolbarItem Text="Sync" Command="{Binding SyncCommand}" Order="Secondary"/>
+        <ToolbarItem Text="Last Month" Command="{Binding MonthlyCommand}"  CommandParameter="-1" Order="Secondary"/>
+        <ToolbarItem Text="Yesterday" Command="{Binding TodayCommand}" CommandParameter="-1" Order="Secondary"/>
 
     </ContentPage.ToolbarItems>
     <VerticalStackLayout>

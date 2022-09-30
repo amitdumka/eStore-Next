@@ -3,6 +3,7 @@ using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Sales;
 using eStore.MAUILib.DataModels.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace eStore.MAUILib.DataModels.Accounting
 {
@@ -35,18 +36,30 @@ namespace eStore.MAUILib.DataModels.Accounting
         {
             throw new NotImplementedException();
         }
-
+        public async Task<List<DailySale>> GetItemsAsync(string storeid, bool today, int fil)
+        {
+            if (today)
+            {
+                return await GetContext().DailySales.Where(c => c.StoreId == storeid && c.OnDate.Date == DateTime.Today.AddDays(fil).Date)
+                 .OrderByDescending(c => c.InvoiceNumber).ToListAsync();
+            }
+            else
+            {
+                return await GetContext().DailySales.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month+fil)
+                  .OrderByDescending(c => c.OnDate).ToListAsync();
+            }
+        }
         public override async Task<List<DailySale>> GetItemsAsync(string storeid)
         {
             var db = GetContext();
-            return await db.DailySales.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year)
+            return await db.DailySales.Where(c => c.StoreId == storeid && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month)
                  .OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
         {
             var db = GetContext();
-           return db.DailySales.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToList();
+            return db.DailySales.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
         public override List<int> GetYearList()
@@ -106,6 +119,36 @@ namespace eStore.MAUILib.DataModels.Accounting
         public override async Task<bool> InitContext()
         {
             return Connect();
+        }
+
+        public async Task<bool> SyncCurrentMonth()
+        {
+            var remote = await _azureDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).ToListAsync();
+            var count = _localDb.DailySales.Where(c => c.StoreId == StoreCode && c.OnDate.Year == DateTime.Today.Year && c.OnDate.Month == DateTime.Today.Month).Count();
+            if (count < remote.Count)
+            {
+                foreach (var item in remote)
+                {
+                    if (_localDb.DailySales.Any(c => c.InvoiceNumber == item.InvoiceNumber))
+                    {
+                        if (item.EntryStatus == EntryStatus.Updated || item.EntryStatus == EntryStatus.Approved)
+                        {
+                            _localDb.DailySales.Update(item);
+                        }
+                        else if (item.EntryStatus == EntryStatus.DeleteApproved || item.EntryStatus == EntryStatus.Deleted)
+                        {
+                            _localDb.Remove(item);
+                        }
+                    }
+                    else
+                        _localDb.AddAsync(item);
+                }
+                return  (await _localDb.SaveChangesAsync() > 0);
+
+
+            }
+            return true;
+
         }
     }
 }

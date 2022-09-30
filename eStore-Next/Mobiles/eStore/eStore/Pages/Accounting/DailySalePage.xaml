@@ -4,6 +4,14 @@
              x:Class="eStore.Pages.Accounting.DailySalePage"
  xmlns:rlv="clr-namespace:eStore.MAUILib.Views.Custom;assembly=eStore.MAUILib"
     Title="{Binding Title, Mode=TwoWay}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Monthly" Command="{Binding MonthlyCommand}"  CommandParameter="0"/>
+        <ToolbarItem Text="Today" Command="{Binding TodayCommand}" CommandParameter="0"/>
+        <ToolbarItem Text="Sync" Command="{Binding SyncCommand}"/>
+        <ToolbarItem Text="Last Month" Command="{Binding MonthlyCommand}"  CommandParameter="-1"/>
+        <ToolbarItem Text="Yesterday" Command="{Binding TodayCommand}" CommandParameter="-1" />
+
+    </ContentPage.ToolbarItems>
     <VerticalStackLayout>
         <rlv:RecordListingView x:Name="RLV" AddButtonText="Add" />
     </VerticalStackLayout>

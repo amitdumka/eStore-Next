@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup
+    x:Class="eStore.Pages.Payroll.Entry.AttendanceEntryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <VerticalStackLayout>
+        <VerticalStackLayout.Resources>
+            <ResourceDictionary>
+                <Style x:Key="FieldCombo" TargetType="HorizontalStackLayout">
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+                    <Setter Property="BackgroundColor" Value="{x:StaticResource MidGray}" />
+                </Style>
+                <Style x:Key="FieldLable" TargetType="Label">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="FontSize" Value="18" />
+                    <Setter Property="FontAttributes" Value="Bold" />
+                    <Setter Property="TextColor" Value="{x:StaticResource Accent_Blue100}" />
+                    <Setter Property="VerticalTextAlignment" Value="Center" />
+                    <Setter Property="HorizontalTextAlignment" Value="Center" />
+                </Style>
+
+                <Style x:Key="Title" TargetType="Label">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="FontSize" Value="24" />
+                    <Setter Property="FontAttributes" Value="Bold" />
+                    <Setter Property="TextColor" Value="{x:StaticResource Tertiary}" />
+                    <Setter Property="VerticalTextAlignment" Value="Center" />
+                    <Setter Property="HorizontalTextAlignment" Value="Center" />
+                </Style>
+                <Style x:Key="Divider" TargetType="BoxView">
+                    <Setter Property="HeightRequest" Value="1" />
+                    <Setter Property="Margin" Value="30, 25" />
+                    <Setter Property="Color" Value="{x:StaticResource TabOff}" />
+                </Style>
+                <Style x:Key="Content" TargetType="Label">
+                    <Setter Property="HorizontalTextAlignment" Value="Start" />
+                    <Setter Property="VerticalTextAlignment" Value="Center" />
+                </Style>
+                <Style x:Key="PopupLayout" TargetType="StackLayout">
+                    <Setter Property="Padding" Value="{OnPlatform Android=20, UWP=20, iOS=5, MacCatalyst=5}" />
+                </Style>
+            </ResourceDictionary>
+        </VerticalStackLayout.Resources>
+        <Label Style="{StaticResource Title}" Text="{Binding Title}" />
+        <BoxView Style="{StaticResource Divider}" />
+        <ScrollView HorizontalOptions="CenterAndExpand" VerticalScrollBarVisibility="Always">
+            <Frame BackgroundColor="{x:StaticResource Accent_Yellow200}" BorderColor="{x:StaticResource Primary}">
+                <VerticalStackLayout
+                    x:Name="eForm"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Center">
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Employee" />
+                        <Picker
+                            Title="Select Staff"
+                            ItemDisplayBinding="{Binding DisplayData}"
+                            ItemsSource="{Binding EmployeeList}"
+                            SelectedItem="{Binding SelectedEmployee }" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Date" />
+                        <DatePicker Date="{Binding OnDate}" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Status" />
+                        <Picker
+                            
+                            Title="Select Status"
+                            ItemsSource="{Binding AttUnitList}"
+                            SelectedIndex="{Binding SelectedStatusIndex }" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Entry Time" />
+                        <TimePicker Time="{Binding EntryTime}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Remarks" />
+                        <Entry Text="{Binding Remarks}" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}">
+                        <Label Style="{x:StaticResource FieldLable}" Text="Tailor" />
+                        <Switch ThumbColor="Red" IsToggled="{Binding IsTailor}"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Style="{x:StaticResource FieldCombo}" >
+                        <Button Text="Save"  Command="{Binding SaveCommand}"  Style="{x:StaticResource PrimaryButtonOutline}"/>
+                        <Button Text="Cancle" Command="{Binding CancleCommand}"
+                                Style="{x:StaticResource TertiaryButtonOutline}}"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </ScrollView>
+    </VerticalStackLayout>
+</mct:Popup>

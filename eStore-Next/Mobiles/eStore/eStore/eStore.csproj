@@ -127,6 +127,9 @@
 	  <MauiXaml Update="Pages\DashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Payroll\Entry\AttendanceEntryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\AKSTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

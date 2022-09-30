@@ -8,6 +8,7 @@ namespace eStore.MAUILib.Views.Custom;
 public partial class RecordView : Popup
 {
     private RecordViewModel viewModel;
+   
     public RecordView(RecordViewModel model)
     {
         InitializeComponent();

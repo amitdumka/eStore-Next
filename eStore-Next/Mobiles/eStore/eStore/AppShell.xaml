@@ -117,7 +117,7 @@
         </Tab>-->
 
     </FlyoutItem>
-     <FlyoutItem
+     <!--<FlyoutItem
         Title="Payroll"
         FlyoutIcon="rain_icon.png"
         Icon="rain_icon.png">
@@ -130,7 +130,7 @@
         <Tab Title="Attendace Entry" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
-                ContentTemplate="{DataTemplate prollpages:AttedancePage}"
+                ContentTemplate="{DataTemplate prollpages:AttendancePage}"
                 Route="Attendance.Entry" />
         </Tab>
 
@@ -147,7 +147,7 @@
                 Route="Employees" />
         </Tab>
 
-    </FlyoutItem>
+    </FlyoutItem>-->
     <FlyoutItem
         Title="Voucher"
         FlyoutIcon="rain_icon.png"

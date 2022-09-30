@@ -175,7 +175,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\Payroll\" />
 	  <Folder Include="ViewModels\List\Payroll\" />
 	</ItemGroup>
 </Project>

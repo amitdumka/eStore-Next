@@ -176,5 +176,6 @@
 
 	<ItemGroup>
 	  <Folder Include="ViewModels\List\Payroll\" />
+	  <Folder Include="Views\Menu\" />
 	</ItemGroup>
 </Project>

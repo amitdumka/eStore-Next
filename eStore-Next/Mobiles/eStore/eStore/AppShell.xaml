@@ -91,33 +91,43 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Icon="wind_icin.png"
         Route="Test" />-->
+    
     <!--  Adding Menu Item here based on Role/Access  -->
     <!--  Menu Items End Here  -->
 
     <!--  Admin/Owner  -->
     <!--  Store Manager  -->
     <!--  Accountant  -->
-    <!--<ShellContent
+    
+    <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate pages:DashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
-        Route="Dashboard" />-->
-    <!--<FlyoutItem Title="Daily Sale">
+        Route="Dashboard" />
+   
+    <FlyoutItem Title="Daily Sale">
         <Tab Title="Daily Sale" Icon="rain_icon.png">
             <ShellContent
                 Title="Daily Sale"
                 ContentTemplate="{DataTemplate accpages:DailySalePage}"
                 Route="DailySale" />
         </Tab>
-        <Tab Title="Sale Entry" Icon="rain_icon.png">
+        <Tab Title="Due" Icon="rain_icon.png">
+            <ShellContent
+                Title="Store"
+                ContentTemplate="{DataTemplate accpages:CustomerDuesPage}"
+                Route="CustomerDue" />
+        </Tab>
+        <Tab Title="Recovery" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.DailySaleEntryPage}"
-                Route="Sale.Entry" />
+                ContentTemplate="{DataTemplate accpages:DueRecoveryPage}"
+                Route="CustomerRecovery" />
         </Tab>
 
-    </FlyoutItem>-->
-     <!--<FlyoutItem
+    </FlyoutItem>
+    
+     <FlyoutItem
         Title="Payroll"
         FlyoutIcon="rain_icon.png"
         Icon="rain_icon.png">
@@ -147,8 +157,9 @@
                 Route="Employees" />
         </Tab>
 
-    </FlyoutItem>-->
-    <!--<FlyoutItem
+    </FlyoutItem>
+
+    <FlyoutItem
         Title="Voucher"
         FlyoutIcon="rain_icon.png"
         Icon="rain_icon.png">
@@ -158,13 +169,19 @@
                 ContentTemplate="{DataTemplate accpages:VoucherPage}"
                 Route="Voucher" />
         </Tab>
+
+        <Tab Title="Stores" Icon="rain_icon.png">
+            <ShellContent
+                Title="Cash Voucher"
+                ContentTemplate="{DataTemplate accpages:CashVoucherPage}"
+                Route="CashVoucher" />
+        </Tab>
         <Tab Title="Voucher Entry" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.VoucherEntryPage}"
-                Route="Voucher.Entry" />
+                ContentTemplate="{DataTemplate accpages:Entry.CashVoucherEntryPage}"
+                Route="CashVoucher.Entry" />
         </Tab>
-
         <Tab Title="Notes" Icon="rain_icon.png">
             <ShellContent
                 Title="Note(s) List"
@@ -177,20 +194,11 @@
                 ContentTemplate="{DataTemplate accpages:Entry.NotesEntryPage}"
                 Route="Note.Entry" />
         </Tab>
-
-    </FlyoutItem>
-    <FlyoutItem Title="Cash Voucher">
-        <Tab Title="Stores" Icon="rain_icon.png">
-            <ShellContent
-                Title="Store"
-                ContentTemplate="{DataTemplate accpages:CashVoucherPage}"
-                Route="CashVoucher" />
-        </Tab>
         <Tab Title="Voucher Entry" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.CashVoucherEntryPage}"
-                Route="CashVoucher.Entry" />
+                ContentTemplate="{DataTemplate accpages:Entry.VoucherEntryPage}"
+                Route="Voucher.Entry" />
         </Tab>
 
     </FlyoutItem>
@@ -221,21 +229,6 @@
         </Tab>
 
     </FlyoutItem>
-    <FlyoutItem Title="Customer Dues">
-        <Tab Title="Due" Icon="rain_icon.png">
-            <ShellContent
-                Title="Store"
-                ContentTemplate="{DataTemplate accpages:CustomerDuesPage}"
-                Route="CustomerDue" />
-        </Tab>
-        <Tab Title="Recovery" Icon="rain_icon.png">
-            <ShellContent
-                Title="Add"
-                ContentTemplate="{DataTemplate accpages:DueRecoveryPage}"
-                Route="CustomerRecovery" />
-        </Tab>
-
-    </FlyoutItem>
     <FlyoutItem Title="Cash Book">
         <Tab Title="Petty Cash" Icon="rain_icon.png">
             <ShellContent
@@ -250,7 +243,7 @@
                 Route="PettyCashBook.CashDetails" />
         </Tab>
 
-    </FlyoutItem>-->
+    </FlyoutItem>
 
     <!--  CA  -->
     <!--  Employee  -->

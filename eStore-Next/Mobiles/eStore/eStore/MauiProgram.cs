@@ -5,9 +5,11 @@ using eStore.MAUILib.DataModels.Accounting;
 using eStore.Pages;
 using eStore.Pages.Accounting;
 using eStore.Pages.Accounting.Entry;
+using eStore.Pages.Payrol;
 using eStore.ViewModels.List.Accounting;
 using eStore.ViewModels.List.Accounting.Banking;
 using eStore.ViewModels.List.Dashboard;
+using eStore.ViewModels.List.Payroll;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
 
@@ -75,7 +77,15 @@ public static class MauiProgram
         builder.Services.AddSingleton<BankTranscationViewModel>();
         builder.Services.AddSingleton<BankTranscationPage>();
 
-
+        //Attendance
+        builder.Services.AddSingleton<AttendanceViewModel>();
+        builder.Services.AddSingleton<AttendancePage>();
+        //Monthly Attendance
+        builder.Services.AddSingleton<MonthlyAttendanceViewModel>();
+        builder.Services.AddSingleton<MonthlyAttendancePage>();
+        //Attendance
+        builder.Services.AddSingleton<EmployeeViewModel>();
+        builder.Services.AddSingleton<EmployeePage>();
 
         return builder.Build();
 	}

@@ -86,37 +86,37 @@
     </Shell.FlyoutFooter>
 
     <!--  Menu Items  -->
-    <ShellContent
+    <!--<ShellContent
         Title="Main Page Test"
         ContentTemplate="{DataTemplate local:MainPage}"
         Icon="wind_icin.png"
-        Route="Test" />
+        Route="Test" />-->
     <!--  Adding Menu Item here based on Role/Access  -->
     <!--  Menu Items End Here  -->
 
     <!--  Admin/Owner  -->
     <!--  Store Manager  -->
     <!--  Accountant  -->
-    <ShellContent
+    <!--<ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate pages:DashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
-        Route="Dashboard" />
-    <FlyoutItem Title="Daily Sale">
+        Route="Dashboard" />-->
+    <!--<FlyoutItem Title="Daily Sale">
         <Tab Title="Daily Sale" Icon="rain_icon.png">
             <ShellContent
                 Title="Daily Sale"
                 ContentTemplate="{DataTemplate accpages:DailySalePage}"
                 Route="DailySale" />
         </Tab>
-        <!--<Tab Title="Sale Entry" Icon="rain_icon.png">
+        <Tab Title="Sale Entry" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
                 ContentTemplate="{DataTemplate accpages:Entry.DailySaleEntryPage}"
                 Route="Sale.Entry" />
-        </Tab>-->
+        </Tab>
 
-    </FlyoutItem>
+    </FlyoutItem>-->
      <!--<FlyoutItem
         Title="Payroll"
         FlyoutIcon="rain_icon.png"
@@ -148,7 +148,7 @@
         </Tab>
 
     </FlyoutItem>-->
-    <FlyoutItem
+    <!--<FlyoutItem
         Title="Voucher"
         FlyoutIcon="rain_icon.png"
         Icon="rain_icon.png">
@@ -250,7 +250,7 @@
                 Route="PettyCashBook.CashDetails" />
         </Tab>
 
-    </FlyoutItem>
+    </FlyoutItem>-->
 
     <!--  CA  -->
     <!--  Employee  -->

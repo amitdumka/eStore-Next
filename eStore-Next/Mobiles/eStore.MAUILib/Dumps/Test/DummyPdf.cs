@@ -1,6 +1,4 @@
-﻿using eStore_MauiLib.Helpers;
-using eStore_MauiLib.Helpers.Interfaces;
-using eStore_MauiLib.Services.Print;
+﻿
 using Syncfusion.Drawing;
 using Syncfusion.Pdf;
 using Syncfusion.Pdf.Graphics;

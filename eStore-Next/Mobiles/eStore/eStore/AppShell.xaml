@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="eStore.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accpages="clr-namespace:eStore.Pages.Accounting"
+    xmlns:prollpages="clr-namespace:eStore.Pages.Payrol"
     xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
     xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
     xmlns:local="clr-namespace:eStore"
@@ -114,6 +115,37 @@
                 ContentTemplate="{DataTemplate accpages:Entry.DailySaleEntryPage}"
                 Route="Sale.Entry" />
         </Tab>-->
+
+    </FlyoutItem>
+     <FlyoutItem
+        Title="Payroll"
+        FlyoutIcon="rain_icon.png"
+        Icon="rain_icon.png">
+        <Tab Title="Attendace" Icon="rain_icon.png">
+            <ShellContent
+                Title="Attendace List"
+                ContentTemplate="{DataTemplate prollpages:AttendancePage}"
+                Route="Attendance" />
+        </Tab>
+        <Tab Title="Attendace Entry" Icon="rain_icon.png">
+            <ShellContent
+                Title="Add"
+                ContentTemplate="{DataTemplate prollpages:AttedancePage}"
+                Route="Attendance.Entry" />
+        </Tab>
+
+        <Tab Title="Monthly Attendance" Icon="rain_icon.png">
+            <ShellContent
+                Title="Monthly"
+                ContentTemplate="{DataTemplate prollpages:MonthlyAttendancePage}"
+                Route="Attendance.Monthly" />
+        </Tab>
+        <Tab Title="Employees" Icon="rain_icon.png">
+            <ShellContent
+                Title="Employee"
+                ContentTemplate="{DataTemplate prollpages:EmployeePage}"
+                Route="Employees" />
+        </Tab>
 
     </FlyoutItem>
     <FlyoutItem

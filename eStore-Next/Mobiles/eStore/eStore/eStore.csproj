@@ -59,6 +59,8 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\thearvindstore005.jpg" />
 	  <None Remove="Resources\Raw\FeatureText.txt" />
+	  <None Remove="Pages\Payrol\" />
+	  <None Remove="ViewModels\List\Payroll\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -143,6 +145,15 @@
 	  <MauiXaml Update="Views\SearchBar.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Payrol\AttendancePage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Payrol\EmployeePage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Payrol\MonthlyAttendancePage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
@@ -163,4 +174,8 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pages\Payroll\" />
+	  <Folder Include="ViewModels\List\Payroll\" />
+	</ItemGroup>
 </Project>

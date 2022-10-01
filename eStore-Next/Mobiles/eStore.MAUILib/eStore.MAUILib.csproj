@@ -18,6 +18,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Dumps\**" />
+	  <EmbeddedResource Remove="Dumps\**" />
+	  <MauiCss Remove="Dumps\**" />
+	  <MauiXaml Remove="Dumps\**" />
+	  <None Remove="Dumps\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Helpers\" />
 	  <None Remove="CommunityToolkit.Maui" />
 	  <None Remove="Services\" />

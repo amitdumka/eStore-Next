@@ -31,10 +31,9 @@ namespace eStore.ViewModels.List.Accounting
             FetchAsync();
 
         }
-        protected override void AddButton()
+        protected override async void AddButton()
         {
-            //  var c = Delete();
-            Notify.NotifyLong("Delete: ");
+            await Shell.Current.GoToAsync($"voucher/Entry?vm={this}");
         }
 
         //protected override async Task<bool> Delete()

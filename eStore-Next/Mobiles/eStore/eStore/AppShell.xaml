@@ -4,11 +4,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accpages="clr-namespace:eStore.Pages.Accounting"
-    xmlns:prollpages="clr-namespace:eStore.Pages.Payrol"
     xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
     xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
     xmlns:local="clr-namespace:eStore"
     xmlns:pages="clr-namespace:eStore.Pages"
+    xmlns:prollpages="clr-namespace:eStore.Pages.Payrol"
     Title="eStore-NXT"
     FlyoutBackgroundImage="thearvindstore005.jpg"
     FlyoutBackgroundImageAspect="Fill"
@@ -91,20 +91,20 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Icon="wind_icin.png"
         Route="Test" />-->
-    
+
     <!--  Adding Menu Item here based on Role/Access  -->
     <!--  Menu Items End Here  -->
 
     <!--  Admin/Owner  -->
     <!--  Store Manager  -->
     <!--  Accountant  -->
-    
+
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate pages:DashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
         Route="Dashboard" />
-   
+
     <FlyoutItem Title="Daily Sale">
         <Tab Title="Daily Sale" Icon="rain_icon.png">
             <ShellContent
@@ -126,8 +126,8 @@
         </Tab>
 
     </FlyoutItem>
-    
-     <FlyoutItem
+
+    <FlyoutItem
         Title="Payroll"
         FlyoutIcon="rain_icon.png"
         Icon="rain_icon.png">

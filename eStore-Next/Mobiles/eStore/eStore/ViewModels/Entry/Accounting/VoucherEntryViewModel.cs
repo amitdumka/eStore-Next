@@ -114,9 +114,33 @@ namespace eStore.ViewModels.Entry.Accounting
             {
                 Amount = 0,
                 OnDate = DateTime.Now,
-                PaymentDetails = "dasdas",
+
                 PaymentMode = PaymentMode.Cash,
                 VoucherType = VoucherType.Payment
+            };
+            DataModel = vm.GetDataModel();
+            InitViewModel();
+            this.VoucherViewModel = vm;
+        }
+
+        public VoucherEntryViewModel(VoucherViewModel vm, Voucher v)
+        {
+            IsNew = true;
+            VoucherEntry = new VoucherEntry
+            {
+                Amount = v.Amount,
+                OnDate = v.OnDate,
+                Particulars = v.Particulars,
+                PartyName = v.PartyName,
+                PaymentDetails = v.PaymentDetails,
+                PaymentMode = v.PaymentMode,
+                Remarks = v.Remarks,
+                SlipNumber = v.SlipNumber,
+                VoucherType = v.VoucherType,
+                AccountId = v.AccountId,
+                EmployeeId = v.EmployeeId,
+                PartyId = v.PartyId,
+                VoucherNumber = v.VoucherNumber
             };
             DataModel = vm.GetDataModel();
             InitViewModel();
@@ -199,7 +223,7 @@ namespace eStore.ViewModels.Entry.Accounting
                                UserId = CurrentSession.UserName,
                                VoucherType = VoucherEntry.VoucherType,
                                VoucherNumber = IsNew ? AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType, VoucherEntry.OnDate, CurrentSession.StoreCode, Count(VoucherEntry.VoucherType) + 1) : VoucherEntry.VoucherNumber
-                           },IsNew); 
+                           }, IsNew);
                 if (v != null)
                 {
                     Notify.NotifyVLong($"Save Voucher :{v.VoucherNumber}");

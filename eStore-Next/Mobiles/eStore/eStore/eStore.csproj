@@ -55,6 +55,14 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+	<ItemGroup>
+	  <AndroidResource Remove="Pages\Stores\**" />
+	  <Compile Remove="Pages\Stores\**" />
+	  <EmbeddedResource Remove="Pages\Stores\**" />
+	  <MauiCss Remove="Pages\Stores\**" />
+	  <MauiXaml Remove="Pages\Stores\**" />
+	  <None Remove="Pages\Stores\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\thearvindstore005.jpg" />

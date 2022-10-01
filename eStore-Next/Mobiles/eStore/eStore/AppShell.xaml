@@ -170,17 +170,11 @@
                 Route="Voucher" />
         </Tab>
 
-        <Tab Title="Stores" Icon="rain_icon.png">
+        <Tab Title="Cash Voucher" Icon="rain_icon.png">
             <ShellContent
                 Title="Cash Voucher"
                 ContentTemplate="{DataTemplate accpages:CashVoucherPage}"
                 Route="CashVoucher" />
-        </Tab>
-        <Tab Title="Voucher Entry" Icon="rain_icon.png">
-            <ShellContent
-                Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.CashVoucherEntryPage}"
-                Route="CashVoucher.Entry" />
         </Tab>
         <Tab Title="Notes" Icon="rain_icon.png">
             <ShellContent
@@ -188,18 +182,7 @@
                 ContentTemplate="{DataTemplate accpages:NotesPage}"
                 Route="Notes" />
         </Tab>
-        <Tab Title="Notes Entry" Icon="rain_icon.png">
-            <ShellContent
-                Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.NotesEntryPage}"
-                Route="Note.Entry" />
-        </Tab>
-        <Tab Title="Voucher Entry" Icon="rain_icon.png">
-            <ShellContent
-                Title="Add"
-                ContentTemplate="{DataTemplate accpages:Entry.VoucherEntryPage}"
-                Route="Voucher.Entry" />
-        </Tab>
+
 
     </FlyoutItem>
     <FlyoutItem Title="Banking">
@@ -213,19 +196,19 @@
             <ShellContent
                 Title="Add"
                 ContentTemplate="{DataTemplate accpages:BankAccountPage}"
-                Route="Banks.Account" />
+                Route="BanksAccount" />
         </Tab>
         <Tab Title="Vendor Account" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
                 ContentTemplate="{DataTemplate accpages:VendorBankAccountPage}"
-                Route="Banks.VendorAccounts" />
+                Route="VendorAccounts" />
         </Tab>
         <Tab Title="Transcation" Icon="rain_icon.png">
             <ShellContent
                 Title="Add"
                 ContentTemplate="{DataTemplate accpages:BankTranscationPage}"
-                Route="Bank.Transcation" />
+                Route="Transcation" />
         </Tab>
 
     </FlyoutItem>

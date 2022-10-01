@@ -19,7 +19,17 @@ namespace eStore.MAUILib.DataModels.Accounting
         {
             throw new NotImplementedException();
         }
-
+        public string GenerateBankId(string name)
+        {
+            string bankId = "";
+            var letters = name.Trim().Split(' ');
+            foreach (var letter in letters)
+            {
+                bankId += letter[0];
+            }
+            bankId+=GetContextAzure().Banks.Count().ToString();
+            return bankId;
+        }
         public override Task<string> GenrateYID()
         {
             throw new NotImplementedException();
@@ -100,6 +110,67 @@ namespace eStore.MAUILib.DataModels.Accounting
         public override async Task<bool> InitContext()
         {
             return Connect();
+        }
+
+        public void SyncUp(Bank bank, bool isNew=true, bool delete=false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.Banks.Remove(bank);
+            else
+            {
+                if (isNew)
+                    db.Banks.Add(bank);
+                else
+                    db.Banks.Update(bank);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
+        }
+        public void SyncUp(BankAccount bank, bool isNew = true, bool delete = false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.BankAccounts.Remove(bank);
+            else
+            {
+                if (isNew)
+                    db.BankAccounts.Add(bank);
+                else
+                    db.BankAccounts.Update(bank);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
+        }
+        public void SyncUp(BankTranscation bank, bool isNew = true, bool delete = false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.BankTranscations.Remove(bank);
+            else
+            {
+                if (isNew)
+                    db.BankTranscations.Add(bank);
+                else
+                    db.BankTranscations.Update(bank);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
         }
     }
 }

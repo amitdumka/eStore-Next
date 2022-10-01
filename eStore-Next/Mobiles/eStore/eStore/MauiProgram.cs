@@ -5,6 +5,7 @@ using eStore.MAUILib.DataModels.Accounting;
 using eStore.Pages;
 using eStore.Pages.Accounting;
 using eStore.Pages.Accounting.Entry;
+using eStore.Pages.Accounting.Entry.Banking;
 using eStore.Pages.Payrol;
 using eStore.ViewModels.List.Accounting;
 using eStore.ViewModels.List.Accounting.Banking;
@@ -58,6 +59,7 @@ public static class MauiProgram
         //Banking 
         builder.Services.AddSingleton<BankViewModel>();
         builder.Services.AddSingleton<BankPage>();
+        builder.Services.AddSingleton<BankEntryPage>();
 
         builder.Services.AddSingleton<BankAccountViewModel>();
         builder.Services.AddSingleton<BankAccountPage>();

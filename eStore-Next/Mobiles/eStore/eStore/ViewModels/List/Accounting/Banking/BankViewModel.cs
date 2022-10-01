@@ -11,9 +11,9 @@ namespace eStore.ViewModels.List.Accounting.Banking
 {
     public class BankViewModel : BaseViewModel<Bank, BankingDataModel>
     {
-        protected override void AddButton()
+        protected override async void AddButton()
         {
-            throw new NotImplementedException();
+            await Shell.Current.GoToAsync($"banking/bank/Entry?vm={this}");
         }
 
         protected override void DeleteButton()

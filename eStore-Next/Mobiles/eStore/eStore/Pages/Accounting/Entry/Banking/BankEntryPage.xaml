@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="eStore.Pages.Accounting.Entry.Banking.BankEntryPage"
-            xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
+<ContentPage
+    x:Class="eStore.Pages.Accounting.Entry.Banking.BankEntryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dxdf="clr-namespace:DevExpress.Maui.DataForm;assembly=DevExpress.Maui.Editors"
     Title="{Binding Title}"
     BackgroundColor="{x:StaticResource Background_Dark}">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding SaveCommand}" Text="Save" />
         <ToolbarItem Command="{Binding CancleCommand}" Text="Cancel" />
@@ -31,8 +32,8 @@
                 GroupHeaderTextColor="#f05b41"
                 IsLastRowSeparatorVisible="True"
                 MaximumHeightRequest="680"
-                ValidationMode="LostFocus"/>
-          
+                ValidationMode="LostFocus" />
+
 
         </ScrollView>
         <Label

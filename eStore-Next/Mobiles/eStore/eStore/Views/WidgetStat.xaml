@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="eStore.Views.WidgetStat"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="this"
+    BackgroundColor="Transparent">
+    <Frame
+        Padding="20"
+        BackgroundColor="{x:StaticResource Accent_Blue200}"
+        BindingContext="{x:Reference this}"
+        BorderColor="#C49B33"
+        CornerRadius="20"
+        HasShadow="True"
+        HorizontalOptions="Center"
+        MaximumWidthRequest="200"
+        MinimumHeightRequest="100"
+        MinimumWidthRequest="100"
+        VerticalOptions="Center">
+        <VerticalStackLayout BindingContext="{x:Reference this}" HorizontalOptions="Center">
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    Text="{Binding HeaderText}"
+                    TextColor="{x:StaticResource Primary}" />
+            </HorizontalStackLayout>
+            <BoxView
+                Margin="0,0,0,10"
+                HeightRequest="2"
+                HorizontalOptions="Fill"
+                Color="DarkBlue" />
+            <HorizontalStackLayout HorizontalOptions="StartAndExpand">
+                <Label
+                    FontAttributes="Italic"
+                    FontSize="Subtitle"
+                    Text="{Binding Title}"
+                    TextColor="{x:StaticResource Secondary}" />
+                <Label
+                    Margin="15,0,0,0"
+                    FontSize="Subtitle"
+                    Text="{Binding Description}"
+                    TextColor="{x:StaticResource Tertiary}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <!--</Border>-->
+    </Frame>
+</ContentView>

@@ -86,19 +86,11 @@
     </Shell.FlyoutFooter>
 
     <!--  Menu Items  -->
-    <!--<ShellContent
-        Title="Main Page Test"
+    <ShellContent
+        Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Icon="wind_icin.png"
-        Route="Test" />-->
-
-    <!--  Adding Menu Item here based on Role/Access  -->
-    <!--  Menu Items End Here  -->
-
-    <!--  Admin/Owner  -->
-    <!--  Store Manager  -->
-    <!--  Accountant  -->
-
+        FlyoutIcon="{StaticResource CircleIcon}"
+        Route="MAin" />
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate pages:DashboardPage}"

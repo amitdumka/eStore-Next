@@ -106,13 +106,7 @@
 	  <MauiXaml Update="Pages\Accounting\DueRecoveryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Accounting\Entry\CashVoucherEntryPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Accounting\Entry\NotesEntryPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\Accounting\Entry\VoucherEntryPage.xaml">
+	  <MauiXaml Update="Pages\Accounting\Entry\Banking\BankEntryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Accounting\NotesPage.xaml">
@@ -134,6 +128,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ViewModels\Entry\Payroll\EmployeeDetailEntryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ViewModels\Entry\Payroll\EmployeeEntryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ColView.xaml">
@@ -178,6 +178,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Pages\Accounting\Banking\Entry\" />
 	  <Folder Include="ViewModels\List\Payroll\" />
 	  <Folder Include="Views\Menu\" />
 	</ItemGroup>

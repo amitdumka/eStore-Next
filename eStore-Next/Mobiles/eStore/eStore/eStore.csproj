@@ -138,12 +138,6 @@
 	  <MauiXaml Update="Resources\Styles\DefaultTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ViewModels\Entry\Payroll\EmployeeDetailEntryPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="ViewModels\Entry\Payroll\EmployeeEntryPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\ColView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

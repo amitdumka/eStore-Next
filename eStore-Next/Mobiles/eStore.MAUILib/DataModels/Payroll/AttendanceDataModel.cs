@@ -143,6 +143,68 @@ namespace eStore.MAUILib.DataModels.Payroll
         {
             return Connect();
         }
+
+
+        public void SyncUp(Attendance att, bool isNew=true, bool delete=false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.Attendances.Remove(att);
+            else
+            {
+                if (isNew)
+                    db.Attendances.Add(att);
+                else
+                    db.Attendances.Update(att);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
+        }
+        public void SyncUp(MonthlyAttendance att, bool isNew = true, bool delete = false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.MonthlyAttendances.Remove(att);
+            else
+            {
+                if (isNew)
+                    db.MonthlyAttendances.Add(att);
+                else
+                    db.MonthlyAttendances.Update(att);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
+        }
+        public void SyncUp(Employee emp, bool isNew = true, bool delete = false)
+        {
+            var db = GetContextAzure();
+            if (delete)
+                db.Employees.Remove(emp);
+            else
+            {
+                if (isNew)
+                    db.Employees.Add(emp);
+                else
+                    db.Employees.Update(emp);
+            }
+            var x = db.SaveChanges();
+            if (x > 0)
+            {
+                Console.WriteLine("c");
+            }
+            else
+                Console.WriteLine("e");
+        }
     }
 }
 

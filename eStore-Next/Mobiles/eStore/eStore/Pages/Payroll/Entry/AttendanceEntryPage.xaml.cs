@@ -1,21 +1,19 @@
-using CommunityToolkit.Maui.Views;
+using AKS.Shared.Payroll.Models;
 using eStore.ViewModels.Entry.Payroll;
+using eStore.ViewModels.List.Payroll;
 
-namespace eStore.Pages.Payroll.Entry;
+namespace eStore.Pages.Payroll;
 
-public partial class AttendanceEntryPage : Popup
+public partial class AttendanceEntryPage : ContentPage
 {
     private AttendanceEntryViewModel entryViewModel;
 
     public AttendanceEntryPage(AttendanceViewModel vm, Attendance att)
-    {
-        InitializeComponent();
-        entryViewModel = new AttendanceEntryViewModel(vm,att);
+	{
+		InitializeComponent();
+        entryViewModel = new AttendanceEntryViewModel(vm, att);
         this.BindingContext = entryViewModel;
-        Size = new Microsoft.Maui.Graphics.Size(400, 500);
-
-        //BindingContext = viewModel;
-        dataForm.DataObject = entryViewModel.VoucherEntry;
+        dataForm.DataObject = entryViewModel.Attendance;
         dataForm.PickerSourceProvider = entryViewModel;
         entryViewModel.Dfv = dataForm;
     }

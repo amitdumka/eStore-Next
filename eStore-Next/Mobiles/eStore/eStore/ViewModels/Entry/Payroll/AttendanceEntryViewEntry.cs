@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
-using AKS.Shared.Payrolls.ViewModels;
+ 
 using CommunityToolkit.Mvvm.ComponentModel;
 using DevExpress.Maui.DataForm;
 using eStore.MAUILib.DataModels;
-using eStore.MAUILib.DataModels.Accounting;
+ 
 using eStore.MAUILib.DataModels.Payroll;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.ViewModels.Base;
-using eStore.Pages.Payroll.Entry;
+ 
 using eStore.ViewModels.List.Payroll;
 
 //TODO: Need to stick one Construstor for better perpose.
@@ -34,10 +34,7 @@ namespace eStore.ViewModels.Entry.Payroll
 
         [ObservableProperty]
         AttendanceViewModel _viewMoldel;
-
-        [ObservableProperty]
-        private AttendanceEntryPage _popUp;
-
+         
         [ObservableProperty]
         private AttendanceEntry _attendance;
 
@@ -48,38 +45,37 @@ namespace eStore.ViewModels.Entry.Payroll
             if (toEdit != null)
             {
                 IsNew = false;
-                IsTailor = toEdit.IsTailoring;
-                Status = toEdit.Status;
-                EntryTime = toEdit.EntryTime;
-                EmployeeId = toEdit.EmployeeId;
-                Remarks = toEdit.Remarks;
-                Title = "Update Attendance";
-                OnDate = toEdit.OnDate;
-                Id = toEdit.AttendanceId;
+             Attendance.   Tailor = toEdit.IsTailoring;
+                Attendance.Status = toEdit.Status;
+                Attendance.EntryTime = toEdit.EntryTime;
+                Attendance.EmployeeId = toEdit.EmployeeId;
+                Attendance.Remarks = toEdit.Remarks; 
+                Attendance.OnDate = toEdit.OnDate;
+                Attendance.AttendanceId = toEdit.AttendanceId;
             }
             else
             {
                 IsNew = true;
-                OnDate = DateTime.Now;
-                EntryTime = DateTime.Now.ToShortTimeString();
+                Attendance.OnDate = DateTime.Now;
+                Attendance.EntryTime = DateTime.Now.ToShortTimeString();
             }
             InitViewModel();
         }
         public AttendanceEntryViewModel(AttendanceViewModel vm, Attendance toEdit)
         {
-            _viewMoldel=vm
+            _viewMoldel = vm;
             DataModel = vm.GetDataModel(); ;
             Title = "Add Attendance";
 
             if (toEdit != null)
             {
                 IsNew = false;
-               Attendance.IsTailor = toEdit.IsTailoring;
+               Attendance.Tailor = toEdit.IsTailoring;
                 Attendance.Status = toEdit.Status;
                 Attendance.EntryTime = toEdit.EntryTime;
                 Attendance.EmployeeId = toEdit.EmployeeId;
                 Attendance.Remarks = toEdit.Remarks;
-                Attendance.Title = "Update Attendance";
+              //  Attendance.Title = "Update Attendance";
                 Attendance.OnDate = toEdit.OnDate;
                 Attendance.AttendanceId = toEdit.AttendanceId;
             }
@@ -124,7 +120,7 @@ namespace eStore.ViewModels.Entry.Payroll
         protected override void Cancle()
         {
             ResetView();
-            PopUp.Close("Cancled");
+           
         }
 
         protected override void InitViewModel()
@@ -153,14 +149,14 @@ namespace eStore.ViewModels.Entry.Payroll
                         StoreId = CurrentSession.StoreCode,
                         EntryTime = Attendance.EntryTime,
                         IsReadOnly = false,
-                        IsTailoring = Attendance.IsTailor,
+                        IsTailoring = Attendance.Tailor,
                         MarkedDeleted = false,
                         OnDate = Attendance.OnDate,
                         Remarks = Attendance.Remarks,
                         Status = Attendance.Status,
                         UserId = CurrentSession.UserName,
                         AttendanceId = IsNew ?
-                    $"{EmployeeId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{DateTime.Now.Second}" : Attendance.AttendanceId
+                    $"{Attendance.EmployeeId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{DateTime.Now.Second}" : Attendance.AttendanceId
                     },
                     IsNew);
                 if (v != null)
@@ -190,10 +186,10 @@ namespace eStore.ViewModels.Entry.Payroll
             catch (Exception ex)
             {
                 Notify.NotifyVLong($"Error  :{ex.Message}");
-                PopUp.Close("Error");
+               
             }
 
-            PopUp.Close(attendance.AttendanceId);
+           
         }
 
 

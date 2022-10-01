@@ -1,21 +1,30 @@
-﻿using AKS.Shared.Commons.Ops;
+﻿using System.Collections;
+using AKS.Shared.Commons.Ops;
 using AKS.Shared.Payroll.Models;
+using AKS.Shared.Payrolls.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DevExpress.Maui.DataForm;
 using eStore.MAUILib.DataModels;
+using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.DataModels.Payroll;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.ViewModels.Base;
 using eStore.Pages.Payroll.Entry;
+using eStore.ViewModels.List.Payroll;
 
+//TODO: Need to stick one Construstor for better perpose.
 namespace eStore.ViewModels.Entry.Payroll
 {
-    public partial class AttendanceEntryViewModel : BaseEntryViewModel<Attendance, AttendanceDataModel>
+    public partial class AttendanceEntryViewModel : BaseEntryViewModel<Attendance, AttendanceDataModel>, IPickerSourceProvider
     {
         [ObservableProperty]
         private List<DynVM> _employeeList;
 
         [ObservableProperty]
-        private string _id;
+        private DataFormView _dfv;
+
+        //[ObservableProperty]
+        //private bool _isNew=true;
 
         [ObservableProperty]
         private DynVM _selectedEmployee;
@@ -24,41 +33,13 @@ namespace eStore.ViewModels.Entry.Payroll
         private int _selectedStatusIndex;
 
         [ObservableProperty]
-        private string _employeeId;
-
-        [ObservableProperty]
-        private DateTime _onDate;
-
-        [ObservableProperty]
-        private string _remarks;
-
-        [ObservableProperty]
-        private string _entryTime;
-
-        [ObservableProperty]
-        private AttUnit _status;
-
-        [ObservableProperty]
-        private bool _isTailor;
-
-        [ObservableProperty]
-        private List<string> _attUnitList;
+        AttendanceViewModel _viewMoldel;
 
         [ObservableProperty]
         private AttendanceEntryPage _popUp;
 
-        partial void OnSelectedEmployeeChanged(DynVM value)
-        {
-            EmployeeId = value.ValueData;
-        }
-
-        partial void OnSelectedStatusIndexChanged(int value)
-        {
-            if (value >= 0)
-            {
-                Status = (AttUnit)value;
-            }
-        }
+        [ObservableProperty]
+        private AttendanceEntry _attendance;
 
         public AttendanceEntryViewModel(AttendanceDataModel dm, Attendance toEdit)
         {
@@ -84,80 +65,163 @@ namespace eStore.ViewModels.Entry.Payroll
             }
             InitViewModel();
         }
+        public AttendanceEntryViewModel(AttendanceViewModel vm, Attendance toEdit)
+        {
+            _viewMoldel=vm
+            DataModel = vm.GetDataModel(); ;
+            Title = "Add Attendance";
+
+            if (toEdit != null)
+            {
+                IsNew = false;
+               Attendance.IsTailor = toEdit.IsTailoring;
+                Attendance.Status = toEdit.Status;
+                Attendance.EntryTime = toEdit.EntryTime;
+                Attendance.EmployeeId = toEdit.EmployeeId;
+                Attendance.Remarks = toEdit.Remarks;
+                Attendance.Title = "Update Attendance";
+                Attendance.OnDate = toEdit.OnDate;
+                Attendance.AttendanceId = toEdit.AttendanceId;
+            }
+            else
+            {
+                IsNew = true;
+                Attendance. OnDate = DateTime.Now;
+                Attendance. EntryTime = DateTime.Now.ToShortTimeString();
+            }
+            InitViewModel();
+        }
+
+
+        public IEnumerable GetSource(string propertyName)
+        {
+            try
+            {
+                if (propertyName == "EmployeeId")
+                {
+                    if (EmployeeList == null)
+                        EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContext());
+                    return EmployeeList;
+                }
+                if (propertyName == "Status")
+                {
+                    return Enum.GetNames(typeof(AttUnit)).ToList();
+                }
+                return null;
+            }
+            catch (NullReferenceException ex)
+            {
+                Notify.NotifyShort("Error" + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Notify.NotifyShort("Error" + ex.Message);
+                return null;
+            }
+        }
 
         protected override void Cancle()
         {
-            ResetEntryViewModel();
+            ResetView();
             PopUp.Close("Cancled");
         }
 
         protected override void InitViewModel()
         {
-            EmployeeList = CommonDataModel.GetEmployeeList(DataModel.GetContextLocal());
-            AttUnitList = Enum.GetNames(typeof(AttUnit)).ToList();
+            if (DataModel == null)
+                DataModel = new AttendanceDataModel(ConType.Hybrid, CurrentSession.Role);
+            DataModel.Connect();
         }
 
-        protected override void Save()
+        private void ResetView()
         {
-            Attendance attendance;
-            if (IsNew)
+            Dfv.DataObject = Attendance = new AttendanceEntry { OnDate = DateTime.Now};
+        }
+
+        protected override async void Save()
+        {
+
+
+            try
             {
-                attendance = new Attendance
+                var v = await DataModel.SaveAsync(
+                    new Attendance
+                    {
+                        EmployeeId = Attendance.EmployeeId,
+                        EntryStatus = EntryStatus.Added,
+                        StoreId = CurrentSession.StoreCode,
+                        EntryTime = Attendance.EntryTime,
+                        IsReadOnly = false,
+                        IsTailoring = Attendance.IsTailor,
+                        MarkedDeleted = false,
+                        OnDate = Attendance.OnDate,
+                        Remarks = Attendance.Remarks,
+                        Status = Attendance.Status,
+                        UserId = CurrentSession.UserName,
+                        AttendanceId = IsNew ?
+                    $"{EmployeeId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{DateTime.Now.Second}" : Attendance.AttendanceId
+                    },
+                    IsNew);
+                if (v != null)
                 {
-                    EmployeeId = EmployeeId,
-                    EntryStatus = EntryStatus.Added,
-                    StoreId = CurrentSession.StoreCode,
-                    EntryTime = EntryTime,
-                    IsReadOnly = false,
-                    IsTailoring = IsTailor,
-                    MarkedDeleted = false,
-                    OnDate = OnDate,
-                    Remarks = Remarks,
-                    Status = Status,
-                    UserId = CurrentSession.UserName,
-                    AttendanceId = $"{EmployeeId}/{DateTime.Now.Year}/{DateTime.Now.Month}/{DateTime.Now.Day}/{DateTime.Now.Second}"
-                };
+                    Notify.NotifyVLong($"Attendace Marked as :{v.Status}");
+                    // LastAttendance = v.EmployeeId;
+
+                    //Update view model on add/update.
+                    if (this._viewMoldel != null)
+                    {
+                        if (!IsNew)
+                            _viewMoldel.Entities
+                                .Remove(_viewMoldel.Entities.FirstOrDefault(c => c.AttendanceId == v.AttendanceId));
+                        _viewMoldel.Entities.Add(v);
+                    }
+
+                    DataModel.SyncUp(v, IsNew, false);
+                    ResetView();
+                }
+                else
+                {
+
+
+                    Notify.NotifyVLong($"Error on marking attendance :{Attendance.EmployeeId}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                attendance = new Attendance
-                {
-                    EmployeeId = EmployeeId,
-                    EntryStatus = EntryStatus.Updated,
-                    StoreId = CurrentSession.StoreCode,
-                    EntryTime = EntryTime,
-                    IsReadOnly = false,
-                    IsTailoring = IsTailor,
-                    MarkedDeleted = false,
-                    OnDate = OnDate,
-                    Remarks = Remarks,
-                    Status = Status,
-                    UserId = CurrentSession.UserName,
-                    AttendanceId = Id
-                };
+                Notify.NotifyVLong($"Error  :{ex.Message}");
+                PopUp.Close("Error");
             }
 
-            if (DataModel.SaveAsync(attendance, IsNew) != null)
-            {
-                if (IsNew)
-                    Notify.NotifyVLong("Attendace is saved!");
-                else
-                    Notify.NotifyVLong("Attendace is updated!");
-                ResetEntryViewModel();
-            }
             PopUp.Close(attendance.AttendanceId);
         }
 
-        private void ResetEntryViewModel()
-        {
-            _employeeId = null;
-            _id = null;
-            _onDate = DateTime.Today;
-            _entryTime = null;
-            _remarks = null;
-            _status = AttUnit.StoreClosed;
-            _isNew = false;
-            // PopUp.Close();
-        }
+
+
+    }
+
+    public class AttendanceEntry
+    {
+        [DataFormDisplayOptions(LabelText = "ID", IsVisible = false)]
+        public string AttendanceId { get; set; }
+
+        [DataFormComboBoxEditor(ValueMember = "ValueData", DisplayMember = "DisplayData")]
+        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 1)]
+        [DataFormDisplayOptions(LabelText = "Staff")]
+        public string EmployeeId { get; set; }
+        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 2)]
+        [DataFormDisplayOptions(LabelText = "Time")]
+        public string EntryTime { get; set; }
+        [DataFormItemPosition(RowOrder = 2, ItemOrderInRow = 1)]
+        [DataFormDisplayOptions(LabelText = "Date")]
+        public DateTime OnDate { get; set; }
+        [DataFormItemPosition(RowOrder = 1, ItemOrderInRow = 2)]
+        [DataFormDisplayOptions(LabelText = "Remark")]
+        public string Remarks { get; set; }
+        [DataFormItemPosition(RowOrder = 2, ItemOrderInRow = 2)]
+        [DataFormDisplayOptions(LabelText = "Status")]
+        public AttUnit Status { get; set; }
+        public bool Tailor { get; set; }
+
     }
 }

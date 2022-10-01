@@ -7,11 +7,16 @@ public partial class AttendanceEntryPage : Popup
 {
     private AttendanceEntryViewModel entryViewModel;
 
-    public AttendanceEntryPage(AttendanceEntryViewModel vm, bool isNew)
+    public AttendanceEntryPage(AttendanceViewModel vm, Attendance att)
     {
         InitializeComponent();
-        entryViewModel = vm;
+        entryViewModel = new AttendanceEntryViewModel(vm,att);
         this.BindingContext = entryViewModel;
         Size = new Microsoft.Maui.Graphics.Size(400, 500);
+
+        //BindingContext = viewModel;
+        dataForm.DataObject = entryViewModel.VoucherEntry;
+        dataForm.PickerSourceProvider = entryViewModel;
+        entryViewModel.Dfv = dataForm;
     }
 }

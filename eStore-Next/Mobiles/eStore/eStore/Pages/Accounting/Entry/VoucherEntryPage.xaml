@@ -11,6 +11,7 @@
         <ToolbarItem Command="{Binding SaveCommand}" Text="Save" />
         <ToolbarItem Command="{Binding CancleCommand}" Text="Cancel" />
     </ContentPage.ToolbarItems>
+
     <VerticalStackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
         <ScrollView
             BackgroundColor="{x:StaticResource Background_Mid}"

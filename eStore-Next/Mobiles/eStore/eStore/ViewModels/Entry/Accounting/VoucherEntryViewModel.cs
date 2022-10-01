@@ -76,12 +76,12 @@ namespace eStore.ViewModels.Entry.Accounting
             }
             catch (NullReferenceException e)
             {
-                Toast.Make(e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                Notify.NotifyShort(e.Message);//, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 return null;
             }
             catch (Exception e)
             {
-                Toast.Make(e.Message, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
+                Notify.NotifyShort(e.Message); //, CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                 return null;
             }
         }
@@ -199,7 +199,7 @@ namespace eStore.ViewModels.Entry.Accounting
                                UserId = CurrentSession.UserName,
                                VoucherType = VoucherEntry.VoucherType,
                                VoucherNumber = IsNew ? AutoGen.GenerateVoucherNumber(VoucherEntry.VoucherType, VoucherEntry.OnDate, CurrentSession.StoreCode, Count(VoucherEntry.VoucherType) + 1) : VoucherEntry.VoucherNumber
-                           }); ;
+                           },IsNew); 
                 if (v != null)
                 {
                     Notify.NotifyVLong($"Save Voucher :{v.VoucherNumber}");

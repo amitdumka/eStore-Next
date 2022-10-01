@@ -3,11 +3,13 @@
     x:Class="eStore.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:widget="clr-namespace:eStore.Views">
+    xmlns:widget="clr-namespace:eStore.Views"
+    x:Name="this">
 
-    <ScrollView>
+    <ScrollView BindingContext="{x:Reference this}">
         <VerticalStackLayout
             Padding="30,0"
+            BindingContext="{x:Reference this}"
             Spacing="25"
             VerticalOptions="Center">
 
@@ -19,20 +21,24 @@
                 HeaderText="Test Me"
                 HorizontalOptions="EndAndExpand"
                 Icon="dotnet_bot.png" />
-            <widget:WidgetStat
+            <!--<widget:WidgetStat
                 Title="Yester Day Sale"
                 Description="Rs. 20000"
                 HeaderText="Yester Sale"
                 HorizontalOptions="Start"
-                Icon="dotnet_bot.png" />
+                Icon="dotnet_bot.png" />-->
 
-            <widget:WidgetStat
+            <!--<widget:WidgetStat
                 Title="Yearly Sale"
                 Description="Rs. 221213120000"
                 HeaderText="Yearly Sale"
                 HorizontalOptions="End"
-                Icon="dotnet_bot.png" />
+                Icon="dotnet_bot.png" />-->
 
+            <widget:ListWidget
+                x:Name="LWA"
+                HeaderText="Sale Data"
+                HorizontalOptions="End" />
 
             <Button
                 x:Name="CounterBtn"

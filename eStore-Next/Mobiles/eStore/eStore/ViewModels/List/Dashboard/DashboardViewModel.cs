@@ -1,11 +1,27 @@
 ﻿using AKS.Shared.Commons.Ops;
+using CommunityToolkit.Mvvm.ComponentModel;
 using eStore.MAUILib.ViewModels.Base;
+using static eStore.Views.ListWidget;
 
 namespace eStore.ViewModels.List.Dashboard
 {
     public partial class AccountingDashboardViewModel : BaseDashoardViewModel<AccountWidget>
     {
         private bool _localSync;
+
+        [ObservableProperty]
+        private List<ItemList> _attData;
+        [ObservableProperty]
+        private List<ItemList> _saleData;
+        [ObservableProperty]
+        private ItemList _bankData;
+        [ObservableProperty]
+        private ItemList _incomeExpenseData;
+        [ObservableProperty]
+        private List<ItemList> _voucherList;
+        [ObservableProperty]
+        private List<ItemList> _cashVoucherList;
+
 
         public AccountingDashboardViewModel()
         {
@@ -22,6 +38,23 @@ namespace eStore.ViewModels.List.Dashboard
             Fetch();
         }
 
+        protected void Reload()
+        {
+            VoucherList = new List<ItemList> {
+                new ItemList { Title = "Payment", Description = Entity.TotalPayment.ToString() },
+                new ItemList { Title = "Expenses", Description = Entity.TotalExpenses.ToString() },
+                new ItemList { Title = "Receipts", Description = Entity.TotalReceipt.ToString() }
+            };
+
+            CashVoucherList = new List<ItemList> {
+                new ItemList { Title = "Payment", Description = Entity.TotalCashPayment.ToString() },
+                new ItemList { Title = "Receipts", Description = Entity.TotalCashReceipt.ToString() }};
+
+            BankData = new ItemList { Title = Entity.BankWithdrwal.ToString(), Description = Entity.BankDeposit.ToString() };
+            IncomeExpenseData = new ItemList { Title = Entity.TotalIncome.ToString(), Description = Entity.TotalExpense.ToString() };
+
+        }
+
         protected void Fetch()
         {
             if (Entity == null)
@@ -32,6 +65,8 @@ namespace eStore.ViewModels.List.Dashboard
                     .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
                 var due = DataModel.GetContext().CustomerDues.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
                 var rec = DataModel.GetContext().DueRecovery.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
+
+                AttData = DataModel.GetContext().Attendances.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.EmployeeId, Description = c.Status.ToString() }).ToList();
 
                 Entity = new AccountWidget
                 {
@@ -55,6 +90,8 @@ namespace eStore.ViewModels.List.Dashboard
             }
         }
     }
+
+
 
     public class AccountWidget
     {

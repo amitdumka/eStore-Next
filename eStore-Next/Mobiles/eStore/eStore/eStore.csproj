@@ -62,6 +62,8 @@
 	  <MauiCss Remove="Pages\Stores\**" />
 	  <MauiXaml Remove="Pages\Stores\**" />
 	  <None Remove="Pages\Stores\**" />
+	  <None Remove="Pages\Dashboard\" />
+	  <None Remove="Views\Dashboard\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -165,6 +167,12 @@
 	  <MauiXaml Update="Views\WidgetStat.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Dashboard\VouchersWidget.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Dashboard\DashboardAdminView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
@@ -189,5 +197,7 @@
 	  <Folder Include="Pages\Accounting\Banking\Entry\" />
 	  <Folder Include="ViewModels\List\Payroll\" />
 	  <Folder Include="Views\Menu\" />
+	  <Folder Include="Pages\Dashboard\" />
+	  <Folder Include="Views\Dashboard\" />
 	</ItemGroup>
 </Project>

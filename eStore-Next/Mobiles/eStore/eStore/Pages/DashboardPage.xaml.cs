@@ -4,10 +4,10 @@ namespace eStore.Pages;
 
 public partial class DashboardPage : ContentPage
 {
-    public AccountingDashboardViewModel vm;
+    public AccountingDashboardViewModel viewModel;
     public DashboardPage(AccountingDashboardViewModel vm)
 	{
 		InitializeComponent();
-        this.BindingContext = this.vm = vm;
+        this.BindingContext = this.viewModel = vm;
     }
 }

@@ -7,13 +7,12 @@
     BackgroundColor="Transparent">
     <Frame
         Padding="20"
-        BackgroundColor="{x:StaticResource Accent_Blue200}"
+        BackgroundColor="{x:StaticResource Background_Mid}"
         BindingContext="{x:Reference this}"
         BorderColor="#C49B33"
-        CornerRadius="20"
+        CornerRadius="30"
         HasShadow="True"
         HorizontalOptions="Center"
-        MaximumWidthRequest="200"
         MinimumHeightRequest="100"
         MinimumWidthRequest="100"
         VerticalOptions="Center">
@@ -23,25 +22,28 @@
                     FontAttributes="Bold"
                     FontSize="18"
                     Text="{Binding HeaderText}"
-                    TextColor="{x:StaticResource Primary}" />
+                    TextColor="{x:StaticResource Accent_Blue200}" />
             </HorizontalStackLayout>
             <BoxView
-                Margin="0,0,0,10"
+                Margin="0,2,0,10"
                 HeightRequest="2"
                 HorizontalOptions="Fill"
-                Color="DarkBlue" />
-            <HorizontalStackLayout HorizontalOptions="StartAndExpand">
+                MaximumWidthRequest="100"
+                Color="{x:StaticResource Accent_Yellow200}" />
+            <StackLayout HorizontalOptions="Center">
                 <Label
                     FontAttributes="Italic"
                     FontSize="Subtitle"
+                    HorizontalOptions="Start"
                     Text="{Binding Title}"
-                    TextColor="{x:StaticResource Secondary}" />
+                    TextColor="{x:StaticResource Accent_Blue100}" />
                 <Label
-                    Margin="15,0,0,0"
+                    Margin="10,0,0,0"
                     FontSize="Subtitle"
+                    HorizontalOptions="End"
                     Text="{Binding Description}"
-                    TextColor="{x:StaticResource Tertiary}" />
-            </HorizontalStackLayout>
+                    TextColor="{x:StaticResource Accent_Yellow100}" />
+            </StackLayout>
         </VerticalStackLayout>
         <!--</Border>-->
     </Frame>

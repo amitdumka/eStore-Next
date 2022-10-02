@@ -4,9 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:widget="clr-namespace:eStore.Views.Dashboard"
+    x:Name="this"
     Title="{Binding Title}">
 
-    <VerticalStackLayout BackgroundColor="{x:StaticResource Accent_Blue100}">
+    <VerticalStackLayout BackgroundColor="{x:StaticResource Accent_Blue100}" BindingContext="{x:Reference this}">
         <Label
             Margin="5"
             FontAttributes="Bold,Italic"
@@ -19,7 +20,7 @@
             HorizontalScrollBarVisibility="Always"
             MaximumHeightRequest="650"
             VerticalScrollBarVisibility="Always">
-           <widget:DashboardAdminView BindingContext="{Binding viewModel}"/>
+            <widget:DashboardAdminView x:Name="widget" BindingContext="{Binding viewModel}" />
         </ScrollView>
 
 

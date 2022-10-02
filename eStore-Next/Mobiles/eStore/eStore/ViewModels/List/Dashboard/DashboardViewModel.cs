@@ -87,6 +87,7 @@ namespace eStore.ViewModels.List.Dashboard
                     TotalMonthlyCashSale = 0,
                     TotalMonthlySale = 0
                 };
+                Reload();
             }
         }
     }

@@ -25,7 +25,7 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                      x:DataType="models:Planet">  
+                      x:DataType="models:Planet">
                     <Border
                         Padding="20"
                         Background="{Binding Background}"

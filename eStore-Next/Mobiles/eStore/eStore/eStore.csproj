@@ -131,6 +131,9 @@
 	  <MauiXaml Update="Pages\DashboardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Dashboard\StoreManager\StoreManagerDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Payroll\Entry\AttendanceEntryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -197,7 +200,6 @@
 	  <Folder Include="Pages\Accounting\Banking\Entry\" />
 	  <Folder Include="ViewModels\List\Payroll\" />
 	  <Folder Include="Views\Menu\" />
-	  <Folder Include="Pages\Dashboard\" />
 	  <Folder Include="Views\Dashboard\" />
 	</ItemGroup>
 </Project>

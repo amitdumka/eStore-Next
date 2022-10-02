@@ -2,7 +2,7 @@
 using CommunityToolkit.Maui;
 using DevExpress.Maui;
 using eStore.MAUILib.DataModels.Accounting;
-using eStore.Pages;
+using eStore.Pages.Dashboard.StoreManager;
 using eStore.Pages.Accounting;
 using eStore.Pages.Accounting.Entry;
 using eStore.Pages.Accounting.Entry.Banking;
@@ -41,7 +41,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<CashVoucherEntryPage>();
         //Dashboardpage
         builder.Services.AddSingleton<AccountingDashboardViewModel>();
-        builder.Services.AddSingleton<DashboardPage>();
+        //builder.Services.AddSingleton<DashboardPage>();
+        builder.Services.AddSingleton<StoreManagerDashboardPage>();
+
         //PettyCash 
         builder.Services.AddSingleton<PettyCashViewMoldel>();
         builder.Services.AddSingleton<PettyCashSheetPage>();

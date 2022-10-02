@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:accpages="clr-namespace:eStore.Pages.Accounting"
     xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
+    xmlns:dashboard="clr-namespace:eStore.Pages.Dashboard.StoreManager"
     xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
     xmlns:local="clr-namespace:eStore"
     xmlns:pages="clr-namespace:eStore.Pages"
@@ -93,7 +94,7 @@
         Route="MAin" />
     <ShellContent
         Title="Dashboard"
-        ContentTemplate="{DataTemplate pages:DashboardPage}"
+        ContentTemplate="{DataTemplate dashboard:StoreManagerDashboardPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
         Route="Dashboard" />
 

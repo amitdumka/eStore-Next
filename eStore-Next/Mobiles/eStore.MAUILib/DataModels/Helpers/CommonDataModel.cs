@@ -95,7 +95,7 @@ namespace eStore.MAUILib.DataModels
             switch (ConType)
             {
                 case ConType.Local:
-
+                    if(_localDb==null)
                     _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
                     return (_localDb != null);
 
@@ -103,24 +103,30 @@ namespace eStore.MAUILib.DataModels
                     break;
 
                 case ConType.RemoteDb:
-                    _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
+                    if (_azureDb == null)
+                        _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
                     return (_azureDb != null);
 
                 case ConType.HybridApi:
                     break;
 
                 case ConType.HybridDB:
-                    _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
-                    _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
+                    if (_azureDb == null)
+                        _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
+                    if (_localDb == null)
+                        _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
                     return (_azureDb != null && _localDb != null);
 
                 case ConType.Hybrid:
-                    _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
-                    _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
+                    if (_azureDb == null)
+                        _azureDb = new AKS.MAUI.Databases.AppDBContext(DBType.Azure);
+                    if (_localDb == null)
+                        _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
                     return (_azureDb != null && _localDb != null);
 
                 default:
-                    _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
+                    if (_localDb == null)
+                        _localDb = new AKS.MAUI.Databases.AppDBContext(DBType.Local);
                     return (_localDb != null);
             }
             return false;

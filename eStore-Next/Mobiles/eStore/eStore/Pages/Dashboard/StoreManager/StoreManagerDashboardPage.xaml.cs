@@ -5,7 +5,15 @@ public partial class StoreManagerDashboardPage : ContentPage
 	public StoreManagerDashboardPage()
 	{
 		InitializeComponent();
-		vouchers.ItemData = viewModel.VoucherList;
-		cashVouchers.ItemData = viewModel.CashVoucherList;
-	}
+    }
+
+	protected override void OnAppearing()
+	{
+		viewModel.OnAppearing();
+       // vouchers.ItemData = viewModel.VoucherList;
+       // cashVouchers.ItemData = viewModel.CashVoucherList;
+    }
+
+
+
 }

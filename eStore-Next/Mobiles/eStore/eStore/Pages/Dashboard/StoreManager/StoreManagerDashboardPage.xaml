@@ -10,9 +10,14 @@
         <viewModel:AccountingDashboardViewModel x:Name="viewModel" />
     </ContentPage.BindingContext>
 
-    <ScrollView HorizontalScrollBarVisibility="Default"  VerticalScrollBarVisibility="Default">
-        <VerticalStackLayout>
-            <StackLayout Orientation="Vertical">
+    <ScrollView HorizontalScrollBarVisibility="Default" VerticalScrollBarVisibility="Default">
+        <VerticalStackLayout HorizontalOptions="CenterAndExpand">
+            <FlexLayout
+                AlignItems="Start"
+                Direction="Row"
+                JustifyContent="SpaceEvenly"
+                Position="Relative"
+                Wrap="Wrap">
                 <widget:WidgetStat
                     Title="{Binding Title, StringFormat='Deposit: {0}'}"
                     Margin="4"
@@ -28,8 +33,6 @@
                     Description="{Binding Description, StringFormat='Expenses: {0}'}"
                     HeaderText="Income \ Expenses"
                     HorizontalOptions="Center" />
-            </StackLayout>
-            <StackLayout Orientation="Vertical">
                 <widget:ListWidget
                     x:Name="vouchers"
                     HeaderText="Voucher(s)"
@@ -39,13 +42,10 @@
                     HeaderText="Cash Voucher(s)"
                     ItemData="{Binding CashVoucherList}" />
 
-            </StackLayout>
-
-            <StackLayout>
                 <widget:ListWidget HeaderText="Sale's" ItemData="{Binding SaleData}" />
                 <widget:ListWidget HeaderText="Attendance(s)" ItemData="{Binding AttData}" />
 
-            </StackLayout>
+            </FlexLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

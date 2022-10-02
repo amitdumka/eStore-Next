@@ -1,6 +1,7 @@
 ﻿using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
 using eStore.MAUILib.ViewModels.Base;
+using Microsoft.EntityFrameworkCore;
 using static eStore.Views.ListWidget;
 
 namespace eStore.ViewModels.List.Dashboard
@@ -21,15 +22,19 @@ namespace eStore.ViewModels.List.Dashboard
         private List<ItemList> _voucherList;
         [ObservableProperty]
         private List<ItemList> _cashVoucherList;
-
+        
+        public void OnAppearing()
+        {
+            InitView();
+            this.Icon = eStore.Resources.Styles.IconFont.BookReader;
+            this.Title = "Dashboard";
+        }
 
         public AccountingDashboardViewModel()
         {
             DataModel = new MAUILib.DataModels.DashboardDataModel(ConType.Hybrid);
             DataModel.Mode = DBType.Azure;
-            InitView();
-            this.Icon = eStore.Resources.Styles.IconFont.BookReader;
-            this.Title = "Dashboard";
+            
         }
 
         protected void InitView()
@@ -55,18 +60,18 @@ namespace eStore.ViewModels.List.Dashboard
 
         }
 
-        protected void Fetch()
+        protected async void Fetch()
         {
             if (Entity == null)
             {
-                var voucherData = DataModel.GetContext().Vouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
-                    .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
-                var cashVoucherData = DataModel.GetContext().CashVouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
-                    .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToList();
-                var due = DataModel.GetContext().CustomerDues.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
-                var rec = DataModel.GetContext().DueRecovery.Where(c => c.StoreId == CurrentSession.StoreCode).Sum(c => c.Amount);
+                var voucherData =await DataModel.GetContext().Vouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
+                    .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToListAsync();
+                var cashVoucherData = await DataModel.GetContext().CashVouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
+                    .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToListAsync();
+                var due = await DataModel.GetContext().CustomerDues.Where(c => c.StoreId == CurrentSession.StoreCode).SumAsync(c => c.Amount);
+                var rec = await DataModel.GetContext().DueRecovery.Where(c => c.StoreId == CurrentSession.StoreCode).SumAsync(c => c.Amount);
 
-                AttData = DataModel.GetContext().Attendances.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.EmployeeId, Description = c.Status.ToString() }).ToList();
+                AttData = await DataModel.GetContext().Attendances.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.EmployeeId, Description = c.Status.ToString() }).ToListAsync();
 
                 Entity = new AccountWidget
                 {

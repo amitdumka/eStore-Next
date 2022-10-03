@@ -12,17 +12,22 @@ namespace eStore.ViewModels.List.Dashboard
 
         [ObservableProperty]
         private List<ItemList> _attData;
+
         [ObservableProperty]
         private List<ItemList> _saleData;
+
         [ObservableProperty]
         private ItemList _bankData;
+
         [ObservableProperty]
         private ItemList _incomeExpenseData;
+
         [ObservableProperty]
         private List<ItemList> _voucherList;
+
         [ObservableProperty]
         private List<ItemList> _cashVoucherList;
-        
+
         public void OnAppearing()
         {
             InitView();
@@ -34,7 +39,6 @@ namespace eStore.ViewModels.List.Dashboard
         {
             DataModel = new MAUILib.DataModels.DashboardDataModel(ConType.Hybrid);
             DataModel.Mode = DBType.Azure;
-            
         }
 
         protected void InitView()
@@ -58,19 +62,43 @@ namespace eStore.ViewModels.List.Dashboard
             BankData = new ItemList { Title = Entity.BankWithdrwal.ToString(), Description = Entity.BankDeposit.ToString() };
             IncomeExpenseData = new ItemList { Title = Entity.TotalIncome.ToString(), Description = Entity.TotalExpense.ToString() };
 
+            SaleData = new List<ItemList> {
+                new ItemList { Title = $"Sale: {Entity.Sale}", Description = $" Cash : {Entity.CashSale} \n Non Cash: {Entity.NonCashSale}"},
+                new ItemList { Title = $"Monthly: {Entity.TotalMonthlySale}", Description = $" Cash:  {Entity.TotalMonthlyCashSale} \n Non Cash:{Entity.TotalMonthlyNonCashSale}"},
+                new ItemList { Title = $"Yearly: {Entity.TotalSale}", Description = $" Cash: {Entity.TotalCashSale} \n Non Cash: {Entity.TotalNonCashSale}"}
+            };
+
+            //SaleData = new List<ItemList> {
+            //    new ItemList { Title = $"Sale/Monthly: {Entity.Sale}/{Entity.TotalMonthlySale} ",
+            //        Description = $" Yearly : {Entity.TotalSale} "},
+
+            //    new ItemList { Title = $"Cash/Montly: {Entity.CashSale} / {Entity.TotalMonthlyCashSale}  ",
+            //        Description = $"Yearly : {Entity.TotalCashSale}"},
+            //    new ItemList { Title = $"Other/Montly: {Entity.NonCashSale} / {Entity.TotalMonthlyNonCashSale} ",
+            //        Description = $"Yearly :  {Entity.TotalNonCashSale}"}
+            //};
         }
 
         protected async void Fetch()
         {
             if (Entity == null)
             {
-                var voucherData =await DataModel.GetContext().Vouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
+                var voucherData = await DataModel.GetContext().Vouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
                     .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToListAsync();
                 var cashVoucherData = await DataModel.GetContext().CashVouchers.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Year == DateTime.Today.Year)
                     .GroupBy(c => c.VoucherType).Select(c => new { VT = c.Key, TAmount = c.Sum(x => x.Amount) }).ToListAsync();
                 var due = await DataModel.GetContext().CustomerDues.Where(c => c.StoreId == CurrentSession.StoreCode).SumAsync(c => c.Amount);
                 var rec = await DataModel.GetContext().DueRecovery.Where(c => c.StoreId == CurrentSession.StoreCode).SumAsync(c => c.Amount);
 
+                var monthlysale = await DataModel.GetContext().DailySales.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Month == DateTime.Today.Month
+                            && c.OnDate.Year == DateTime.Today.Year).GroupBy(c => c.StoreId)
+                            .Select(c => new { TS = c.Sum(x => x.Amount), CS = c.Sum(c => c.CashAmount) }).FirstOrDefaultAsync(); ;
+                var yearlysale = await DataModel.GetContext().DailySales.Where(c => c.StoreId == CurrentSession.StoreCode
+                            && c.OnDate.Year == DateTime.Today.Year).GroupBy(c => c.StoreId)
+                            .Select(c => new { TS = c.Sum(x => x.Amount), CS = c.Sum(c => c.CashAmount) }).FirstOrDefaultAsync(); ;
+                var todaysale = await DataModel.GetContext().DailySales.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Month == DateTime.Today.Month
+                            && c.OnDate.Date == DateTime.Today.Date).GroupBy(c => c.StoreId)
+                            .Select(c => new { TS = c.Sum(x => x.Amount), CS = c.Sum(c => c.CashAmount) }).FirstOrDefaultAsync(); ;
                 AttData = await DataModel.GetContext().Attendances.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.EmployeeId, Description = c.Status.ToString() }).ToListAsync();
 
                 Entity = new AccountWidget
@@ -87,17 +115,17 @@ namespace eStore.ViewModels.List.Dashboard
                     TotalDueRecorver = rec,
                     TotalDueAmount = due,
                     CashInHand = -1,
-                    TotalSale = 0,
-                    TotalCashSale = 0,
-                    TotalMonthlyCashSale = 0,
-                    TotalMonthlySale = 0
+                    TotalSale = yearlysale.TS,
+                    TotalCashSale = yearlysale.CS,
+                    TotalMonthlyCashSale = monthlysale.CS,
+                    TotalMonthlySale = monthlysale.TS,
+                    CashSale = todaysale.CS,
+                    Sale = todaysale.TS
                 };
                 Reload();
             }
         }
     }
-
-
 
     public class AccountWidget
     {
@@ -118,21 +146,34 @@ namespace eStore.ViewModels.List.Dashboard
 
         public decimal TotalDueAmount { get; set; }
         public decimal TotalDueRecorver { get; set; }
+
         public decimal TotalDuePending
         { get { return TotalDueAmount - TotalDueRecorver; } }
 
+        public decimal Sale { get; set; }
+
+        public decimal NonCashSale
+        { get { return Sale - CashSale; } }
+
+        public decimal CashSale { get; set; }
+
         public decimal TotalSale { get; set; }
+
         public decimal TotalNonCashSale
         { get { return TotalSale - TotalCashSale; } }
+
         public decimal TotalCashSale { get; set; }
 
         public decimal TotalMonthlySale { get; set; }
+
         public decimal TotalMonthlyNonCashSale
         { get { return TotalMonthlySale - TotalMonthlyCashSale; } }
+
         public decimal TotalMonthlyCashSale { get; set; }
 
         public decimal TotalIncome
         { get { return TotalSale + TotalCashReceipt + TotalReceipt; } }
+
         public decimal TotalExpense
         { get { return TotalPayment + TotalCashPayment + TotalExpenses; } }
     }

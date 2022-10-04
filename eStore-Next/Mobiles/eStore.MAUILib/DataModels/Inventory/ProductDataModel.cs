@@ -1,6 +1,7 @@
 ﻿using System;
 using AKS.Shared.Commons.Models.Inventory;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Inventory
 {
@@ -31,7 +32,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<ProductItem>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().ProductItems.ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
@@ -61,7 +62,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<Stock>> GetYItems(string storeid)
         {
-            throw new NotImplementedException();
+           return GetContext().Stocks.Include(c => c.Product).Where(c => c.StoreId == storeid).ToListAsync();
         }
 
         public override Task<bool> InitContext()

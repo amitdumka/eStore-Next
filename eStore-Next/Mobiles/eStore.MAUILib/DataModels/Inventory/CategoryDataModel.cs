@@ -1,5 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Inventory
 {
@@ -7,6 +8,7 @@ namespace eStore.MAUILib.DataModels.Inventory
     {
         public CategoryDataModel(ConType conType) : base(conType)
         {
+
         }
 
         public CategoryDataModel(ConType conType, Permission role) : base(conType, role)
@@ -35,7 +37,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<ProductSubCategory>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().ProductSubCategories.ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
@@ -75,7 +77,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<ProductType>> GetYItems(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().ProductTypes.ToListAsync();
         }
 
         public override Task<List<Supplier>> GetZFiltered(QueryParam query)
@@ -85,13 +87,10 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<Supplier>> GetZItems(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().Suppliers.ToListAsync();
         }
 
-        public override Task<bool> InitContext()
-        {
-            throw new NotImplementedException();
-        }
+        public override async Task<bool> InitContext() => Connect();
     }
 }
 

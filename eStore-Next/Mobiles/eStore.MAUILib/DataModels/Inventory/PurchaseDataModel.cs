@@ -1,5 +1,7 @@
-﻿using AKS.Shared.Commons.Models.Inventory;
+﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Inventory;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Inventory
 {
@@ -35,17 +37,17 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<PurchaseProduct>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().PurchaseProducts.Where(c => c.StoreId == storeid).OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().PurchaseProducts.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).ToList();
         }
 
         public override List<int> GetYearList()
         {
-            throw new NotImplementedException();
+            return GetContext().PurchaseProducts.Select(c => c.OnDate.Year).ToList();
         }
 
         public override Task<List<int>> GetYearListY(string storeid)
@@ -75,7 +77,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<PurchaseItem>> GetYItems(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().PurchaseItems.Include(c=>c.PurchaseProduct).Where(c => c.PurchaseProduct.StoreId == storeid).OrderByDescending(c => c.PurchaseProduct.OnDate).ToListAsync();
         }
 
         public override Task<List<Stock>> GetZFiltered(QueryParam query)
@@ -85,7 +87,7 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<Stock>> GetZItems(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().Stocks.Where(c => c.StoreId == storeid && c.CurrentQtyWH >= 1).ToListAsync();
         }
 
         public override Task<bool> InitContext()

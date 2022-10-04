@@ -1,5 +1,7 @@
-﻿using AKS.Shared.Commons.Models.Inventory;
+﻿using AKS.Shared.Commons.Models;
+using AKS.Shared.Commons.Models.Inventory;
 using eStore.MAUILib.DataModels.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace eStore.MAUILib.DataModels.Inventory
 {
@@ -35,17 +37,17 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<ProductSale>> GetItemsAsync(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().ProductSales.Where(c => c.StoreId == storeid).OrderByDescending(c => c.OnDate).ToListAsync();
         }
 
         public override List<int> GetYearList(string storeid)
         {
-            throw new NotImplementedException();
+           return GetContext().ProductSales.Where(c => c.StoreId == storeid).Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
         public override List<int> GetYearList()
         {
-            throw new NotImplementedException();
+            return GetContext().ProductSales.Select(c => c.OnDate.Year).Distinct().ToList();
         }
 
         public override Task<List<int>> GetYearListY(string storeid)
@@ -73,9 +75,9 @@ namespace eStore.MAUILib.DataModels.Inventory
             throw new NotImplementedException();
         }
 
-        public override Task<List<SaleItem>> GetYItems(string storeid)
+        public override Task<List<SaleItem>> GetYItems(string storeId)
         {
-            throw new NotImplementedException();
+            return GetContext().SaleItems.Include(c=>c.ProductSale).Where(c => c.ProductSale.StoreId == storeId).OrderByDescending(c=>c.ProductSale.OnDate).ToListAsync();
         }
 
         public override Task<List<SalePaymentDetail>> GetZFiltered(QueryParam query)
@@ -85,13 +87,10 @@ namespace eStore.MAUILib.DataModels.Inventory
 
         public override Task<List<SalePaymentDetail>> GetZItems(string storeid)
         {
-            throw new NotImplementedException();
+            return GetContext().SalePaymentDetails.Include(c => c.ProductSale).Where(c => c.ProductSale.StoreId == storeid).OrderByDescending(c => c.ProductSale.OnDate).ToListAsync();
         }
 
-        public override Task<bool> InitContext()
-        {
-            throw new NotImplementedException();
-        }
+        public override async Task<bool> InitContext() => Connect();
     }
 }
 

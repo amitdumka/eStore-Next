@@ -64,6 +64,7 @@
 	  <None Remove="Pages\Stores\**" />
 	  <None Remove="Pages\Dashboard\" />
 	  <None Remove="Views\Dashboard\" />
+	  <None Remove="ViewModels\List\Inventory\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -204,5 +205,6 @@
 	  <Folder Include="ViewModels\List\Payroll\" />
 	  <Folder Include="Views\Menu\" />
 	  <Folder Include="Views\Dashboard\" />
+	  <Folder Include="ViewModels\List\Inventory\" />
 	</ItemGroup>
 </Project>

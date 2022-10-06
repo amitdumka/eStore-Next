@@ -47,7 +47,7 @@ namespace eStore.ViewModels.Entry.Inventory
     }
 
 
-    public  class SaleEntry
+    public class SaleEntry
     {
         public DateTime OnDate { get; set; }
         public bool Paid { get; set; }
@@ -56,7 +56,8 @@ namespace eStore.ViewModels.Entry.Inventory
 
 
 
-    public class ProductSaleEntry {
+    public class ProductSaleEntry
+    {
         [Key]
         public string InvoiceCode { get; set; }
 
@@ -87,9 +88,10 @@ namespace eStore.ViewModels.Entry.Inventory
 
         public string SalesmanId { get; set; }
         public bool Tailoring { get; set; }
-     }
+    }
 
-    public class SaleItemEntry {
+    public class SaleItemEntry
+    {
         public int Id { get; set; }
         // Type of Invoice like Regular or manual  => Sale return 
         public InvoiceType InvoiceType { get; set; }
@@ -125,7 +127,7 @@ namespace eStore.ViewModels.Entry.Inventory
         public PayMode PayMode { get; set; }
         public string RefId { get; set; }
     }
-    
+
     public class CardPaymentDetailEntry
     {
         public int Id { get; set; }
@@ -148,20 +150,20 @@ namespace eStore.ViewModels.Entry.Inventory
         public decimal MRP { get; set; }
         public decimal BilledQty { get; set; }
 
-        public decimal BasicRate { get { return (MRP-Discount) - ((MRP-Discount) - ((MRP-Discount) * (100 / (100 + TaxRate)))); } }
+        public decimal BasicRate { get { return (MRP - Discount) - ((MRP - Discount) - ((MRP - Discount) * (100 / (100 + TaxRate)))); } }
 
         public decimal TaxRate { get; set; }
         public decimal Discount { get; set; }
 
-        public decimal LineTotal { get { return ((BasicRate*BilledQty)+(BasicRate*BilledQty*TaxRate)/100); } }
+        public decimal LineTotal { get { return ((BasicRate * BilledQty) + (BasicRate * BilledQty * TaxRate) / 100); } }
 
         public static decimal BaiscRate(decimal MRP, decimal TaxRate)
         {
-            var BasicRate = MRP - ( MRP-(MRP*(100/(100+TaxRate))) );
+            var BasicRate = MRP - (MRP - (MRP * (100 / (100 + TaxRate))));
             return BasicRate;
         }
     }
-     
+
 
 
 }

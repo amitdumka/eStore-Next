@@ -65,6 +65,7 @@
 	  <None Remove="Pages\Dashboard\" />
 	  <None Remove="Views\Dashboard\" />
 	  <None Remove="ViewModels\List\Inventory\" />
+	  <None Remove="ViewModels\Entry\Inventory\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -206,5 +207,6 @@
 	  <Folder Include="Views\Menu\" />
 	  <Folder Include="Views\Dashboard\" />
 	  <Folder Include="ViewModels\List\Inventory\" />
+	  <Folder Include="ViewModels\Entry\Inventory\" />
 	</ItemGroup>
 </Project>

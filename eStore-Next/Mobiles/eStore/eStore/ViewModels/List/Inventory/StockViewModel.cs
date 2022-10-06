@@ -45,9 +45,9 @@ namespace eStore.ViewModels.List.Inventory
         {
             ColumnCollection gridColumns = new();
             gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.Barcode), MappingName = nameof(Stock.Barcode) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductSale.OnDate), MappingName = nameof(ProductSale.OnDate), Format = "dd/MMM/yyyy" });
 
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.Barcode), MappingName = nameof(Stock.CostPrice) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.CostPrice), MappingName = nameof(Stock.CostPrice) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.MRP), MappingName = nameof(Stock.MRP) });
 
             gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.CurrentQty), MappingName = nameof(Stock.CurrentQty) });
 
@@ -79,6 +79,6 @@ namespace eStore.ViewModels.List.Inventory
             }
         }
     }
-    
+
 }
 

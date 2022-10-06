@@ -43,18 +43,17 @@ namespace eStore.ViewModels.List.Inventory
         protected override async Task<ColumnCollection> SetGridCols()
         {
             ColumnCollection gridColumns = new();
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.Barcode), MappingName = nameof(Stock.Barcode) });
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductSale.OnDate), MappingName = nameof(ProductSale.OnDate), Format = "dd/MMM/yyyy" });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.Barcode), MappingName = nameof(ProductItem.Barcode) });
+            
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.Name), MappingName = nameof(ProductItem.Name) });
 
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.Barcode), MappingName = nameof(Stock.CostPrice) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.ProductCategory), MappingName = nameof(ProductItem.ProductCategory) });
 
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.CurrentQty), MappingName = nameof(Stock.CurrentQty) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.ProductSubCategory), MappingName = nameof(ProductItem.ProductSubCategory) });
 
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.CurrentQtyWH), MappingName = nameof(Stock.CurrentQtyWH) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.StyleCode), MappingName = nameof(ProductItem.StyleCode) });
 
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.StockValue), MappingName = nameof(Stock.StockValue) });
-
-            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(Stock.StockValueWH), MappingName = nameof(Stock.StockValueWH) });
+            gridColumns.Add(new DataGridTextColumn() { HeaderText = nameof(ProductItem.Description), MappingName = nameof(ProductItem.Description) });
 
             return gridColumns;
         }

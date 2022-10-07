@@ -47,15 +47,15 @@
                 <Entry Placeholder="LineTotal" Text="{Binding LineTotal}"/>
                 <ImageButton Source="rain.png" Command="{Binding AddItem}"/>
             </HorizontalStackLayout>
-            <VerticalStackLayout>
-                <CollectionView>
+            <ScrollView MaximumHeightRequest="200" HorizontalScrollBarVisibility="Always" VerticalScrollBarVisibility="Always">
+                <CollectionView  BackgroundColor="{x:StaticResource Accent_Yellow200}">
                     <CollectionView.Resources>
                         <DataTemplate>
                             <HorizontalStackLayout>
-                            <Label Text="{Barcode}"/>
-                                <Label Text="{Qty}"/>
-                                <Label Text="{Discount}"/>
-                                <Label Text="{LineTotal"/>
+                            <Label Text="{Binding Barcode}"/>
+                                <Label Text="{Binding Qty}"/>
+                                <Label Text="{Binding Discount}"/>
+                                <Label Text="{Binding LineTotal}"/>
                             </HorizontalStackLayout>
 
                         </DataTemplate>
@@ -63,7 +63,7 @@
                     </CollectionView.Resources>
                 </CollectionView>
 
-            </VerticalStackLayout>
+            </ScrollView>
 
         </StackLayout>
     </ScrollView>

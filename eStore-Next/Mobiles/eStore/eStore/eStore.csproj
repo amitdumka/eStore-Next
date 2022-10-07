@@ -66,6 +66,8 @@
 	  <None Remove="Views\Dashboard\" />
 	  <None Remove="ViewModels\List\Inventory\" />
 	  <None Remove="ViewModels\Entry\Inventory\" />
+	  <None Remove="Pages\Inventory\" />
+	  <None Remove="Pages\Inventory\Entry\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -181,6 +183,9 @@
 	  <MauiXaml Update="Views\Dashboard\DashboardAdminView.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Inventory\Entry\SaleEntryPage.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
@@ -208,5 +213,7 @@
 	  <Folder Include="Views\Dashboard\" />
 	  <Folder Include="ViewModels\List\Inventory\" />
 	  <Folder Include="ViewModels\Entry\Inventory\" />
+	  <Folder Include="Pages\Inventory\" />
+	  <Folder Include="Pages\Inventory\Entry\" />
 	</ItemGroup>
 </Project>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="eStore.Pages.Inventory.InvoicePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dxe="clr-namespace:DevExpress.Maui.Editors;assembly=DevExpress.Maui.Editors"
+    xmlns:rlv="clr-namespace:eStore.MAUILib.Views.Custom;assembly=eStore.MAUILib"
+    Title="{Binding Title, Mode=TwoWay}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding SyncCommand}" Text="Sync" />
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
+        <HorizontalStackLayout HorizontalOptions="StartAndExpand">
+            <dxe:ComboBoxEdit
+                BackgroundColor="{x:StaticResource Accent_Blue200}"
+                BorderColor="Black"
+                CornerMode="Cut"
+                CornerRadius="10"
+                DropDownBackgroundColor="Beige"
+                DropDownItemPadding="10"
+                DropDownSelectedItemBackgroundColor="Brown"
+                DropDownSelectedItemTextColor="White"
+                FilterComparisonType="CurrentCultureIgnoreCase"
+                FilterMode="StartsWith"
+                FocusedBorderColor="DarkOrange"
+                FocusedLabelColor="DarkOrange"
+                HelpText="Select Invoice Type"
+                IsFilterEnabled="True"
+                IsLabelFloating="True"
+                ItemsSource="{Binding InvTypes, Mode=TwoWay}"
+                LabelColor="{x:StaticResource Secondary}"
+                LabelText="Invoice Type"
+                MinimumWidthRequest="200"
+                SelectedIndex="{Binding InvoiceType}" />
+        </HorizontalStackLayout>
+        <rlv:RecordListingView x:Name="RLV" AddButtonText="Add" />
+    </VerticalStackLayout>
+</ContentPage>

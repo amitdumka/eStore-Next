@@ -1,30 +1,33 @@
 ﻿namespace eStore;
+
 using CommunityToolkit.Maui;
 using DevExpress.Maui;
-using eStore.MAUILib.DataModels.Accounting;
-using eStore.Pages.Dashboard.StoreManager;
 using eStore.Pages.Accounting;
 using eStore.Pages.Accounting.Entry;
 using eStore.Pages.Accounting.Entry.Banking;
+using eStore.Pages.Dashboard.StoreManager;
+using eStore.Pages.Inventory;
 using eStore.Pages.Payrol;
+using eStore.ViewModels.Entry.Inventory;
 using eStore.ViewModels.List.Accounting;
 using eStore.ViewModels.List.Accounting.Banking;
 using eStore.ViewModels.List.Dashboard;
+using eStore.ViewModels.List.Inventory;
 using eStore.ViewModels.List.Payroll;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.DataGrid.Hosting;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
             .UseMauiApp<App>().UseMauiCommunityToolkit().UseDevExpress()
             .ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
             });
         builder.ConfigureSyncfusionCore();
@@ -44,21 +47,21 @@ public static class MauiProgram
         //builder.Services.AddSingleton<DashboardPage>();
         builder.Services.AddSingleton<StoreManagerDashboardPage>();
 
-        //PettyCash 
+        //PettyCash
         builder.Services.AddSingleton<PettyCashViewMoldel>();
         builder.Services.AddSingleton<PettyCashSheetPage>();
         builder.Services.AddSingleton<CashDetailPage>();
-        //DailySale 
+        //DailySale
         builder.Services.AddSingleton<DailySaleViewMoldel>();
-        builder.Services.AddSingleton <DailySalePage>();
+        builder.Services.AddSingleton<DailySalePage>();
         //CashDetails
         builder.Services.AddSingleton<CashDetailViewModel>();
         builder.Services.AddSingleton<CashDetailPage>();
-        //Notes 
+        //Notes
         builder.Services.AddSingleton<NotesViewModel>();
         builder.Services.AddSingleton<NotesPage>();
 
-        //Banking 
+        //Banking
         builder.Services.AddSingleton<BankViewModel>();
         builder.Services.AddSingleton<BankPage>();
         builder.Services.AddSingleton<BankEntryPage>();
@@ -72,11 +75,11 @@ public static class MauiProgram
         //due
         builder.Services.AddSingleton<CustomerDueViewModel>();
         builder.Services.AddSingleton<CustomerDuesPage>();
-        
+
         //Due rec
         builder.Services.AddSingleton<DueRecoveryViewModel>();
         builder.Services.AddSingleton<DueRecoveryPage>();
-        
+
         //Bankfino
         builder.Services.AddSingleton<BankTranscationViewModel>();
         builder.Services.AddSingleton<BankTranscationPage>();
@@ -90,7 +93,16 @@ public static class MauiProgram
         //Attendance
         builder.Services.AddSingleton<EmployeeViewModel>();
         builder.Services.AddSingleton<EmployeePage>();
+        //Inventory Sale
+        builder.Services.AddSingleton<SaleViewModel>();
+        builder.Services.AddSingleton<StockViewModel>();
+        builder.Services.AddSingleton<PurchaseViewModel>();
+
+        //Inventory Sale Entry
+        builder.Services.AddSingleton<SaleEntryViewModel>();
+
+        builder.Services.AddSingleton<InvoicePage>();
 
         return builder.Build();
-	}
+    }
 }

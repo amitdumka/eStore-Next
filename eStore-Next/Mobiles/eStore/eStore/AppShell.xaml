@@ -6,6 +6,7 @@
     xmlns:accpages="clr-namespace:eStore.Pages.Accounting"
     xmlns:controls="clr-namespace:eStore.MAUILib.Views.Controls;assembly=eStore.MAUILib"
     xmlns:dashboard="clr-namespace:eStore.Pages.Dashboard.StoreManager"
+    xmlns:invpages="clr-namespace:eStore.Pages.Inventory"
     xmlns:libpage="clr-namespace:eStore.MAUILib.Pages;assembly=eStore.MAUILib"
     xmlns:local="clr-namespace:eStore"
     xmlns:pages="clr-namespace:eStore.Pages"
@@ -98,6 +99,27 @@
         FlyoutIcon="{StaticResource CircleIcon}"
         Route="Dashboard" />
 
+    <FlyoutItem Title="Inventory">
+        <Tab Title="Sale" Icon="rain_icon.png">
+            <ShellContent
+                Title="Sale"
+                ContentTemplate="{DataTemplate invpages:InvoicePage}"
+                Route="Sale" />
+        </Tab>
+        <Tab Title="Purchase" Icon="rain_icon.png">
+            <ShellContent
+                Title="Purchase"
+                ContentTemplate="{DataTemplate accpages:CustomerDuesPage}"
+                Route="Purchase" />
+        </Tab>
+        <Tab Title="Products" Icon="rain_icon.png">
+            <ShellContent
+                Title="Products"
+                ContentTemplate="{DataTemplate accpages:DueRecoveryPage}"
+                Route="Products" />
+        </Tab>
+
+    </FlyoutItem>
     <FlyoutItem Title="Daily Sale">
         <Tab Title="Daily Sale" Icon="rain_icon.png">
             <ShellContent
@@ -107,13 +129,13 @@
         </Tab>
         <Tab Title="Due" Icon="rain_icon.png">
             <ShellContent
-                Title="Store"
+                Title="Due"
                 ContentTemplate="{DataTemplate accpages:CustomerDuesPage}"
                 Route="CustomerDue" />
         </Tab>
         <Tab Title="Recovery" Icon="rain_icon.png">
             <ShellContent
-                Title="Add"
+                Title="Recovery"
                 ContentTemplate="{DataTemplate accpages:DueRecoveryPage}"
                 Route="CustomerRecovery" />
         </Tab>
@@ -132,7 +154,7 @@
         </Tab>
         <Tab Title="Attendace Entry" Icon="rain_icon.png">
             <ShellContent
-                Title="Add"
+                Title="Attendance Entry"
                 ContentTemplate="{DataTemplate prollpages:AttendancePage}"
                 Route="Attendance.Entry" />
         </Tab>

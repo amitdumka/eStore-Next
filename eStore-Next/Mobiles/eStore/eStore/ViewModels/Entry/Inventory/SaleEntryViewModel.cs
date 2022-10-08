@@ -1,13 +1,10 @@
-﻿using System;
-using AKS.Shared.Commons.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using AKS.Shared.Commons.Models.Inventory;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Input;
+using DevExpress.Maui.Editors;
 using eStore.MAUILib.DataModels.Inventory;
 using eStore.MAUILib.ViewModels.Base;
-using System.ComponentModel.DataAnnotations.Schema;
-using AKS.Shared.Commons.Models.Sales;
 using eStore.ViewModels.List.Inventory;
 
 namespace eStore.ViewModels.Entry.Inventory
@@ -15,28 +12,54 @@ namespace eStore.ViewModels.Entry.Inventory
     public partial class SaleEntryViewModel : BaseEntryViewModel<ProductSale, SaleDataModel>
     {
         [ObservableProperty]
-        private InvoiceType _invouceType;
+        private InvoiceType _invoiceType;
 
         [ObservableProperty]
         private SaleViewModel _viewModel;
 
+        #region InvocieFields
+
+        [ObservableProperty]
+        private string _mobileNo;
+        [ObservableProperty]
+        private string _customerName;
+        [ObservableProperty]
+        private DateTime _invoiceDate;
+
+        [ObservableProperty]
+        private decimal _totalBasicAmount;
+        [ObservableProperty]
+        private decimal _totalMRPAmount;
+        [ObservableProperty]
+        private decimal _totalTaxAmount;
+        [ObservableProperty]
+        private decimal _totalDiscountAmount;
+        [ObservableProperty]
+        private decimal _totalBillAmount;
+        [ObservableProperty]
+        private decimal _totalQty;
+        [ObservableProperty]
+        private decimal _totalFeeQty;
+
+        #endregion
+
         #region SaleItemEntryFields
 
         [ObservableProperty]
-        private string _barcode="";
+        private string _barcode = "";
         [ObservableProperty]
-        private decimal _qty=0;
+        private decimal _qty = 0;
         [ObservableProperty]
-        private decimal _rate=0;
-        
-        private decimal _taxRate=0;
+        private decimal _rate = 0;
+
+        private decimal _taxRate = 0;
         [ObservableProperty]
-        private string _discount="0";
+        private string _discount = "0";
         [ObservableProperty]
         private decimal _discountAmount = 0;
         [ObservableProperty]
-        private decimal _lineTotal=0;
-        private decimal _basicRate=0;
+        private decimal _lineTotal = 0;
+        private decimal _basicRate = 0;
 
 
         #endregion
@@ -45,8 +68,8 @@ namespace eStore.ViewModels.Entry.Inventory
 
         partial void OnBarcodeChanged(string value)
         {
-            if(value.Length>6)
-             FetchProductItem(value);
+            if (value.Length > 6)
+                FetchProductItem(value);
         }
         partial void OnDiscountChanged(string value)
         {
@@ -54,7 +77,7 @@ namespace eStore.ViewModels.Entry.Inventory
         }
         partial void OnLineTotalChanged(decimal value)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
         partial void OnQtyChanged(decimal value)
         {
@@ -67,11 +90,13 @@ namespace eStore.ViewModels.Entry.Inventory
 
 
         private void OnSaleItemDetailChanged()
-        {           
-            if (Discount.Contains('%')) {
-                _discountAmount = decimal.Parse(Discount.Remove('%',' ').Trim());
+        {
+            if (Discount.Contains('%'))
+            {
+                _discountAmount = decimal.Parse(Discount.Remove('%', ' ').Trim());
                 _discountAmount = (Rate * Qty) / (_discountAmount / 100);
-            }else
+            }
+            else
             {
                 _discountAmount = decimal.Parse(Discount.Remove('%', ' ').Trim());
             }
@@ -82,14 +107,30 @@ namespace eStore.ViewModels.Entry.Inventory
 
         private void FetchProductItem(string barcode)
         {
-            
+
         }
         #endregion
 
-        partial void OnInvouceTypeChanged(InvoiceType value)
+        [RelayCommand]
+        private void OnDelegateRequested( SuggestionsRequestEventArgs e)
+        {
+            if (e.Text.Length > 4)
+            {
+                string t = e.Text;
+                if (!e.Text.StartsWith("91"))
+                {
+                    t = "91" + e.Text;
+                }
+                e.Request = () =>
+                {
+                    return DataModel.CustomerWhere(i => i.MobileNo.StartsWith(t, StringComparison.CurrentCultureIgnoreCase)).ToList();
+                };
+            }
+        }
+        partial void OnInvoiceTypeChanged(InvoiceType value)
         {
             //Change UI elemnts and Auto ID Generation 
-            throw new NotImplementedException();
+
         }
 
         public SaleEntryViewModel()

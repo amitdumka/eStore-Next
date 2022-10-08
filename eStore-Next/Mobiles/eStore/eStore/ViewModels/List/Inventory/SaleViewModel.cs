@@ -1,7 +1,7 @@
-﻿using System;
-using AKS.Shared.Commons.Models.Inventory;
+﻿using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using eStore.MAUILib.DataModels.Inventory;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.ViewModels.Base;
@@ -12,24 +12,42 @@ namespace eStore.ViewModels.List.Inventory
     public partial class SaleViewModel : BaseViewModel<ProductSale, SaleDataModel>
     {
         #region Fields
-        //[ObservablProperty]
+
         [ObservableProperty]
-        private InvoiceType _invoiceType;
-        #endregion
+        private bool _synced = false;
+
+        [ObservableProperty]
+        private InvoiceType _invoiceType = InvoiceType.Sales;
+
+        #endregion Fields
+
+        [ObservableProperty]
+        private List<string> _invTypes;// = Enum.GetNames(typeof(InvoiceType)).ToList();
+
+        partial void OnSyncedChanged(bool value)
+        {
+            if (value)
+            {
+                Entities.Clear();
+                FetchAsync();
+            }
+        }
 
         partial void OnInvoiceTypeChanged(InvoiceType value)
         {
-            // Use to change filter data and reset view. to fetch and show data for regular , manaul or sale return / manual sale return. 
+            Entities.Clear();
+            FetchAsync();
         }
 
-        public SaleViewModel()
+        [RelayCommand]
+        protected async void Sync()
         {
-
+            Synced = await DataModel.SyncInvoices(_invoiceType);
         }
 
         protected override async void AddButton()
         {
-            await Shell.Current.GoToAsync($"Sale/Entry?vm={this}&type={_invoiceType}");
+            await Shell.Current.GoToAsync($"sale/Entry?vm={this}&invType={_invoiceType}");
         }
 
         protected override void DeleteButton()
@@ -39,7 +57,9 @@ namespace eStore.ViewModels.List.Inventory
 
         protected override void InitViewModel()
         {
-            Icon = Resources.Styles.IconFont.MoneyBillWave;
+            InvTypes = Enum.GetNames(typeof(InvoiceType)).ToList();
+            Icon = Resources.Styles.IconFont.FileInvoiceDollar;
+
             DataModel = new SaleDataModel(ConType.Hybrid, CurrentSession.Role);
             Entities = new System.Collections.ObjectModel.ObservableCollection<ProductSale>();
             DataModel.Mode = DBType.Local;
@@ -54,7 +74,8 @@ namespace eStore.ViewModels.List.Inventory
 
         protected override void RefreshButton()
         {
-            throw new NotImplementedException();
+            Entities.Clear();
+            FetchAsync();
         }
 
         protected override async Task<ColumnCollection> SetGridCols()
@@ -84,7 +105,7 @@ namespace eStore.ViewModels.List.Inventory
                 case UserType.Accountant:
                 case UserType.CA:
                 case UserType.PowerUser:
-                    var data = await DataModel.GetItemsAsync(CurrentSession.StoreCode);
+                    var data = await DataModel.GetItemsAsync(CurrentSession.StoreCode, _invoiceType,13);
                     UpdateEntities(data);
                     break;
 
@@ -95,4 +116,3 @@ namespace eStore.ViewModels.List.Inventory
         }
     }
 }
-

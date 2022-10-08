@@ -4,6 +4,7 @@ using eStore.MAUILib.Helpers;
 using eStore.MAUILib.Pages.Auth;
 using eStore.Pages.Accounting.Entry;
 using eStore.Pages.Accounting.Entry.Banking;
+using eStore.Pages.Inventory.Entry;
 
 namespace eStore
 {
@@ -31,7 +32,7 @@ namespace eStore
             Routing.RegisterRoute("voucher/Entry", typeof(VoucherEntryPage));
             Routing.RegisterRoute("cashvoucher/Entry", typeof(CashVoucherEntryPage));
             Routing.RegisterRoute("banking/bank/Entry", typeof(BankEntryPage));
-           // Routing.RegisterRoute("banking/bankaccount/Entry", typeof(BankEntryPage));
+            Routing.RegisterRoute("sale/Entry", typeof(SaleEntryPage));
             //Routing.RegisterRoute("banking/banktranscations/Entry", typeof(BankEntryPage));
         }
         async void MenuItem_Clicked(System.Object sender, System.EventArgs e)

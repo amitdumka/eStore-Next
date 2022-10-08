@@ -11,13 +11,16 @@ public partial class SaleEntryPage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = viewModel = new SaleEntryViewModel();
+        viewModel.InvoiceType = InvoiceType.Sales;
+        
     }
-    public SaleEntryPage(SaleViewModel vm)
+    public SaleEntryPage(SaleViewModel vm, InvoiceType invType)
     {
         InitializeComponent();
         BindingContext = viewModel = new SaleEntryViewModel(vm);
+        viewModel.InvoiceType= invType;
 
-        // dataForm.DataObject = viewModel.VoucherEntry;
+         //dataForm.DataObject = viewModel.VoucherEntry;
        // dataForm.PickerSourceProvider = viewModel;
        // viewModel.Dfv = dataForm;
     }

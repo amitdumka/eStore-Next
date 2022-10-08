@@ -8,6 +8,7 @@ using eStore.MAUILib.DataModels.Inventory;
 using eStore.MAUILib.ViewModels.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using AKS.Shared.Commons.Models.Sales;
+using eStore.ViewModels.List.Inventory;
 
 namespace eStore.ViewModels.Entry.Inventory
 {
@@ -15,6 +16,75 @@ namespace eStore.ViewModels.Entry.Inventory
     {
         [ObservableProperty]
         private InvoiceType _invouceType;
+
+        [ObservableProperty]
+        private SaleViewModel _viewModel;
+
+        #region SaleItemEntryFields
+
+        [ObservableProperty]
+        private string _barcode="";
+        [ObservableProperty]
+        private decimal _qty=0;
+        [ObservableProperty]
+        private decimal _rate=0;
+        
+        private decimal _taxRate=0;
+        [ObservableProperty]
+        private string _discount="0";
+        [ObservableProperty]
+        private decimal _discountAmount = 0;
+        [ObservableProperty]
+        private decimal _lineTotal=0;
+        private decimal _basicRate=0;
+
+
+        #endregion
+
+        #region SaleItemEntryOnChanged
+
+        partial void OnBarcodeChanged(string value)
+        {
+            if(value.Length>6)
+             FetchProductItem(value);
+        }
+        partial void OnDiscountChanged(string value)
+        {
+            OnSaleItemDetailChanged();
+        }
+        partial void OnLineTotalChanged(decimal value)
+        {
+           // throw new NotImplementedException();
+        }
+        partial void OnQtyChanged(decimal value)
+        {
+            OnSaleItemDetailChanged();
+        }
+        partial void OnRateChanged(decimal value)
+        {
+            OnSaleItemDetailChanged();
+        }
+
+
+        private void OnSaleItemDetailChanged()
+        {           
+            if (Discount.Contains('%')) {
+                _discountAmount = decimal.Parse(Discount.Remove('%',' ').Trim());
+                _discountAmount = (Rate * Qty) / (_discountAmount / 100);
+            }else
+            {
+                _discountAmount = decimal.Parse(Discount.Remove('%', ' ').Trim());
+            }
+
+            LineTotal = ((Rate * Qty) - _discountAmount);
+        }
+
+
+        private void FetchProductItem(string barcode)
+        {
+            
+        }
+        #endregion
 
         partial void OnInvouceTypeChanged(InvoiceType value)
         {
@@ -26,8 +96,9 @@ namespace eStore.ViewModels.Entry.Inventory
         {
         }
 
-        public SaleEntryViewModel(IMessenger messenger) : base(messenger)
+        public SaleEntryViewModel(SaleViewModel vm)
         {
+            ViewModel = vm;
         }
 
         protected override void Cancle()

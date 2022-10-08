@@ -99,7 +99,7 @@ namespace eStore.ViewModels.List.Dashboard
                 var todaysale = await DataModel.GetContext().DailySales.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Month == DateTime.Today.Month
                             && c.OnDate.Date == DateTime.Today.Date).GroupBy(c => c.StoreId)
                             .Select(c => new { TS = c.Sum(x => x.Amount), CS = c.Sum(c => c.CashAmount) }).FirstOrDefaultAsync(); ;
-                AttData = await DataModel.GetContext().Attendances.Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.EmployeeId, Description = c.Status.ToString() }).ToListAsync();
+                AttData = await DataModel.GetContext().Attendances.Include(c=>c.Employee).Where(c => c.StoreId == CurrentSession.StoreCode && c.OnDate.Date == DateTime.Today.Date).Select(c => new ItemList { Title = c.Employee.StaffName, Description = c.Status.ToString() }).ToListAsync();
 
                 Entity = new AccountWidget
                 {

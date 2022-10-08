@@ -53,6 +53,7 @@ namespace AKS.Shared.Payroll.Models
         public string AttendanceId { get; set; }
 
         public string EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
         public DateTime OnDate { get; set; }
         public AttUnit Status { get; set; }
         public string EntryTime { get; set; }

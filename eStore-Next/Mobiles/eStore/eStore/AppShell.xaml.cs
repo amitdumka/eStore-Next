@@ -1,5 +1,6 @@
 ﻿using AKS.Shared.Commons.Ops;
 using eStore.DatabaseSyncService.Services;
+using eStore.MAUILib.Helpers;
 using eStore.MAUILib.Pages.Auth;
 using eStore.Pages.Accounting.Entry;
 using eStore.Pages.Accounting.Entry.Banking;
@@ -10,8 +11,20 @@ namespace eStore
     {
         public AppShell()
         {
-            InitializeComponent();
-            RegisterRoutes();
+            try
+            {
+                InitializeComponent();
+                RegisterRoutes();
+            }
+            catch(Android.Views.InflateException ex)
+            {
+                Notify.NotifyLong("Error:" + ex.Message);
+            } 
+            catch (Exception ex)
+            {
+                Notify.NotifyLong("Error:" + ex.Message);
+            }
+            
         }
         private void RegisterRoutes()
         {

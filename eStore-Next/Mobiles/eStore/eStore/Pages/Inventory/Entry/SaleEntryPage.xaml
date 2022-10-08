@@ -40,27 +40,73 @@
                 <Label Text="{Binding TotalQty, StringFormat='TotalQty:{0}'}"/>
             </HorizontalStackLayout>
             <HorizontalStackLayout>
-                <Entry Placeholder="Barcode" Text="{Binding Barcode}"/>
+                <Entry Placeholder="Barcode" Text="{Binding Barcode}" />
                 <Entry Placeholder="Qty" Text="{Binding Qty}"/>
                 <Entry Placeholder="Rate" Text="{Binding Rate}"/>
                 <Entry Placeholder="Discount" Text="{Binding Discount}"/>
                 <Entry Placeholder="LineTotal" Text="{Binding LineTotal}"/>
                 <ImageButton Source="rain.png" Command="{Binding AddItem}"/>
             </HorizontalStackLayout>
+             <BoxView
+                Margin="0,0,0,10"
+                HeightRequest="2"
+                HorizontalOptions="Fill"
+                MaximumWidthRequest="200"
+                Color="{x:StaticResource Accent_Yellow200}" />
             <ScrollView MaximumHeightRequest="200" HorizontalScrollBarVisibility="Always" VerticalScrollBarVisibility="Always">
-                <CollectionView  BackgroundColor="{x:StaticResource Accent_Yellow200}">
-                    <CollectionView.Resources>
+                <CollectionView  BackgroundColor="{x:StaticResource Accent_Yellow200}"
+
+
+                                 Margin="{OnIdiom Phone='6,0,0,0',
+                                     Tablet='17,0,0,10'}"
+                    HorizontalScrollBarVisibility="Always"
+                    ItemSizingStrategy="MeasureAllItems"
+                    ItemsSource="{Binding SaleItems}"
+                    ItemsUpdatingScrollMode="KeepLastItemInView"
+
+                                 >
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <HorizontalStackLayout>
-                            <Label Text="{Binding Barcode}"/>
-                                <Label Text="{Binding Qty}"/>
-                                <Label Text="{Binding Discount}"/>
-                                <Label Text="{Binding LineTotal}"/>
-                            </HorizontalStackLayout>
+                            <Grid Padding="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
 
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="0,0,5,0"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Text="{Binding Barcode}"
+                                    TextColor="{x:StaticResource Accent_Blue100}" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="0,0,5,0"
+                                    Text="{Binding Qty}"
+                                    TextColor="{x:StaticResource Accent_Yellow100}" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="0,0,5,0"
+                                    Text="{Binding DiscountAmount}"
+                                    TextColor="{x:StaticResource Accent_Yellow100}" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="0,0,5,0"
+                                    Text="{Binding LineTotal}"
+                                    TextColor="{x:StaticResource Accent_Yellow100}" />
+                            </Grid>
                         </DataTemplate>
-
-                    </CollectionView.Resources>
+                    </CollectionView.ItemTemplate>
                 </CollectionView>
 
             </ScrollView>

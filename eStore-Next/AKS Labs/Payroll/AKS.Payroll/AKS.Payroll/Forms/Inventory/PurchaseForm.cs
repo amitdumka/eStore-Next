@@ -1,5 +1,6 @@
 ﻿using AKS.Payroll.Database;
 using AKS.Payroll.Forms.Inventory.Functions;
+using AKS.Payroll.Ops;
 using AKS.Shared.Commons.Models.Inventory;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -77,7 +78,7 @@ namespace AKS.Payroll.Forms.Inventory
         {
             try
             {
-                //DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx",
+               // DataTable = ImportData.ReadExcelToDatatable("d:\\invoice.xlsx",
                 //    Utils.ReadInt(txtQty), Utils.ReadInt(txtProductItem),
                 //    Utils.ReadInt(txtRate), Utils.ReadInt(txtDiscount));
 
@@ -140,6 +141,11 @@ namespace AKS.Payroll.Forms.Inventory
         private void lbYearList_SelectedIndexChanged(object sender, EventArgs e)
         {
             // dgvPurchase.DataSource = Histories.First(c => c.Key == lbYearList.SelectedValue).Value;
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

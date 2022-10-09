@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AKS.Shared.Commons.Models;
 using AKS.Shared.Commons.Models.Inventory;
+using AKS.Shared.Commons.Ops;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DevExpress.Maui.Editors;
@@ -16,6 +18,9 @@ namespace eStore.ViewModels.Entry.Inventory
 
         [ObservableProperty]
         private SaleViewModel _viewModel;
+
+        [ObservableProperty]
+        private List<SaleItem> _itemList;
 
         #region InvocieFields
 
@@ -35,32 +40,53 @@ namespace eStore.ViewModels.Entry.Inventory
         [ObservableProperty]
         private decimal _totalDiscountAmount;
         [ObservableProperty]
-        private decimal _totalBillAmount;
+        private decimal _billAmount;
         [ObservableProperty]
-        private decimal _totalQty;
+        private decimal _totalBilledQty;
         [ObservableProperty]
         private decimal _totalFeeQty;
 
+        [ObservableProperty]
+        private decimal _totalQty;
+
+        partial void OnTotalBilledQtyChanged(decimal value)
+        {
+            TotalQty = value + TotalFeeQty;
+        }
+        partial void OnTotalFeeQtyChanged(decimal value)
+        {
+            TotalQty = TotalBilledQty+value;
+        }
         #endregion
 
         #region SaleItemEntryFields
 
         [ObservableProperty]
         private string _barcode = "";
+
         [ObservableProperty]
         private decimal _qty = 0;
+
         [ObservableProperty]
         private decimal _rate = 0;
 
-        private decimal _taxRate = 0;
+        
+
         [ObservableProperty]
         private string _discount = "0";
+
         [ObservableProperty]
         private decimal _discountAmount = 0;
+
         [ObservableProperty]
         private decimal _lineTotal = 0;
-        private decimal _basicRate = 0;
 
+        private decimal _basicRate = 0;
+        private decimal _taxRate = 0;
+        private decimal _taxAmount = 0;
+        private Unit _unit=Unit.Meters;
+
+        private TaxType _taxType=TaxType.GST;
 
         #endregion
 
@@ -107,7 +133,7 @@ namespace eStore.ViewModels.Entry.Inventory
 
         private void FetchProductItem(string barcode)
         {
-
+            // No Record Found . It shoud show error near Barcode Help/Error Text
         }
         #endregion
 
@@ -149,22 +175,57 @@ namespace eStore.ViewModels.Entry.Inventory
 
         protected override void InitViewModel()
         {
-            throw new NotImplementedException();
+            _itemList = new List<SaleItem>();
         }
 
         protected override void Save()
         {
             throw new NotImplementedException();
         }
+
+
+        protected void AddCustomer() {
+
+            Customer cust = new Customer
+            {
+                Age = 30,
+                City = CurrentSession.CityName,
+                DateOfBirth = DateTime.Today.AddYears(-30),
+                FirstName = CustomerName,
+                LastName = "",
+                Gender = Gender.Male,
+                MobileNo = MobileNo,
+                NoOfBills = 0,
+                OnDate = DateTime.Now,
+                TotalAmount = 0
+            };
+            DataModel.GetContext().Customers.Add(cust);
+        }
+
+        [RelayCommand]
+        protected void AddSaleItem() {
+
+            SaleItem item = new SaleItem {
+                Adjusted=false, Barcode=Barcode, BilledQty=Qty,
+               FreeQty=0, DiscountAmount=DiscountAmount, InvoiceType=InvoiceType,
+               BasicAmount=_basicRate, TaxType=_taxType, LastPcs=false, TaxAmount=_taxAmount,
+               Value=LineTotal, Unit=_unit
+            };
+            _itemList.Add(item);
+
+        }
+
+
+
     }
 
 
-    public class SaleEntry
-    {
-        public DateTime OnDate { get; set; }
-        public bool Paid { get; set; }
-        public string SalesmanId { get; set; }
-    }
+    //public class SaleEntry
+    //{
+    //    public DateTime OnDate { get; set; }
+    //    public bool Paid { get; set; }
+    //    public string SalesmanId { get; set; }
+    //}
 
 
 

@@ -16,58 +16,49 @@
             <HorizontalStackLayout>
                 <DatePicker Date="{Binding InvoiceDate}" />
                 <dxe:AutoCompleteEdit
+                    Text="{Binding MobileNo}"
+                    DisplayMember="CustomerName"
                     Margin="16,0"
                     LabelText="Mobile Number"
                     PlaceholderText="Add 91 to Search..."
                     VerticalOptions="Center">
-
-                    <!--<dxe:AsyncItemsSourceProvider  SuggestionsRequested="OnDelegateRequested" />-->
+                    <dxe:AutoCompleteEdit.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Label Padding="10" Text="{Binding MobileNo}" FontAttributes="Bold"/>
+                                <Label Padding="10" Grid.Column="2" Text="{Binding CustomerName}" HorizontalTextAlignment="End"/>
+                            </Grid>
+                        </DataTemplate>
+                    </dxe:AutoCompleteEdit.ItemTemplate>
                     <dxe:AutoCompleteEdit.ItemsSourceProvider>
-                        <dxe:FilteredItemsSourceProvider SuggestionsSource="{Binding ItemsSource}"
-                                         FilterMode="Contains"
-                                         FilterComparisonType="CurrentCultureIgnoreCase"
-                                         FilterMembers="Name, Capital"/>
-
+                        <dxe:AsyncItemsSourceProvider RequestDelay="500"  SuggestionsRequested="OnDelegateRequested" />
                     </dxe:AutoCompleteEdit.ItemsSourceProvider>
                 </dxe:AutoCompleteEdit>
-
                 <Entry Placeholder="Customer Name" Text="{Binding CustomerName}" />
-                <ImageButton Source="rain.png" />
-                <!--<dxdf:DataFormView
-                    x:Name="dataForm"
-                    Margin="5"
-                    CommitMode="PropertyChanged"
-                    ContentPadding="10"
-                    DataObject="{Binding ., Mode=TwoWay}"
-                    EditorLabelColor="{x:StaticResource Tertiary}"
-                    EditorLabelWidth="80"
-                    EditorPadding="10"
-                    GroupHeaderBackgroundColor="#e9e9e9"
-                    GroupHeaderTextColor="#f05b41"
-                    IsLastRowSeparatorVisible="True"
-                    MaximumHeightRequest="680"
-                    ValidationMode="LostFocus" />-->
-
+                <ImageButton Source="rain.png"  Command="AddCustomerCommand"/>
             </HorizontalStackLayout>
+
             <HorizontalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
-                <Label Text="{Binding MRP, StringFormat='MRP :{0}'}" />
-                <Label Text="{Binding Discount, StringFormat='Discount Amount:{0}'}" />
-                <Label Text="{Binding BasicAmount, StringFormat='Basic Amount:{0}'}" />
-                <Label Text="{Binding TaxAmount, StringFormat='Tax Amount:{0}'}" />
+                <Label Text="{Binding TotalMRP, StringFormat='MRP :{0}'}" />
+                <Label Text="{Binding TotalDiscountAmount, StringFormat='Discount Amount:{0}'}" />
+                <Label Text="{Binding TotalBasicAmount, StringFormat='Basic Amount:{0}'}" />
+                <Label Text="{Binding TotalTaxAmount, StringFormat='Tax Amount:{0}'}" />
                 <Label Text="{Binding BillAmount, StringFormat='Bill Amount:{0}'}" />
             </HorizontalStackLayout>
+
             <HorizontalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
-                <Label Text="{Binding BilledQty, StringFormat='Billed Qty:{0}'}" />
-                <Label Text="{Binding FreeQty, StringFormat='Free Item: {0}'}" />
+                <Label Text="{Binding TotalBilledQty, StringFormat='Billed Qty:{0}'}" />
+                <Label Text="{Binding TotalFreeQty, StringFormat='Free Item: {0}'}" />
                 <Label Text="{Binding TotalQty, StringFormat='TotalQty:{0}'}" />
             </HorizontalStackLayout>
+
             <HorizontalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
-                <Entry Placeholder="Barcode" Text="{Binding Barcode}" />
-                <Entry Placeholder="Qty" Text="{Binding Qty}" />
-                <Entry Placeholder="Rate" Text="{Binding Rate}" />
-                <Entry Placeholder="Discount" Text="{Binding Discount}" />
-                <Entry Placeholder="LineTotal" Text="{Binding LineTotal}" />
-                <ImageButton Command="{Binding AddItem}" Source="rain.png" />
+                <dxe:TextEdit PlaceholderText="Barcode" Text="{Binding Barcode}" LabelText="Barcode"  />
+                <dxe:NumericEdit PlaceholderText="Qty" Value="{Binding Qty}" DisplayFormat="n1" MaxDecimalDigitCount="2"/>
+                <dxe:NumericEdit PlaceholderText="Rate" Value="{Binding Rate}" DisplayFormat="c"/>
+                <dxe:NumericEdit PlaceholderText="Discount" Value="{Binding Discount}" DisplayFormat="c"/>
+                <dxe:NumericEdit PlaceholderText="LineTotal" Value="{Binding LineTotal}" DisplayFormat="c"/>
+                <ImageButton Command="{Binding AddSaleItemCommand}" Source="rain.png" />
             </HorizontalStackLayout>
             <BoxView
                 Margin="0,0,0,10"

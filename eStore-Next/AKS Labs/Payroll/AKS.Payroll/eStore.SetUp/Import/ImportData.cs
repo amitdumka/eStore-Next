@@ -1,12 +1,32 @@
 ﻿using Syncfusion.XlsIO;
 using System.Data;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace eStore.SetUp.Import
 {
+
+    public class ImportProcessor
+    {
+        public void GenerateProductItem() { }
+        public void GeneratePurchaseInvoice() { }
+        public void GeneratePurchaseItem() { }
+        public void GenerateSaleInvoice() { }
+        public void GenerateSaleItem() { }
+        public void GenerateSalePayment() { }
+        public void GenerateStockData() { }
+    }
+
     public class ImportData
     {
+
+        public static async void DataTableToJSONFile(DataTable table, string fileName)
+        {
+            //This help to Save as backup for future use
+            using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, table);            
+            await createStream.DisposeAsync();
+        }
+
         public static DataTable ReadExcelToDatatable(string filename, int fRow, int fCol, int MaxRow, int MaxCol)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -20,6 +40,7 @@ namespace eStore.SetUp.Import
                 return x;
             }
         }
+
         public static DateTime ToDateDMY(string ondate)
         {
             char c = '-';
@@ -42,6 +63,7 @@ namespace eStore.SetUp.Import
             }
             else return DateTime.Now;
         }
+
         public static DataTable ReadExcelToDatatable(string filename, string sheetName, int fRow, int fCol, int MaxRow, int MaxCol)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -62,7 +84,6 @@ namespace eStore.SetUp.Import
 
         public void ImportSaleInvoice()
         {
-
         }
 
         public void ImportMSDyncSaleInvoice()
@@ -83,16 +104,44 @@ namespace eStore.SetUp.Import
         private void PurchaseItem()
         { }
 
-        private void ReadSaleToJSON(string filename)
+        public enum SaleVMT
+        { VOY, MD, MI }
+
+        private string ReadSaleToJSON(string filename, string sheet, SaleVMT vMT)
         {
-            var dataTable = ReadExcelToDatatable(filename, "sale", 1, 1, 1, 1);
+            List<string> list = new List<string>();
+            var dataTable = ReadExcelToDatatable(filename, sheet, 1, 1, 1, 1);
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 var row = dataTable.Rows[i];
-
+                if (vMT == SaleVMT.VOY)
+                {
+                    var si = ReadVoySale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
+                else if (vMT == SaleVMT.MD)
+                {
+                    var si = ReadMDSale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
+                else if (vMT == SaleVMT.MI)
+                {
+                    var si = ReadMISale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
             }
+            return JsonSerializer.Serialize(list);
         }
 
+        private string ReadPurchaseToJSON(string filename, string sheet)
+        {
+            var dataTable = ReadExcelToDatatable(filename, sheet, 1, 1, 1, 1);
+            List<VoyPurhcase> list = new List<VoyPurhcase>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+                list.Add(ReadPurchase(dataTable.Rows[i]));
+
+            return JsonSerializer.Serialize(list);
+        }
 
         private MISale ReadMISale(DataRow row)
         {
@@ -124,8 +173,8 @@ namespace eStore.SetUp.Import
                 ProductType = row["ProductType"].ToString(),
                 StyleCode = row["PRINCIPALCODE"].ToString(),
             };
-
         }
+
         private VoySale ReadVoySale(DataRow row)
         {
             //Convert to JSONSale
@@ -156,9 +205,9 @@ namespace eStore.SetUp.Import
             // };
             return item;
         }
+
         private MDSale ReadMDSale(DataRow row)
         {
-
             return new MDSale
             {
                 BARCODE = row["BARCODE"].ToString(),
@@ -188,11 +237,10 @@ namespace eStore.SetUp.Import
                 Taxamount = Math.Round(decimal.Parse(row["Tax amount"].ToString()), 2),
                 TranscationNumber = row["Transaction number"].ToString(),
             };
-
         }
 
-        private VoyPurhcase ReadPurchase(DataRow row) {
-
+        private VoyPurhcase ReadPurchase(DataRow row)
+        {
             return new VoyPurhcase
             {
                 Barcode = row["Barcode"].ToString(),
@@ -203,18 +251,16 @@ namespace eStore.SetUp.Import
                 MRPValue = Math.Round(decimal.Parse(row["MRPValue"].ToString()), 2),
                 GRNDate = ToDateDMY(row["GRNDate"].ToString()),
                 InvoiceDate = ToDateDMY(row["InvoiceDate"].ToString()),
-                GRNNo = row["GRNNo"].ToString(), 
+                GRNNo = row["GRNNo"].ToString(),
                 InvoiceNo = row["InvoiceNo"].ToString(),
                 ItemDesc = row["ItemDesc"].ToString(),
                 ProductName = row["ProductName"].ToString(),
                 StyleCode = row["StyleCode"].ToString(),
-                SupplierName= row["SupplierName"].ToString(),
-                Quantity=Math.Round(decimal.Parse(row["Quantity"].ToString()), 2),
-                TaxAmt= Math.Round(decimal.Parse(row["TaxAmt"].ToString()), 2),
+                SupplierName = row["SupplierName"].ToString(),
+                Quantity = Math.Round(decimal.Parse(row["Quantity"].ToString()), 2),
+                TaxAmt = Math.Round(decimal.Parse(row["TaxAmt"].ToString()), 2),
             };
-        
         }
-
 
         //TODO:
         // Convert everthing to JSON
@@ -222,6 +268,104 @@ namespace eStore.SetUp.Import
         // befercate all items to each category of data segment and store in json.
         // Convert everything to particular object and store in json.
         // read data and store in database.
+
+        private JsonSale ReadMISale(DataRow row, bool a)
+        {
+            return new JsonSale
+            {
+                Barcode = row["Barcode"].ToString(),
+                BasicRate = decimal.Parse(row["BasicAmount"].ToString()),
+                LineTotal = decimal.Parse(row["BillAmount"].ToString()),
+                Discount = decimal.Parse(row["DiscAmt"].ToString()),
+                BrandName = row["BrandName"].ToString(),
+                Brand = row["BRAND"].ToString(),
+                HSNCODE = row["HSNCODE"].ToString(),
+                InvoiceNumber = row["InvNo"].ToString(),
+                InvoiceType = row["BILL_TYPE"].ToString(),
+                CGSTAmount = decimal.Parse(row["GSTAmt"].ToString()),//need to Check
+                MRPValue = decimal.Parse(row["MRPValue"].ToString()),
+                CostValue = decimal.Parse(row["CostValue"].ToString()),
+                InvoiceDate=row["Date"].ToString(),
+                Quantity = decimal.Parse(row["Qty"].ToString()),
+                TaxRate = decimal.Parse(row["TotalTaxRate"].ToString()),
+                TaxAmount = decimal.Parse(row["TotalTaxAmt"].ToString()),
+               
+                UnitCost = decimal.Parse(row["UnitCost"].ToString()),
+                UnitMRP = decimal.Parse(row["UnitMRP"].ToString()),
+                ItemDesc = row["DESCRIPTION"].ToString(),
+                SalesmanName = row["Salesman"].ToString(),
+                Size = row["Size"].ToString(),
+                Category = row["Category"].ToString(),
+                SubCategory = row["SubCate"].ToString(),
+                ProductType = row["ProductType"].ToString(),
+                SytleCode = row["PRINCIPALCODE"].ToString(),
+            };
+        }
+
+        private JsonSale ReadVoySale(DataRow row, bool a)
+        {
+            //Convert to JSONSale
+            JsonSale item = new JsonSale();
+            //{
+            item.BasicRate = Utils.ToDecimal(row["Basic Amt"].ToString());
+            item.Barcode = row["BAR CODE"].ToString();
+            item.Quantity = decimal.Parse(row["Quantity"].ToString());
+            item.BillAmount = decimal.Parse(row["Bill Amt"].ToString());
+            item.BrandName = row["Brand Name"].ToString();
+
+            item.CGSTAmount = string.IsNullOrEmpty(row["CGST Amt"].ToString()) ? 0 : decimal.Parse(row["CGST Amt"].ToString());
+            item.Discount = decimal.Parse(row["Discount Amt"].ToString());
+            item.HSNCODE = row["HSN Code"].ToString();
+            item.LineTotal = string.IsNullOrEmpty(row["Line Total"].ToString()) ? 0 : decimal.Parse(row["Line Total"].ToString());
+            item.MRP = decimal.Parse(row["MRP"].ToString());
+            item.RoundOff = decimal.Parse(row["Round Off"].ToString());
+            item.SGST = decimal.Parse(row["SGST Amt"].ToString());
+            item.Tailoring = row["TAILORING FLAG"].ToString();
+            item.TaxAmount = string.IsNullOrEmpty(row["Tax Amt"].ToString()) ? 0 : decimal.Parse(row["Tax Amt"].ToString());
+            item.SalesmanName = row["SalesMan Name"].ToString();
+            item.InvoiceDate = row["Invoice Date"].ToString();
+            item.ProductName = row["Product Name"].ToString();
+            item.InvoiceNumber = row["Invoice No"].ToString();
+            item.PaymentMode = row["Payment Mode"].ToString();
+            item.InvoiceType = row["Invoice Type"].ToString();
+            item.LP = row["LP Flag"].ToString();
+            // };
+            return item;
+        }
+
+        private JsonSale ReadMDSale(DataRow row, bool a)
+        {
+            return new JsonSale
+            {
+                Barcode = row["BARCODE"].ToString(),
+                BasicRate = decimal.Parse(row["BASICAMOUNT"].ToString()),
+                BillAmount = Math.Round(decimal.Parse(row["BILLAMOUNT"].ToString()), 2),
+                Brand = row["BRAND"].ToString(),
+                Category = row["CATEGORY"].ToString(),
+                CGSTAmount = Math.Round(decimal.Parse(row["CGSTAMOUNT"].ToString()), 2),
+                Discount = Math.Round(decimal.Parse(row["Discount amount"].ToString()), 2),
+                HSNCODE = row["HSNCODE"].ToString(),
+                //COUPONAMOUNT = 0,
+                //COUPONPERCENTAGE = "",
+                LineTotal = Math.Round(decimal.Parse(row["LINETOTAL"].ToString()), 2),
+                MRP = Math.Round(decimal.Parse(row["MRP"].ToString())),
+                InvoiceDate = row["Date"].ToString(),
+                PaymentMode = row["PAYMENTMODE"].ToString(),
+                ProductName = row["Product"].ToString(),
+               // Productnumber = row["Product number"].ToString(),
+                Quantity = Math.Round(decimal.Parse(row["Quantity"].ToString()), 2),
+                InvoiceNumber = row["Receipt number"].ToString(),
+                RoundOff = Math.Round(decimal.Parse(row["ROUNDOFFAMT"].ToString()), 2),
+                SalesmanName = row["SALESMAN"].ToString(),
+                InvoiceType = row["SALESTYPE"].ToString(),
+                SGST = Math.Round(decimal.Parse(row["SGSTAMOUNT"].ToString()), 2),
+                SytleCode = row["STYLECODE"].ToString(),
+                Tailoring = row["TAILORINGFLAG"].ToString(),
+                TaxAmount = Math.Round(decimal.Parse(row["Tax amount"].ToString()), 2),
+               // TranscationNumber = row["Transaction number"].ToString(),
+            };
+        }
+
     }
 
     public class VoySale
@@ -331,7 +475,6 @@ namespace eStore.SetUp.Import
         public string StyleCode { get; set; }
     }
 
-
     public class JsonSale
     {
         public string InvoiceType { get; set; }
@@ -372,6 +515,7 @@ namespace eStore.SetUp.Import
         public string SubCategory { get; set; }
         public string ProductType { get; set; }
     }
+
     public class VoyPurhcase
     {
         public string GRNNo { get; set; }
@@ -389,9 +533,8 @@ namespace eStore.SetUp.Import
         public decimal Cost { get; set; }
         public decimal CostValue { get; set; }
         public decimal TaxAmt { get; set; }
-
-
     }
+
     public class Utils
     {
         public static DateTime ToDate(string date)
@@ -438,5 +581,4 @@ namespace eStore.SetUp.Import
             return JsonSerializer.Deserialize<List<T>>(openStream);
         }
     }
-
 }

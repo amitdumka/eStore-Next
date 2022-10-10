@@ -1,29 +1,175 @@
-﻿using Syncfusion.XlsIO;
+﻿using AKS.Shared.Commons.Models.Inventory;
+using Syncfusion.XlsIO;
 using System.Data;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
-
     public class ImportProcessor
     {
-        public void GenerateProductItem() { }
-        public void GeneratePurchaseInvoice() { }
-        public void GeneratePurchaseItem() { }
-        public void GenerateSaleInvoice() { }
-        public void GenerateSaleItem() { }
-        public void GenerateSalePayment() { }
-        public void GenerateStockData() { }
+        public static string VendorMapping(string supplier)
+        {
+            string id = supplier switch
+            {
+                "TAS RMG Warehouse - Bangalore" => "ARD/VIN/0003",
+                "TAS - Warhouse -FOFO" => "ARD/VIN/0003",
+                "Bangalore WH" => "ARD/VIN/0003",
+                "Arvind Brands Limited" => "ARD/VIN/0002",
+                "TAS RTS -Warhouse" => "ARD/VIN/0002",
+                "Arvind Limited" => "ARD/VIN/0001",
+                "Khush" => "ARD/VIN/0005",
+                "Safari Industries India Ltd" => "ARD/VIN/0004",
+                "DTR Packed WH" => "ARD/VIN/0002",
+                "DTR - TAS Warehouse" => "ARD/VIN/0002",
+                "Aprajita Retails - Jamshedpur" => "ARD/VIN/0007",
+                _ => "ARD/VIN/0002",
+            };
+            return id;
+        }
+
+        public void GenerateProductItem(string filename)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(filename);
+                var json = reader.ReadToEnd();
+                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+
+                var stocks = purchases.GroupBy(c => c.Barcode)
+                     .Select(c =>
+                          c.Select(x => new { x.Barcode, x.Cost, x.MRP, x.ProductName, x.SupplierName, QTY = c.Sum(z => z.Quantity), x.StyleCode })
+                     ).ToList()[0].ToList();
+                List<ProductItem> products = new List<ProductItem>();
+                foreach (var s in stocks)
+                {
+                    ProductItem p = new ProductItem
+                    {
+                        Barcode = s.Barcode,
+                        StyleCode = s.StyleCode,
+                        Name = s.ProductName,
+                        MRP = s.MRP,
+                        TaxType = TaxType.GST,
+                        Unit = Unit.Nos,
+                    };
+                    products.Add(p);
+                }
+
+
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> GeneratePurchaseInvoice(string storecode, string filename)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(filename);
+                var json = reader.ReadToEnd();
+                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+
+                var invoices = purchases.GroupBy(c => new { c.InvoiceNo, c.GRNNo, c.InvoiceDate, c.GRNDate })
+                    .Select(c => new PurchaseProduct
+                    {
+                        VendorId = VendorMapping(c.Select(x => x.SupplierName).First()),
+                        InvoiceType = PurchaseInvoiceType.Purchase,
+                        Count = c.Count(),
+                        TotalQty = c.Sum(x => x.Quantity),
+                        InwardDate = c.Key.GRNDate,
+                        UserId = "AUTOGINI",
+                        Warehouse = c.Select(x => x.SupplierName).First(),
+                        TotalAmount = (decimal)-0.0001,
+                        OnDate = c.Key.InvoiceDate,
+                        InvoiceNo = c.Key.InvoiceNo,
+                        InwardNumber = c.Key.GRNNo,
+                        TaxType = c.Key.InvoiceDate < new DateTime(2017, 7, 1) ? TaxType.VAT : TaxType.IGST,
+                        BillQty = c.Sum(x => x.Quantity),
+                        StoreId = storecode,
+                        BasicAmount = c.Sum(x => x.CostValue),
+                        ShippingCost = 0,
+                        TaxAmount = c.Sum(x => x.TaxAmt),
+                        DiscountAmount = 0,
+                        Paid = true,
+                        EntryStatus = EntryStatus.Rejected,
+                        FreeQty = 0,
+                        IsReadOnly = false,
+                        MarkedDeleted = false
+                    }).ToList();
+
+                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseInvoice.json");
+                await JsonSerializer.SerializeAsync(createStream, invoices);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> GeneratePurchaseItemAsync(string storecode, string filename)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(filename);
+                var json = reader.ReadToEnd();
+                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+                List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
+                foreach (var inv in purchases)
+                {
+                    PurchaseItem pItem = new PurchaseItem
+                    {
+                        Barcode = inv.Barcode,
+                        CostPrice = inv.CostValue,
+                        CostValue = inv.CostValue,
+                        DiscountValue = 0,
+                        FreeQty = 0,
+                        InwardNumber = inv.GRNNo,
+                        Qty = inv.Quantity,
+                        TaxAmount = inv.TaxAmt,
+                        Unit = Unit.Nos
+                    };
+                    purchaseItems.Add(pItem);
+                }
+
+                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseItem.json");
+                await JsonSerializer.SerializeAsync(createStream, purchaseItems);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+        }
+
+        public void GenerateSaleInvoice()
+        { }
+
+        public void GenerateSaleItem()
+        { }
+
+        public void GenerateSalePayment()
+        { }
+
+        public void GenerateStockData()
+        { }
     }
 
     public class ImportData
     {
-
         public static async void DataTableToJSONFile(DataTable table, string fileName)
         {
             //This help to Save as backup for future use
             using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, table);            
+            await JsonSerializer.SerializeAsync(createStream, table);
             await createStream.DisposeAsync();
         }
 
@@ -285,11 +431,11 @@ namespace eStore.SetUp.Import
                 CGSTAmount = decimal.Parse(row["GSTAmt"].ToString()),//need to Check
                 MRPValue = decimal.Parse(row["MRPValue"].ToString()),
                 CostValue = decimal.Parse(row["CostValue"].ToString()),
-                InvoiceDate=row["Date"].ToString(),
+                InvoiceDate = row["Date"].ToString(),
                 Quantity = decimal.Parse(row["Qty"].ToString()),
                 TaxRate = decimal.Parse(row["TotalTaxRate"].ToString()),
                 TaxAmount = decimal.Parse(row["TotalTaxAmt"].ToString()),
-               
+
                 UnitCost = decimal.Parse(row["UnitCost"].ToString()),
                 UnitMRP = decimal.Parse(row["UnitMRP"].ToString()),
                 ItemDesc = row["DESCRIPTION"].ToString(),
@@ -352,7 +498,7 @@ namespace eStore.SetUp.Import
                 InvoiceDate = row["Date"].ToString(),
                 PaymentMode = row["PAYMENTMODE"].ToString(),
                 ProductName = row["Product"].ToString(),
-               // Productnumber = row["Product number"].ToString(),
+                // Productnumber = row["Product number"].ToString(),
                 Quantity = Math.Round(decimal.Parse(row["Quantity"].ToString()), 2),
                 InvoiceNumber = row["Receipt number"].ToString(),
                 RoundOff = Math.Round(decimal.Parse(row["ROUNDOFFAMT"].ToString()), 2),
@@ -362,10 +508,9 @@ namespace eStore.SetUp.Import
                 SytleCode = row["STYLECODE"].ToString(),
                 Tailoring = row["TAILORINGFLAG"].ToString(),
                 TaxAmount = Math.Round(decimal.Parse(row["Tax amount"].ToString()), 2),
-               // TranscationNumber = row["Transaction number"].ToString(),
+                // TranscationNumber = row["Transaction number"].ToString(),
             };
         }
-
     }
 
     public class VoySale

@@ -1,6 +1,7 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using Syncfusion.XlsIO;
 using System.Data;
+using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
@@ -152,7 +153,7 @@ namespace eStore.SetUp.Import
                 StreamReader reader = new StreamReader(filename);
                 var json = reader.ReadToEnd();
                 var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-                List<ProductSale> purchaseItems = new List<ProductSale>();
+
                 int count = 0;
                 var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType, c.PaymentMode, c.SalesmanName })
                     .Select(c => new ProductSale
@@ -192,15 +193,141 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public void GenerateSaleItem()
+        public async Task<bool> GenerateSaleItem(string code, string filename)
         {
+            try
+            {
+                StreamReader reader = new StreamReader(filename);
+                var json = reader.ReadToEnd();
+                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
+               // List<SaleItem> saleItems = new List<SaleItem>();
+               // int count = 0;
+                var saleinvs = sales.Select(c => new SaleItem
+                {
+                    Barcode = c.Barcode,
+                    BasicAmount = c.BasicRate,
+                    DiscountAmount = c.Discount,
+                    LastPcs = false,
+                    TaxAmount = c.TaxAmount,
+                    TaxType = TaxType.GST,
+                    Unit = Unit.Nos,
+                    Value = c.LineTotal,
+                    BilledQty = c.Quantity,
+                    Adjusted = false,
+                    EntryStatus = EntryStatus.Rejected,
+                    StoreId = code,
+                    InvoiceType = c.Key.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
+                    FreeQty = 0,
+                    UserId = "AUTOJINI",
+                    InvoiceCode = c.InvoiceNumber,
+                    IsReadOnly = false,
+                    MarkedDeleted = false,
+                }).ToList();
+
+                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
+                await JsonSerializer.SerializeAsync(createStream, saleinvs);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
-        public void GenerateSalePayment()
-        { }
+        public async Task<bool> GenerateSalePayment( string code, string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
 
-        public void GenerateStockData()
-        { }
+            var cashsale = sales.Where(c => c.PaymentMode == "CAS")
+                .Select(c=> new SalePaymentDetail {  InvoiceCode=c.InvoiceNumber, PaidAmount=c.BillAmount, 
+                PayMode=PayMode.Cash, RefId="CASH SALE", 
+                })
+                .ToList();
+
+            var cardsale = sales.Where(c => c.PaymentMode == "CRD").Select(c => new SalePaymentDetail
+            {
+                InvoiceCode = c.InvoiceNumber,
+                PaidAmount = c.BillAmount, 
+                PayMode = PayMode.Card,
+                RefId = "CARD SALE",
+            }).ToList();
+            var mixsale = sales.Where(c => c.PaymentMode == "MIX").Select(c => new SalePaymentDetail
+            {
+                InvoiceCode = c.InvoiceNumber,
+                PaidAmount = c.BillAmount,
+                PayMode = PayMode.MixPayments,
+                RefId = "Mix Sale",
+            }).ToList();
+            var salereturn = sales.Where(c => c.PaymentMode == "SR").Select(c => new SalePaymentDetail
+            {
+                InvoiceCode = c.InvoiceNumber,
+                PaidAmount = c.BillAmount,
+                PayMode = PayMode.SaleReturn,
+                RefId = "SALE Return",
+            }).ToList();
+            List<SalePaymentDetail> list = new List<SalePaymentDetail>();
+            list.AddRange(cashsale);
+            list.AddRange(cardsale);
+            list.AddRange(mixsale);
+            list.AddRange(salereturn);
+            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/salepayment.json");
+            await JsonSerializer.SerializeAsync(createStream, saleinvs);
+            await createStream.DisposeAsync();
+            return true;
+
+
+        }
+
+        public async Task<bool> GenerateStockData(string code, string pfile, string sfile)
+        {
+            StreamReader reader = new StreamReader(pfile);
+            var json = reader.ReadToEnd();
+            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+             reader = new StreamReader(sfile);
+             json = reader.ReadToEnd();
+            var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
+
+            var pp= purchases.GroupBy(c=>c.Barcode).Select(c=>new {c.Key, Qty=c.Sum(x=>x.Quantity),
+                Cost=c.Select(x=>x.Cost),Mrp= c.Select(x=>x.MRP)}).ToList();
+
+            var ss = sales.GroupBy(c => c.Barcode).Select(c => new {
+                c.Key,
+                Qty = c.Sum(x => x.Quantity),
+                Mrp = c.Select(x => x.MRP)
+            }).ToList();
+
+
+            var x = from p in pp
+                    join s in ss on p.Barcode equals s.Barcode
+                    select new
+                    {
+                        new Stock
+                        {
+                            Barcode = p.Barcode,
+                            CostPrice = p.Cost,
+                            HoldQty = 0,
+                            EntryStatus = EntryStatus.Rejected,
+                            IsReadOnly = false,
+                            MarkedDeleted = false,
+                            MRP = p.MRP,
+                            MultiPrice = false,
+                            PurhcaseQty = p.Qty,
+                            SoldQty = s.Qty,
+                            StoreId = code,
+                            UserId = "AutoJini",
+                            Unit = Unit.Nos
+                        }
+                    };
+
+            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
+            await JsonSerializer.SerializeAsync(createStream, saleinvs);
+            await createStream.DisposeAsync();
+            return true;
+
+        }
     }
 
     public class ImportData

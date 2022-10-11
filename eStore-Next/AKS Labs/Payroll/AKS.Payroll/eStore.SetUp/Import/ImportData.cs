@@ -1,7 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using Syncfusion.XlsIO;
 using System.Data;
-using System.Security.Cryptography;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
@@ -200,8 +199,8 @@ namespace eStore.SetUp.Import
                 StreamReader reader = new StreamReader(filename);
                 var json = reader.ReadToEnd();
                 var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-               // List<SaleItem> saleItems = new List<SaleItem>();
-               // int count = 0;
+                // List<SaleItem> saleItems = new List<SaleItem>();
+                // int count = 0;
                 var saleinvs = sales.Select(c => new SaleItem
                 {
                     Barcode = c.Barcode,
@@ -214,14 +213,9 @@ namespace eStore.SetUp.Import
                     Value = c.LineTotal,
                     BilledQty = c.Quantity,
                     Adjusted = false,
-                    EntryStatus = EntryStatus.Rejected,
-                    StoreId = code,
-                    InvoiceType = c.Key.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
+                    InvoiceType = c.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
                     FreeQty = 0,
-                    UserId = "AUTOJINI",
                     InvoiceCode = c.InvoiceNumber,
-                    IsReadOnly = false,
-                    MarkedDeleted = false,
                 }).ToList();
 
                 using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
@@ -235,22 +229,26 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public async Task<bool> GenerateSalePayment( string code, string filename)
+        public async Task<bool> GenerateSalePayment(string code, string filename)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
             var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
 
             var cashsale = sales.Where(c => c.PaymentMode == "CAS")
-                .Select(c=> new SalePaymentDetail {  InvoiceCode=c.InvoiceNumber, PaidAmount=c.BillAmount, 
-                PayMode=PayMode.Cash, RefId="CASH SALE", 
+                .Select(c => new SalePaymentDetail
+                {
+                    InvoiceCode = c.InvoiceNumber,
+                    PaidAmount = c.BillAmount,
+                    PayMode = PayMode.Cash,
+                    RefId = "CASH SALE",
                 })
                 .ToList();
 
             var cardsale = sales.Where(c => c.PaymentMode == "CRD").Select(c => new SalePaymentDetail
             {
                 InvoiceCode = c.InvoiceNumber,
-                PaidAmount = c.BillAmount, 
+                PaidAmount = c.BillAmount,
                 PayMode = PayMode.Card,
                 RefId = "CARD SALE",
             }).ToList();
@@ -274,11 +272,9 @@ namespace eStore.SetUp.Import
             list.AddRange(mixsale);
             list.AddRange(salereturn);
             using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/salepayment.json");
-            await JsonSerializer.SerializeAsync(createStream, saleinvs);
+            await JsonSerializer.SerializeAsync(createStream, list);
             await createStream.DisposeAsync();
             return true;
-
-
         }
 
         public async Task<bool> GenerateStockData(string code, string pfile, string sfile)
@@ -286,25 +282,30 @@ namespace eStore.SetUp.Import
             StreamReader reader = new StreamReader(pfile);
             var json = reader.ReadToEnd();
             var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-             reader = new StreamReader(sfile);
-             json = reader.ReadToEnd();
+            reader = new StreamReader(sfile);
+            json = reader.ReadToEnd();
             var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
 
-            var pp= purchases.GroupBy(c=>c.Barcode).Select(c=>new {c.Key, Qty=c.Sum(x=>x.Quantity),
-                Cost=c.Select(x=>x.Cost),Mrp= c.Select(x=>x.MRP)}).ToList();
-
-            var ss = sales.GroupBy(c => c.Barcode).Select(c => new {
-                c.Key,
+            var pp = purchases.GroupBy(c => c.Barcode).Select(c => new
+            {
+               Barcode= c.Key,
                 Qty = c.Sum(x => x.Quantity),
-                Mrp = c.Select(x => x.MRP)
+                Cost = c.Select(x => x.Cost).First(),
+                Mrp = c.Select(x => x.MRP).First()
             }).ToList();
 
+            var ss = sales.GroupBy(c => c.Barcode).Select(c => new
+            {
+                Barcode=c.Key,
+                Qty = c.Sum(x => x.Quantity),
+                Mrp = c.Select(x => x.MRP).First(),
+            }).ToList();
 
             var x = from p in pp
                     join s in ss on p.Barcode equals s.Barcode
                     select new
                     {
-                        new Stock
+                        Stock = new Stock
                         {
                             Barcode = p.Barcode,
                             CostPrice = p.Cost,
@@ -312,7 +313,7 @@ namespace eStore.SetUp.Import
                             EntryStatus = EntryStatus.Rejected,
                             IsReadOnly = false,
                             MarkedDeleted = false,
-                            MRP = p.MRP,
+                            MRP = p.Mrp,
                             MultiPrice = false,
                             PurhcaseQty = p.Qty,
                             SoldQty = s.Qty,
@@ -322,11 +323,10 @@ namespace eStore.SetUp.Import
                         }
                     };
 
-            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
-            await JsonSerializer.SerializeAsync(createStream, saleinvs);
+            using FileStream createStream = File.Create(Path.GetDirectoryName(pfile) + @"/stocks.json");
+            await JsonSerializer.SerializeAsync(createStream, x);
             await createStream.DisposeAsync();
             return true;
-
         }
     }
 

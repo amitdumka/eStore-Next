@@ -1,13 +1,14 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using Syncfusion.XlsIO;
 using System.Data;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
     public class ImportProcessor
     {
+        private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
+
         public static string VendorMapping(string supplier)
         {
             string id = supplier switch
@@ -54,14 +55,9 @@ namespace eStore.SetUp.Import
                     };
                     products.Add(p);
                 }
-
-
-
-
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -145,16 +141,60 @@ namespace eStore.SetUp.Import
             }
             catch (Exception e)
             {
-
                 return false;
             }
         }
 
-        public void GenerateSaleInvoice()
-        { }
+        public async Task<bool> GenerateSaleInvoice(string code, string filename)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(filename);
+                var json = reader.ReadToEnd();
+                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
+                List<ProductSale> purchaseItems = new List<ProductSale>();
+                int count = 0;
+                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType, c.PaymentMode, c.SalesmanName })
+                    .Select(c => new ProductSale
+                    {
+                        InvoiceNo = c.Key.InvoiceNumber,
+                        OnDate = DateTime.Parse(c.Key.InvoiceDate),
+                        BilledQty = c.Sum(x => x.Quantity),
+                        Adjusted = false,
+                        EntryStatus = EntryStatus.Rejected,
+                        FreeQty = 0,
+                        StoreId = code,
+                        TotalBasicAmount = c.Sum(x => x.BasicRate),
+                        Tailoring = false,
+                        Taxed = true,
+                        InvoiceType = c.Key.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
+                        SalesmanId = Salesman.Where(x => x.Value == c.Key.SalesmanName).First().Key,
+                        TotalMRP = c.Sum(x => x.MRPValue),
+                        TotalDiscountAmount = c.Sum(x => x.Discount),
+                        UserId = "AUTOJINI",
+                        TotalTaxAmount = c.Sum(x => x.TaxAmount),
+                        TotalPrice = c.Sum(x => x.BillAmount),
+                        InvoiceCode = $@"{code}/{DateTime.Parse(c.Key.InvoiceDate).ToString("yyyy/MMM/DD")}/00{++count}",
+                        IsReadOnly = false,
+                        MarkedDeleted = false,
+                        Paid = true,
+                        RoundOff = c.Sum(x => x.RoundOff),
+                    }).ToList();
+
+                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleinvoice.json");
+                await JsonSerializer.SerializeAsync(createStream, saleinvs);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
 
         public void GenerateSaleItem()
-        { }
+        {
+        }
 
         public void GenerateSalePayment()
         { }

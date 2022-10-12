@@ -1,13 +1,69 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Syncfusion.XlsIO;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Security.Policy;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
+    /*
+     Setup How to generate Data, 
+
+    1) Category, Sub Category, Product Type, 
+    2) Product Item, 
+    3) Purhcase Invoice, Purchase Item 
+    4) Sale Invoice , Sale Item 
+    5) Payments
+    6) Stocks 
+     */
+   
+
     public class ImportProcessor
     {
         private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
+        private List<string> Cat1 = new List<string>();
+        private List<string> Cat2 = new List<string>();
+        private List<string> Cat3 = new List<string>(); 
+
+        public void StartPorocessor()
+        {
+            //1st Creating Category/ Size/ Sub Category
+
+        }
+
+        private async Task<bool> CreateCategoriesAsync(string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+
+            var categories = purchases.GroupBy(c=>c.ProductName).Select(c=>new { KK = c.Key.Split("/") }).ToList();
+
+            foreach(var category in categories)
+            {
+                Cat1.Add(category.KK[0]);
+                Cat2.Add(category.KK[1]);
+                Cat3.Add(category.KK[2]);
+            }
+
+            Cat1 = Cat1.Distinct().ToList();
+            Cat2 = Cat2.Distinct().ToList();
+            Cat3 = Cat3.Distinct().ToList();
+            List<List<string>> list = new List<List<string>>();
+            list.Add(Cat1);
+            list.Add(Cat2);
+            list.Add(Cat3);
+            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/salepayment.json");
+            await JsonSerializer.SerializeAsync(createStream, list);
+            await createStream.DisposeAsync();
+            return true;
+
+
+        }
+
 
         public static string VendorMapping(string supplier)
         {

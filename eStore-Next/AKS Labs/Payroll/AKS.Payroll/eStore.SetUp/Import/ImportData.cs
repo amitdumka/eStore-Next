@@ -1,4 +1,5 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
+using AKS.Shared.Commons.Models.Sales;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Syncfusion.XlsIO;
 using System.ComponentModel.DataAnnotations;
@@ -19,18 +20,49 @@ namespace eStore.SetUp.Import
     5) Payments
     6) Stocks 
      */
-   
+
 
     public class ImportProcessor
     {
         private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
         private List<string> Cat1 = new List<string>();
         private List<string> Cat2 = new List<string>();
-        private List<string> Cat3 = new List<string>(); 
+        private List<string> Cat3 = new List<string>();
 
-        public void StartPorocessor()
+        public async void StartPorocessor(string store)
         {
+            string PurchaseFileName = "";
+            string SaleFileName = "";
+            // First Create Product and Sale JSON File , 
+            // Then Start Processing
+
             //1st Creating Category/ Size/ Sub Category
+            var flag = await CreateCategoriesAsync(PurchaseFileName);
+            if (!flag) return;
+            //Creating Product Item 
+
+            //flag = await GenerateProductItem(PurchaseFileName,SaleFileName );
+            //if(!flag) return; 
+
+            //Creating Purchase Invoice
+            flag = await GeneratePurchaseInvoice(store, PurchaseFileName);
+            if (!flag) return;
+            //Creating Purchase Item
+            flag = await GeneratePurchaseItemAsync(store, PurchaseFileName);
+            if (!flag) return;
+            //Creating Sale Item 
+            flag = await GenerateSaleInvoice(store, SaleFileName);
+            flag = await GenerateSaleItem(store, SaleFileName);
+            flag = await GenerateSalePayment(store, SaleFileName);
+            if (!flag) return;
+            //Creating Stock 
+            flag = await GenerateStockData(store, PurchaseFileName, SaleFileName);
+            if (!flag) return;
+
+            // Create DailSale Here
+
+            //Create a Structure and Store in Single Json File So it become easy to parse and process. 
+            //Or make a file whcih can process in single go
 
         }
 
@@ -40,30 +72,88 @@ namespace eStore.SetUp.Import
             var json = reader.ReadToEnd();
             var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
 
-            var categories = purchases.GroupBy(c=>c.ProductName).Select(c=>new { KK = c.Key.Split("/") }).ToList();
+            var categories = purchases.GroupBy(c => c.ProductName).Select(c => new { KK = c.Key.Split("/") }).ToList();
 
-            foreach(var category in categories)
+            foreach (var category in categories)
             {
                 Cat1.Add(category.KK[0]);
                 Cat2.Add(category.KK[1]);
                 Cat3.Add(category.KK[2]);
             }
 
+
+
+
             Cat1 = Cat1.Distinct().ToList();
             Cat2 = Cat2.Distinct().ToList();
             Cat3 = Cat3.Distinct().ToList();
-            List<List<string>> list = new List<List<string>>();
-            list.Add(Cat1);
-            list.Add(Cat2);
-            list.Add(Cat3);
-            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/salepayment.json");
-            await JsonSerializer.SerializeAsync(createStream, list);
+
+            int count = 0;
+            List<ProductType> pTypes = new List<ProductType>();
+            foreach (var cat in Cat2)
+            {
+                ProductType pType = new ProductType { ProductTypeId = $"PT00{++count}", ProductTypeName = cat };
+                pTypes.Add(pType);
+            }
+            count = 0;
+
+            List<ProductSubCategory> catList = new List<ProductSubCategory>();
+            foreach (var cat in Cat3)
+            {
+                ProductSubCategory cato = new ProductSubCategory { SubCategory = cat, ProductCategory = ProductCategory.Others };
+                catList.Add(cato);
+            }
+
+            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/SubCategory.json");
+            await JsonSerializer.SerializeAsync(createStream, catList);
+            await createStream.DisposeAsync();
+            using FileStream createStream2 = File.Create(Path.GetDirectoryName(filename) + @"/productTypes.json");
+            await JsonSerializer.SerializeAsync(createStream2, pTypes);
             await createStream.DisposeAsync();
             return true;
 
 
         }
 
+
+        private void GenerateDailySale(string code, string filename,string filename2)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var sales = JsonSerializer.Deserialize<List<ProductSale>>(json);
+            reader = new StreamReader(filename2);
+            var payments = JsonSerializer.Deserialize<List<SalePaymentDetail>>(json);
+            List<DailySale> DailySales = new List<DailySale>();
+            
+            foreach (var i in sales)
+            {
+                DailySale sale = new DailySale
+                {
+                    Amount = i.BilledQty,
+                    CashAmount = 0,
+                    EntryStatus = EntryStatus.Rejected,
+                    IsDue = false,
+                    IsReadOnly = false,
+                    ManualBill = false,
+                    OnDate = i.OnDate,
+                    InvoiceNumber = i.InvoiceNo,
+                    PayMode = PayMode.Cash,
+                    Remarks = "AUTO GENE",
+                    SalesmanId = i.SalesmanId,
+                    MarkedDeleted = false,
+                    NonCashAmount = 0,
+                    SalesReturn = i.InvoiceType == InvoiceType.SalesReturn ? true : false,
+                    StoreId = i.StoreId,
+                    UserId = "AUTOGINI",
+                    TailoringBill = false,
+                };
+                DailySales.Add(sale);
+            }
+            foreach (var i in payments)
+            {
+                var d = DailySales.Where(c => c.InvoiceNumber == i.InvoiceCode);
+            }
+        }
 
         public static string VendorMapping(string supplier)
         {
@@ -344,7 +434,7 @@ namespace eStore.SetUp.Import
 
             var pp = purchases.GroupBy(c => c.Barcode).Select(c => new
             {
-               Barcode= c.Key,
+                Barcode = c.Key,
                 Qty = c.Sum(x => x.Quantity),
                 Cost = c.Select(x => x.Cost).First(),
                 Mrp = c.Select(x => x.MRP).First()
@@ -352,7 +442,7 @@ namespace eStore.SetUp.Import
 
             var ss = sales.GroupBy(c => c.Barcode).Select(c => new
             {
-                Barcode=c.Key,
+                Barcode = c.Key,
                 Qty = c.Sum(x => x.Quantity),
                 Mrp = c.Select(x => x.MRP).First(),
             }).ToList();

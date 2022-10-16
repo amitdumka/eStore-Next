@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="syncfusion.spreadsheet.windows" Version="19.4.0.56" />
     <PackageReference Include="Syncfusion.XlsIO.WinForms" Version="19.4.0.56" />
   </ItemGroup>
 

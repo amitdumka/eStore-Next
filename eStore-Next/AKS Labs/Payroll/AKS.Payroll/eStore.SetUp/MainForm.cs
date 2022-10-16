@@ -1,11 +1,14 @@
+using eStore.SetUp.Import;
 using System.DirectoryServices.ActiveDirectory;
+using System.Xml.Serialization;
 
 namespace eStore.SetUp
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         string RootPath = "";
-        public Form1()
+        string ExcelFileName = "";
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -15,27 +18,7 @@ namespace eStore.SetUp
 
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Title = "Select Excel File only..";
-            var result = openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                TXTSelectedFile.Text = openFileDialog1.FileName;
-                lbSheetNames.DataSource = Import.ImportData.GetSheetNames(openFileDialog1.FileName);
-            }
-        }
+         
 
         private void BTNSet_Click(object sender, EventArgs e)
         {
@@ -46,6 +29,7 @@ namespace eStore.SetUp
                 TXTOutputFolder.Text = folderBrowserDialog1.SelectedPath;
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
+                lbEvents.Items.Add("Output folder set");
 
             }
 
@@ -61,10 +45,7 @@ namespace eStore.SetUp
             TXTSheetName.Text = lbSheetNames.Text;
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         public void LoadDirectory(string Dir)
         {
@@ -90,12 +71,12 @@ namespace eStore.SetUp
                     TreeNode tds = td.Nodes.Add(di.Name);
                     tds.StateImageIndex = 0;
                     tds.Tag = di.FullName;
-                   count= LoadFiles(subdirectory, tds);
-                   count+= LoadSubDirectories(subdirectory, tds);
+                    count = LoadFiles(subdirectory, tds);
+                    count += LoadSubDirectories(subdirectory, tds);
 
                     if (count == 0) td.Nodes.Remove(tds);
                 }
-                
+
                 return count;
             }
             catch (Exception e)
@@ -127,6 +108,74 @@ namespace eStore.SetUp
 
             //MessageBox.Show(x);
             lbFileName.Text = (Path.Combine(RootPath, e.Node.FullPath));
+
+            if (lbFileName.Text.EndsWith(".json"))
+            { 
+                dataGridView1.DataSource = ImportData.JSONFileToDataTable(lbFileName.Text);
+                lbEvents.Items.Add("json file loaded");
+                tabControl1.SelectedTab = tabPage2;
+            }
+
+        }
+
+        private void BTNReload_Click(object sender, EventArgs e)
+        {
+            Reload();
+        }
+        void Reload()
+        {
+            tvFileList.Nodes.Clear();
+            DirectoryInfo di = new DirectoryInfo(TXTOutputFolder.Text);
+            TreeNode tds = tvFileList.Nodes.Add(di.Name);
+            tds.Tag = di.FullName;
+            tds.StateImageIndex = 0;
+            LoadFiles(TXTOutputFolder.Text, tds);
+            LoadSubDirectories(TXTOutputFolder.Text, tds);
+        }
+
+        
+
+       
+        private void BTNSelect_Click(object sender, EventArgs e)
+        {
+            openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Title = "Select Excel File only..";
+            var result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                TXTSelectedFile.Text = ExcelFileName = openFileDialog1.FileName;
+                lbSheetNames.DataSource = Import.ImportData.GetSheetNames(openFileDialog1.FileName);
+                lbEvents.Items.Add("Source file open and sheet name list...");
+            }
+            else
+                lbEvents.Items.Add("Source file  could not  open and sheet name listing failed...");
+        }
+
+        private void BTNProcess_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void BTNToJSON_Click(object sender, EventArgs e)
+        {
+            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text)))
+            {
+                Reload();
+                lbEvents.Items.Add("Json is created");
+
+            }
+        }
+
+        private void lbSheetNames_DoubleClick(object sender, EventArgs e)
+        {
+            // MessageBox.Show();
+            ExcelSheet.SetActiveSheet(lbSheetNames.Text);
+        }
+
+        private void BTNShowExcel_Click(object sender, EventArgs e)
+        {
+            if(File.Exists(ExcelFileName))
+                ExcelSheet.Open(ExcelFileName);
         }
     }
 }

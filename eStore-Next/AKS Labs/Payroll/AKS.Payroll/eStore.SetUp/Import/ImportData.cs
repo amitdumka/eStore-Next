@@ -5,8 +5,10 @@ using Syncfusion.XlsIO;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Policy;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace eStore.SetUp.Import
 {
@@ -40,10 +42,11 @@ namespace eStore.SetUp.Import
         /// <param name="maxRow"></param>
         /// <param name="maxCol"></param>
         /// <param name="outputfilename"></param>
-        public async void StartImporting( string filename, string sheetName, int startCol,int startRow, int maxRow, int maxCol, string outputfilename)
+        public static async Task<bool> StartImporting(string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename)
         {
-           var datatable= ImportData.ReadExcelToDatatable(filename,sheetName, startRow, startCol, maxRow, maxCol);
-            ImportData.DataTableToJSONFile(datatable, outputfilename);
+            var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
+            var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + "\\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
+            return await ImportData.DataTableToJSONFile(datatable, fn);
         }
 
         public async void StartPorocessor(string store)
@@ -130,7 +133,7 @@ namespace eStore.SetUp.Import
             using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/SubCategory.json");
             await JsonSerializer.SerializeAsync(createStream, catList);
             await createStream.DisposeAsync();
-            
+
             using FileStream createStream2 = File.Create(Path.GetDirectoryName(filename) + @"/productTypes.json");
             await JsonSerializer.SerializeAsync(createStream2, pTypes);
             await createStream.DisposeAsync();
@@ -138,14 +141,14 @@ namespace eStore.SetUp.Import
             using FileStream createStream3 = File.Create(Path.GetDirectoryName(filename) + @"/productcategory.json");
             await JsonSerializer.SerializeAsync(createStream3, categoriesList);
             await createStream.DisposeAsync();
-            
+
             return true;
 
 
         }
 
 
-        private void GenerateDailySale(string code, string filename,string filename2)
+        private void GenerateDailySale(string code, string filename, string filename2)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
@@ -153,7 +156,7 @@ namespace eStore.SetUp.Import
             reader = new StreamReader(filename2);
             var payments = JsonSerializer.Deserialize<List<SalePaymentDetail>>(json);
             List<DailySale> DailySales = new List<DailySale>();
-            
+
             foreach (var i in sales)
             {
                 DailySale sale = new DailySale
@@ -507,7 +510,9 @@ namespace eStore.SetUp.Import
 
     public class ImportData
     {
-        public static List<string> GetSheetNames( string filename)
+
+        
+        public static List<string> GetSheetNames(string filename)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
             {
@@ -520,24 +525,45 @@ namespace eStore.SetUp.Import
                     names.Add(item.Name);
                 }
                 return names;
-             
-               
+
+
             }
         }
 
-        public static async void DataTableToJSONFile(DataTable table, string fileName)
+        public static async Task<bool> DataTableToJSONFile(DataTable table, string fileName)
         {
-            //This help to Save as backup for future use
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, table);
-            await createStream.DisposeAsync();
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                //This help to Save as backup for future use
+                using FileStream createStream = File.Create(fileName);
+
+                // Register the custom converter
+                JsonSerializerOptions options = new()
+                { Converters = { new DataTableJsonConverter() }, WriteIndented = true };
+
+                // Serialize a List<T> object and display the JSON
+                //string jsonString = JsonSerializer.Serialize(table, options);
+                await JsonSerializer.SerializeAsync(createStream, table, options);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+
         }
 
-        public static async Task<DataTable?> JSONFileToDataTable(string filename)
+        public static DataTable JSONFileToDataTable(string filename)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
-            var dataTable = JsonSerializer.Deserialize <DataTable>(json);
+            JsonSerializerOptions options = new()
+            { Converters = { new DataTableJsonConverter() }, WriteIndented = true };
+            var dataTable = JsonSerializer.Deserialize<DataTable>(json, options);
             return dataTable;
         }
 
@@ -580,15 +606,23 @@ namespace eStore.SetUp.Import
 
         public static DataTable ReadExcelToDatatable(string filename, string sheetName, int fRow, int fCol, int MaxRow, int MaxCol)
         {
-            using (ExcelEngine excelEngine = new ExcelEngine())
+            try
             {
-                IApplication application = excelEngine.Excel;
-                application.DefaultVersion = ExcelVersion.Excel2013;
-                IWorkbook workbook = application.Workbooks.Open(filename, ExcelOpenType.Automatic);
-                IWorksheet worksheet = workbook.Worksheets[sheetName];
-                var x = worksheet.ExportDataTable(fRow, fCol, MaxRow, MaxCol, ExcelExportDataTableOptions.ColumnNames);
-                var s = x.Rows.Count;
-                return x;
+                using (ExcelEngine excelEngine = new ExcelEngine())
+                {
+                    IApplication application = excelEngine.Excel;
+                    application.DefaultVersion = ExcelVersion.Excel2013;
+                    IWorkbook workbook = application.Workbooks.Open(filename, ExcelOpenType.Automatic);
+                    IWorksheet worksheet = workbook.Worksheets[sheetName];
+                    var x = worksheet.ExportDataTable(fRow, fCol, MaxRow, MaxCol, ExcelExportDataTableOptions.ColumnNames);
+                    var s = x.Rows.Count;
+                    return x;
+                }
+            }
+            catch (Exception)
+            {
+
+                return null;
             }
         }
 
@@ -1092,6 +1126,164 @@ namespace eStore.SetUp.Import
         {
             using FileStream openStream = File.OpenRead(filename);
             return JsonSerializer.Deserialize<List<T>>(openStream);
+        }
+    }
+    public class DataTableJsonConverter : JsonConverter<DataTable>
+    {
+        public override DataTable Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            using var jsonDoc = JsonDocument.ParseValue(ref reader);
+            JsonElement rootElement = jsonDoc.RootElement;
+            DataTable dataTable = rootElement.JsonElementToDataTable();
+            return dataTable;
+        }
+
+        public override void Write(Utf8JsonWriter jsonWriter, DataTable value, JsonSerializerOptions options)
+        {
+            jsonWriter.WriteStartArray();
+            foreach (DataRow dr in value.Rows)
+            {
+                jsonWriter.WriteStartObject();
+                foreach (DataColumn col in value.Columns)
+                {
+                    string key = col.ColumnName.Trim();
+
+                    Action<string> action = GetWriteAction(dr, col, jsonWriter);
+                    action.Invoke(key);
+
+                    static Action<string> GetWriteAction(
+                        DataRow row, DataColumn column, Utf8JsonWriter writer) => row[column] switch
+                        {
+                            // bool
+                            bool value => key => writer.WriteBoolean(key, value),
+
+                            // numbers
+                            byte value => key => writer.WriteNumber(key, value),
+                            sbyte value => key => writer.WriteNumber(key, value),
+                            decimal value => key => writer.WriteNumber(key, value),
+                            double value => key => writer.WriteNumber(key, value),
+                            float value => key => writer.WriteNumber(key, value),
+                            short value => key => writer.WriteNumber(key, value),
+                            int value => key => writer.WriteNumber(key, value),
+                            ushort value => key => writer.WriteNumber(key, value),
+                            uint value => key => writer.WriteNumber(key, value),
+                            ulong value => key => writer.WriteNumber(key, value),
+
+                            // strings
+                            DateTime value => key => writer.WriteString(key, value),
+                            Guid value => key => writer.WriteString(key, value),
+
+                            _ => key => writer.WriteString(key, row[column].ToString())
+                        };
+                }
+                jsonWriter.WriteEndObject();
+            }
+            jsonWriter.WriteEndArray();
+        }
+    }
+
+    public static class Extensions
+    {
+        public static DataTable JsonElementToDataTable(this JsonElement dataRoot)
+        {
+            var dataTable = new DataTable();
+            bool firstPass = true;
+            foreach (JsonElement element in dataRoot.EnumerateArray())
+            {
+                DataRow row = dataTable.NewRow();
+                dataTable.Rows.Add(row);
+                foreach (JsonProperty col in element.EnumerateObject())
+                {
+                    if (firstPass)
+                    {
+                        JsonElement colValue = col.Value;
+                        dataTable.Columns.Add(new DataColumn(col.Name, colValue.ValueKind.ValueKindToType(colValue.ToString()!)));
+                    }
+                    row[col.Name] = col.Value.JsonElementToTypedValue();
+                }
+                firstPass = false;
+            }
+
+            return dataTable;
+        }
+
+        private static Type ValueKindToType(this JsonValueKind valueKind, string value)
+        {
+            switch (valueKind)
+            {
+                case JsonValueKind.String:
+                    return typeof(string);
+                case JsonValueKind.Number:
+                    if (long.TryParse(value, out _))
+                    {
+                        return typeof(long);
+                    }
+                    else
+                    {
+                        return typeof(double);
+                    }
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                    return typeof(bool);
+                case JsonValueKind.Undefined:
+                    throw new NotSupportedException();
+                case JsonValueKind.Object:
+                    return typeof(object);
+                case JsonValueKind.Array:
+                    return typeof(System.Array);
+                case JsonValueKind.Null:
+                    throw new NotSupportedException();
+                default:
+                    return typeof(object);
+            }
+        }
+
+        private static object? JsonElementToTypedValue(this JsonElement jsonElement)
+        {
+            switch (jsonElement.ValueKind)
+            {
+                case JsonValueKind.Object:
+                case JsonValueKind.Array:
+                    throw new NotSupportedException();
+                case JsonValueKind.String:
+                    if (jsonElement.TryGetGuid(out Guid guidValue))
+                    {
+                        return guidValue;
+                    }
+                    else
+                    {
+                        if (jsonElement.TryGetDateTime(out DateTime datetime))
+                        {
+                            // If an offset was provided, use DateTimeOffset.
+                            if (datetime.Kind == DateTimeKind.Local)
+                            {
+                                if (jsonElement.TryGetDateTimeOffset(out DateTimeOffset datetimeOffset))
+                                {
+                                    return datetimeOffset;
+                                }
+                            }
+                            return datetime;
+                        }
+                        return jsonElement.ToString();
+                    }
+                case JsonValueKind.Number:
+                    if (jsonElement.TryGetInt64(out long longValue))
+                    {
+                        return longValue;
+                    }
+                    else
+                    {
+                        return jsonElement.GetDouble();
+                    }
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                    return jsonElement.GetBoolean();
+                case JsonValueKind.Undefined:
+                case JsonValueKind.Null:
+                    return null;
+                default:
+                    return jsonElement.ToString();
+            }
         }
     }
 }

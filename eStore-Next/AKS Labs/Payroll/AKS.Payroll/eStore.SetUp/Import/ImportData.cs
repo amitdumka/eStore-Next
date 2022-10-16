@@ -2,9 +2,11 @@
 using AKS.Shared.Commons.Models.Sales;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Syncfusion.XlsIO;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Net.NetworkInformation;
 using System.Runtime.ConstrainedExecution;
 using System.Security.Policy;
 using System.Text.Json;
@@ -42,11 +44,28 @@ namespace eStore.SetUp.Import
         private List<string> Cat3 = new List<string>();
         public static string ConfigFile = "eStoreConfig.json";
 
+        public static async void InitConfigFile(string baseapath)
+        {
+            var fn = Path.Combine(baseapath, "Configs");
+            Directory.CreateDirectory(fn);
+            ConfigFile = Path.Combine(fn, ConfigFile);
+            if (!File.Exists(ConfigFile))
+            {
+                var config =  new SortedDictionary<string, string>();
+                config.Add("BasePath", baseapath);
+                using FileStream createStream = File.OpenWrite(ConfigFile);
+                await JsonSerializer.SerializeAsync(createStream, config);
+                await createStream.DisposeAsync();
+
+            }
+        }
+
         public static async void SetConfigFile(string key, string value)
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
             var config = JsonSerializer.Deserialize<SortedDictionary<string,string>>(json);
+            reader.Close();
             if (config == null)
                 config = new SortedDictionary<string, string>();
             config.Add(key,value);
@@ -581,6 +600,14 @@ namespace eStore.SetUp.Import
 
             }
 
+        }
+        public static SortedList<string,string> ConfigJson(string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var config = JsonSerializer.Deserialize<SortedList<string, string>>(json);
+            reader.Close();
+            return config;
         }
 
         public static DataTable JSONFileToDataTable(string filename)

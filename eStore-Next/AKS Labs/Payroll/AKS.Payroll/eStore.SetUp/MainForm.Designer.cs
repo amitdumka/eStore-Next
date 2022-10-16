@@ -28,16 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Syncfusion.Windows.Forms.Spreadsheet.SpreadsheetCopyPaste spreadsheetCopyPaste1 = new Syncfusion.Windows.Forms.Spreadsheet.SpreadsheetCopyPaste();
-            Syncfusion.Windows.Forms.Spreadsheet.FormulaRangeSelectionController formulaRangeSelectionController1 = new Syncfusion.Windows.Forms.Spreadsheet.FormulaRangeSelectionController();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.TXTStoreName = new System.Windows.Forms.TextBox();
+            this.TXTStoreCode = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lbFileName = new System.Windows.Forms.Label();
             this.BTNProcess = new System.Windows.Forms.Button();
@@ -49,6 +52,7 @@
             this.TXTSelectedFile = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.CBFileType = new System.Windows.Forms.ComboBox();
             this.TXTFileName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.NUDMaxCol = new System.Windows.Forms.NumericUpDown();
@@ -75,18 +79,14 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.TXTStoreCode = new System.Windows.Forms.TextBox();
-            this.TXTStoreName = new System.Windows.Forms.TextBox();
-            this.CBFileType = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -98,7 +98,6 @@
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -129,6 +128,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 156);
             this.tabControl1.Name = "tabControl1";
@@ -138,7 +138,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.ExcelSheet);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -146,39 +145,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Excel Sheet";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // ExcelSheet
-            // 
-            this.ExcelSheet.AllowCellContextMenu = true;
-            this.ExcelSheet.AllowExtendRowColumnCount = true;
-            this.ExcelSheet.AllowFiltering = false;
-            this.ExcelSheet.AllowFormulaRangeSelection = true;
-            this.ExcelSheet.AllowTabItemContextMenu = true;
-            this.ExcelSheet.AllowZooming = true;
-            this.ExcelSheet.BaseThemeName = "";
-            spreadsheetCopyPaste1.AllowPasteOptionPopup = true;
-            spreadsheetCopyPaste1.DefaultPasteOption = Syncfusion.Windows.Forms.Spreadsheet.PasteOptions.Paste;
-            this.ExcelSheet.CopyPaste = spreadsheetCopyPaste1;
-            this.ExcelSheet.DefaultColumnCount = 101;
-            this.ExcelSheet.DefaultRowCount = 101;
-            this.ExcelSheet.DisplayAlerts = true;
-            this.ExcelSheet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ExcelSheet.FileName = "Book2";
-            this.ExcelSheet.FormulaBarVisibility = true;
-            formulaRangeSelectionController1.AllowMouseSelection = true;
-            formulaRangeSelectionController1.AllowSelectionOnEditing = true;
-            this.ExcelSheet.FormulaRangeSelectionController = formulaRangeSelectionController1;
-            this.ExcelSheet.IsCustomTabItemContextMenuEnabled = false;
-            this.ExcelSheet.Location = new System.Drawing.Point(3, 3);
-            this.ExcelSheet.Name = "ExcelSheet";
-            this.ExcelSheet.SelectedTabIndex = 0;
-            this.ExcelSheet.SelectedTabItem = null;
-            this.ExcelSheet.ShowBusyIndicator = true;
-            this.ExcelSheet.Size = new System.Drawing.Size(948, 542);
-            this.ExcelSheet.TabIndex = 0;
-            this.ExcelSheet.TabItemContextMenu = null;
-            this.ExcelSheet.Text = "OrginalData";
-            this.ExcelSheet.ThemeName = "Default";
             // 
             // tabPage2
             // 
@@ -202,6 +168,30 @@
             this.dataGridView1.Size = new System.Drawing.Size(948, 542);
             this.dataGridView1.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.tableLayoutPanel1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(954, 548);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Config";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.57806F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.42194F));
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(954, 0);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -214,6 +204,43 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(962, 156);
             this.panel4.TabIndex = 7;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.TXTStoreName);
+            this.groupBox7.Controls.Add(this.TXTStoreCode);
+            this.groupBox7.Controls.Add(this.label10);
+            this.groupBox7.Location = new System.Drawing.Point(793, 22);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(162, 123);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Stores";
+            // 
+            // TXTStoreName
+            // 
+            this.TXTStoreName.Location = new System.Drawing.Point(6, 52);
+            this.TXTStoreName.Name = "TXTStoreName";
+            this.TXTStoreName.Size = new System.Drawing.Size(150, 23);
+            this.TXTStoreName.TabIndex = 2;
+            this.TXTStoreName.Text = "Aprajita Retails";
+            // 
+            // TXTStoreCode
+            // 
+            this.TXTStoreCode.Location = new System.Drawing.Point(56, 19);
+            this.TXTStoreCode.Name = "TXTStoreCode";
+            this.TXTStoreCode.Size = new System.Drawing.Size(100, 23);
+            this.TXTStoreCode.TabIndex = 1;
+            this.TXTStoreCode.Text = "ARD";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(13, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 15);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Store";
             // 
             // groupBox6
             // 
@@ -338,6 +365,19 @@
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Import Sheet";
+            // 
+            // CBFileType
+            // 
+            this.CBFileType.FormattingEnabled = true;
+            this.CBFileType.Items.AddRange(new object[] {
+            "Purchase",
+            "Purchase Summary",
+            "Sale",
+            "Sale Summary"});
+            this.CBFileType.Location = new System.Drawing.Point(258, 88);
+            this.CBFileType.Name = "CBFileType";
+            this.CBFileType.Size = new System.Drawing.Size(121, 23);
+            this.CBFileType.TabIndex = 22;
             // 
             // TXTFileName
             // 
@@ -591,56 +631,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.TXTStoreName);
-            this.groupBox7.Controls.Add(this.TXTStoreCode);
-            this.groupBox7.Controls.Add(this.label10);
-            this.groupBox7.Location = new System.Drawing.Point(793, 22);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(162, 123);
-            this.groupBox7.TabIndex = 10;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Stores";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 22);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 15);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "Store";
-            // 
-            // TXTStoreCode
-            // 
-            this.TXTStoreCode.Location = new System.Drawing.Point(56, 19);
-            this.TXTStoreCode.Name = "TXTStoreCode";
-            this.TXTStoreCode.Size = new System.Drawing.Size(100, 23);
-            this.TXTStoreCode.TabIndex = 1;
-            this.TXTStoreCode.Text = "ARD";
-            // 
-            // TXTStoreName
-            // 
-            this.TXTStoreName.Location = new System.Drawing.Point(6, 52);
-            this.TXTStoreName.Name = "TXTStoreName";
-            this.TXTStoreName.Size = new System.Drawing.Size(150, 23);
-            this.TXTStoreName.TabIndex = 2;
-            this.TXTStoreName.Text = "Aprajita Retails";
-            // 
-            // CBFileType
-            // 
-            this.CBFileType.FormattingEnabled = true;
-            this.CBFileType.Items.AddRange(new object[] {
-            "Purchase",
-            "Purchase Summary",
-            "Sale",
-            "Sale Summary"});
-            this.CBFileType.Location = new System.Drawing.Point(258, 88);
-            this.CBFileType.Name = "CBFileType";
-            this.CBFileType.Size = new System.Drawing.Size(121, 23);
-            this.CBFileType.TabIndex = 22;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -654,11 +644,14 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -674,8 +667,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -725,12 +716,13 @@
         private TabPage tabPage1;
         private TabPage tabPage2;
         private DataGridView dataGridView1;
-        private Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
         private Button BTNShowExcel;
         private GroupBox groupBox7;
         private TextBox TXTStoreName;
         private TextBox TXTStoreCode;
         private Label label10;
         private ComboBox CBFileType;
+        private TabPage tabPage3;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }

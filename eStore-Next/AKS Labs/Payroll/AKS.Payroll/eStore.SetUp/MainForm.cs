@@ -8,10 +8,11 @@ namespace eStore.SetUp
     {
         string RootPath = "d:\\Ard";
         string ExcelFileName = "";
+        Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
         public MainForm()
         {
             InitializeComponent();
-            TXTOutputFolder.Text=RootPath;
+            TXTOutputFolder.Text = RootPath;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -19,7 +20,7 @@ namespace eStore.SetUp
 
         }
 
-         
+
 
         private void BTNSet_Click(object sender, EventArgs e)
         {
@@ -31,6 +32,8 @@ namespace eStore.SetUp
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
                 lbEvents.Items.Add("Output folder set");
+                ImportProcessor.InitConfigFile(TXTOutputFolder.Text);
+
 
             }
 
@@ -46,7 +49,7 @@ namespace eStore.SetUp
             TXTSheetName.Text = lbSheetNames.Text;
         }
 
-        
+
 
         public void LoadDirectory(string Dir)
         {
@@ -110,8 +113,31 @@ namespace eStore.SetUp
             //MessageBox.Show(x);
             lbFileName.Text = (Path.Combine(RootPath, e.Node.FullPath));
 
-            if (lbFileName.Text.EndsWith(".json"))
-            { 
+            if (lbFileName.Text.Contains("Config")  && lbFileName.Text.EndsWith(".json"))
+            {
+
+                var config = ImportData.ConfigJson(lbFileName.Text);
+               // LBKey0.Text = "ConfigFile";
+                //.Text = lbFileName.Text;
+
+                tableLayoutPanel1.Controls.Clear();
+
+                int row = 1;
+                foreach (var item in config)
+                {
+                    Label lb= new Label();
+                    lb.Text = item.Key;
+                    lb.ForeColor = Color.BlueViolet;
+                    TextBox tb= new TextBox();
+                    tb.Text = item.Value;
+                    tb.Dock = DockStyle.Fill;
+                    tableLayoutPanel1.Controls.Add(lb,0,row);
+                    tableLayoutPanel1.Controls.Add(tb, 1, row++);
+                }
+            }
+
+            else if (lbFileName.Text.EndsWith(".json"))
+            {
                 dataGridView1.DataSource = ImportData.JSONFileToDataTable(lbFileName.Text);
                 lbEvents.Items.Add("json file loaded");
                 tabControl1.SelectedTab = tabPage2;
@@ -134,9 +160,9 @@ namespace eStore.SetUp
             LoadSubDirectories(TXTOutputFolder.Text, tds);
         }
 
-        
 
-       
+
+
         private void BTNSelect_Click(object sender, EventArgs e)
         {
             openFileDialog1 = new OpenFileDialog();
@@ -159,7 +185,7 @@ namespace eStore.SetUp
 
         private async void BTNToJSON_Click(object sender, EventArgs e)
         {
-            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text),CBFileType.Text))
+            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text))
             {
                 Reload();
                 lbEvents.Items.Add("Json is created");
@@ -170,13 +196,23 @@ namespace eStore.SetUp
         private void lbSheetNames_DoubleClick(object sender, EventArgs e)
         {
             // MessageBox.Show();
-            ExcelSheet.SetActiveSheet(lbSheetNames.Text);
+            if (ExcelSheet != null)
+                ExcelSheet.SetActiveSheet(lbSheetNames.Text);
         }
 
         private void BTNShowExcel_Click(object sender, EventArgs e)
         {
-            if(File.Exists(ExcelFileName))
+            if (File.Exists(ExcelFileName))
+            {
+                if (ExcelSheet == null)
+                {
+                    ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
+                    ExcelSheet.Dock = DockStyle.Fill;
+                    ExcelSheet.FileName = ExcelFileName;
+                    tabPage1.Controls.Add(ExcelSheet);
+                }
                 ExcelSheet.Open(ExcelFileName);
+            }
         }
     }
 }

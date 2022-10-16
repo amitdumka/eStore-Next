@@ -34,6 +34,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -43,6 +44,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BTNShowExcel = new System.Windows.Forms.Button();
             this.BTNSelect = new System.Windows.Forms.Button();
             this.TXTSelectedFile = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -73,8 +75,11 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
-            this.BTNShowExcel = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.TXTStoreCode = new System.Windows.Forms.TextBox();
+            this.TXTStoreName = new System.Windows.Forms.TextBox();
+            this.CBFileType = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -93,6 +98,7 @@
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -141,6 +147,39 @@
             this.tabPage1.Text = "Excel Sheet";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // ExcelSheet
+            // 
+            this.ExcelSheet.AllowCellContextMenu = true;
+            this.ExcelSheet.AllowExtendRowColumnCount = true;
+            this.ExcelSheet.AllowFiltering = false;
+            this.ExcelSheet.AllowFormulaRangeSelection = true;
+            this.ExcelSheet.AllowTabItemContextMenu = true;
+            this.ExcelSheet.AllowZooming = true;
+            this.ExcelSheet.BaseThemeName = "";
+            spreadsheetCopyPaste1.AllowPasteOptionPopup = true;
+            spreadsheetCopyPaste1.DefaultPasteOption = Syncfusion.Windows.Forms.Spreadsheet.PasteOptions.Paste;
+            this.ExcelSheet.CopyPaste = spreadsheetCopyPaste1;
+            this.ExcelSheet.DefaultColumnCount = 101;
+            this.ExcelSheet.DefaultRowCount = 101;
+            this.ExcelSheet.DisplayAlerts = true;
+            this.ExcelSheet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ExcelSheet.FileName = "Book2";
+            this.ExcelSheet.FormulaBarVisibility = true;
+            formulaRangeSelectionController1.AllowMouseSelection = true;
+            formulaRangeSelectionController1.AllowSelectionOnEditing = true;
+            this.ExcelSheet.FormulaRangeSelectionController = formulaRangeSelectionController1;
+            this.ExcelSheet.IsCustomTabItemContextMenuEnabled = false;
+            this.ExcelSheet.Location = new System.Drawing.Point(3, 3);
+            this.ExcelSheet.Name = "ExcelSheet";
+            this.ExcelSheet.SelectedTabIndex = 0;
+            this.ExcelSheet.SelectedTabItem = null;
+            this.ExcelSheet.ShowBusyIndicator = true;
+            this.ExcelSheet.Size = new System.Drawing.Size(948, 542);
+            this.ExcelSheet.TabIndex = 0;
+            this.ExcelSheet.TabItemContextMenu = null;
+            this.ExcelSheet.Text = "OrginalData";
+            this.ExcelSheet.ThemeName = "Default";
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView1);
@@ -166,6 +205,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.panel4.Controls.Add(this.groupBox7);
             this.panel4.Controls.Add(this.groupBox6);
             this.panel4.Controls.Add(this.groupBox1);
             this.panel4.Controls.Add(this.groupBox4);
@@ -183,7 +223,7 @@
             this.groupBox6.Controls.Add(this.label8);
             this.groupBox6.Location = new System.Drawing.Point(16, 73);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(333, 77);
+            this.groupBox6.Size = new System.Drawing.Size(314, 77);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Operations";
@@ -201,7 +241,7 @@
             // 
             // BTNProcess
             // 
-            this.BTNProcess.Location = new System.Drawing.Point(235, 22);
+            this.BTNProcess.Location = new System.Drawing.Point(200, 21);
             this.BTNProcess.Name = "BTNProcess";
             this.BTNProcess.Size = new System.Drawing.Size(75, 23);
             this.BTNProcess.TabIndex = 2;
@@ -234,14 +274,24 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(343, 64);
+            this.groupBox1.Size = new System.Drawing.Size(324, 64);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Source File";
             // 
+            // BTNShowExcel
+            // 
+            this.BTNShowExcel.Location = new System.Drawing.Point(264, 19);
+            this.BTNShowExcel.Name = "BTNShowExcel";
+            this.BTNShowExcel.Size = new System.Drawing.Size(49, 23);
+            this.BTNShowExcel.TabIndex = 3;
+            this.BTNShowExcel.Text = "Show";
+            this.BTNShowExcel.UseVisualStyleBackColor = true;
+            this.BTNShowExcel.Click += new System.EventHandler(this.BTNShowExcel_Click);
+            // 
             // BTNSelect
             // 
-            this.BTNSelect.Location = new System.Drawing.Point(205, 20);
+            this.BTNSelect.Location = new System.Drawing.Point(196, 20);
             this.BTNSelect.Name = "BTNSelect";
             this.BTNSelect.Size = new System.Drawing.Size(62, 23);
             this.BTNSelect.TabIndex = 2;
@@ -267,6 +317,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.AutoSize = true;
+            this.groupBox4.Controls.Add(this.CBFileType);
             this.groupBox4.Controls.Add(this.TXTFileName);
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.NUDMaxCol);
@@ -280,9 +332,9 @@
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Controls.Add(this.TXTSheetName);
             this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Location = new System.Drawing.Point(355, 12);
+            this.groupBox4.Location = new System.Drawing.Point(336, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(561, 123);
+            this.groupBox4.Size = new System.Drawing.Size(466, 133);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Import Sheet";
@@ -357,7 +409,7 @@
             // 
             // BTNToJSON
             // 
-            this.BTNToJSON.Location = new System.Drawing.Point(368, 84);
+            this.BTNToJSON.Location = new System.Drawing.Point(385, 87);
             this.BTNToJSON.Name = "BTNToJSON";
             this.BTNToJSON.Size = new System.Drawing.Size(75, 23);
             this.BTNToJSON.TabIndex = 15;
@@ -539,48 +591,55 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ExcelSheet
+            // groupBox7
             // 
-            this.ExcelSheet.AllowCellContextMenu = true;
-            this.ExcelSheet.AllowExtendRowColumnCount = true;
-            this.ExcelSheet.AllowFiltering = false;
-            this.ExcelSheet.AllowFormulaRangeSelection = true;
-            this.ExcelSheet.AllowTabItemContextMenu = true;
-            this.ExcelSheet.AllowZooming = true;
-            this.ExcelSheet.BaseThemeName = "";
-            spreadsheetCopyPaste1.AllowPasteOptionPopup = true;
-            spreadsheetCopyPaste1.DefaultPasteOption = Syncfusion.Windows.Forms.Spreadsheet.PasteOptions.Paste;
-            this.ExcelSheet.CopyPaste = spreadsheetCopyPaste1;
-            this.ExcelSheet.DefaultColumnCount = 101;
-            this.ExcelSheet.DefaultRowCount = 101;
-            this.ExcelSheet.DisplayAlerts = true;
-            this.ExcelSheet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ExcelSheet.FileName = "Book1";
-            this.ExcelSheet.FormulaBarVisibility = true;
-            formulaRangeSelectionController1.AllowMouseSelection = true;
-            formulaRangeSelectionController1.AllowSelectionOnEditing = true;
-            this.ExcelSheet.FormulaRangeSelectionController = formulaRangeSelectionController1;
-            this.ExcelSheet.IsCustomTabItemContextMenuEnabled = false;
-            this.ExcelSheet.Location = new System.Drawing.Point(3, 3);
-            this.ExcelSheet.Name = "ExcelSheet";
-            this.ExcelSheet.SelectedTabIndex = 0;
-            this.ExcelSheet.SelectedTabItem = null;
-            this.ExcelSheet.ShowBusyIndicator = true;
-            this.ExcelSheet.Size = new System.Drawing.Size(948, 542);
-            this.ExcelSheet.TabIndex = 0;
-            this.ExcelSheet.TabItemContextMenu = null;
-            this.ExcelSheet.Text = "OrginalData";
-            this.ExcelSheet.ThemeName = "Default";
+            this.groupBox7.Controls.Add(this.TXTStoreName);
+            this.groupBox7.Controls.Add(this.TXTStoreCode);
+            this.groupBox7.Controls.Add(this.label10);
+            this.groupBox7.Location = new System.Drawing.Point(793, 22);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(162, 123);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Stores";
             // 
-            // BTNShowExcel
+            // label10
             // 
-            this.BTNShowExcel.Location = new System.Drawing.Point(273, 20);
-            this.BTNShowExcel.Name = "BTNShowExcel";
-            this.BTNShowExcel.Size = new System.Drawing.Size(49, 23);
-            this.BTNShowExcel.TabIndex = 3;
-            this.BTNShowExcel.Text = "Show";
-            this.BTNShowExcel.UseVisualStyleBackColor = true;
-            this.BTNShowExcel.Click += new System.EventHandler(this.BTNShowExcel_Click);
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(13, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 15);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Store";
+            // 
+            // TXTStoreCode
+            // 
+            this.TXTStoreCode.Location = new System.Drawing.Point(56, 19);
+            this.TXTStoreCode.Name = "TXTStoreCode";
+            this.TXTStoreCode.Size = new System.Drawing.Size(100, 23);
+            this.TXTStoreCode.TabIndex = 1;
+            this.TXTStoreCode.Text = "ARD";
+            // 
+            // TXTStoreName
+            // 
+            this.TXTStoreName.Location = new System.Drawing.Point(6, 52);
+            this.TXTStoreName.Name = "TXTStoreName";
+            this.TXTStoreName.Size = new System.Drawing.Size(150, 23);
+            this.TXTStoreName.TabIndex = 2;
+            this.TXTStoreName.Text = "Aprajita Retails";
+            // 
+            // CBFileType
+            // 
+            this.CBFileType.FormattingEnabled = true;
+            this.CBFileType.Items.AddRange(new object[] {
+            "Purchase",
+            "Purchase Summary",
+            "Sale",
+            "Sale Summary"});
+            this.CBFileType.Location = new System.Drawing.Point(258, 88);
+            this.CBFileType.Name = "CBFileType";
+            this.CBFileType.Size = new System.Drawing.Size(121, 23);
+            this.CBFileType.TabIndex = 22;
             // 
             // MainForm
             // 
@@ -599,6 +658,7 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -614,6 +674,8 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -665,5 +727,10 @@
         private DataGridView dataGridView1;
         private Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
         private Button BTNShowExcel;
+        private GroupBox groupBox7;
+        private TextBox TXTStoreName;
+        private TextBox TXTStoreCode;
+        private Label label10;
+        private ComboBox CBFileType;
     }
 }

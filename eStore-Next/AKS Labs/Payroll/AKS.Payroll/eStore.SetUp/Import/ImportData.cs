@@ -23,6 +23,15 @@ namespace eStore.SetUp.Import
     6) Stocks 
      */
 
+    /*
+     
+    json={ PurchaseFiles:[{filename:dasdas},{filename:dasdasda}], SaleFiles=[{filename:dasdasd}, {filename:adasdasd}], 
+
+           PurchaseJson:dasdasd, SaleJson:dasdasdas, PurchaseItemJson:dasdasd
+    
+        }
+     
+     */
 
 
     public class ImportProcessor
@@ -31,6 +40,9 @@ namespace eStore.SetUp.Import
         private List<string> Cat1 = new List<string>();
         private List<string> Cat2 = new List<string>();
         private List<string> Cat3 = new List<string>();
+
+
+
 
         /// <summary>
         /// It will import all excel file to json and save to a folder for futher process
@@ -42,7 +54,7 @@ namespace eStore.SetUp.Import
         /// <param name="maxRow"></param>
         /// <param name="maxCol"></param>
         /// <param name="outputfilename"></param>
-        public static async Task<bool> StartImporting(string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename)
+        public static async Task<bool> StartImporting(string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
             var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + "\\ImportedJSON", Path.GetFileName(outputfilename) + ".json");

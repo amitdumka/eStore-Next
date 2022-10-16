@@ -6,11 +6,12 @@ namespace eStore.SetUp
 {
     public partial class MainForm : Form
     {
-        string RootPath = "";
+        string RootPath = "d:\\Ard";
         string ExcelFileName = "";
         public MainForm()
         {
             InitializeComponent();
+            TXTOutputFolder.Text=RootPath;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -158,7 +159,7 @@ namespace eStore.SetUp
 
         private async void BTNToJSON_Click(object sender, EventArgs e)
         {
-            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text)))
+            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text),CBFileType.Text))
             {
                 Reload();
                 lbEvents.Items.Add("Json is created");

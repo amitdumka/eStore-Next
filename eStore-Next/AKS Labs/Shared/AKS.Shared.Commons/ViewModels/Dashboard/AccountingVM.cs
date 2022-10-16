@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace AKS.Shared.Commons.ViewModels.Dashboard
@@ -18,6 +19,6 @@ namespace AKS.Shared.Commons.ViewModels.Dashboard
         public string EventName { get; set; }
         public TimeZoneInfo StartTimeZone { get; set; }
         public TimeZoneInfo EndTimeZone { get; set; }
-        public Brush Background { get; set; }
+       // public Brush Background { get; set; }
     }
 }

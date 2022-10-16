@@ -22,12 +22,29 @@ namespace eStore.SetUp.Import
      */
 
 
+
     public class ImportProcessor
     {
         private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
         private List<string> Cat1 = new List<string>();
         private List<string> Cat2 = new List<string>();
         private List<string> Cat3 = new List<string>();
+
+        /// <summary>
+        /// It will import all excel file to json and save to a folder for futher process
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="sheetName"></param>
+        /// <param name="startCol"></param>
+        /// <param name="startRow"></param>
+        /// <param name="maxRow"></param>
+        /// <param name="maxCol"></param>
+        /// <param name="outputfilename"></param>
+        public async void StartImporting( string filename, string sheetName, int startCol,int startRow, int maxRow, int maxCol, string outputfilename)
+        {
+           var datatable= ImportData.ReadExcelToDatatable(filename,sheetName, startRow, startCol, maxRow, maxCol);
+            ImportData.DataTableToJSONFile(datatable, outputfilename);
+        }
 
         public async void StartPorocessor(string store)
         {
@@ -88,6 +105,12 @@ namespace eStore.SetUp.Import
             Cat2 = Cat2.Distinct().ToList();
             Cat3 = Cat3.Distinct().ToList();
 
+            List<Category> categoriesList = new List<Category>();
+            foreach (var item in Cat1)
+            {
+                Category c = new Category { Name = item };
+                categoriesList.Add(c);
+            }
             int count = 0;
             List<ProductType> pTypes = new List<ProductType>();
             foreach (var cat in Cat2)
@@ -107,9 +130,15 @@ namespace eStore.SetUp.Import
             using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/SubCategory.json");
             await JsonSerializer.SerializeAsync(createStream, catList);
             await createStream.DisposeAsync();
+            
             using FileStream createStream2 = File.Create(Path.GetDirectoryName(filename) + @"/productTypes.json");
             await JsonSerializer.SerializeAsync(createStream2, pTypes);
             await createStream.DisposeAsync();
+
+            using FileStream createStream3 = File.Create(Path.GetDirectoryName(filename) + @"/productcategory.json");
+            await JsonSerializer.SerializeAsync(createStream3, categoriesList);
+            await createStream.DisposeAsync();
+            
             return true;
 
 
@@ -478,12 +507,38 @@ namespace eStore.SetUp.Import
 
     public class ImportData
     {
+        public static List<string> GetSheetNames( string filename)
+        {
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Excel2013;
+                IWorkbook workbook = application.Workbooks.Open(filename, ExcelOpenType.Automatic);
+                List<string> names = new List<string>();
+                foreach (var item in workbook.Worksheets)
+                {
+                    names.Add(item.Name);
+                }
+                return names;
+             
+               
+            }
+        }
+
         public static async void DataTableToJSONFile(DataTable table, string fileName)
         {
             //This help to Save as backup for future use
             using FileStream createStream = File.Create(fileName);
             await JsonSerializer.SerializeAsync(createStream, table);
             await createStream.DisposeAsync();
+        }
+
+        public static async Task<DataTable?> JSONFileToDataTable(string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var dataTable = JsonSerializer.Deserialize <DataTable>(json);
+            return dataTable;
         }
 
         public static DataTable ReadExcelToDatatable(string filename, int fRow, int fCol, int MaxRow, int MaxCol)

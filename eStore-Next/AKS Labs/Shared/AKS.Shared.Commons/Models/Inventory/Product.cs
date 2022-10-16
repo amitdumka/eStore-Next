@@ -33,6 +33,11 @@ namespace AKS.Shared.Commons.Models.Inventory
         public virtual ProductSubCategory ProductSubCategory { get; set; }
         public virtual ProductType ProductType { get; set; }
     }
+    public class Category
+    {
+        [Key]
+        public string Name { get; set; }
+    }
     public class ProductType
     {
         [Key]
@@ -47,11 +52,41 @@ namespace AKS.Shared.Commons.Models.Inventory
         public ProductCategory ProductCategory { get; set; }
     }
 
+    public class ProductStock
+    {
+        [Key]
+        public string Barcode { get; set; }
+        [Key]
+        public string StoreId { get; set; }
+
+        public decimal PurhcaseQty { get; set; }
+        public decimal SoldQty { get; set; }
+        public decimal HoldQty { get; set; }
+
+        public decimal CostPrice { get; set; }
+        public decimal MRP { get; set; }
+
+        public Unit Unit { get; set; }
+
+        [DefaultValue(false)]
+        public bool MultiPrice { get; set; }
+
+        public decimal CurrentQty { get { return (PurhcaseQty - SoldQty - HoldQty); } }
+        public decimal CurrentQtyWH { get { return (PurhcaseQty - SoldQty); } }
+        public decimal StockValue { get { return (CurrentQty * CostPrice); } }
+        public decimal StockValueWH { get { return (CurrentQtyWH * CostPrice); } }
+
+        [ForeignKey("Barcode")]
+        public virtual ProductItem Product { get; set; }
+        public virtual Store Store { get; set; }
+    }
+
     [Table("V1_Stocks")]
     public class Stock : BaseST
     {
         [Key]
         public string Barcode { get; set; }
+
         public decimal PurhcaseQty { get; set; }
         public decimal SoldQty { get; set; }
         public decimal HoldQty { get; set; }

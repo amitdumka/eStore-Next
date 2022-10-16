@@ -32,7 +32,7 @@ namespace eStore.SetUp
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
                 lbEvents.Items.Add("Output folder set");
-                ImportProcessor.InitConfigFile(TXTOutputFolder.Text);
+                ImportProcessor.InitConfigFile(TXTOutputFolder.Text,TXTStoreCode.Text);
 
 
             }
@@ -185,7 +185,7 @@ namespace eStore.SetUp
 
         private async void BTNToJSON_Click(object sender, EventArgs e)
         {
-            if (await ImportProcessor.StartImporting(ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text))
+            if (await ImportProcessor.StartImporting(TXTStoreCode.Text, ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text))
             {
                 Reload();
                 lbEvents.Items.Add("Json is created");

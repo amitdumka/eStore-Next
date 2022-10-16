@@ -44,15 +44,15 @@ namespace eStore.SetUp.Import
         private List<string> Cat3 = new List<string>();
         public static string ConfigFile = "eStoreConfig.json";
 
-        public static async void InitConfigFile(string baseapath)
+        public static async void InitConfigFile(string baseapath, string storeCode)
         {
-            var fn = Path.Combine(baseapath, "Configs");
+            var fn = Path.Combine(baseapath+$@"\{storeCode}", "Configs");
             Directory.CreateDirectory(fn);
             ConfigFile = Path.Combine(fn, ConfigFile);
             if (!File.Exists(ConfigFile))
             {
                 var config =  new SortedDictionary<string, string>();
-                config.Add("BasePath", baseapath);
+                config.Add("BasePath", baseapath + $@"\{storeCode}");
                 using FileStream createStream = File.OpenWrite(ConfigFile);
                 await JsonSerializer.SerializeAsync(createStream, config);
                 await createStream.DisposeAsync();
@@ -68,6 +68,8 @@ namespace eStore.SetUp.Import
             reader.Close();
             if (config == null)
                 config = new SortedDictionary<string, string>();
+            if (config.ContainsKey(key))
+                key = key + $"#{config.Count+1}";
             config.Add(key,value);
             using FileStream createStream = File.OpenWrite(ConfigFile);
             await JsonSerializer.SerializeAsync(createStream, config);
@@ -86,10 +88,10 @@ namespace eStore.SetUp.Import
         /// <param name="maxRow"></param>
         /// <param name="maxCol"></param>
         /// <param name="outputfilename"></param>
-        public static async Task<bool> StartImporting(string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
+        public static async Task<bool> StartImporting(string storecode,string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
-            var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + "\\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
+            var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + $@"\{storecode}\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
             SetConfigFile(fileType, fn);
             return await ImportData.DataTableToJSONFile(datatable, fn);
         }

@@ -40,8 +40,21 @@ namespace eStore.SetUp.Import
         private List<string> Cat1 = new List<string>();
         private List<string> Cat2 = new List<string>();
         private List<string> Cat3 = new List<string>();
+        public static string ConfigFile = "eStoreConfig.json";
 
+        public static async void SetConfigFile(string key, string value)
+        {
+            StreamReader reader = new StreamReader(ConfigFile);
+            var json = reader.ReadToEnd();
+            var config = JsonSerializer.Deserialize<SortedDictionary<string,string>>(json);
+            if (config == null)
+                config = new SortedDictionary<string, string>();
+            config.Add(key,value);
+            using FileStream createStream = File.OpenWrite(ConfigFile);
+            await JsonSerializer.SerializeAsync(createStream, config);
+            await createStream.DisposeAsync();
 
+        }
 
 
         /// <summary>
@@ -58,6 +71,7 @@ namespace eStore.SetUp.Import
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
             var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + "\\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
+            SetConfigFile(fileType, fn);
             return await ImportData.DataTableToJSONFile(datatable, fn);
         }
 

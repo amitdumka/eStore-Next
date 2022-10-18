@@ -11,5 +11,9 @@
 	  <PackageReference Include="BarCode" Version="2022.8.8024" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\AKS.Payroll.Database\AKS.Payroll.Database.csproj" />
+  </ItemGroup>
+
    
 </Project>

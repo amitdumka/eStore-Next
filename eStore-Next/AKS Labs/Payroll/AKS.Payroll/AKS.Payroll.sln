@@ -78,7 +78,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AKS.Shared.Templets", "AKS.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASK.UI.Libs", "ASK.UI.Libs\ASK.UI.Libs.csproj", "{F01BCDD0-6722-4A81-878F-95FFD486D501}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStore.SetUp", "eStore.SetUp\eStore.SetUp.csproj", "{404A2C08-55EA-4B9B-BB3A-4E3564C508F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eStore.SetUp", "eStore.SetUp\eStore.SetUp.csproj", "{404A2C08-55EA-4B9B-BB3A-4E3564C508F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

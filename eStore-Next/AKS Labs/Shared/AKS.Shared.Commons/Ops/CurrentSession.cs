@@ -1,9 +1,4 @@
-﻿
-
-using AKS.Shared.Commons.Data.Helpers.Auth;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-
-namespace AKS.Shared.Commons.Ops
+﻿namespace AKS.Shared.Commons.Ops
 {
     //TODO: permission , READ, READ WrITE, READ WRITE Delte , Full
     public static class CurrentSession

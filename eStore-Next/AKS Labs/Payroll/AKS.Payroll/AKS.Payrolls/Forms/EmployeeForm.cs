@@ -1,6 +1,7 @@
 ﻿
 using AKS.Payroll.Database;
 using AKS.Payroll.Forms.EntryForms;
+using AKS.Payrolls.Forms;
 using AKS.Shared.Payroll.Models;
 using AKS.Shared.Payrolls.ViewModels;
 using AutoMapper;
@@ -111,7 +112,8 @@ namespace AKS.Payroll.Forms
 
         private void btnAddEmployee_Click(object sender, EventArgs e)
         {
-
+            EmployeeEntry entry = new EmployeeEntry();
+            entry.Show();
         }
 
         private void btnAddBankDetails_Click(object sender, EventArgs e)

@@ -53,6 +53,7 @@ namespace eStore.SetUp.Import
                 case JsonValueKind.Array:
                     return typeof(System.Array);
                 case JsonValueKind.Null:
+                    return typeof(Nullable);
                     throw new NotSupportedException();
                 default:
                     return typeof(object);

@@ -58,12 +58,13 @@ namespace AKS.Shared.Commons.Models.Inventory
         public string Barcode { get; set; }
         [Key]
         public string StoreId { get; set; }
+        [Key]
+        public decimal CostPrice { get; set; }
 
         public decimal PurhcaseQty { get; set; }
         public decimal SoldQty { get; set; }
         public decimal HoldQty { get; set; }
 
-        public decimal CostPrice { get; set; }
         public decimal MRP { get; set; }
 
         public Unit Unit { get; set; }

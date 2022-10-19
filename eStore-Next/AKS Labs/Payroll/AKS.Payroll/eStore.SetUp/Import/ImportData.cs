@@ -1,6 +1,5 @@
-﻿using AKS.Shared.Commons.Models.Inventory;
-using AKS.Shared.Commons.Models.Sales;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using Syncfusion.Windows.Forms.Grid;
 using Syncfusion.XlsIO;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
@@ -34,641 +33,9 @@ namespace eStore.SetUp.Import
      
      */
 
-
-    public class ImportProcessor
+    public class PCat
     {
-        private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
-        private List<string> Cat1 = new List<string>();
-        private List<string> Cat2 = new List<string>();
-        private List<string> Cat3 = new List<string>();
-        public static string ConfigFile = "eStoreConfig.json";
-
-        public static async void InitConfigFile(string baseapath, string storeCode)
-        {
-            var fn = Path.Combine(baseapath + $@"\{storeCode}", "Configs");
-            Directory.CreateDirectory(fn);
-            ConfigFile = Path.Combine(fn, ConfigFile);
-            if (!File.Exists(ConfigFile))
-            {
-                var config = new SortedDictionary<string, string>();
-                config.Add("BasePath", baseapath + $@"\{storeCode}");
-                using FileStream createStream = File.OpenWrite(ConfigFile);
-                await JsonSerializer.SerializeAsync(createStream, config);
-                await createStream.DisposeAsync();
-
-            }
-        }
-
-        public void ReadSetting()
-        {
-            StreamReader reader = new StreamReader(ConfigFile);
-            var json = reader.ReadToEnd();
-            Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
-            reader.Close();
-        }
-        public async Task<bool> UpdateConfigFile()
-        {
-            try
-            {
-                if (Settings != null && Settings.Count > 0)
-                {
-                    using FileStream createStream = File.OpenWrite(ConfigFile);
-                    await JsonSerializer.SerializeAsync(createStream, Settings);
-                    await createStream.DisposeAsync();
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-          
-        }
-
-        public static async void SetConfigFile(string key, string value)
-        {
-            StreamReader reader = new StreamReader(ConfigFile);
-            var json = reader.ReadToEnd();
-            var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
-            reader.Close();
-            if (config == null)
-                config = new SortedDictionary<string, string>();
-            if (config.ContainsKey(key))
-                key = key + $"#{config.Count + 1}";
-            config.Add(key, value);
-            using FileStream createStream = File.OpenWrite(ConfigFile);
-            await JsonSerializer.SerializeAsync(createStream, config);
-            await createStream.DisposeAsync();
-
-        }
-
-        public SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
-        public async Task<bool> ProcessOperation(string store, string ops)
-        {
-            if (Settings == null || Settings.Count <= 0)
-                ReadSetting();
-            bool flag = false;
-
-            switch (ops)
-            {
-                case "Category":
-                    flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("VoyPurchase"));
-                    break; ;
-                case "ProductItem":
-                case "PurchaseInvoice":
-                    flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("VoyPurchase"));
-                    break;
-                case "PurchaseItem":
-                    flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("VoyPurchase")); break;
-                case "ToVoyPurchase":
-                    flag = await ToVoyPurchaseAsync();
-                    break;
-                case "SaleInvoice":
-                case "SaleInvoiceItem":
-                case "Stock":
-                case "InnerWearPurchase":
-
-                default:
-                    break;
-            }
-            if(flag) UpdateConfigFile();
-            return flag;
-        }
-        public DataTable LoadJsonFile(string ops)
-        {
-            DataTable dt = null;
-            switch (ops)
-            {
-                case "Category":
-                    //flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("Purchase"));
-                    break; ;
-                case "ProductItem":
-                case "PurchaseInvoice":
-                    //flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("Purchase"));
-                    break;
-                case "PurchaseItem":
-                //flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("Purchase")); break;
-                case "ToVoyPurchase":
-                    dt = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("VoyPurchase")); break;
-
-                case "SaleInvoice":
-                case "SaleInvoiceItem":
-                case "Stock":
-                case "InnerWearPurchase":
-
-                default:
-                    break;
-            }
-            return dt;
-        }
-        private async Task<bool> ToVoyPurchaseAsync()
-        {
-            try
-            {
-                if (Settings == null || Settings.Count <= 0)
-                    ReadSetting();
-
-                var datatable = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("Purchase"));
-                var json = ImportData.PurchaseDatatableToJson(datatable);
-                string filename = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Purchase\VoyPurchase.json");
-                Directory.CreateDirectory(Path.GetDirectoryName(filename));
-                Settings.Add("VoyPurchase", filename);
-                File.WriteAllText(filename, json);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-
-
-        }
-
-
-        /// <summary>
-        /// It will import all excel file to json and save to a folder for futher process
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="sheetName"></param>
-        /// <param name="startCol"></param>
-        /// <param name="startRow"></param>
-        /// <param name="maxRow"></param>
-        /// <param name="maxCol"></param>
-        /// <param name="outputfilename"></param>
-        public static async Task<bool> StartImporting(string storecode, string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
-        {
-            var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
-            var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + $@"\{storecode}\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
-            SetConfigFile(fileType, fn);
-            return await ImportData.DataTableToJSONFile(datatable, fn);
-        }
-
-        public async void StartPorocessor(string store)
-        {
-            string PurchaseFileName = "";
-            string SaleFileName = "";
-            // First Create Product and Sale JSON File , 
-            // Then Start Processing
-
-            //1st Creating Category/ Size/ Sub Category
-            var flag = await CreateCategoriesAsync(PurchaseFileName);
-            if (!flag) return;
-            //Creating Product Item 
-
-            //flag = await GenerateProductItem(PurchaseFileName,SaleFileName );
-            //if(!flag) return; 
-
-            //Creating Purchase Invoice
-            flag = await GeneratePurchaseInvoice(store, PurchaseFileName);
-            if (!flag) return;
-            //Creating Purchase Item
-            flag = await GeneratePurchaseItemAsync(store, PurchaseFileName);
-            if (!flag) return;
-            //Creating Sale Item 
-            flag = await GenerateSaleInvoice(store, SaleFileName);
-            flag = await GenerateSaleItem(store, SaleFileName);
-            flag = await GenerateSalePayment(store, SaleFileName);
-            if (!flag) return;
-            //Creating Stock 
-            flag = await GenerateStockData(store, PurchaseFileName, SaleFileName);
-            if (!flag) return;
-
-            // Create DailSale Here
-
-            //Create a Structure and Store in Single Json File So it become easy to parse and process. 
-            //Or make a file whcih can process in single go
-
-        }
-
-        private async Task<bool> CreateCategoriesAsync(string filename)
-        {
-            StreamReader reader = new StreamReader(filename);
-            var json = reader.ReadToEnd();
-            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-
-            var categories = purchases.GroupBy(c => c.ProductName).Select(c => new { KK = c.Key.Split("/") }).ToList();
-
-            foreach (var category in categories)
-            {
-                Cat1.Add(category.KK[0]);
-                Cat2.Add(category.KK[1]);
-                Cat3.Add(category.KK[2]);
-            }
-
-
-
-
-            Cat1 = Cat1.Distinct().ToList();
-            Cat2 = Cat2.Distinct().ToList();
-            Cat3 = Cat3.Distinct().ToList();
-
-            List<Category> categoriesList = new List<Category>();
-            foreach (var item in Cat1)
-            {
-                Category c = new Category { Name = item };
-                categoriesList.Add(c);
-            }
-            int count = 0;
-            List<ProductType> pTypes = new List<ProductType>();
-            foreach (var cat in Cat2)
-            {
-                ProductType pType = new ProductType { ProductTypeId = $"PT00{++count}", ProductTypeName = cat };
-                pTypes.Add(pType);
-            }
-            count = 0;
-
-            List<ProductSubCategory> catList = new List<ProductSubCategory>();
-            foreach (var cat in Cat3)
-            {
-                ProductSubCategory cato = new ProductSubCategory { SubCategory = cat, ProductCategory = ProductCategory.Others };
-                catList.Add(cato);
-            }
-            var path = Settings.GetValueOrDefault("BasePath") + @"/Category";
-            Directory.CreateDirectory(path);
-
-            using FileStream createStream = File.Create(path + @"/SubCategory.json");
-            await JsonSerializer.SerializeAsync(createStream, catList);
-            Settings.Add("SubCategory", path + @"/SubCategory.json");
-            await createStream.DisposeAsync();
-
-
-            using FileStream createStream2 = File.Create(path + @"/productTypes.json");
-            await JsonSerializer.SerializeAsync(createStream2, pTypes);
-            Settings.Add("ProductType", path + @"/productTypes.json");
-            await createStream.DisposeAsync();
-
-            using FileStream createStream3 = File.Create(path + @"/productcategory.json");
-            await JsonSerializer.SerializeAsync(createStream3, categoriesList);
-            Settings.Add("ProductCategory", path + @"/productcategory.json");
-            await createStream.DisposeAsync();
-
-            return true;
-
-
-        }
-
-
-        private void GenerateDailySale(string code, string filename, string filename2)
-        {
-            StreamReader reader = new StreamReader(filename);
-            var json = reader.ReadToEnd();
-            var sales = JsonSerializer.Deserialize<List<ProductSale>>(json);
-            reader = new StreamReader(filename2);
-            var payments = JsonSerializer.Deserialize<List<SalePaymentDetail>>(json);
-            List<DailySale> DailySales = new List<DailySale>();
-
-            foreach (var i in sales)
-            {
-                DailySale sale = new DailySale
-                {
-                    Amount = i.BilledQty,
-                    CashAmount = 0,
-                    EntryStatus = EntryStatus.Rejected,
-                    IsDue = false,
-                    IsReadOnly = false,
-                    ManualBill = false,
-                    OnDate = i.OnDate,
-                    InvoiceNumber = i.InvoiceNo,
-                    PayMode = PayMode.Cash,
-                    Remarks = "AUTO GENE",
-                    SalesmanId = i.SalesmanId,
-                    MarkedDeleted = false,
-                    NonCashAmount = 0,
-                    SalesReturn = i.InvoiceType == InvoiceType.SalesReturn ? true : false,
-                    StoreId = i.StoreId,
-                    UserId = "AUTOGINI",
-                    TailoringBill = false,
-                };
-                DailySales.Add(sale);
-            }
-            foreach (var i in payments)
-            {
-                var d = DailySales.Where(c => c.InvoiceNumber == i.InvoiceCode);
-            }
-        }
-
-        public static string VendorMapping(string supplier)
-        {
-            string id = supplier switch
-            {
-                "TAS RMG Warehouse - Bangalore" => "ARD/VIN/0003",
-                "TAS - Warhouse -FOFO" => "ARD/VIN/0003",
-                "Bangalore WH" => "ARD/VIN/0003",
-                "Arvind Brands Limited" => "ARD/VIN/0002",
-                "TAS RTS -Warhouse" => "ARD/VIN/0002",
-                "Arvind Limited" => "ARD/VIN/0001",
-                "Khush" => "ARD/VIN/0005",
-                "Safari Industries India Ltd" => "ARD/VIN/0004",
-                "DTR Packed WH" => "ARD/VIN/0002",
-                "DTR - TAS Warehouse" => "ARD/VIN/0002",
-                "Aprajita Retails - Jamshedpur" => "ARD/VIN/0007",
-                _ => "ARD/VIN/0002",
-            };
-            return id;
-        }
-
-        public void GenerateProductItem(string filename)
-        {
-            try
-            {
-                StreamReader reader = new StreamReader(filename);
-                var json = reader.ReadToEnd();
-                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-
-                var stocks = purchases.GroupBy(c => c.Barcode)
-                     .Select(c =>
-                          c.Select(x => new { x.Barcode, x.Cost, x.MRP, x.ProductName, x.SupplierName, QTY = c.Sum(z => z.Quantity), x.StyleCode })
-                     ).ToList()[0].ToList();
-                List<ProductItem> products = new List<ProductItem>();
-                foreach (var s in stocks)
-                {
-                    ProductItem p = new ProductItem
-                    {
-                        Barcode = s.Barcode,
-                        StyleCode = s.StyleCode,
-                        Name = s.ProductName,
-                        MRP = s.MRP,
-                        TaxType = TaxType.GST,
-                        Unit = Unit.Nos,
-                    };
-                    products.Add(p);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<bool> GeneratePurchaseInvoice(string storecode, string filename)
-        {
-            try
-            {
-                StreamReader reader = new StreamReader(filename);
-                var json = reader.ReadToEnd();
-                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-
-                var invoices = purchases.GroupBy(c => new { c.InvoiceNo, c.GRNNo, c.InvoiceDate, c.GRNDate })
-                    .Select(c => new PurchaseProduct
-                    {
-                        VendorId = VendorMapping(c.Select(x => x.SupplierName).First()),
-                        InvoiceType = PurchaseInvoiceType.Purchase,
-                        Count = c.Count(),
-                        TotalQty = c.Sum(x => x.Quantity),
-                        InwardDate = c.Key.GRNDate,
-                        UserId = "AUTOGINI",
-                        Warehouse = c.Select(x => x.SupplierName).First(),
-                        TotalAmount = (decimal)-0.0001,
-                        OnDate = c.Key.InvoiceDate,
-                        InvoiceNo = c.Key.InvoiceNo,
-                        InwardNumber = c.Key.GRNNo,
-                        TaxType = c.Key.InvoiceDate < new DateTime(2017, 7, 1) ? TaxType.VAT : TaxType.IGST,
-                        BillQty = c.Sum(x => x.Quantity),
-                        StoreId = storecode,
-                        BasicAmount = c.Sum(x => x.CostValue),
-                        ShippingCost = 0,
-                        TaxAmount = c.Sum(x => x.TaxAmt),
-                        DiscountAmount = 0,
-                        Paid = true,
-                        EntryStatus = EntryStatus.Rejected,
-                        FreeQty = 0,
-                        IsReadOnly = false,
-                        MarkedDeleted = false
-                    }).ToList();
-
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseInvoice.json");
-                await JsonSerializer.SerializeAsync(createStream, invoices);
-                await createStream.DisposeAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> GeneratePurchaseItemAsync(string storecode, string filename)
-        {
-            try
-            {
-                StreamReader reader = new StreamReader(filename);
-                var json = reader.ReadToEnd();
-                var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-                List<PurchaseItem> purchaseItems = new List<PurchaseItem>();
-                foreach (var inv in purchases)
-                {
-                    PurchaseItem pItem = new PurchaseItem
-                    {
-                        Barcode = inv.Barcode,
-                        CostPrice = inv.CostValue,
-                        CostValue = inv.CostValue,
-                        DiscountValue = 0,
-                        FreeQty = 0,
-                        InwardNumber = inv.GRNNo,
-                        Qty = inv.Quantity,
-                        TaxAmount = inv.TaxAmt,
-                        Unit = Unit.Nos
-                    };
-                    purchaseItems.Add(pItem);
-                }
-
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseItem.json");
-                await JsonSerializer.SerializeAsync(createStream, purchaseItems);
-                await createStream.DisposeAsync();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> GenerateSaleInvoice(string code, string filename)
-        {
-            try
-            {
-                StreamReader reader = new StreamReader(filename);
-                var json = reader.ReadToEnd();
-                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-
-                int count = 0;
-                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType, c.PaymentMode, c.SalesmanName })
-                    .Select(c => new ProductSale
-                    {
-                        InvoiceNo = c.Key.InvoiceNumber,
-                        OnDate = DateTime.Parse(c.Key.InvoiceDate),
-                        BilledQty = c.Sum(x => x.Quantity),
-                        Adjusted = false,
-                        EntryStatus = EntryStatus.Rejected,
-                        FreeQty = 0,
-                        StoreId = code,
-                        TotalBasicAmount = c.Sum(x => x.BasicRate),
-                        Tailoring = false,
-                        Taxed = true,
-                        InvoiceType = c.Key.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
-                        SalesmanId = Salesman.Where(x => x.Value == c.Key.SalesmanName).First().Key,
-                        TotalMRP = c.Sum(x => x.MRPValue),
-                        TotalDiscountAmount = c.Sum(x => x.Discount),
-                        UserId = "AUTOJINI",
-                        TotalTaxAmount = c.Sum(x => x.TaxAmount),
-                        TotalPrice = c.Sum(x => x.BillAmount),
-                        InvoiceCode = $@"{code}/{DateTime.Parse(c.Key.InvoiceDate).ToString("yyyy/MMM/DD")}/00{++count}",
-                        IsReadOnly = false,
-                        MarkedDeleted = false,
-                        Paid = true,
-                        RoundOff = c.Sum(x => x.RoundOff),
-                    }).ToList();
-
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleinvoice.json");
-                await JsonSerializer.SerializeAsync(createStream, saleinvs);
-                await createStream.DisposeAsync();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> GenerateSaleItem(string code, string filename)
-        {
-            try
-            {
-                StreamReader reader = new StreamReader(filename);
-                var json = reader.ReadToEnd();
-                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-                // List<SaleItem> saleItems = new List<SaleItem>();
-                // int count = 0;
-                var saleinvs = sales.Select(c => new SaleItem
-                {
-                    Barcode = c.Barcode,
-                    BasicAmount = c.BasicRate,
-                    DiscountAmount = c.Discount,
-                    LastPcs = false,
-                    TaxAmount = c.TaxAmount,
-                    TaxType = TaxType.GST,
-                    Unit = Unit.Nos,
-                    Value = c.LineTotal,
-                    BilledQty = c.Quantity,
-                    Adjusted = false,
-                    InvoiceType = c.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
-                    FreeQty = 0,
-                    InvoiceCode = c.InvoiceNumber,
-                }).ToList();
-
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
-                await JsonSerializer.SerializeAsync(createStream, saleinvs);
-                await createStream.DisposeAsync();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> GenerateSalePayment(string code, string filename)
-        {
-            StreamReader reader = new StreamReader(filename);
-            var json = reader.ReadToEnd();
-            var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-
-            var cashsale = sales.Where(c => c.PaymentMode == "CAS")
-                .Select(c => new SalePaymentDetail
-                {
-                    InvoiceCode = c.InvoiceNumber,
-                    PaidAmount = c.BillAmount,
-                    PayMode = PayMode.Cash,
-                    RefId = "CASH SALE",
-                })
-                .ToList();
-
-            var cardsale = sales.Where(c => c.PaymentMode == "CRD").Select(c => new SalePaymentDetail
-            {
-                InvoiceCode = c.InvoiceNumber,
-                PaidAmount = c.BillAmount,
-                PayMode = PayMode.Card,
-                RefId = "CARD SALE",
-            }).ToList();
-            var mixsale = sales.Where(c => c.PaymentMode == "MIX").Select(c => new SalePaymentDetail
-            {
-                InvoiceCode = c.InvoiceNumber,
-                PaidAmount = c.BillAmount,
-                PayMode = PayMode.MixPayments,
-                RefId = "Mix Sale",
-            }).ToList();
-            var salereturn = sales.Where(c => c.PaymentMode == "SR").Select(c => new SalePaymentDetail
-            {
-                InvoiceCode = c.InvoiceNumber,
-                PaidAmount = c.BillAmount,
-                PayMode = PayMode.SaleReturn,
-                RefId = "SALE Return",
-            }).ToList();
-            List<SalePaymentDetail> list = new List<SalePaymentDetail>();
-            list.AddRange(cashsale);
-            list.AddRange(cardsale);
-            list.AddRange(mixsale);
-            list.AddRange(salereturn);
-            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/salepayment.json");
-            await JsonSerializer.SerializeAsync(createStream, list);
-            await createStream.DisposeAsync();
-            return true;
-        }
-
-        public async Task<bool> GenerateStockData(string code, string pfile, string sfile)
-        {
-            StreamReader reader = new StreamReader(pfile);
-            var json = reader.ReadToEnd();
-            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-            reader = new StreamReader(sfile);
-            json = reader.ReadToEnd();
-            var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
-
-            var pp = purchases.GroupBy(c => c.Barcode).Select(c => new
-            {
-                Barcode = c.Key,
-                Qty = c.Sum(x => x.Quantity),
-                Cost = c.Select(x => x.Cost).First(),
-                Mrp = c.Select(x => x.MRP).First()
-            }).ToList();
-
-            var ss = sales.GroupBy(c => c.Barcode).Select(c => new
-            {
-                Barcode = c.Key,
-                Qty = c.Sum(x => x.Quantity),
-                Mrp = c.Select(x => x.MRP).First(),
-            }).ToList();
-
-            var x = from p in pp
-                    join s in ss on p.Barcode equals s.Barcode
-                    select new
-                    {
-                        Stock = new Stock
-                        {
-                            Barcode = p.Barcode,
-                            CostPrice = p.Cost,
-                            HoldQty = 0,
-                            EntryStatus = EntryStatus.Rejected,
-                            IsReadOnly = false,
-                            MarkedDeleted = false,
-                            MRP = p.Mrp,
-                            MultiPrice = false,
-                            PurhcaseQty = p.Qty,
-                            SoldQty = s.Qty,
-                            StoreId = code,
-                            UserId = "AutoJini",
-                            Unit = Unit.Nos
-                        }
-                    };
-
-            using FileStream createStream = File.Create(Path.GetDirectoryName(pfile) + @"/stocks.json");
-            await JsonSerializer.SerializeAsync(createStream, x);
-            await createStream.DisposeAsync();
-            return true;
-        }
+        public string Name { get; set; }
     }
 
     public class ImportData
@@ -692,6 +59,27 @@ namespace eStore.SetUp.Import
 
             }
         }
+
+        public static async Task<bool> ObjectsToJSONFile<T>(List<T> itemLists, string fileName)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                //This help to Save as backup for future use
+                using FileStream createStream = File.Create(fileName);
+                await JsonSerializer.SerializeAsync(createStream, itemLists);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+
+            }
+
+        }
+
 
         public static async Task<bool> DataTableToJSONFile(DataTable table, string fileName)
         {
@@ -726,6 +114,15 @@ namespace eStore.SetUp.Import
             var config = JsonSerializer.Deserialize<SortedList<string, string>>(json);
             reader.Close();
             return config;
+        }
+
+
+        public static List<T>? JsonToObject<T>(string filename)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            return JsonSerializer.Deserialize<List<T>>(json);
+
         }
 
         public static DataTable JSONFileToDataTable(string filename)
@@ -801,31 +198,6 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public void ImportPurchaseInvoice()
-        {
-        }
-
-        public void ImportSaleInvoice()
-        {
-        }
-
-        public void ImportMSDyncSaleInvoice()
-        { }
-
-        private void ProductItem()
-        { }
-
-        private void StockItem()
-        { }
-
-        private void Category()
-        { }
-
-        private void SaleItem()
-        { }
-
-        private void PurchaseItem()
-        { }
 
         public enum SaleVMT
         { VOY, MD, MI }
@@ -1099,6 +471,52 @@ namespace eStore.SetUp.Import
                 // TranscationNumber = row["Transaction number"].ToString(),
             };
         }
+
+
+
+        public static string SetBrandCode(string style, string cat, string type)
+        {
+            string bcode = "";
+            if (cat == "Apparel")
+            {
+                if (style.StartsWith("FM"))
+                {
+                    bcode = "FM";
+                }
+                else if (style.StartsWith("ARI")) bcode = "ADR";
+                else if (style.StartsWith("HA")) bcode = "HAN";
+                else if (style.StartsWith("AA")) bcode = "ARN";
+                else if (style.StartsWith("AF")) bcode = "ARR";
+                else if (style.StartsWith("US")) bcode = "USP";
+                else if (style.StartsWith("AB")) bcode = "ARR";
+                else if (style.StartsWith("AK")) bcode = "ARR";
+                else if (style.StartsWith("AN")) bcode = "ARR";
+                else if (style.StartsWith("ARE")) bcode = "ARR";
+                else if (style.StartsWith("ARG")) bcode = "ARR";
+                else if (style.StartsWith("AS")) bcode = "ARS";
+                else if (style.StartsWith("AT")) bcode = "ARR";
+                else if (style.StartsWith("F2")) bcode = "FM";
+                else if (style.StartsWith("UD")) bcode = "UD";
+            }
+            else if (cat == "Shirting" || cat == "Suiting")
+            {
+                bcode = "ARD";
+            }
+            else
+
+            if (cat == "Promo")
+            {
+                if (type == "Free GV") { bcode = "AGV"; }
+                else bcode = "ARP";
+            }
+            else if (cat == "Suit Cover")
+            {
+                bcode = "ARA";
+            }
+            return bcode;
+        }
+
+
     }
 
 

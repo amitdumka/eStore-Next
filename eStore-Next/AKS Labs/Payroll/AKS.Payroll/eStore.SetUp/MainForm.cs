@@ -33,7 +33,7 @@ namespace eStore.SetUp
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
                 lbEvents.Items.Add("Output folder set");
-                ImportProcessor.InitConfigFile(TXTOutputFolder.Text,TXTStoreCode.Text);
+                ImportProcessor.InitConfigFile(TXTOutputFolder.Text, TXTStoreCode.Text);
 
 
             }
@@ -114,11 +114,11 @@ namespace eStore.SetUp
             //MessageBox.Show(x);
             lbFileName.Text = (Path.Combine(RootPath, e.Node.FullPath));
 
-            if (lbFileName.Text.Contains("Config")  && lbFileName.Text.EndsWith(".json"))
+            if (lbFileName.Text.Contains("Config") && lbFileName.Text.EndsWith(".json"))
             {
 
                 var config = ImportData.ConfigJson(lbFileName.Text);
-               // LBKey0.Text = "ConfigFile";
+                // LBKey0.Text = "ConfigFile";
                 //.Text = lbFileName.Text;
 
                 tableLayoutPanel1.Controls.Clear();
@@ -126,13 +126,13 @@ namespace eStore.SetUp
                 int row = 1;
                 foreach (var item in config)
                 {
-                    Label lb= new Label();
+                    Label lb = new Label();
                     lb.Text = item.Key;
                     lb.ForeColor = Color.BlueViolet;
-                    TextBox tb= new TextBox();
+                    TextBox tb = new TextBox();
                     tb.Text = item.Value;
                     tb.Dock = DockStyle.Fill;
-                    tableLayoutPanel1.Controls.Add(lb,0,row);
+                    tableLayoutPanel1.Controls.Add(lb, 0, row);
                     tableLayoutPanel1.Controls.Add(tb, 1, row++);
                 }
             }
@@ -182,7 +182,7 @@ namespace eStore.SetUp
         private async void BTNProcess_Click(object sender, EventArgs e)
         {
             if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
-          if(await  ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
+            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
             {
                 MessageBox.Show("Success");
             }

@@ -9,6 +9,7 @@ namespace eStore.SetUp
         string RootPath = "d:\\Ard";
         string ExcelFileName = "";
         Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
+        ImportProcessor ImportProcessor;
         public MainForm()
         {
             InitializeComponent();
@@ -178,9 +179,13 @@ namespace eStore.SetUp
                 lbEvents.Items.Add("Source file  could not  open and sheet name listing failed...");
         }
 
-        private void BTNProcess_Click(object sender, EventArgs e)
+        private async void BTNProcess_Click(object sender, EventArgs e)
         {
-
+            if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
+          if(await  ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
+            {
+                MessageBox.Show("Success");
+            }
         }
 
         private async void BTNToJSON_Click(object sender, EventArgs e)
@@ -213,6 +218,11 @@ namespace eStore.SetUp
                 }
                 ExcelSheet.Open(ExcelFileName);
             }
+        }
+
+        private void BTNLoad_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = ImportProcessor.LoadJsonFile(CBXOperations.Text);
         }
     }
 }

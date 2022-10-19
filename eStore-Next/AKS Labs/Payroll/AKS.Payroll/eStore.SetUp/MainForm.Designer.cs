@@ -44,7 +44,7 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.lbFileName = new System.Windows.Forms.Label();
             this.BTNProcess = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.CBXOperations = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.BTNShowExcel = new System.Windows.Forms.Button();
@@ -79,6 +79,7 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.BTNLoad = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -244,9 +245,10 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.BTNLoad);
             this.groupBox6.Controls.Add(this.lbFileName);
             this.groupBox6.Controls.Add(this.BTNProcess);
-            this.groupBox6.Controls.Add(this.comboBox1);
+            this.groupBox6.Controls.Add(this.CBXOperations);
             this.groupBox6.Controls.Add(this.label8);
             this.groupBox6.Location = new System.Drawing.Point(16, 73);
             this.groupBox6.Name = "groupBox6";
@@ -276,13 +278,28 @@
             this.BTNProcess.UseVisualStyleBackColor = true;
             this.BTNProcess.Click += new System.EventHandler(this.BTNProcess_Click);
             // 
-            // comboBox1
+            // CBXOperations
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(73, 22);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
-            this.comboBox1.TabIndex = 1;
+            this.CBXOperations.FormattingEnabled = true;
+            this.CBXOperations.Items.AddRange(new object[] {
+            "Category",
+            "ProductItem",
+            "PurchaseInvoice",
+            "PurchaseItem",
+            "Stocks",
+            "SaleInvoice",
+            "SaleItem",
+            "InnerWearPurchase",
+            "InnerWearPurchaseItem",
+            "AnyOtherPurchaseInvoice",
+            "AnyOtherPurchaseItem",
+            "ManualInvoice",
+            "ManualINvoiceItem",
+            "ToVoyPurchase"});
+            this.CBXOperations.Location = new System.Drawing.Point(73, 22);
+            this.CBXOperations.Name = "CBXOperations";
+            this.CBXOperations.Size = new System.Drawing.Size(121, 23);
+            this.CBXOperations.TabIndex = 1;
             // 
             // label8
             // 
@@ -631,6 +648,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // BTNLoad
+            // 
+            this.BTNLoad.Location = new System.Drawing.Point(200, 46);
+            this.BTNLoad.Name = "BTNLoad";
+            this.BTNLoad.Size = new System.Drawing.Size(75, 23);
+            this.BTNLoad.TabIndex = 4;
+            this.BTNLoad.Text = "Load";
+            this.BTNLoad.UseVisualStyleBackColor = true;
+            this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -686,7 +713,7 @@
         private Panel panel4;
         private GroupBox groupBox6;
         private Button BTNProcess;
-        private ComboBox comboBox1;
+        private ComboBox CBXOperations;
         private Label label8;
         private GroupBox groupBox1;
         private Button BTNSelect;
@@ -724,5 +751,6 @@
         private ComboBox CBFileType;
         private TabPage tabPage3;
         private TableLayoutPanel tableLayoutPanel1;
+        private Button BTNLoad;
     }
 }

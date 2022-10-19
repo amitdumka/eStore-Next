@@ -10,7 +10,6 @@ using System.Net.NetworkInformation;
 using System.Runtime.ConstrainedExecution;
 using System.Security.Policy;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace eStore.SetUp.Import
 {
@@ -46,12 +45,12 @@ namespace eStore.SetUp.Import
 
         public static async void InitConfigFile(string baseapath, string storeCode)
         {
-            var fn = Path.Combine(baseapath+$@"\{storeCode}", "Configs");
+            var fn = Path.Combine(baseapath + $@"\{storeCode}", "Configs");
             Directory.CreateDirectory(fn);
             ConfigFile = Path.Combine(fn, ConfigFile);
             if (!File.Exists(ConfigFile))
             {
-                var config =  new SortedDictionary<string, string>();
+                var config = new SortedDictionary<string, string>();
                 config.Add("BasePath", baseapath + $@"\{storeCode}");
                 using FileStream createStream = File.OpenWrite(ConfigFile);
                 await JsonSerializer.SerializeAsync(createStream, config);
@@ -60,20 +59,131 @@ namespace eStore.SetUp.Import
             }
         }
 
+        public void ReadSetting()
+        {
+            StreamReader reader = new StreamReader(ConfigFile);
+            var json = reader.ReadToEnd();
+            Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
+            reader.Close();
+        }
+        public async Task<bool> UpdateConfigFile()
+        {
+            try
+            {
+                if (Settings != null && Settings.Count > 0)
+                {
+                    using FileStream createStream = File.OpenWrite(ConfigFile);
+                    await JsonSerializer.SerializeAsync(createStream, Settings);
+                    await createStream.DisposeAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+          
+        }
+
         public static async void SetConfigFile(string key, string value)
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
-            var config = JsonSerializer.Deserialize<SortedDictionary<string,string>>(json);
+            var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
             reader.Close();
             if (config == null)
                 config = new SortedDictionary<string, string>();
             if (config.ContainsKey(key))
-                key = key + $"#{config.Count+1}";
-            config.Add(key,value);
+                key = key + $"#{config.Count + 1}";
+            config.Add(key, value);
             using FileStream createStream = File.OpenWrite(ConfigFile);
             await JsonSerializer.SerializeAsync(createStream, config);
             await createStream.DisposeAsync();
+
+        }
+
+        public SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
+        public async Task<bool> ProcessOperation(string store, string ops)
+        {
+            if (Settings == null || Settings.Count <= 0)
+                ReadSetting();
+            bool flag = false;
+
+            switch (ops)
+            {
+                case "Category":
+                    flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("Purchase"));
+                    break; ;
+                case "ProductItem":
+                case "PurchaseInvoice":
+                    flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("Purchase"));
+                    break;
+                case "PurchaseItem":
+                    flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("Purchase")); break;
+                case "ToVoyPurchase":
+                    flag = await ToVoyPurchaseAsync();
+                    break;
+                case "SaleInvoice":
+                case "SaleInvoiceItem":
+                case "Stock":
+                case "InnerWearPurchase":
+
+                default:
+                    break;
+            }
+            if(false) UpdateConfigFile();
+            return flag;
+        }
+        public DataTable LoadJsonFile(string ops)
+        {
+            DataTable dt = null;
+            switch (ops)
+            {
+                case "Category":
+                    //flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("Purchase"));
+                    break; ;
+                case "ProductItem":
+                case "PurchaseInvoice":
+                    //flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("Purchase"));
+                    break;
+                case "PurchaseItem":
+                //flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("Purchase")); break;
+                case "ToVoyPurchase":
+                    dt = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("VoyPurchase")); break;
+
+                case "SaleInvoice":
+                case "SaleInvoiceItem":
+                case "Stock":
+                case "InnerWearPurchase":
+
+                default:
+                    break;
+            }
+            return dt;
+        }
+        private async Task<bool> ToVoyPurchaseAsync()
+        {
+            try
+            {
+                if (Settings == null || Settings.Count <= 0)
+                    ReadSetting();
+
+                var datatable = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("Purchase"));
+                var json = ImportData.PurchaseDatatableToJson(datatable);
+                string filename = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Purchase\VoyPurchase.json");
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                Settings.Add("VoyPurchase", filename);
+                File.WriteAllText(filename, json);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
 
         }
 
@@ -88,7 +198,7 @@ namespace eStore.SetUp.Import
         /// <param name="maxRow"></param>
         /// <param name="maxCol"></param>
         /// <param name="outputfilename"></param>
-        public static async Task<bool> StartImporting(string storecode,string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
+        public static async Task<bool> StartImporting(string storecode, string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
             var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + $@"\{storecode}\ImportedJSON", Path.GetFileName(outputfilename) + ".json");
@@ -558,7 +668,7 @@ namespace eStore.SetUp.Import
     public class ImportData
     {
 
-        
+
         public static List<string> GetSheetNames(string filename)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -603,7 +713,7 @@ namespace eStore.SetUp.Import
             }
 
         }
-        public static SortedList<string,string> ConfigJson(string filename)
+        public static SortedList<string, string> ConfigJson(string filename)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
@@ -638,6 +748,10 @@ namespace eStore.SetUp.Import
 
         public static DateTime ToDateDMY(string ondate)
         {
+            DateTime dt;
+            if (DateTime.TryParse(ondate, out dt))
+                return dt;
+
             char c = '-';
             if (ondate.Contains("/")) c = '/';
             var dd = ondate.Split(c);
@@ -733,6 +847,17 @@ namespace eStore.SetUp.Import
                     list.Add(JsonSerializer.Serialize(si));
                 }
             }
+            return JsonSerializer.Serialize(list);
+        }
+
+
+        public static string PurchaseDatatableToJson(DataTable dataTable)
+        {
+
+            List<VoyPurhcase> list = new List<VoyPurhcase>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+                list.Add(ReadPurchase(dataTable.Rows[i]));
+
             return JsonSerializer.Serialize(list);
         }
 
@@ -842,26 +967,26 @@ namespace eStore.SetUp.Import
             };
         }
 
-        private VoyPurhcase ReadPurchase(DataRow row)
+        private static VoyPurhcase ReadPurchase(DataRow row)
         {
             return new VoyPurhcase
             {
                 Barcode = row["Barcode"].ToString(),
 
                 Cost = Math.Round(decimal.Parse(row["Cost"].ToString()), 2),
-                CostValue = Math.Round(decimal.Parse(row["CostValue"].ToString()), 2),
+                CostValue = Math.Round(decimal.Parse(row["Cost Value"].ToString()), 2),
                 MRP = Math.Round(decimal.Parse(row["MRP"].ToString()), 2),
-                MRPValue = Math.Round(decimal.Parse(row["MRPValue"].ToString()), 2),
+                MRPValue = Math.Round(decimal.Parse(row["MRP Value"].ToString()), 2),
                 GRNDate = ToDateDMY(row["GRNDate"].ToString()),
-                InvoiceDate = ToDateDMY(row["InvoiceDate"].ToString()),
+                InvoiceDate = ToDateDMY(row["Invoice Date"].ToString()),
                 GRNNo = row["GRNNo"].ToString(),
-                InvoiceNo = row["InvoiceNo"].ToString(),
-                ItemDesc = row["ItemDesc"].ToString(),
-                ProductName = row["ProductName"].ToString(),
-                StyleCode = row["StyleCode"].ToString(),
-                SupplierName = row["SupplierName"].ToString(),
+                InvoiceNo = row["Invoice No"].ToString(),
+                ItemDesc = row["Item Desc"].ToString(),
+                ProductName = row["Product Name"].ToString(),
+                StyleCode = row["Style Code"].ToString(),
+                SupplierName = row["Supplier Name"].ToString(),
                 Quantity = Math.Round(decimal.Parse(row["Quantity"].ToString()), 2),
-                TaxAmt = Math.Round(decimal.Parse(row["TaxAmt"].ToString()), 2),
+                TaxAmt = string.IsNullOrEmpty(row["TaxAmt"].ToString()) ? 0 : Math.Round(decimal.Parse(row["TaxAmt"].ToString()), 2),
             };
         }
 
@@ -970,375 +1095,5 @@ namespace eStore.SetUp.Import
         }
     }
 
-    public class VoySale
-    {
-        public string InvoiceType { get; set; }
-        public string InvoiceNo { get; set; }
-        public DateTime OnDate { get; set; }
-        public string BrandName { get; set; }
-        public string ProductName { get; set; }
-        public string ItemDesc { get; set; }
-        public string StyleCode { get; set; }
 
-        public string Barcode { get; set; }
-        public string HSNCode { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal MRP { get; set; }
-        public decimal DiscountAmt { get; set; }
-        public decimal BasicAmt { get; set; }
-        public decimal TaxAmt { get; set; }
-        public decimal SGSTAmt { get; set; }
-        public decimal CGSTAmt { get; set; }
-        public decimal LineTotal { get; set; }
-        public decimal RoundOff { get; set; }
-        public decimal BillAmt { get; set; }
-        public string PaymentMode { get; set; }
-        public string SalesManName { get; set; }
-        public string LP { get; set; }
-        public string Tailoring { get; set; }
-    }
-
-    public class ManualInvoice
-    {
-        public int SNo { get; set; }
-        public DateTime OnDate { get; set; }
-        public string InvNo { get; set; }
-        public string Barcode { get; set; }
-        public decimal Qty { get; set; }
-        public decimal Rate { get; set; }
-        public string Discount { get; set; }
-        public decimal Amount { get; set; }
-        public decimal LineTotal { get; set; }
-        public decimal BillAmount { get; set; }
-        public decimal TotalAmount { get; set; }
-        public string Salesman { get; set; }
-    }
-
-    public class MDSale
-    {
-        public string BARCODE { get; set; }
-        public decimal BASICAMOUNT { get; set; }
-        public decimal BILLAMOUNT { get; set; }
-        public string BRAND { get; set; }
-        public string CATEGORY { get; set; }
-        public decimal CGSTAMOUNT { get; set; }
-        public decimal COUPONAMOUNT { get; set; }
-        public string COUPONPERCENTAGE { get; set; }
-        public decimal Discountamount { get; set; }
-        public string HSNCODE { get; set; }
-        public decimal LINETOTAL { get; set; }
-        public decimal MRP { get; set; }
-        public DateTime OnDate { get; set; }
-        public string PAYMENTMODE { get; set; }
-        public string Product { get; set; }
-        public string Productnumber { get; set; }
-        public decimal Quantity { get; set; }
-        public string Receiptnumber { get; set; }
-        public decimal ROUNDOFFAMT { get; set; }
-        public string SALESMAN { get; set; }
-        public string SALESTYPE { get; set; }
-        public decimal SGSTAMOUNT { get; set; }
-        public string STYLECODE { get; set; }
-        public string TAILORINGFLAG { get; set; }
-        public decimal Taxamount { get; set; }
-        public string TranscationNumber { get; set; }
-    }
-
-    public class MISale
-    {
-        public DateTime OnDate { get; set; }
-        public string InvNo { get; set; }
-        public string InvType { get; set; }
-        public string Barcode { get; set; }
-        public string HSNCode { get; set; }
-        public decimal Qty { get; set; }
-        public decimal UnitMRP { get; set; }
-        public decimal MRPValue { get; set; }
-        public decimal DiscAmt { get; set; }
-        public decimal BasicAmount { get; set; }
-        public decimal TaxRate { get; set; }
-        public decimal TotalTaxAmount { get; set; }
-        public decimal GSTAmount { get; set; }
-        public decimal LineTotal { get; set; }
-        public string SalesManName { get; set; }
-
-        public string BrandName { get; set; }
-        public string Brand { get; set; }
-
-        public decimal UnitCost { get; set; }
-        public decimal CostValue { get; set; }
-
-        public string ItemDesc { get; set; }
-
-        public string Size { get; set; }
-        public string Category { get; set; }
-        public string SubCategory { get; set; }
-        public string ProductType { get; set; }
-        public string StyleCode { get; set; }
-    }
-
-    public class JsonSale
-    {
-        public string InvoiceType { get; set; }
-        public string InvoiceNumber { get; set; }
-        public string InvoiceDate { get; set; }
-        public string Barcode { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal MRP { get; set; }
-        public decimal Discount { get; set; }
-        public decimal BasicRate { get; set; }
-        public decimal TaxRate { get; set; }
-        public decimal TaxAmount { get; set; }
-        public decimal CGSTAmount { get; set; }
-        public decimal SGST { get; set; }
-        public decimal RoundOff { get; set; }
-        public decimal LineTotal { get; set; }
-        public decimal BillAmount { get; set; }
-        public string PaymentMode { get; set; }
-        public string SalesmanName { get; set; }
-
-        public string Brand { get; set; }
-        public string BrandName { get; set; }
-        public string ItemDesc { get; set; }
-        public string ProductName { get; set; }
-        public string SytleCode { get; set; }
-        public string HSNCODE { get; set; }
-        public string LP { get; set; }
-        public string Tailoring { get; set; }
-
-        public decimal UnitMRP { get; set; }
-        public decimal MRPValue { get; set; }
-
-        public decimal UnitCost { get; set; }
-        public decimal CostValue { get; set; }
-
-        public string Size { get; set; }
-        public string Category { get; set; }
-        public string SubCategory { get; set; }
-        public string ProductType { get; set; }
-    }
-
-    public class VoyPurhcase
-    {
-        public string GRNNo { get; set; }
-        public DateTime GRNDate { get; set; }
-        public string InvoiceNo { get; set; }
-        public DateTime InvoiceDate { get; set; }
-        public string SupplierName { get; set; }
-        public string Barcode { get; set; }
-        public string ProductName { get; set; }
-        public string StyleCode { get; set; }
-        public string ItemDesc { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal MRP { get; set; }
-        public decimal MRPValue { get; set; }
-        public decimal Cost { get; set; }
-        public decimal CostValue { get; set; }
-        public decimal TaxAmt { get; set; }
-    }
-
-    public class Utils
-    {
-        public static DateTime ToDate(string date)
-        {
-            char c = '-';
-            if (date.Contains('/')) c = '/';
-
-            var d = date.Split(c);
-            return new DateTime(int.Parse(d[2].Split(" ")[0]), int.Parse(d[1]), int.Parse(d[0]));
-        }
-
-        public static int ReadInt(TextBox t)
-        {
-            return int.Parse(t.Text.Trim());
-        }
-
-        public static decimal ReadDecimal(TextBox t)
-        {
-            return decimal.Parse(t.Text.Trim());
-        }
-
-        public static decimal ToDecimal(string val)
-        {
-            return decimal.Round(decimal.Parse(val.Trim()), 2);
-        }
-
-        public static async Task ToJsonAsync<T>(string fileName, List<T> ObjList)
-        {
-            // string fileName = "WeatherForecast.json";
-            using FileStream createStream = File.Create(fileName);
-            await JsonSerializer.SerializeAsync(createStream, ObjList);
-            await createStream.DisposeAsync();
-        }
-
-        //public static async Task<List<PurchaseItem>?> FromJson<T>(string filename)
-        //{
-        //    using FileStream openStream = File.OpenRead(filename);
-        //    return JsonSerializer.Deserialize<List<PurchaseItem>>(openStream);
-        //}
-
-        public static async Task<List<T>?> FromJsonToObject<T>(string filename)
-        {
-            using FileStream openStream = File.OpenRead(filename);
-            return JsonSerializer.Deserialize<List<T>>(openStream);
-        }
-    }
-    public class DataTableJsonConverter : JsonConverter<DataTable>
-    {
-        public override DataTable Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            using var jsonDoc = JsonDocument.ParseValue(ref reader);
-            JsonElement rootElement = jsonDoc.RootElement;
-            DataTable dataTable = rootElement.JsonElementToDataTable();
-            return dataTable;
-        }
-
-        public override void Write(Utf8JsonWriter jsonWriter, DataTable value, JsonSerializerOptions options)
-        {
-            jsonWriter.WriteStartArray();
-            foreach (DataRow dr in value.Rows)
-            {
-                jsonWriter.WriteStartObject();
-                foreach (DataColumn col in value.Columns)
-                {
-                    string key = col.ColumnName.Trim();
-
-                    Action<string> action = GetWriteAction(dr, col, jsonWriter);
-                    action.Invoke(key);
-
-                    static Action<string> GetWriteAction(
-                        DataRow row, DataColumn column, Utf8JsonWriter writer) => row[column] switch
-                        {
-                            // bool
-                            bool value => key => writer.WriteBoolean(key, value),
-
-                            // numbers
-                            byte value => key => writer.WriteNumber(key, value),
-                            sbyte value => key => writer.WriteNumber(key, value),
-                            decimal value => key => writer.WriteNumber(key, value),
-                            double value => key => writer.WriteNumber(key, value),
-                            float value => key => writer.WriteNumber(key, value),
-                            short value => key => writer.WriteNumber(key, value),
-                            int value => key => writer.WriteNumber(key, value),
-                            ushort value => key => writer.WriteNumber(key, value),
-                            uint value => key => writer.WriteNumber(key, value),
-                            ulong value => key => writer.WriteNumber(key, value),
-
-                            // strings
-                            DateTime value => key => writer.WriteString(key, value),
-                            Guid value => key => writer.WriteString(key, value),
-
-                            _ => key => writer.WriteString(key, row[column].ToString())
-                        };
-                }
-                jsonWriter.WriteEndObject();
-            }
-            jsonWriter.WriteEndArray();
-        }
-    }
-
-    public static class Extensions
-    {
-        public static DataTable JsonElementToDataTable(this JsonElement dataRoot)
-        {
-            var dataTable = new DataTable();
-            bool firstPass = true;
-            foreach (JsonElement element in dataRoot.EnumerateArray())
-            {
-                DataRow row = dataTable.NewRow();
-                dataTable.Rows.Add(row);
-                foreach (JsonProperty col in element.EnumerateObject())
-                {
-                    if (firstPass)
-                    {
-                        JsonElement colValue = col.Value;
-                        dataTable.Columns.Add(new DataColumn(col.Name, colValue.ValueKind.ValueKindToType(colValue.ToString()!)));
-                    }
-                    row[col.Name] = col.Value.JsonElementToTypedValue();
-                }
-                firstPass = false;
-            }
-
-            return dataTable;
-        }
-
-        private static Type ValueKindToType(this JsonValueKind valueKind, string value)
-        {
-            switch (valueKind)
-            {
-                case JsonValueKind.String:
-                    return typeof(string);
-                case JsonValueKind.Number:
-                    if (long.TryParse(value, out _))
-                    {
-                        return typeof(long);
-                    }
-                    else
-                    {
-                        return typeof(double);
-                    }
-                case JsonValueKind.True:
-                case JsonValueKind.False:
-                    return typeof(bool);
-                case JsonValueKind.Undefined:
-                    throw new NotSupportedException();
-                case JsonValueKind.Object:
-                    return typeof(object);
-                case JsonValueKind.Array:
-                    return typeof(System.Array);
-                case JsonValueKind.Null:
-                    throw new NotSupportedException();
-                default:
-                    return typeof(object);
-            }
-        }
-
-        private static object? JsonElementToTypedValue(this JsonElement jsonElement)
-        {
-            switch (jsonElement.ValueKind)
-            {
-                case JsonValueKind.Object:
-                case JsonValueKind.Array:
-                    throw new NotSupportedException();
-                case JsonValueKind.String:
-                    if (jsonElement.TryGetGuid(out Guid guidValue))
-                    {
-                        return guidValue;
-                    }
-                    else
-                    {
-                        if (jsonElement.TryGetDateTime(out DateTime datetime))
-                        {
-                            // If an offset was provided, use DateTimeOffset.
-                            if (datetime.Kind == DateTimeKind.Local)
-                            {
-                                if (jsonElement.TryGetDateTimeOffset(out DateTimeOffset datetimeOffset))
-                                {
-                                    return datetimeOffset;
-                                }
-                            }
-                            return datetime;
-                        }
-                        return jsonElement.ToString();
-                    }
-                case JsonValueKind.Number:
-                    if (jsonElement.TryGetInt64(out long longValue))
-                    {
-                        return longValue;
-                    }
-                    else
-                    {
-                        return jsonElement.GetDouble();
-                    }
-                case JsonValueKind.True:
-                case JsonValueKind.False:
-                    return jsonElement.GetBoolean();
-                case JsonValueKind.Undefined:
-                case JsonValueKind.Null:
-                    return null;
-                default:
-                    return jsonElement.ToString();
-            }
-        }
-    }
 }

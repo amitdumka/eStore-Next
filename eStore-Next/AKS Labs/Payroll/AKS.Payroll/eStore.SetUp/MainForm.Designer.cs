@@ -42,6 +42,7 @@
             this.TXTStoreCode = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.BTNLoad = new System.Windows.Forms.Button();
             this.lbFileName = new System.Windows.Forms.Label();
             this.BTNProcess = new System.Windows.Forms.Button();
             this.CBXOperations = new System.Windows.Forms.ComboBox();
@@ -79,7 +80,6 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.BTNLoad = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -257,6 +257,16 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Operations";
             // 
+            // BTNLoad
+            // 
+            this.BTNLoad.Location = new System.Drawing.Point(200, 46);
+            this.BTNLoad.Name = "BTNLoad";
+            this.BTNLoad.Size = new System.Drawing.Size(75, 23);
+            this.BTNLoad.TabIndex = 4;
+            this.BTNLoad.Text = "Load";
+            this.BTNLoad.UseVisualStyleBackColor = true;
+            this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_Click);
+            // 
             // lbFileName
             // 
             this.lbFileName.AutoSize = true;
@@ -424,6 +434,11 @@
             this.NUDMaxCol.Size = new System.Drawing.Size(51, 23);
             this.NUDMaxCol.TabIndex = 19;
             this.NUDMaxCol.ThousandsSeparator = true;
+            this.NUDMaxCol.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // NUDMaxRow
             // 
@@ -437,6 +452,11 @@
             this.NUDMaxRow.Size = new System.Drawing.Size(51, 23);
             this.NUDMaxRow.TabIndex = 18;
             this.NUDMaxRow.ThousandsSeparator = true;
+            this.NUDMaxRow.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // NUDCol
             // 
@@ -450,6 +470,11 @@
             this.NUDCol.Size = new System.Drawing.Size(51, 23);
             this.NUDCol.TabIndex = 17;
             this.NUDCol.ThousandsSeparator = true;
+            this.NUDCol.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // NUDRow
             // 
@@ -463,6 +488,11 @@
             this.NUDRow.Size = new System.Drawing.Size(51, 23);
             this.NUDRow.TabIndex = 16;
             this.NUDRow.ThousandsSeparator = true;
+            this.NUDRow.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // BTNToJSON
             // 
@@ -647,16 +677,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // BTNLoad
-            // 
-            this.BTNLoad.Location = new System.Drawing.Point(200, 46);
-            this.BTNLoad.Name = "BTNLoad";
-            this.BTNLoad.Size = new System.Drawing.Size(75, 23);
-            this.BTNLoad.TabIndex = 4;
-            this.BTNLoad.Text = "Load";
-            this.BTNLoad.UseVisualStyleBackColor = true;
-            this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_Click);
             // 
             // MainForm
             // 

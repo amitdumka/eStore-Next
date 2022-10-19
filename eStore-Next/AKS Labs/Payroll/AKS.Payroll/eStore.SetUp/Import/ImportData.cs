@@ -114,14 +114,14 @@ namespace eStore.SetUp.Import
             switch (ops)
             {
                 case "Category":
-                    flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("Purchase"));
+                    flag = await CreateCategoriesAsync(Settings.GetValueOrDefault("VoyPurchase"));
                     break; ;
                 case "ProductItem":
                 case "PurchaseInvoice":
-                    flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("Purchase"));
+                    flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("VoyPurchase"));
                     break;
                 case "PurchaseItem":
-                    flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("Purchase")); break;
+                    flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("VoyPurchase")); break;
                 case "ToVoyPurchase":
                     flag = await ToVoyPurchaseAsync();
                     break;
@@ -133,7 +133,7 @@ namespace eStore.SetUp.Import
                 default:
                     break;
             }
-            if(false) UpdateConfigFile();
+            if(flag) UpdateConfigFile();
             return flag;
         }
         public DataTable LoadJsonFile(string ops)
@@ -286,17 +286,23 @@ namespace eStore.SetUp.Import
                 ProductSubCategory cato = new ProductSubCategory { SubCategory = cat, ProductCategory = ProductCategory.Others };
                 catList.Add(cato);
             }
+            var path = Settings.GetValueOrDefault("BasePath") + @"/Category";
+            Directory.CreateDirectory(path);
 
-            using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/SubCategory.json");
+            using FileStream createStream = File.Create(path + @"/SubCategory.json");
             await JsonSerializer.SerializeAsync(createStream, catList);
+            Settings.Add("SubCategory", path + @"/SubCategory.json");
             await createStream.DisposeAsync();
 
-            using FileStream createStream2 = File.Create(Path.GetDirectoryName(filename) + @"/productTypes.json");
+
+            using FileStream createStream2 = File.Create(path + @"/productTypes.json");
             await JsonSerializer.SerializeAsync(createStream2, pTypes);
+            Settings.Add("ProductType", path + @"/productTypes.json");
             await createStream.DisposeAsync();
 
-            using FileStream createStream3 = File.Create(Path.GetDirectoryName(filename) + @"/productcategory.json");
+            using FileStream createStream3 = File.Create(path + @"/productcategory.json");
             await JsonSerializer.SerializeAsync(createStream3, categoriesList);
+            Settings.Add("ProductCategory", path + @"/productcategory.json");
             await createStream.DisposeAsync();
 
             return true;

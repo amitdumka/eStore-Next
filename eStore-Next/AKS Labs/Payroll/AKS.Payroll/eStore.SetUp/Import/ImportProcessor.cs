@@ -105,6 +105,7 @@ namespace eStore.SetUp.Import
                     flag = await ToVoyPurchaseAsync();
                     break;
                 case "SaleInvoice":
+                    flag = await GetMultiPriceStock(); break;
                 case "SaleInvoiceItem":
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
@@ -856,7 +857,7 @@ namespace eStore.SetUp.Import
 
             var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
 
-            var pp = purchases.Where(c => !c.SupplierName.Contains("Aprajita")).GroupBy(c => c.Barcode).Select(c => new
+            var pp = purchases.GroupBy(c => c.Barcode).Select(c => new
             {
                 Barcode = c.Key,
                 Qty = c.Sum(x => x.Quantity),
@@ -900,24 +901,24 @@ namespace eStore.SetUp.Import
         }
 
 
-        private void CleanupMultiPriceForInterStoreTransfer()
+        private async Task<bool> GetMultiPriceStock()
         {
-            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice).ToList();
+            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice)
+                .GroupBy(c=>c.Barcode).Select(c=>c.Key)
+                .ToList();
             var Purchase = ImportData.JsonToObject<VoyPurhcase>(Settings.GetValueOrDefault("VoyPurchase"));
-            var filter = Stocks.GroupBy(c => c.Barcode).Select(c => c.Key).ToList();
-            foreach (var barcode in filter)
+            List<VoyPurhcase> mPirce = new List<VoyPurhcase>();
+            foreach (var item in Stocks)
             {
-                var purchases = Purchase.Where(c => c.Barcode == barcode).ToList();
-                foreach (var item in purchases)
-                {
-                    if (item.SupplierName.Contains("Aprajita"))
-                    {
-                        var stk = Stocks.Where(c => c.Barcode == barcode && c.CostPrice == item.Cost).First();
-                        Stocks.Remove(stk);
-                    }
-                }
-
+                var p = Purchase.Where(c => c.Barcode == item).ToList();
+                mPirce.AddRange(p);
             }
+
+            var filename = Settings.GetValueOrDefault("BasePath") + @"\test\multistock.json";
+            Directory.CreateDirectory(Path.GetDirectoryName(filename));
+
+            var flag = await ImportData.ObjectsToJSONFile<VoyPurhcase>(mPirce, filename);
+            return flag;
 
 
 

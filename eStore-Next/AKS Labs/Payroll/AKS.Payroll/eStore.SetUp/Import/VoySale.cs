@@ -27,6 +27,7 @@
         public string LP { get; set; }
         public string Tailoring { get; set; }
     }
+
     public class ManualInvoice
     {
         public int SNo { get; set; }

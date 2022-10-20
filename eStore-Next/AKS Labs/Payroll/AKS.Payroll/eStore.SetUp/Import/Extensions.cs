@@ -34,6 +34,7 @@ namespace eStore.SetUp.Import
             {
                 case JsonValueKind.String:
                     return typeof(string);
+
                 case JsonValueKind.Number:
                     if (long.TryParse(value, out _))
                     {
@@ -46,12 +47,15 @@ namespace eStore.SetUp.Import
                 case JsonValueKind.True:
                 case JsonValueKind.False:
                     return typeof(bool);
+
                 case JsonValueKind.Undefined:
                     throw new NotSupportedException();
                 case JsonValueKind.Object:
                     return typeof(object);
+
                 case JsonValueKind.Array:
                     return typeof(System.Array);
+
                 case JsonValueKind.Null:
                     return typeof(Nullable);
                     throw new NotSupportedException();
@@ -100,9 +104,11 @@ namespace eStore.SetUp.Import
                 case JsonValueKind.True:
                 case JsonValueKind.False:
                     return jsonElement.GetBoolean();
+
                 case JsonValueKind.Undefined:
                 case JsonValueKind.Null:
                     return null;
+
                 default:
                     return jsonElement.ToString();
             }

@@ -1,36 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore.Query.Internal;
-using Syncfusion.Windows.Forms.Grid;
-using Syncfusion.XlsIO;
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Syncfusion.XlsIO;
 using System.Data;
-using System.Net.NetworkInformation;
-using System.Runtime.ConstrainedExecution;
-using System.Security.Policy;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
     /*
-     Setup How to generate Data, 
+     Setup How to generate Data,
 
-    1) Category, Sub Category, Product Type, 
-    2) Product Item, 
-    3) Purhcase Invoice, Purchase Item 
-    4) Sale Invoice , Sale Item 
+    1) Category, Sub Category, Product Type,
+    2) Product Item,
+    3) Purhcase Invoice, Purchase Item
+    4) Sale Invoice , Sale Item
     5) Payments
-    6) Stocks 
+    6) Stocks
      */
 
     /*
-     
-    json={ PurchaseFiles:[{filename:dasdas},{filename:dasdasda}], SaleFiles=[{filename:dasdasd}, {filename:adasdasd}], 
+
+    json={ PurchaseFiles:[{filename:dasdas},{filename:dasdasda}], SaleFiles=[{filename:dasdasd}, {filename:adasdasd}],
 
            PurchaseJson:dasdasd, SaleJson:dasdasdas, PurchaseItemJson:dasdasd
-    
         }
-     
+
      */
 
     public class PCat
@@ -40,8 +31,6 @@ namespace eStore.SetUp.Import
 
     public class ImportData
     {
-
-
         public static List<string> GetSheetNames(string filename)
         {
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -55,8 +44,6 @@ namespace eStore.SetUp.Import
                     names.Add(item.Name);
                 }
                 return names;
-
-
             }
         }
 
@@ -75,11 +62,8 @@ namespace eStore.SetUp.Import
             {
                 Console.WriteLine(e.Message);
                 return false;
-
             }
-
         }
-
 
         public static async Task<bool> DataTableToJSONFile(DataTable table, string fileName)
         {
@@ -103,10 +87,9 @@ namespace eStore.SetUp.Import
             {
                 Console.WriteLine(e.Message);
                 return false;
-
             }
-
         }
+
         public static SortedList<string, string> ConfigJson(string filename)
         {
             StreamReader reader = new StreamReader(filename);
@@ -116,13 +99,11 @@ namespace eStore.SetUp.Import
             return config;
         }
 
-
         public static List<T>? JsonToObject<T>(string filename)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
             return JsonSerializer.Deserialize<List<T>>(json);
-
         }
 
         public static DataTable JSONFileToDataTable(string filename)
@@ -193,11 +174,9 @@ namespace eStore.SetUp.Import
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
-
 
         public enum SaleVMT
         { VOY, MD, MI }
@@ -228,10 +207,8 @@ namespace eStore.SetUp.Import
             return JsonSerializer.Serialize(list);
         }
 
-
         public static string PurchaseDatatableToJson(DataTable dataTable)
         {
-
             List<VoyPurhcase> list = new List<VoyPurhcase>();
             for (int i = 0; i < dataTable.Rows.Count; i++)
                 list.Add(ReadPurchase(dataTable.Rows[i]));
@@ -472,8 +449,6 @@ namespace eStore.SetUp.Import
             };
         }
 
-
-
         public static string SetBrandCode(string style, string cat, string type)
         {
             string bcode = "";
@@ -515,9 +490,5 @@ namespace eStore.SetUp.Import
             }
             return bcode;
         }
-
-
     }
-
-
 }

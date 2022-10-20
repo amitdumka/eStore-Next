@@ -1,7 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Models.Sales;
 using System.Data;
-using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
@@ -11,7 +10,7 @@ namespace eStore.SetUp.Import
         private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
         private SortedDictionary<string, ProductCategory> ProductCategories = new SortedDictionary<string, ProductCategory>();
         private List<ProductSubCategory> ProductSubCategories;// = new SortedDictionary<string, string>();
-        private List<ProductType> ProductTypes;// = new SortedDictionary<string, string>(); 
+        private List<ProductType> ProductTypes;// = new SortedDictionary<string, string>();
         private List<string> sizeList;
         private SortedDictionary<string, string> HSNCodes = new SortedDictionary<string, string>();
 
@@ -32,7 +31,6 @@ namespace eStore.SetUp.Import
                 using FileStream createStream = File.OpenWrite(ConfigFile);
                 await JsonSerializer.SerializeAsync(createStream, config);
                 await createStream.DisposeAsync();
-
             }
         }
 
@@ -43,6 +41,7 @@ namespace eStore.SetUp.Import
             Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
             reader.Close();
         }
+
         public async Task<bool> UpdateConfigFile()
         {
             try
@@ -58,10 +57,8 @@ namespace eStore.SetUp.Import
             }
             catch (Exception)
             {
-
                 return false;
             }
-
         }
 
         public static async void SetConfigFile(string key, string value)
@@ -78,10 +75,10 @@ namespace eStore.SetUp.Import
             using FileStream createStream = File.OpenWrite(ConfigFile);
             await JsonSerializer.SerializeAsync(createStream, config);
             await createStream.DisposeAsync();
-
         }
 
         public SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
+
         public async Task<bool> ProcessOperation(string store, string ops)
         {
             if (Settings == null || Settings.Count <= 0)
@@ -96,14 +93,17 @@ namespace eStore.SetUp.Import
                 case "ProductItem":
                     flag = await GenerateProductItemfromPurchase(Settings.GetValueOrDefault("VoyPurchase"));
                     break;
+
                 case "PurchaseInvoice":
                     flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("VoyPurchase"));
                     break;
+
                 case "PurchaseItem":
                     flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("VoyPurchase")); break;
                 case "ToVoyPurchase":
                     flag = await ToVoyPurchaseAsync();
                     break;
+
                 case "SaleInvoice":
                     flag = await GetMultiPriceStock(); break;
                 case "SaleInvoiceItem":
@@ -117,6 +117,7 @@ namespace eStore.SetUp.Import
             if (flag) UpdateConfigFile();
             return flag;
         }
+
         public DataTable LoadJsonFile(string ops)
         {
             DataTable dt = null;
@@ -129,6 +130,7 @@ namespace eStore.SetUp.Import
                 case "PurchaseInvoice":
                     //flag = await GeneratePurchaseInvoice(store, Settings.GetValueOrDefault("Purchase"));
                     break;
+
                 case "PurchaseItem":
                 //flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("Purchase")); break;
                 case "ToVoyPurchase":
@@ -144,6 +146,7 @@ namespace eStore.SetUp.Import
             }
             return dt;
         }
+
         private async Task<bool> ToVoyPurchaseAsync()
         {
             try
@@ -164,13 +167,10 @@ namespace eStore.SetUp.Import
             {
                 return false;
             }
-
-
         }
 
         private void SetCategoryList()
         {
-
             if (ProductTypes == null)
                 ProductTypes = ImportData.JsonToObject<ProductType>(Settings.GetValueOrDefault("ProductType"));
             if (ProductSubCategories == null)
@@ -184,9 +184,7 @@ namespace eStore.SetUp.Import
                     ProductCategories.Add(item.Name, SetProductCategory(item.Name));
                 }
             }
-
         }
-
 
         /// <summary>
         /// It will import all excel file to json and save to a folder for futher process
@@ -210,16 +208,16 @@ namespace eStore.SetUp.Import
         {
             string PurchaseFileName = "";
             string SaleFileName = "";
-            // First Create Product and Sale JSON File , 
+            // First Create Product and Sale JSON File ,
             // Then Start Processing
 
             //1st Creating Category/ Size/ Sub Category
             var flag = await CreateCategoriesAsync(PurchaseFileName);
             if (!flag) return;
-            //Creating Product Item 
+            //Creating Product Item
 
             //flag = await GenerateProductItem(PurchaseFileName,SaleFileName );
-            //if(!flag) return; 
+            //if(!flag) return;
 
             //Creating Purchase Invoice
             flag = await GeneratePurchaseInvoice(store, PurchaseFileName);
@@ -227,20 +225,19 @@ namespace eStore.SetUp.Import
             //Creating Purchase Item
             flag = await GeneratePurchaseItemAsync(store, PurchaseFileName);
             if (!flag) return;
-            //Creating Sale Item 
+            //Creating Sale Item
             flag = await GenerateSaleInvoice(store, SaleFileName);
             flag = await GenerateSaleItem(store, SaleFileName);
             flag = await GenerateSalePayment(store, SaleFileName);
             if (!flag) return;
-            //Creating Stock 
+            //Creating Stock
             flag = await GenerateStockData(store, PurchaseFileName, SaleFileName);
             if (!flag) return;
 
             // Create DailSale Here
 
-            //Create a Structure and Store in Single Json File So it become easy to parse and process. 
+            //Create a Structure and Store in Single Json File So it become easy to parse and process.
             //Or make a file whcih can process in single go
-
         }
 
         private async Task<bool> CreateCategoriesAsync(string filename)
@@ -257,9 +254,6 @@ namespace eStore.SetUp.Import
                 Cat2.Add(category.KK[1]);
                 Cat3.Add(category.KK[2]);
             }
-
-
-
 
             Cat1 = Cat1.Distinct().ToList();
             Cat2 = Cat2.Distinct().ToList();
@@ -294,7 +288,6 @@ namespace eStore.SetUp.Import
             Settings.Add("SubCategory", path + @"/SubCategory.json");
             await createStream.DisposeAsync();
 
-
             using FileStream createStream2 = File.Create(path + @"/productTypes.json");
             await JsonSerializer.SerializeAsync(createStream2, pTypes);
             Settings.Add("ProductType", path + @"/productTypes.json");
@@ -306,10 +299,7 @@ namespace eStore.SetUp.Import
             await createStream.DisposeAsync();
 
             return true;
-
-
         }
-
 
         private void GenerateDailySale(string code, string filename, string filename2)
         {
@@ -370,81 +360,7 @@ namespace eStore.SetUp.Import
             return id;
         }
 
-
-        public async Task<bool> GenerateStockfromPurchase(string filename, string code)
-        {
-            StreamReader reader = new StreamReader(filename);
-            var json = reader.ReadToEnd();
-            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-            var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
-                    .Select(c => new
-                    {
-                        c.Key.StyleCode,
-                        c.Key.ItemDesc,
-                        c.Key.Barcode,
-                        c.Key.ProductName,
-                        c.Key.MRP,
-                        Costs = c.Select(x => new { x.SupplierName, x.Cost, Qty = c.Sum(z => z.Quantity) }).ToList()
-                    }).ToList();
-            List<ProductStock> products = new List<ProductStock>();
-            SetCategoryList();
-            if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
-            foreach (var s in stocks)
-            {
-
-
-                if (s.Costs.Count > 1)
-                {
-                    //Multivalue
-                    foreach (var cost in s.Costs)
-                    {
-                        if (cost.SupplierName.Contains("Aprajita") == false)
-                        {
-                            ProductStock productStock = new ProductStock
-                            {
-                                Unit = SetUnit(s.ProductName),
-                                StoreId = code,
-                                Barcode = s.Barcode,
-                                HoldQty = 0,
-                                MRP = s.MRP,
-                                MultiPrice = true,
-                                PurhcaseQty = cost.Qty,
-                                SoldQty = 0,
-                                CostPrice = cost.Cost,
-                            };
-                            products.Add(productStock);
-                        }
-                    }
-                }
-                else
-                {
-                    ProductStock productStock = new ProductStock
-                    {
-                        Unit = SetUnit(s.ProductName),
-                        StoreId = code,
-                        Barcode = s.Barcode,
-                        HoldQty = 0,
-                        MRP = s.MRP,
-
-                        MultiPrice = false,
-                        PurhcaseQty = s.Costs[0].Qty,
-                        SoldQty = 0,
-                        CostPrice = s.Costs[0].Cost,
-                    };
-                    products.Add(productStock);
-
-
-                }
-            }
-
-            var saveFileName = Path.Combine(Path.Combine(Settings.GetValueOrDefault("BasePath"), "Products"), "ProductStocks.json");
-            var flag = await ImportData.ObjectsToJSONFile<ProductStock>(products, saveFileName);
-            Settings.Add("ProductStocks", saveFileName);
-            return flag;
-
-
-        }
-
+       
         public async Task<bool> GenerateProductItemfromPurchase(string filename)
         {
             try
@@ -455,9 +371,12 @@ namespace eStore.SetUp.Import
 
                 var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
                     .Select(c => new { c.Key.StyleCode, c.Key.ItemDesc, c.Key.Barcode, c.Key.ProductName, c.Key.MRP, }).ToList();
+               
                 List<ProductItem> products = new List<ProductItem>();
                 SetCategoryList();
+                
                 if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
+                
                 foreach (var s in stocks)
                 {
                     var cats = s.ProductName.Split('/');
@@ -476,7 +395,6 @@ namespace eStore.SetUp.Import
                         BrandCode = SetBrandCode(s.StyleCode, cats[0], cats[1]),
                         Size = SetSize(s.StyleCode, cats[2]),
                         HSNCode = "NA"
-
                     };
                     products.Add(p);
                 }
@@ -491,7 +409,6 @@ namespace eStore.SetUp.Import
                 return false;
             }
         }
-
 
         public Size SetSize(string style, string category)
         {
@@ -508,7 +425,6 @@ namespace eStore.SetUp.Import
                 else if (name.EndsWith(Size.XXL.ToString())) size = Size.XXL;
                 else if (name.EndsWith(Size.XL.ToString())) size = Size.XL;
                 else if (name.EndsWith(Size.L.ToString())) size = Size.L;
-
                 else if (name.EndsWith("FS")) size = Size.FreeSize;
                 else
                 {
@@ -561,6 +477,7 @@ namespace eStore.SetUp.Import
             }
             return size;
         }
+
         private ProductCategory SetProductCategory(string cat)
         {
             switch (cat)
@@ -575,9 +492,7 @@ namespace eStore.SetUp.Import
 
                 default:
                     return ProductCategory.Others;
-
             }
-
         }
 
         private string SetBrandCode(string style, string cat, string type)
@@ -629,7 +544,6 @@ namespace eStore.SetUp.Import
             else if (pname.StartsWith("Promo") || pname.StartsWith("Suit Cover")) return Unit.Nos;
             else return Unit.Nos;
         }
-
 
         public async Task<bool> GeneratePurchaseInvoice(string storecode, string filename)
         {
@@ -900,11 +814,10 @@ namespace eStore.SetUp.Import
             return true;
         }
 
-
         private async Task<bool> GetMultiPriceStock()
         {
             var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice)
-                .GroupBy(c=>c.Barcode).Select(c=>c.Key)
+                .GroupBy(c => c.Barcode).Select(c => c.Key)
                 .ToList();
             var Purchase = ImportData.JsonToObject<VoyPurhcase>(Settings.GetValueOrDefault("VoyPurchase"));
             List<VoyPurhcase> mPirce = new List<VoyPurhcase>();
@@ -919,9 +832,6 @@ namespace eStore.SetUp.Import
 
             var flag = await ImportData.ObjectsToJSONFile<VoyPurhcase>(mPirce, filename);
             return flag;
-
-
-
         }
 
         private void CleanUpMutliPriceStock()
@@ -935,7 +845,6 @@ namespace eStore.SetUp.Import
                 var costPrice = s.CostPrices.Select(c => c.CostPrice).Distinct().ToList();
                 if (costPrice.Count() != s.CostPrices.Count)
                 {
-
                     if (costPrice.Count() == 1)
                     {
                         ProductStock stock = new ProductStock
@@ -946,38 +855,121 @@ namespace eStore.SetUp.Import
                             MultiPrice = false,
                             HoldQty = 0,
                             SoldQty = 0,
-
                         };
                         StockList.Add(stock);
                     }
                     else
                     {
-
                     }
                 }
                 else
                 {
                     if (costPrice.Count() < s.CostPrices.Count)
                     {
-
                     }
                     else if (costPrice.Count() == s.CostPrices.Count)
                     {
-
                     }
                     else
                     {
-
                     }
-
                 }
+            }
+        }
 
+
+        public async Task<bool> GenerateStockfromPurchase(string filename, string code)
+        {
+            StreamReader reader = new StreamReader(filename);
+            var json = reader.ReadToEnd();
+            var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
+           
+            var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
+                    .Select(c => new
+                    {
+                        c.Key.StyleCode,
+                        c.Key.ItemDesc,
+                        c.Key.Barcode,
+                        c.Key.ProductName,
+                        c.Key.MRP,
+                        Costs = c.Select(x => new { x.SupplierName, x.Cost, Qty = c.Sum(z => z.Quantity) }).ToList()
+                    }).ToList();
+
+            List<ProductStock> products = new List<ProductStock>();
+            SetCategoryList();
+
+            if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
+
+            
+            foreach (var s in stocks)
+            {
+                if (s.Costs.Count > 1)
+                {
+                    //Multivalue
+                    foreach (var cost in s.Costs)
+                    {
+                        if (cost.SupplierName.Contains("Aprajita") == false)
+                        {
+                            ProductStock productStock = new ProductStock
+                            {
+                                Unit = SetUnit(s.ProductName),
+                                StoreId = code,
+                                Barcode = s.Barcode,
+                                HoldQty = 0,
+                                MRP = s.MRP,
+                                MultiPrice = true,
+                                PurhcaseQty = cost.Qty,
+                                SoldQty = 0,
+                                CostPrice = cost.Cost,
+                            };
+                            products.Add(productStock);
+                        }
+                    }
+                }
+                else
+                {
+                    if (s.Costs[0].SupplierName.Contains("Aprajita") == false)
+                    {
+                        ProductStock productStock = new ProductStock
+                        {
+                            Unit = SetUnit(s.ProductName),
+                            StoreId = code,
+                            Barcode = s.Barcode,
+                            HoldQty = 0,
+                            MRP = s.MRP,
+
+                            MultiPrice = false,
+                            PurhcaseQty = s.Costs[0].Qty,
+                            SoldQty = 0,
+                            CostPrice = s.Costs[0].Cost,
+                        };
+                        products.Add(productStock);
+                    }
+                    else
+                    {
+                        ProductStock productStock = new ProductStock
+                        {
+                            Unit = SetUnit(s.ProductName),
+                            StoreId = code,
+                            Barcode = s.Barcode,
+                            HoldQty = 0,
+                            MRP = s.MRP,
+
+                            MultiPrice = false,
+                            PurhcaseQty = s.Costs[0].Qty,
+                            SoldQty = 0,
+                            CostPrice = s.Costs[0].Cost
+                        };
+                        products.Add(productStock);
+                    }
+                }
             }
 
-
-
+            var saveFileName = Path.Combine(Path.Combine(Settings.GetValueOrDefault("BasePath"), "Products"), "ProductStocks.json");
+            var flag = await ImportData.ObjectsToJSONFile<ProductStock>(products, saveFileName);
+            Settings.Add("ProductStocks", saveFileName);
+            return flag;
         }
+
     }
-
-
 }

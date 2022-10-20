@@ -100,13 +100,18 @@ namespace eStore.SetUp.Import
 
                 case "PurchaseItem":
                     flag = await GeneratePurchaseItemAsync(store, Settings.GetValueOrDefault("VoyPurchase")); break;
+
+                case "PurchaseCleanup":
+                    flag = await UpdateShippingCost();
+                    break;
                 case "ToVoyPurchase":
                     flag = await ToVoyPurchaseAsync();
                     break;
 
                 case "SaleInvoice":
                     flag = await GetMultiPriceStock(); break;
-                case "SaleInvoiceItem":
+                case "SaleItem":
+                    flag = await UpdatePurchaseStock(); break;
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
                 case "InnerWearPurchase":
@@ -360,7 +365,7 @@ namespace eStore.SetUp.Import
             return id;
         }
 
-       
+
         public async Task<bool> GenerateProductItemfromPurchase(string filename)
         {
             try
@@ -371,12 +376,12 @@ namespace eStore.SetUp.Import
 
                 var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
                     .Select(c => new { c.Key.StyleCode, c.Key.ItemDesc, c.Key.Barcode, c.Key.ProductName, c.Key.MRP, }).ToList();
-               
+
                 List<ProductItem> products = new List<ProductItem>();
                 SetCategoryList();
-                
+
                 if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
-                
+
                 foreach (var s in stocks)
                 {
                     var cats = s.ProductName.Split('/');
@@ -581,12 +586,18 @@ namespace eStore.SetUp.Import
                         MarkedDeleted = false
                     }).ToList();
 
+                foreach (var item in invoices)
+                {
+                    item.TotalAmount = item.TaxAmount + item.BasicAmount;
+                }
+
                 using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseInvoice.json");
                 await JsonSerializer.SerializeAsync(createStream, invoices);
                 await createStream.DisposeAsync();
+                Settings.Add("Purchase-Invoices", Path.GetDirectoryName(filename) + @"/PurchaseInvoice.json");
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
@@ -609,10 +620,10 @@ namespace eStore.SetUp.Import
                         CostValue = inv.CostValue,
                         DiscountValue = 0,
                         FreeQty = 0,
-                        InwardNumber = inv.GRNNo,
+                        InwardNumber = inv.InvoiceNo,
                         Qty = inv.Quantity,
                         TaxAmount = inv.TaxAmt,
-                        Unit = Unit.Nos
+                        Unit = SetUnit(inv.ProductName)
                     };
                     purchaseItems.Add(pItem);
                 }
@@ -620,6 +631,7 @@ namespace eStore.SetUp.Import
                 using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/PurchaseItem.json");
                 await JsonSerializer.SerializeAsync(createStream, purchaseItems);
                 await createStream.DisposeAsync();
+                Settings.Add("PurchaseItem", Path.GetDirectoryName(filename) + @"/PurchaseItem.json");
                 return true;
             }
             catch (Exception e)
@@ -834,56 +846,61 @@ namespace eStore.SetUp.Import
             return flag;
         }
 
-        private void CleanUpMutliPriceStock()
+        private async Task<bool> UpdatePurchaseStock()
         {
-            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice);
+            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).ToList();
+            var Purchases = ImportData.JsonToObject<VoyPurhcase>(Settings.GetValueOrDefault("VoyPurchase")).ToList();
 
-            var filter = Stocks.GroupBy(c => c.Barcode).Select(c => new { c.Key, CostPrices = c.Select(x => new { x.CostPrice, x.PurhcaseQty }).OrderBy(z => z.CostPrice).ToList() }).ToList();
-            List<ProductStock> StockList = new List<ProductStock>();
-            foreach (var s in filter)
+            foreach (var item in Purchases)
             {
-                var costPrice = s.CostPrices.Select(c => c.CostPrice).Distinct().ToList();
-                if (costPrice.Count() != s.CostPrices.Count)
+
+                var stock = Stocks.Where(c => c.Barcode == item.Barcode && c.CostPrice == item.Cost).FirstOrDefault();
+                if (stock != null)
                 {
-                    if (costPrice.Count() == 1)
-                    {
-                        ProductStock stock = new ProductStock
-                        {
-                            Barcode = s.Key,
-                            CostPrice = costPrice[0],
-                            PurhcaseQty = s.CostPrices.Sum(x => x.PurhcaseQty),
-                            MultiPrice = false,
-                            HoldQty = 0,
-                            SoldQty = 0,
-                        };
-                        StockList.Add(stock);
-                    }
-                    else
-                    {
-                    }
+                    stock.PurhcaseQty += item.Quantity;
                 }
-                else
-                {
-                    if (costPrice.Count() < s.CostPrices.Count)
-                    {
-                    }
-                    else if (costPrice.Count() == s.CostPrices.Count)
-                    {
-                    }
-                    else
-                    {
-                    }
-                }
+
             }
+
+            await ImportData.ObjectsToJSONFile<ProductStock>(Stocks.Where(c => c.PurhcaseQty == 0).ToList(), Settings.GetValueOrDefault("ProductStocks") + ".2");
+            var flag = await ImportData.ObjectsToJSONFile<ProductStock>(Stocks, Settings.GetValueOrDefault("ProductStocks"));
+
+            return flag;
+
         }
 
+        public async Task<bool> UpdateShippingCost()
+        {
+            var purchaseItems = ImportData.JsonToObject<PurchaseItem>(Settings.GetValueOrDefault("PurchaseItem")).Where(c => c.Unit == Unit.Meters)
+                .GroupBy(c => c.InwardNumber).Select(c => new { c.Key, Ship = (3 * c.Sum(x => x.Qty)) })
+                .ToList();
+
+            var Purchases = ImportData.JsonToObject<PurchaseProduct>(Settings.GetValueOrDefault("Purchase-Invoices")).ToList();
+
+            //var items= purchaseItems.GroupBy(c=>c.InwardNumber).Select(c=>new { c.Key, QTY=(3*c.Sum(x=>x.Qty))}).ToList();
+            foreach (var item in purchaseItems)
+            {
+                var p = Purchases.Where(c => c.InvoiceNo == item.Key).FirstOrDefault();
+                if (p != null)
+                {
+                    p.ShippingCost = Math.Round(item.Ship + (item.Ship * (decimal)0.05), 2);
+                    p.TotalAmount += p.ShippingCost;
+                    p.IsReadOnly = true;
+                    p.MarkedDeleted = false; p.EntryStatus = EntryStatus.Updated;
+                }
+            }
+
+
+           return await ImportData.ObjectsToJSONFile<PurchaseProduct>(Purchases, Settings.GetValueOrDefault("Purchase-Invoices"));
+
+        }
 
         public async Task<bool> GenerateStockfromPurchase(string filename, string code)
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
             var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
-           
+
             var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
                     .Select(c => new
                     {
@@ -900,13 +917,13 @@ namespace eStore.SetUp.Import
 
             if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
 
-            
+
             foreach (var s in stocks)
             {
                 if (s.Costs.Count > 1)
                 {
-                   
-                    var costs=s.Costs.DistinctBy(c=>c.Cost).ToList();
+
+                    var costs = s.Costs.DistinctBy(c => c.Cost).ToList();
 
                     if (costs.Count == 1)
                     {
@@ -926,7 +943,7 @@ namespace eStore.SetUp.Import
                     }
                     else if (costs.Count == 2)
                     {
-                        if (costs[0].SupplierName.Contains("Aprajita")|| costs[1].SupplierName.Contains("Aprajita"))
+                        if (costs[0].SupplierName.Contains("Aprajita") || costs[1].SupplierName.Contains("Aprajita"))
                         {
                             ProductStock productStock = new ProductStock
                             {

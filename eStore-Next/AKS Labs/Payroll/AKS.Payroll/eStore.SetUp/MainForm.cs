@@ -1,4 +1,5 @@
 using eStore.SetUp.Import;
+using Syncfusion.XlsIO;
 using System.DirectoryServices.ActiveDirectory;
 using System.Xml.Serialization;
 
@@ -185,6 +186,10 @@ namespace eStore.SetUp
             if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
             {
                 MessageBox.Show("Success");
+            }
+            else
+            {
+                MessageBox.Show("Error");
             }
         }
 

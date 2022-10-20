@@ -103,6 +103,7 @@ namespace eStore.SetUp.Import
         {
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
+            reader.Close();
             return JsonSerializer.Deserialize<List<T>>(json);
         }
 

@@ -296,6 +296,7 @@
             "ProductItem",
             "PurchaseInvoice",
             "PurchaseItem",
+            "PurchaseCleanup",
             "Stocks",
             "SaleInvoice",
             "SaleItem",

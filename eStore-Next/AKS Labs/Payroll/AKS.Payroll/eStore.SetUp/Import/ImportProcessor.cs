@@ -892,7 +892,7 @@ namespace eStore.SetUp.Import
                         c.Key.Barcode,
                         c.Key.ProductName,
                         c.Key.MRP,
-                        Costs = c.Select(x => new { x.SupplierName, x.Cost, Qty = c.Sum(z => z.Quantity) }).ToList()
+                        Costs = c.Select(x => new { x.SupplierName, x.Cost }).ToList()
                     }).ToList();
 
             List<ProductStock> products = new List<ProductStock>();
@@ -905,10 +905,28 @@ namespace eStore.SetUp.Import
             {
                 if (s.Costs.Count > 1)
                 {
-                    //Multivalue
-                    foreach (var cost in s.Costs)
+                   
+                    var costs=s.Costs.DistinctBy(c=>c.Cost).ToList();
+
+                    if (costs.Count == 1)
                     {
-                        if (cost.SupplierName.Contains("Aprajita") == false)
+                        ProductStock productStock = new ProductStock
+                        {
+                            Unit = SetUnit(s.ProductName),
+                            StoreId = code,
+                            Barcode = s.Barcode,
+                            HoldQty = 0,
+                            MRP = s.MRP,
+                            MultiPrice = false,
+                            PurhcaseQty = 0,
+                            SoldQty = 0,
+                            CostPrice = costs[0].Cost,
+                        };
+                        products.Add(productStock);
+                    }
+                    else if (costs.Count == 2)
+                    {
+                        if (costs[0].SupplierName.Contains("Aprajita")|| costs[1].SupplierName.Contains("Aprajita"))
                         {
                             ProductStock productStock = new ProductStock
                             {
@@ -917,12 +935,57 @@ namespace eStore.SetUp.Import
                                 Barcode = s.Barcode,
                                 HoldQty = 0,
                                 MRP = s.MRP,
-                                MultiPrice = true,
-                                PurhcaseQty = cost.Qty,
+                                MultiPrice = false,
+                                PurhcaseQty = 0,
                                 SoldQty = 0,
-                                CostPrice = cost.Cost,
+                                CostPrice = costs[0].Cost,
                             };
                             products.Add(productStock);
+                        }
+                        else
+                        {
+                            foreach (var cost in costs)
+                            {
+                                if (cost.SupplierName.Contains("Aprajita") == false)
+                                {
+                                    ProductStock productStock = new ProductStock
+                                    {
+                                        Unit = SetUnit(s.ProductName),
+                                        StoreId = code,
+                                        Barcode = s.Barcode,
+                                        HoldQty = 0,
+                                        MRP = s.MRP,
+                                        MultiPrice = true,
+                                        PurhcaseQty = 0,
+                                        SoldQty = 0,
+                                        CostPrice = cost.Cost,
+                                    };
+                                    products.Add(productStock);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Multivalue
+                        foreach (var cost in costs)
+                        {
+                            if (cost.SupplierName.Contains("Aprajita") == false)
+                            {
+                                ProductStock productStock = new ProductStock
+                                {
+                                    Unit = SetUnit(s.ProductName),
+                                    StoreId = code,
+                                    Barcode = s.Barcode,
+                                    HoldQty = 0,
+                                    MRP = s.MRP,
+                                    MultiPrice = true,
+                                    PurhcaseQty = 0,
+                                    SoldQty = 0,
+                                    CostPrice = cost.Cost,
+                                };
+                                products.Add(productStock);
+                            }
                         }
                     }
                 }
@@ -939,7 +1002,7 @@ namespace eStore.SetUp.Import
                             MRP = s.MRP,
 
                             MultiPrice = false,
-                            PurhcaseQty = s.Costs[0].Qty,
+                            PurhcaseQty = 0,
                             SoldQty = 0,
                             CostPrice = s.Costs[0].Cost,
                         };
@@ -956,7 +1019,7 @@ namespace eStore.SetUp.Import
                             MRP = s.MRP,
 
                             MultiPrice = false,
-                            PurhcaseQty = s.Costs[0].Qty,
+                            PurhcaseQty = 0,
                             SoldQty = 0,
                             CostPrice = s.Costs[0].Cost
                         };
@@ -965,9 +1028,11 @@ namespace eStore.SetUp.Import
                 }
             }
 
+            products = products.Distinct().ToList();
+            products = products.OrderBy(c => c.MultiPrice).ThenBy(c => c.Barcode).ThenBy(c => c.CostPrice).ToList();
             var saveFileName = Path.Combine(Path.Combine(Settings.GetValueOrDefault("BasePath"), "Products"), "ProductStocks.json");
             var flag = await ImportData.ObjectsToJSONFile<ProductStock>(products, saveFileName);
-            Settings.Add("ProductStocks", saveFileName);
+            //Settings.Add("ProductStocks", saveFileName);
             return flag;
         }
 

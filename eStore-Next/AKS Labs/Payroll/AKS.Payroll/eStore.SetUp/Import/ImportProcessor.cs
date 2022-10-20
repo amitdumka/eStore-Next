@@ -376,7 +376,15 @@ namespace eStore.SetUp.Import
             var json = reader.ReadToEnd();
             var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
             var stocks = purchases.GroupBy(x => new { x.Barcode, x.MRP, x.ProductName, x.ItemDesc, x.StyleCode })
-                    .Select(c => new { c.Key.StyleCode, c.Key.ItemDesc, c.Key.Barcode, c.Key.ProductName, c.Key.MRP, Costs = c.Select(x => new { x.Cost, Qty = c.Sum(z => z.Quantity) }).ToList() }).ToList();
+                    .Select(c => new
+                    {
+                        c.Key.StyleCode,
+                        c.Key.ItemDesc,
+                        c.Key.Barcode,
+                        c.Key.ProductName,
+                        c.Key.MRP,
+                        Costs = c.Select(x => new { x.SupplierName, x.Cost, Qty = c.Sum(z => z.Quantity) }).ToList()
+                    }).ToList();
             List<ProductStock> products = new List<ProductStock>();
             SetCategoryList();
             if (sizeList == null) sizeList = Enum.GetNames(typeof(Size)).ToList();
@@ -389,19 +397,22 @@ namespace eStore.SetUp.Import
                     //Multivalue
                     foreach (var cost in s.Costs)
                     {
-                        ProductStock productStock = new ProductStock
+                        if (cost.SupplierName.Contains("Aprajita") == false)
                         {
-                            Unit = SetUnit(s.ProductName),
-                            StoreId = code,
-                            Barcode = s.Barcode,
-                            HoldQty = 0,
-                            MRP = s.MRP,
-                            MultiPrice = true,
-                            PurhcaseQty = cost.Qty,
-                            SoldQty = 0,
-                            CostPrice = cost.Cost,
-                        };
-                        products.Add(productStock);
+                            ProductStock productStock = new ProductStock
+                            {
+                                Unit = SetUnit(s.ProductName),
+                                StoreId = code,
+                                Barcode = s.Barcode,
+                                HoldQty = 0,
+                                MRP = s.MRP,
+                                MultiPrice = true,
+                                PurhcaseQty = cost.Qty,
+                                SoldQty = 0,
+                                CostPrice = cost.Cost,
+                            };
+                            products.Add(productStock);
+                        }
                     }
                 }
                 else
@@ -838,12 +849,14 @@ namespace eStore.SetUp.Import
         {
             StreamReader reader = new StreamReader(pfile);
             var json = reader.ReadToEnd();
+
             var purchases = JsonSerializer.Deserialize<List<VoyPurhcase>>(json);
             reader = new StreamReader(sfile);
             json = reader.ReadToEnd();
+
             var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
 
-            var pp = purchases.GroupBy(c => c.Barcode).Select(c => new
+            var pp = purchases.Where(c => !c.SupplierName.Contains("Aprajita")).GroupBy(c => c.Barcode).Select(c => new
             {
                 Barcode = c.Key,
                 Qty = c.Sum(x => x.Quantity),
@@ -887,21 +900,74 @@ namespace eStore.SetUp.Import
         }
 
 
+        private void CleanupMultiPriceForInterStoreTransfer()
+        {
+            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice).ToList();
+            var Purchase = ImportData.JsonToObject<VoyPurhcase>(Settings.GetValueOrDefault("VoyPurchase"));
+            var filter = Stocks.GroupBy(c => c.Barcode).Select(c => c.Key).ToList();
+            foreach (var barcode in filter)
+            {
+                var purchases = Purchase.Where(c => c.Barcode == barcode).ToList();
+                foreach (var item in purchases)
+                {
+                    if (item.SupplierName.Contains("Aprajita"))
+                    {
+                        var stk = Stocks.Where(c => c.Barcode == barcode && c.CostPrice == item.Cost).First();
+                        Stocks.Remove(stk);
+                    }
+                }
+
+            }
+
+
+
+        }
+
         private void CleanUpMutliPriceStock()
         {
             var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).Where(c => c.MultiPrice);
 
             var filter = Stocks.GroupBy(c => c.Barcode).Select(c => new { c.Key, CostPrices = c.Select(x => new { x.CostPrice, x.PurhcaseQty }).OrderBy(z => z.CostPrice).ToList() }).ToList();
-
+            List<ProductStock> StockList = new List<ProductStock>();
             foreach (var s in filter)
             {
                 var costPrice = s.CostPrices.Select(c => c.CostPrice).Distinct().ToList();
                 if (costPrice.Count() != s.CostPrices.Count)
                 {
 
+                    if (costPrice.Count() == 1)
+                    {
+                        ProductStock stock = new ProductStock
+                        {
+                            Barcode = s.Key,
+                            CostPrice = costPrice[0],
+                            PurhcaseQty = s.CostPrices.Sum(x => x.PurhcaseQty),
+                            MultiPrice = false,
+                            HoldQty = 0,
+                            SoldQty = 0,
+
+                        };
+                        StockList.Add(stock);
+                    }
+                    else
+                    {
+
+                    }
                 }
                 else
                 {
+                    if (costPrice.Count() < s.CostPrices.Count)
+                    {
+
+                    }
+                    else if (costPrice.Count() == s.CostPrices.Count)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
 
                 }
 

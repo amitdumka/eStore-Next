@@ -195,7 +195,8 @@ namespace eStore.SetUp
 
         private async void BTNToJSON_Click(object sender, EventArgs e)
         {
-            if (await ImportProcessor.StartImporting(TXTStoreCode.Text, ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text))
+            if (await ImportProcessor.StartImporting(TXTStoreCode.Text, ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, 
+                (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text, ImportData.SaleVMT.VOY))
             {
                 Reload();
                 lbEvents.Items.Add("Json is created");

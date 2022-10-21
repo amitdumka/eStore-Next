@@ -1,4 +1,5 @@
 ﻿using Syncfusion.XlsIO;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
 
@@ -182,6 +183,31 @@ namespace eStore.SetUp.Import
         public enum SaleVMT
         { VOY, MD, MI }
 
+        public static string SaleDatatableToJSON(DataTable dataTable, SaleVMT vMT)
+        {
+            List<string> list = new List<string>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                var row = dataTable.Rows[i];
+                if (vMT == SaleVMT.VOY)
+                {
+                    var si = ReadVoySale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
+                else if (vMT == SaleVMT.MD)
+                {
+                    var si = ReadMDSale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
+                else if (vMT == SaleVMT.MI)
+                {
+                    var si = ReadMISale(row);
+                    list.Add(JsonSerializer.Serialize(si));
+                }
+            }
+            return JsonSerializer.Serialize(list);
+        }
+
         private string ReadSaleToJSON(string filename, string sheet, SaleVMT vMT)
         {
             List<string> list = new List<string>();
@@ -227,7 +253,7 @@ namespace eStore.SetUp.Import
             return JsonSerializer.Serialize(list);
         }
 
-        private MISale ReadMISale(DataRow row)
+        private static MISale ReadMISale(DataRow row)
         {
             return new MISale
             {
@@ -259,7 +285,7 @@ namespace eStore.SetUp.Import
             };
         }
 
-        private VoySale ReadVoySale(DataRow row)
+        private static VoySale ReadVoySale(DataRow row)
         {
             //Convert to JSONSale
             VoySale item = new VoySale();
@@ -290,7 +316,7 @@ namespace eStore.SetUp.Import
             return item;
         }
 
-        private MDSale ReadMDSale(DataRow row)
+        private static MDSale ReadMDSale(DataRow row)
         {
             return new MDSale
             {

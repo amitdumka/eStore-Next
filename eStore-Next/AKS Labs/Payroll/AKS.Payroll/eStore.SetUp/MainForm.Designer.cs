@@ -53,6 +53,7 @@
             this.TXTSelectedFile = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.CBXSaleMode = new System.Windows.Forms.ComboBox();
             this.CBFileType = new System.Windows.Forms.ComboBox();
             this.TXTFileName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -265,6 +266,7 @@
             this.BTNLoad.TabIndex = 4;
             this.BTNLoad.Text = "Load";
             this.BTNLoad.UseVisualStyleBackColor = true;
+            this.BTNLoad.Visible = false;
             this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_Click);
             // 
             // lbFileName
@@ -306,7 +308,8 @@
             "AnyOtherPurchaseItem",
             "ManualInvoice",
             "ManualINvoiceItem",
-            "ToVoyPurchase"});
+            "ToVoyPurchase",
+            "ToVoySale"});
             this.CBXOperations.Location = new System.Drawing.Point(73, 22);
             this.CBXOperations.Name = "CBXOperations";
             this.CBXOperations.Size = new System.Drawing.Size(121, 23);
@@ -373,6 +376,7 @@
             // groupBox4
             // 
             this.groupBox4.AutoSize = true;
+            this.groupBox4.Controls.Add(this.CBXSaleMode);
             this.groupBox4.Controls.Add(this.CBFileType);
             this.groupBox4.Controls.Add(this.TXTFileName);
             this.groupBox4.Controls.Add(this.label9);
@@ -394,6 +398,14 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Import Sheet";
             // 
+            // CBXSaleMode
+            // 
+            this.CBXSaleMode.FormattingEnabled = true;
+            this.CBXSaleMode.Location = new System.Drawing.Point(138, 58);
+            this.CBXSaleMode.Name = "CBXSaleMode";
+            this.CBXSaleMode.Size = new System.Drawing.Size(69, 23);
+            this.CBXSaleMode.TabIndex = 23;
+            // 
             // CBFileType
             // 
             this.CBFileType.FormattingEnabled = true;
@@ -402,14 +414,14 @@
             "Purchase Summary",
             "Sale",
             "Sale Summary"});
-            this.CBFileType.Location = new System.Drawing.Point(258, 88);
+            this.CBFileType.Location = new System.Drawing.Point(6, 57);
             this.CBFileType.Name = "CBFileType";
             this.CBFileType.Size = new System.Drawing.Size(121, 23);
             this.CBFileType.TabIndex = 22;
             // 
             // TXTFileName
             // 
-            this.TXTFileName.Location = new System.Drawing.Point(75, 87);
+            this.TXTFileName.Location = new System.Drawing.Point(75, 88);
             this.TXTFileName.Name = "TXTFileName";
             this.TXTFileName.Size = new System.Drawing.Size(177, 23);
             this.TXTFileName.TabIndex = 21;
@@ -417,7 +429,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 88);
+            this.label9.Location = new System.Drawing.Point(6, 91);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(57, 15);
             this.label9.TabIndex = 20;
@@ -425,7 +437,7 @@
             // 
             // NUDMaxCol
             // 
-            this.NUDMaxCol.Location = new System.Drawing.Point(368, 56);
+            this.NUDMaxCol.Location = new System.Drawing.Point(385, 58);
             this.NUDMaxCol.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -443,7 +455,7 @@
             // 
             // NUDMaxRow
             // 
-            this.NUDMaxRow.Location = new System.Drawing.Point(258, 56);
+            this.NUDMaxRow.Location = new System.Drawing.Point(275, 58);
             this.NUDMaxRow.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -461,7 +473,7 @@
             // 
             // NUDCol
             // 
-            this.NUDCol.Location = new System.Drawing.Point(139, 56);
+            this.NUDCol.Location = new System.Drawing.Point(385, 21);
             this.NUDCol.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -479,7 +491,7 @@
             // 
             // NUDRow
             // 
-            this.NUDRow.Location = new System.Drawing.Point(42, 56);
+            this.NUDRow.Location = new System.Drawing.Point(298, 21);
             this.NUDRow.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -508,7 +520,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(315, 58);
+            this.label7.Location = new System.Drawing.Point(332, 60);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(51, 15);
             this.label7.TabIndex = 12;
@@ -517,7 +529,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(108, 58);
+            this.label5.Location = new System.Drawing.Point(354, 23);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(25, 15);
             this.label5.TabIndex = 11;
@@ -526,7 +538,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(196, 58);
+            this.label6.Location = new System.Drawing.Point(213, 60);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(56, 15);
             this.label6.TabIndex = 4;
@@ -535,7 +547,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 58);
+            this.label4.Location = new System.Drawing.Point(262, 23);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 15);
             this.label4.TabIndex = 2;
@@ -545,7 +557,7 @@
             // 
             this.TXTSheetName.Location = new System.Drawing.Point(83, 22);
             this.TXTSheetName.Name = "TXTSheetName";
-            this.TXTSheetName.Size = new System.Drawing.Size(327, 23);
+            this.TXTSheetName.Size = new System.Drawing.Size(169, 23);
             this.TXTSheetName.TabIndex = 1;
             // 
             // label3
@@ -773,5 +785,6 @@
         private TabPage tabPage3;
         private TableLayoutPanel tableLayoutPanel1;
         private Button BTNLoad;
+        private ComboBox CBXSaleMode;
     }
 }

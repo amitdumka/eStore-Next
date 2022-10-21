@@ -108,6 +108,7 @@ namespace eStore.SetUp.Import
                     flag = await ToVoyPurchaseAsync();
                     break;
 
+                case "ToVoySale": flag=await ToVoySale(); break;
                 case "SaleInvoice":
                     flag = await GetMultiPriceStock(); break;
                 case "SaleItem":
@@ -150,6 +151,30 @@ namespace eStore.SetUp.Import
                     break;
             }
             return dt;
+        }
+
+        private async Task<bool> ToVoySale()
+        {
+            try
+            {
+                if (Settings == null || Settings.Count <= 0)
+                    ReadSetting();
+
+                var datatable = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("Sale"));
+
+                var json = ImportData.SaleDatatableToJSON(datatable,ImportData.SaleVMT.VOY);
+                string filename = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Sales\VoySale.json");
+                
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                Settings.Add("VoySale", filename);
+                File.WriteAllText(filename, json);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         private async Task<bool> ToVoyPurchaseAsync()
@@ -201,7 +226,7 @@ namespace eStore.SetUp.Import
         /// <param name="maxRow"></param>
         /// <param name="maxCol"></param>
         /// <param name="outputfilename"></param>
-        public static async Task<bool> StartImporting(string storecode, string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType)
+        public static async Task<bool> StartImporting(string storecode, string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType, ImportData.SaleVMT vMT)
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);
             var fn = Path.Combine(Path.GetDirectoryName(outputfilename) + $@"\{storecode}\ImportedJSON", Path.GetFileName(outputfilename) + ".json");

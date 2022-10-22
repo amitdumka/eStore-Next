@@ -34,7 +34,7 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public void ReadSetting()
+        public static void ReadSetting()
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
@@ -49,6 +49,7 @@ namespace eStore.SetUp.Import
                 if (Settings != null && Settings.Count > 0)
                 {
                     using FileStream createStream = File.OpenWrite(ConfigFile);
+                    createStream.Flush();
                     await JsonSerializer.SerializeAsync(createStream, Settings);
                     await createStream.DisposeAsync();
                     return true;
@@ -65,19 +66,21 @@ namespace eStore.SetUp.Import
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
+            
             var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
+            
             reader.Close();
             if (config == null)
                 config = new SortedDictionary<string, string>();
             if (config.ContainsKey(key))
                 key = key + $"#{config.Count + 1}";
             config.Add(key, value);
-            using FileStream createStream = File.OpenWrite(ConfigFile);
+            using FileStream createStream = File.Create(ConfigFile);
             await JsonSerializer.SerializeAsync(createStream, config);
             await createStream.DisposeAsync();
         }
 
-        public SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
+        public static  SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
 
         public async Task<bool> ProcessOperation(string store, string ops)
         {
@@ -108,11 +111,11 @@ namespace eStore.SetUp.Import
                     flag = await ToVoyPurchaseAsync();
                     break;
 
-                case "ToVoySale": flag=await ToVoySale(); break;
+                case "ToVoySale": flag = await ToVoySale(); break;
                 case "SaleInvoice":
-                    flag = await GetMultiPriceStock(); break;
+                    flag = await GenerateSaleInvoice(store, Settings.GetValueOrDefault("VoySale")); break;
                 case "SaleItem":
-                    flag = await UpdatePurchaseStock(); break;
+                    flag = await GenerateSaleItem(store, Settings.GetValueOrDefault("VoySale")); break;
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
                 case "InnerWearPurchase":
@@ -162,9 +165,9 @@ namespace eStore.SetUp.Import
 
                 var datatable = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("Sale"));
 
-                var json = ImportData.SaleDatatableToJSON(datatable,ImportData.SaleVMT.VOY);
+                var json = ImportData.SaleDatatableToJSON(datatable, ImportData.SaleVMT.VOY);
                 string filename = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Sales\VoySale.json");
-                
+
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
                 Settings.Add("VoySale", filename);
                 File.WriteAllText(filename, json);
@@ -671,10 +674,10 @@ namespace eStore.SetUp.Import
             {
                 StreamReader reader = new StreamReader(filename);
                 var json = reader.ReadToEnd();
-                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json);
+                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json).OrderBy(c=>c.InvoiceDate);
 
                 int count = 0;
-                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType, c.PaymentMode, c.SalesmanName })
+                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType,  c.SalesmanName })
                     .Select(c => new ProductSale
                     {
                         InvoiceNo = c.Key.InvoiceNumber,
@@ -688,22 +691,26 @@ namespace eStore.SetUp.Import
                         Tailoring = false,
                         Taxed = true,
                         InvoiceType = c.Key.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
-                        SalesmanId = Salesman.Where(x => x.Value == c.Key.SalesmanName).First().Key,
-                        TotalMRP = c.Sum(x => x.MRPValue),
+                        SalesmanId = c.Key.SalesmanName,// Salesman.Where(x => x.Value == c.Key.SalesmanName).First().Key,
+                        TotalMRP = c.Sum(x => x.MRP),
                         TotalDiscountAmount = c.Sum(x => x.Discount),
                         UserId = "AUTOJINI",
                         TotalTaxAmount = c.Sum(x => x.TaxAmount),
                         TotalPrice = c.Sum(x => x.BillAmount),
-                        InvoiceCode = $@"{code}/{DateTime.Parse(c.Key.InvoiceDate).ToString("yyyy/MMM/DD")}/00{++count}",
+                        InvoiceCode = $@"{code}/{DateTime.Parse(c.Key.InvoiceDate).ToString("yyyy/MM")}/00{++count}",
                         IsReadOnly = false,
                         MarkedDeleted = false,
                         Paid = true,
                         RoundOff = c.Sum(x => x.RoundOff),
                     }).ToList();
 
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleinvoice.json");
+                var savefilename = Path.Combine(Settings.GetValueOrDefault("BasePath"), "Sales");
+                Directory.CreateDirectory(savefilename);
+                savefilename = Path.Combine(savefilename, "SaleInvoices.json");
+                using FileStream createStream = File.Create(savefilename);
                 await JsonSerializer.SerializeAsync(createStream, saleinvs);
                 await createStream.DisposeAsync();
+                //Settings.Add("SaleInvoice", savefilename);
                 return true;
             }
             catch (Exception e)
@@ -729,7 +736,7 @@ namespace eStore.SetUp.Import
                     LastPcs = false,
                     TaxAmount = c.TaxAmount,
                     TaxType = TaxType.GST,
-                    Unit = Unit.Nos,
+                    Unit = SetUnit(c.ProductName),
                     Value = c.LineTotal,
                     BilledQty = c.Quantity,
                     Adjusted = false,
@@ -738,9 +745,14 @@ namespace eStore.SetUp.Import
                     InvoiceCode = c.InvoiceNumber,
                 }).ToList();
 
-                using FileStream createStream = File.Create(Path.GetDirectoryName(filename) + @"/saleitems.json");
+                var savefilename = Path.Combine(Settings.GetValueOrDefault("BasePath"), "Sales");
+                Directory.CreateDirectory(savefilename);
+                savefilename = Path.Combine(savefilename, "salesItems.json");
+
+                using FileStream createStream = File.Create(savefilename);
                 await JsonSerializer.SerializeAsync(createStream, saleinvs);
                 await createStream.DisposeAsync();
+                //Settings.Add("SaleInvoiceItems", savefilename);
                 return true;
             }
             catch (Exception e)
@@ -916,7 +928,7 @@ namespace eStore.SetUp.Import
             }
 
 
-           return await ImportData.ObjectsToJSONFile<PurchaseProduct>(Purchases, Settings.GetValueOrDefault("Purchase-Invoices"));
+            return await ImportData.ObjectsToJSONFile<PurchaseProduct>(Purchases, Settings.GetValueOrDefault("Purchase-Invoices"));
 
         }
 

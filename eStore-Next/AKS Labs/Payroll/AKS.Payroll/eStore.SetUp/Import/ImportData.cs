@@ -183,7 +183,31 @@ namespace eStore.SetUp.Import
         public enum SaleVMT
         { VOY, MD, MI }
 
-        public static string SaleDatatableToJSON(DataTable dataTable, SaleVMT vMT)
+        public static string SaleDatatableToJSON(DataTable dataTable , SaleVMT vMT)
+        {
+            List<JsonSale> list = new List<JsonSale>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                var row = dataTable.Rows[i];
+                if (vMT == SaleVMT.VOY)
+                {
+                   
+                    list.Add(ReadVoySale(row, true));
+                }
+                else if (vMT == SaleVMT.MD)
+                {
+                    list.Add(ReadMDSale(row,true));
+                }
+                else if (vMT == SaleVMT.MI)
+                {
+                    list.Add(ReadMISale(row,true));
+                }
+            }
+            return JsonSerializer.Serialize(list);
+
+        }
+
+        public static string SaleDatatableToJSONOld(DataTable dataTable, SaleVMT vMT)
         {
             List<string> list = new List<string>();
             for (int i = 0; i < dataTable.Rows.Count; i++)
@@ -379,7 +403,7 @@ namespace eStore.SetUp.Import
         // Convert everything to particular object and store in json.
         // read data and store in database.
 
-        private JsonSale ReadMISale(DataRow row, bool a)
+        private static  JsonSale ReadMISale(DataRow row, bool a)
         {
             return new JsonSale
             {
@@ -412,7 +436,7 @@ namespace eStore.SetUp.Import
             };
         }
 
-        private JsonSale ReadVoySale(DataRow row, bool a)
+        private static JsonSale ReadVoySale(DataRow row, bool a)
         {
             //Convert to JSONSale
             JsonSale item = new JsonSale();
@@ -443,7 +467,7 @@ namespace eStore.SetUp.Import
             return item;
         }
 
-        private JsonSale ReadMDSale(DataRow row, bool a)
+        private static JsonSale ReadMDSale(DataRow row, bool a)
         {
             return new JsonSale
             {

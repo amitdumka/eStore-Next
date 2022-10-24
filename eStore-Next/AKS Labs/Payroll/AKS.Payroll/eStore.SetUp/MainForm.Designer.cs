@@ -302,6 +302,7 @@
             "Stocks",
             "SaleInvoice",
             "SaleItem",
+            "SaleCleanUp",
             "InnerWearPurchase",
             "InnerWearPurchaseItem",
             "AnyOtherPurchaseInvoice",

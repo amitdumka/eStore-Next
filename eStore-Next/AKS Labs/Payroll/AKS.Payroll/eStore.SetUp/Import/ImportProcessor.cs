@@ -66,9 +66,9 @@ namespace eStore.SetUp.Import
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
-            
+
             var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
-            
+
             reader.Close();
             if (config == null)
                 config = new SortedDictionary<string, string>();
@@ -80,7 +80,7 @@ namespace eStore.SetUp.Import
             await createStream.DisposeAsync();
         }
 
-        public static  SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
+        public static SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
 
         public async Task<bool> ProcessOperation(string store, string ops)
         {
@@ -116,6 +116,8 @@ namespace eStore.SetUp.Import
                     flag = await GenerateSaleInvoice(store, Settings.GetValueOrDefault("VoySale")); break;
                 case "SaleItem":
                     flag = await GenerateSaleItem(store, Settings.GetValueOrDefault("VoySale")); break;
+                case "SaleCleanUp":
+                    flag = await SaleCleanUp(); break; ;
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
                 case "InnerWearPurchase":
@@ -674,10 +676,10 @@ namespace eStore.SetUp.Import
             {
                 StreamReader reader = new StreamReader(filename);
                 var json = reader.ReadToEnd();
-                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json).OrderBy(c=>c.InvoiceDate);
+                var sales = JsonSerializer.Deserialize<List<JsonSale>>(json).OrderBy(c => c.InvoiceDate);
 
                 int count = 0;
-                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType,  c.SalesmanName })
+                var saleinvs = sales.GroupBy(c => new { c.InvoiceNumber, c.InvoiceDate, c.InvoiceType, c.SalesmanName })
                     .Select(c => new ProductSale
                     {
                         InvoiceNo = c.Key.InvoiceNumber,
@@ -737,7 +739,7 @@ namespace eStore.SetUp.Import
                     TaxAmount = c.TaxAmount,
                     TaxType = TaxType.GST,
                     Unit = SetUnit(c.ProductName),
-                    Value = c.LineTotal,
+                    Value = c.LineTotal == 0 ? c.BasicRate + c.TaxAmount : c.LineTotal,
                     BilledQty = c.Quantity,
                     Adjusted = false,
                     InvoiceType = c.InvoiceType == "SALES" ? InvoiceType.Sales : InvoiceType.SalesReturn,
@@ -1089,6 +1091,78 @@ namespace eStore.SetUp.Import
             //Settings.Add("ProductStocks", saveFileName);
             return flag;
         }
+
+        public Task<bool> SaleCleanUp()
+        {
+            var saleItems = ImportData.JsonToObject<SaleItem>(Settings.GetValueOrDefault("SaleInvoiceItems")).ToList();
+            var saleInvoices = ImportData.JsonToObject<ProductSale>(Settings.GetValueOrDefault("SaleInvoice")).OrderBy(c => c.OnDate).ToList();
+            var voySales = ImportData.JsonToObject<JsonSale>(Settings.GetValueOrDefault("VoySale")).ToList();
+            var Stocks = ImportData.JsonToObject<ProductStock>(Settings.GetValueOrDefault("ProductStocks")).ToList();
+
+            DateTime july = new DateTime(2017, 7, 1);
+            int Count = 0;
+
+            foreach (var inv in saleInvoices)
+            {
+                inv.InvoiceCode = $@"{inv.StoreId}/{inv.OnDate.ToString("yyyy/MM")}/{++Count}";
+                var items = saleItems.Where(c => c.InvoiceCode == inv.InvoiceNo).ToList();
+
+                //Update Stock also here
+                foreach (var item in items)
+                {
+                    item.InvoiceCode = inv.InvoiceCode;
+                    if (inv.OnDate < july)
+                    {
+                        item.TaxType = TaxType.VAT;
+                    }
+                    else item.TaxType = TaxType.GST;
+                    var stock = Stocks.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
+                    if (stock != null)
+                    {
+                        stock.SoldQty += item.BilledQty;
+
+                    }
+                }
+            }
+
+            var flag = ImportData.ObjectsToJSONFile<SaleItem>(saleItems, Settings.GetValueOrDefault("SaleInvoiceItems"));
+            flag = ImportData.ObjectsToJSONFile<ProductSale>(saleInvoices, Settings.GetValueOrDefault("SaleInvoice"));
+            flag = ImportData.ObjectsToJSONFile<ProductStock>(Stocks, Settings.GetValueOrDefault("ProductStocks"));
+
+            var products = ImportData.JsonToObject<ProductItem>(Settings.GetValueOrDefault("ProdutItems"));
+
+            var hsncodes = voySales.Where(c => !string.IsNullOrEmpty(c.HSNCODE)).Select(c => new { c.Barcode, c.HSNCODE, c.ProductName }).ToList();
+
+
+            hsncodes = hsncodes.DistinctBy(c => c.Barcode).ToList();
+            SortedDictionary<string, string> HSNList = new SortedDictionary<string, string>();
+            foreach (var item in hsncodes)
+            {
+                var pro = products.Where(c => c.Barcode == item.Barcode).FirstOrDefault();
+                if (pro != null)
+                {
+                    pro.HSNCode = item.HSNCODE;
+                    try
+                    {
+                        HSNList.TryAdd(item.ProductName.Split("/")[2], item.HSNCODE);
+                    }
+                    catch (Exception)
+                    {
+                        
+                    }
+                }
+
+            }
+             flag = ImportData.ObjectsToJSONFile<ProductItem>(products, Settings.GetValueOrDefault("ProdutItems"));
+            var fns = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"HSN\HSNCodeList.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(fns));
+             flag = ImportData.ObjectsToJSONFile<SortedDictionary<string, string>>(HSNList, fns);
+            Settings.Add("HSNCodes", fns);
+            return flag;
+
+
+        }
+
 
     }
 }

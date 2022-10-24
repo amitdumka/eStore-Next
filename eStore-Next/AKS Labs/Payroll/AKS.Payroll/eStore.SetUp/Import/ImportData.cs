@@ -541,5 +541,23 @@ namespace eStore.SetUp.Import
             }
             return bcode;
         }
+
+        public static async Task<bool> ObjectsToJSONFile<T>(T itemLists, string fileName)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                //This help to Save as backup for future use
+                using FileStream createStream = File.Create(fileName);
+                await JsonSerializer.SerializeAsync(createStream, itemLists);
+                await createStream.DisposeAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

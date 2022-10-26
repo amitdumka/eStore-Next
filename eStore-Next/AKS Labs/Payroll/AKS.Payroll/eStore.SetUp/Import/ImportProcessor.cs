@@ -1,5 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Models.Sales;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Text.Json;
 
@@ -117,7 +118,8 @@ namespace eStore.SetUp.Import
                 case "SaleItem":
                     flag = await GenerateSaleItem(store, Settings.GetValueOrDefault("VoySale")); break;
                 case "SaleCleanUp":
-                    flag = await SaleCleanUp(); break; ;
+                    flag = await SaleCleanUp(); break;
+                case "Payments": flag=await CreatePayment(); break;
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
                 case "InnerWearPurchase":
@@ -1092,6 +1094,64 @@ namespace eStore.SetUp.Import
             return flag;
         }
 
+        public PayMode GetPaymode(string mode)
+        {
+            switch (mode)
+            {
+                case "CAS": return PayMode.Cash;
+                case "CRD": return PayMode.Card;
+                case "Mix": return PayMode.MixPayments;
+                case "SR": return PayMode.SaleReturn;
+                default:
+                    return PayMode.Cash;
+
+            }
+        }
+
+        public async Task<bool> CreatePayment()
+        {
+            var voySales = ImportData.JsonToObject<JsonSale>(Settings.GetValueOrDefault("VoySale")).ToList();
+            var payFilter = voySales.Where(c => string.IsNullOrEmpty(c.PaymentMode) == false).ToList();
+            List<CardPaymentDetail> cards = new List<CardPaymentDetail>();
+            List<SalePaymentDetail> sales = new List<SalePaymentDetail>();
+            foreach (var itm in payFilter)
+            {
+                SalePaymentDetail detail = new SalePaymentDetail
+                {
+                    InvoiceCode = itm.InvoiceNumber,
+                    PaidAmount = itm.BillAmount,
+                    RefId = "",
+                    PayMode = GetPaymode(itm.PaymentMode),
+                };
+                sales.Add(detail);
+                if (detail.PayMode == PayMode.Card)
+                {
+                    CardPaymentDetail card = new CardPaymentDetail
+                    {
+                        CardLastDigit = 0,
+                        AuthCode = 0,
+                        CardType = CardType.Visa,
+                        Card = Card.DebitCard,
+                        InvoiceCode = itm.InvoiceNumber,
+                        PaidAmount = itm.BillAmount,
+                        EDCTerminalId = "NA",
+                    };
+                    cards.Add(card);
+                }
+            }
+
+            var fnsc = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Sales\CardPayments.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(fnsc));
+            var fnss = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"Sales\SalePayments.json");
+            bool flag = await ImportData.ObjectsToJSONFile<CardPaymentDetail>(cards, fnsc);
+            flag = await ImportData.ObjectsToJSONFile<SalePaymentDetail>(sales, fnss);
+            Settings.Add("CardPayment", fnsc);
+            Settings.Add("SalePayment",fnss);
+            return flag;
+
+
+        }
+
         public Task<bool> SaleCleanUp()
         {
             var saleItems = ImportData.JsonToObject<SaleItem>(Settings.GetValueOrDefault("SaleInvoiceItems")).ToList();
@@ -1148,15 +1208,23 @@ namespace eStore.SetUp.Import
                     }
                     catch (Exception)
                     {
-                        
+
                     }
                 }
 
             }
-             flag = ImportData.ObjectsToJSONFile<ProductItem>(products, Settings.GetValueOrDefault("ProdutItems"));
+            var nullHSN = products.Where(c => string.IsNullOrEmpty(c.HSNCode)).Select(c => c.Barcode).ToList();
+            foreach (var item in nullHSN)
+            {
+                var pi = products.Where(c => c.Barcode == item).FirstOrDefault();
+                pi.HSNCode = HSNList.GetValueOrDefault(pi.SubCategory, "");
+
+            }
+
+            flag = ImportData.ObjectsToJSONFile<ProductItem>(products, Settings.GetValueOrDefault("ProdutItems"));
             var fns = Path.Combine(Settings.GetValueOrDefault("BasePath"), @"HSN\HSNCodeList.json");
             Directory.CreateDirectory(Path.GetDirectoryName(fns));
-             flag = ImportData.ObjectsToJSONFile<SortedDictionary<string, string>>(HSNList, fns);
+            flag = ImportData.ObjectsToJSONFile<SortedDictionary<string, string>>(HSNList, fns);
             Settings.Add("HSNCodes", fns);
             return flag;
 

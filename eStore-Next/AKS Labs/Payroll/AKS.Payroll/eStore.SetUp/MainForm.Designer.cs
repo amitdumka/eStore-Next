@@ -303,6 +303,7 @@
             "SaleInvoice",
             "SaleItem",
             "SaleCleanUp",
+            "Payments",
             "InnerWearPurchase",
             "InnerWearPurchaseItem",
             "AnyOtherPurchaseInvoice",

@@ -119,7 +119,7 @@ namespace eStore.SetUp.Import
                     flag = await GenerateSaleItem(store, Settings.GetValueOrDefault("VoySale")); break;
                 case "SaleCleanUp":
                     flag = await SaleCleanUp(); break;
-                case "Payments": flag=await CreatePayment(); break;
+                case "Payments": flag = await CreatePayment(); break;
                 case "Stocks":
                     flag = await GenerateStockfromPurchase(Settings.GetValueOrDefault("VoyPurchase"), store); break;
                 case "InnerWearPurchase":
@@ -1146,7 +1146,7 @@ namespace eStore.SetUp.Import
             bool flag = await ImportData.ObjectsToJSONFile<CardPaymentDetail>(cards, fnsc);
             flag = await ImportData.ObjectsToJSONFile<SalePaymentDetail>(sales, fnss);
             Settings.Add("CardPayment", fnsc);
-            Settings.Add("SalePayment",fnss);
+            Settings.Add("SalePayment", fnss);
             return flag;
 
 
@@ -1231,6 +1231,81 @@ namespace eStore.SetUp.Import
 
         }
 
+        public decimal ToDecimal(string num)
+        {
+            Decimal.TryParse(num, out decimal result);
+            return Math.Round(result, 2);
+        }
+        public decimal ToDecimal(object num)
+        {
+            Decimal.TryParse(num.ToString(), out decimal result);
+            return Math.Round(result, 2);
+        }
 
+
+        public void ProcessSaleSummary()
+        {
+            //Invoice No	Invoice Date	Invoice Type	Quantity	MRP	Discount Amt	Basic Amt	Tax Amt	Round Off	Bill Amt	Payment Type
+
+            var saleSummary = ImportData.JSONFileToDataTable(Settings.GetValueOrDefault("SaleSummary"));
+            var sales = ImportData.JsonToObject<ProductSale>(Settings.GetValueOrDefault("SaleInvoice"));
+            List<InvoiceError> Errors = new List<InvoiceError>();
+            for (int i = 0; i < saleSummary.Rows.Count; i++)
+            {
+                var row = saleSummary.Rows[i];
+                var inv = sales.Where(c => c.InvoiceNo == saleSummary.Rows[i]["Invoice No"].ToString()).FirstOrDefault();
+                if (inv != null)
+                {
+                    InvoiceError error = new InvoiceError();
+                    error.InvoiceNo = inv.InvoiceNo;
+
+                    if (inv.BilledQty != ToDecimal(row["Quantity"].ToString()))
+                    {
+                        if (error.Errors == null) error.Errors = new List<string>();
+                        error.Errors.Add($"Bill Qty:{inv.BilledQty}!={row["Quantity"].ToString()}");
+
+                    }
+                    if (inv.TotalPrice != ToDecimal(row["Bill Amt"]))
+                    {
+                        if (error.Errors == null) error.Errors = new List<string>();
+                        error.Errors.Add($"Bill AMT:{inv.TotalPrice}!={row["Bill Amt"].ToString()}");
+
+                    }
+                    if (inv.TotalMRP != ToDecimal(row["MRP"]))
+                    {
+                        if (error.Errors == null) error.Errors = new List<string>();
+                        error.Errors.Add($"MRP :{inv.TotalMRP}!={row["MRP"].ToString()}");
+
+                    }
+                    if (inv.TotalBasicAmount != ToDecimal("Basic Amt"))
+                    {
+                        if (error.Errors == null) error.Errors = new List<string>();
+                        error.Errors.Add($"Basic Amt :{inv.TotalBasicAmount}!={row["Basic Amt"].ToString()}");
+                    }
+                    if (inv.TotalTaxAmount != ToDecimal("Tax Amt"))
+                    {
+                        if (error.Errors == null) error.Errors = new List<string>();
+                        error.Errors.Add($"Tax Amt:{inv.TotalTaxAmount}!={row["TAx Amt"].ToString()}");
+                    }
+
+                    if (error.Errors != null && error.Errors.Count > 0) Errors.Add(error);
+
+                }
+                else
+                {
+                    InvoiceError error = new InvoiceError();
+                    error.InvoiceNo = saleSummary.Rows[i]["Invoice No"].ToString();
+                    error.Errors = new List<string>();
+                    error.Errors.Add("Invoice No Is missing");
+                    //Inv Missing.
+                }
+            }
+        }
+    }
+
+    class InvoiceError
+    {
+        public string InvoiceNo { get; set; }
+        public List<string> Errors { get; set; }
     }
 }

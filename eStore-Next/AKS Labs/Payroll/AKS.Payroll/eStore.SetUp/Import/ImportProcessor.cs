@@ -1,49 +1,50 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Models.Sales;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
-    public class ImportProcessor
+    public class ImportBasic
     {
-        private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
-        private SortedDictionary<string, ProductCategory> ProductCategories = new SortedDictionary<string, ProductCategory>();
-        private List<ProductSubCategory> ProductSubCategories;// = new SortedDictionary<string, string>();
-        private List<ProductType> ProductTypes;// = new SortedDictionary<string, string>();
-        private List<string> sizeList;
-        private SortedDictionary<string, string> HSNCodes = new SortedDictionary<string, string>();
-
-        private List<string> Cat1 = new List<string>();
-        private List<string> Cat2 = new List<string>();
-        private List<string> Cat3 = new List<string>();
         public static string ConfigFile = "eStoreConfig.json";
+        public static SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
 
-        public static async void InitConfigFile(string baseapath, string storeCode)
+        public static async Task InitSettingAsync(string basepath, string storeCode)
         {
-            var fn = Path.Combine(baseapath + $@"\{storeCode}", "Configs");
+            var fn = Path.Combine(basepath + $@"\{storeCode}", "Configs");
             Directory.CreateDirectory(fn);
             ConfigFile = Path.Combine(fn, ConfigFile);
+
             if (!File.Exists(ConfigFile))
             {
                 var config = new SortedDictionary<string, string>();
-                config.Add("BasePath", baseapath + $@"\{storeCode}");
+                config.Add("BasePath", basepath + $@"\{storeCode}");
+                config.Add("Store", storeCode);
                 using FileStream createStream = File.OpenWrite(ConfigFile);
                 await JsonSerializer.SerializeAsync(createStream, config);
                 await createStream.DisposeAsync();
             }
         }
-
-        public static void ReadSetting()
+        public static bool AddSetting()
         {
-            StreamReader reader = new StreamReader(ConfigFile);
-            var json = reader.ReadToEnd();
-            Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
-            reader.Close();
+            return Settings.TryAdd(key, value);
         }
+        public static bool AddOrUpdateSetting(string key, string value)
+        {
 
-        public async Task<bool> UpdateConfigFile()
+            if (Settings.TryAdd(key, value)) return true;
+            else
+            {
+                Settings.Remove(key);
+                return Settings.TryAdd(key, value);
+            }
+
+        }
+        public static bool DeleteSetting(string key) { return Settings.Remove(key); }
+        public static async Task<bool> SaveSettingsAsync()
         {
             try
             {
@@ -62,24 +63,89 @@ namespace eStore.SetUp.Import
                 return false;
             }
         }
-
-        public static async void SetConfigFile(string key, string value)
+        public static void ReadSetting()
         {
             StreamReader reader = new StreamReader(ConfigFile);
             var json = reader.ReadToEnd();
-
-            var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
-
+            Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
             reader.Close();
-            if (config == null)
-                config = new SortedDictionary<string, string>();
-            if (config.ContainsKey(key))
-                key = key + $"#{config.Count + 1}";
-            config.Add(key, value);
-            using FileStream createStream = File.Create(ConfigFile);
-            await JsonSerializer.SerializeAsync(createStream, config);
-            await createStream.DisposeAsync();
         }
+    }
+
+    public class ImportProcessor
+    {
+        private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
+        private SortedDictionary<string, ProductCategory> ProductCategories = new SortedDictionary<string, ProductCategory>();
+        private List<ProductSubCategory> ProductSubCategories;// = new SortedDictionary<string, string>();
+        private List<ProductType> ProductTypes;// = new SortedDictionary<string, string>();
+        private List<string> sizeList;
+        private SortedDictionary<string, string> HSNCodes = new SortedDictionary<string, string>();
+
+        private List<string> Cat1 = new List<string>();
+        private List<string> Cat2 = new List<string>();
+        private List<string> Cat3 = new List<string>();
+        //public static string ConfigFile = "eStoreConfig.json";
+
+        //public static async void InitConfigFile(string baseapath, string storeCode)
+        //{
+        //    var fn = Path.Combine(baseapath + $@"\{storeCode}", "Configs");
+        //    Directory.CreateDirectory(fn);
+        //    ConfigFile = Path.Combine(fn, ConfigFile);
+        //    if (!File.Exists(ConfigFile))
+        //    {
+        //        var config = new SortedDictionary<string, string>();
+        //        config.Add("BasePath", baseapath + $@"\{storeCode}");
+        //        using FileStream createStream = File.OpenWrite(ConfigFile);
+        //        await JsonSerializer.SerializeAsync(createStream, config);
+        //        await createStream.DisposeAsync();
+        //    }
+        //}
+
+        //public static void ReadSetting()
+        //{
+        //    StreamReader reader = new StreamReader(ConfigFile);
+        //    var json = reader.ReadToEnd();
+        //    Settings = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
+        //    reader.Close();
+        //}
+
+        //public async Task<bool> UpdateConfigFile()
+        //{
+        //    try
+        //    {
+        //        if (Settings != null && Settings.Count > 0)
+        //        {
+        //            using FileStream createStream = File.OpenWrite(ConfigFile);
+        //            createStream.Flush();
+        //            await JsonSerializer.SerializeAsync(createStream, Settings);
+        //            await createStream.DisposeAsync();
+        //            return true;
+        //        }
+        //        return false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        //public static async void SetConfigFile(string key, string value)
+        //{
+        //    StreamReader reader = new StreamReader(ConfigFile);
+        //    var json = reader.ReadToEnd();
+
+        //    var config = JsonSerializer.Deserialize<SortedDictionary<string, string>>(json);
+
+        //    reader.Close();
+        //    if (config == null)
+        //        config = new SortedDictionary<string, string>();
+        //    if (config.ContainsKey(key))
+        //        key = key + $"#{config.Count + 1}";
+        //    config.Add(key, value);
+        //    using FileStream createStream = File.Create(ConfigFile);
+        //    await JsonSerializer.SerializeAsync(createStream, config);
+        //    await createStream.DisposeAsync();
+        //}
 
         public static SortedDictionary<string, string> Settings = new SortedDictionary<string, string>();
 
@@ -532,55 +598,9 @@ namespace eStore.SetUp.Import
             }
         }
 
-        private string SetBrandCode(string style, string cat, string type)
-        {
-            string bcode = "";
-            if (cat == "Apparel")
-            {
-                if (style.StartsWith("FM"))
-                {
-                    bcode = "FM";
-                }
-                else if (style.StartsWith("ARI")) bcode = "ADR";
-                else if (style.StartsWith("HA")) bcode = "HAN";
-                else if (style.StartsWith("AA")) bcode = "ARN";
-                else if (style.StartsWith("AF")) bcode = "ARR";
-                else if (style.StartsWith("US")) bcode = "USP";
-                else if (style.StartsWith("AB")) bcode = "ARR";
-                else if (style.StartsWith("AK")) bcode = "ARR";
-                else if (style.StartsWith("AN")) bcode = "ARR";
-                else if (style.StartsWith("ARE")) bcode = "ARR";
-                else if (style.StartsWith("ARG")) bcode = "ARR";
-                else if (style.StartsWith("AS")) bcode = "ARS";
-                else if (style.StartsWith("AT")) bcode = "ARR";
-                else if (style.StartsWith("F2")) bcode = "FM";
-                else if (style.StartsWith("UD")) bcode = "UD";
-            }
-            else if (cat == "Shirting" || cat == "Suiting")
-            {
-                bcode = "ARD";
-            }
-            else
+       
 
-            if (cat == "Promo")
-            {
-                if (type == "Free GV") { bcode = "AGV"; }
-                else bcode = "ARP";
-            }
-            else if (cat == "Suit Cover")
-            {
-                bcode = "ARA";
-            }
-            return bcode;
-        }
-
-        private Unit SetUnit(string pname)
-        {
-            if (pname.StartsWith("Suiting") || pname.StartsWith("Shirting")) return Unit.Meters;
-            else if (pname.StartsWith("Apparel")) return Unit.Pcs;
-            else if (pname.StartsWith("Promo") || pname.StartsWith("Suit Cover")) return Unit.Nos;
-            else return Unit.Nos;
-        }
+        
 
         public async Task<bool> GeneratePurchaseInvoice(string storecode, string filename)
         {
@@ -1231,16 +1251,7 @@ namespace eStore.SetUp.Import
 
         }
 
-        public decimal ToDecimal(string num)
-        {
-            Decimal.TryParse(num, out decimal result);
-            return Math.Round(result, 2);
-        }
-        public decimal ToDecimal(object num)
-        {
-            Decimal.TryParse(num.ToString(), out decimal result);
-            return Math.Round(result, 2);
-        }
+       
 
 
         public void ProcessSaleSummary()
@@ -1307,5 +1318,81 @@ namespace eStore.SetUp.Import
     {
         public string InvoiceNo { get; set; }
         public List<string> Errors { get; set; }
+    }
+
+
+    public class ImportingPurchase
+    {
+        private string StoreCode;
+        private string BasePath;
+
+        public void StartImportingPurchase(string storeCode, string filename, string basePath)
+        {
+            BasePath = basePath;
+            StoreCode = storeCode;
+
+        }
+    }
+
+    public class ImportHelpers
+    {
+        public static decimal ToDecimal(string num)
+        {
+            Decimal.TryParse(num, out decimal result);
+            return Math.Round(result, 2);
+        }
+        public static decimal ToDecimal(object num)
+        {
+            Decimal.TryParse(num.ToString(), out decimal result);
+            return Math.Round(result, 2);
+        }
+        public static  Unit SetUnit(string pname)
+        {
+            if (pname.StartsWith("Suiting") || pname.StartsWith("Shirting")) return Unit.Meters;
+            else if (pname.StartsWith("Apparel")) return Unit.Pcs;
+            else if (pname.StartsWith("Promo") || pname.StartsWith("Suit Cover")) return Unit.Nos;
+            else return Unit.Nos;
+        }
+        public static string SetBrandCode(string style, string cat, string type)
+        {
+            string bcode = "";
+            if (cat == "Apparel")
+            {
+                if (style.StartsWith("FM"))
+                {
+                    bcode = "FM";
+                }
+                else if (style.StartsWith("ARI")) bcode = "ADR";
+                else if (style.StartsWith("HA")) bcode = "HAN";
+                else if (style.StartsWith("AA")) bcode = "ARN";
+                else if (style.StartsWith("AF")) bcode = "ARR";
+                else if (style.StartsWith("US")) bcode = "USP";
+                else if (style.StartsWith("AB")) bcode = "ARR";
+                else if (style.StartsWith("AK")) bcode = "ARR";
+                else if (style.StartsWith("AN")) bcode = "ARR";
+                else if (style.StartsWith("ARE")) bcode = "ARR";
+                else if (style.StartsWith("ARG")) bcode = "ARR";
+                else if (style.StartsWith("AS")) bcode = "ARS";
+                else if (style.StartsWith("AT")) bcode = "ARR";
+                else if (style.StartsWith("F2")) bcode = "FM";
+                else if (style.StartsWith("UD")) bcode = "UD";
+            }
+            else if (cat == "Shirting" || cat == "Suiting")
+            {
+                bcode = "ARD";
+            }
+            else
+
+            if (cat == "Promo")
+            {
+                if (type == "Free GV") { bcode = "AGV"; }
+                else bcode = "ARP";
+            }
+            else if (cat == "Suit Cover")
+            {
+                bcode = "ARA";
+            }
+            return bcode;
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace eStore.SetUp.Export
 {
+    public enum ExportType { EXCEL,PDF,JSON}
     public class ExportData
     {
     }

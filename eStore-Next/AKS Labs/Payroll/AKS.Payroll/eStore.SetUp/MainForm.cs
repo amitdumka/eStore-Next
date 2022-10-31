@@ -1,28 +1,66 @@
 using eStore.SetUp.Import;
-using Syncfusion.XlsIO;
-using System.DirectoryServices.ActiveDirectory;
-using System.Xml.Serialization;
 
 namespace eStore.SetUp
 {
     public partial class MainForm : Form
     {
-        string RootPath = "d:\\Ard";
-        string ExcelFileName = "";
-        Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
-        ImportProcessor ImportProcessor;
+        private string ExcelFileName = "";
+        private Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet ExcelSheet;
+        private ImportProcessor ImportProcessor;
+        private string RootPath = "d:\\Ard";
         public MainForm()
         {
             InitializeComponent();
             TXTOutputFolder.Text = RootPath;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public void LoadDirectory(string Dir)
         {
-
+            DirectoryInfo di = new DirectoryInfo(Dir);
+            TreeNode tds = tvFileList.Nodes.Add(di.Name);
+            tds.Tag = di.FullName;
+            tds.StateImageIndex = 0;
+            LoadFiles(Dir, tds);
+            LoadSubDirectories(Dir, tds);
         }
 
+        private void BTNLoad_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = ImportProcessor.LoadJsonFile(CBXOperations.Text);
+        }
 
+        private async void BTNProcess_Click(object sender, EventArgs e)
+        {
+            if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
+            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
+            {
+                MessageBox.Show("Success");
+            }
+            else
+            {
+                MessageBox.Show("Error");
+            }
+        }
+
+        private void BTNReload_Click(object sender, EventArgs e)
+        {
+            Reload();
+        }
+
+        private void BTNSelect_Click(object sender, EventArgs e)
+        {
+            openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Title = "Select Excel File only..";
+            var result = openFileDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                TXTSelectedFile.Text = ExcelFileName = openFileDialog1.FileName;
+                lbSheetNames.DataSource = Import.ImportData.GetSheetNames(openFileDialog1.FileName);
+                lbEvents.Items.Add("Source file open and sheet name list...");
+            }
+            else
+                lbEvents.Items.Add("Source file  could not  open and sheet name listing failed...");
+        }
 
         private void BTNSet_Click(object sender, EventArgs e)
         {
@@ -34,16 +72,43 @@ namespace eStore.SetUp
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
                 lbEvents.Items.Add("Output folder set");
-                ImportProcessor.InitConfigFile(TXTOutputFolder.Text, TXTStoreCode.Text);
-
-
+                ImportBasic.InitSettingAsync(TXTOutputFolder.Text, TXTStoreCode.Text);
             }
-
         }
 
-        void ReadSheetName(string filename)
+        private void BTNShowExcel_Click(object sender, EventArgs e)
         {
-            lbSheetNames.DataSource = Import.ImportData.GetSheetNames(filename);
+            if (File.Exists(ExcelFileName))
+            {
+                if (ExcelSheet == null)
+                {
+                    ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
+                    ExcelSheet.Dock = DockStyle.Fill;
+                    ExcelSheet.FileName = ExcelFileName;
+                    tabPage1.Controls.Add(ExcelSheet);
+                }
+                ExcelSheet.Open(ExcelFileName);
+            }
+        }
+
+        private async void BTNToJSON_Click(object sender, EventArgs e)
+        {
+            if (await ImportProcessor.StartImporting(TXTStoreCode.Text, ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value,
+                (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text, ImportData.SaleVMT.VOY))
+            {
+                Reload();
+                lbEvents.Items.Add("Json is created");
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
+        private void lbSheetNames_DoubleClick(object sender, EventArgs e)
+        {
+            // MessageBox.Show();
+            if (ExcelSheet != null)
+                ExcelSheet.SetActiveSheet(lbSheetNames.Text);
         }
 
         private void lbSheetNames_SelectedIndexChanged(object sender, EventArgs e)
@@ -51,22 +116,27 @@ namespace eStore.SetUp
             TXTSheetName.Text = lbSheetNames.Text;
         }
 
-
-
-        public void LoadDirectory(string Dir)
+        private int LoadFiles(string dir, TreeNode td)
         {
-            DirectoryInfo di = new DirectoryInfo(Dir);
-            TreeNode tds = tvFileList.Nodes.Add(di.Name);
-            tds.Tag = di.FullName;
-            tds.StateImageIndex = 0;
-            LoadFiles(Dir, tds);
-            LoadSubDirectories(Dir, tds);
+            // Made for JSON file
+            string[] Files = Directory.GetFiles(dir, "*.json");
+            // Loop through them to see files
+            foreach (string file in Files)
+            {
+                FileInfo fi = new FileInfo(file);
+                TreeNode tds = td.Nodes.Add(fi.Name);
+                tds.Tag = fi.FullName;
+                tds.StateImageIndex = 1;
+
+                //UpdateProgress();
+            }
+            return Files.Length;
         }
+
         private int LoadSubDirectories(string dir, TreeNode td)
         {
             try
             {
-
                 int count = 0;
                 // Get all subdirectories
                 string[] subdirectoryEntries = Directory.GetDirectories(dir);
@@ -91,33 +161,29 @@ namespace eStore.SetUp
                 Console.WriteLine("error" + e.Message);
             }
         }
-        private int LoadFiles(string dir, TreeNode td)
-        {
-            // Made for JSON file
-            string[] Files = Directory.GetFiles(dir, "*.json");
-            // Loop through them to see files
-            foreach (string file in Files)
-            {
-                FileInfo fi = new FileInfo(file);
-                TreeNode tds = td.Nodes.Add(fi.Name);
-                tds.Tag = fi.FullName;
-                tds.StateImageIndex = 1;
 
-                //UpdateProgress();
-            }
-            return Files.Length;
+        private void ReadSheetName(string filename)
+        {
+            lbSheetNames.DataSource = Import.ImportData.GetSheetNames(filename);
+        }
+        private void Reload()
+        {
+            tvFileList.Nodes.Clear();
+            DirectoryInfo di = new DirectoryInfo(TXTOutputFolder.Text);
+            TreeNode tds = tvFileList.Nodes.Add(di.Name);
+            tds.Tag = di.FullName;
+            tds.StateImageIndex = 0;
+            LoadFiles(TXTOutputFolder.Text, tds);
+            LoadSubDirectories(TXTOutputFolder.Text, tds);
         }
 
         private void tvFileList_AfterSelect(object sender, TreeViewEventArgs e)
         {
-
-
             //MessageBox.Show(x);
             lbFileName.Text = (Path.Combine(RootPath, e.Node.FullPath));
 
             if (lbFileName.Text.Contains("Config") && lbFileName.Text.EndsWith(".json"))
             {
-
                 var config = ImportData.ConfigJson(lbFileName.Text);
                 // LBKey0.Text = "ConfigFile";
                 //.Text = lbFileName.Text;
@@ -137,98 +203,12 @@ namespace eStore.SetUp
                     tableLayoutPanel1.Controls.Add(tb, 1, row++);
                 }
             }
-
             else if (lbFileName.Text.EndsWith(".json"))
             {
                 dataGridView1.DataSource = ImportData.JSONFileToDataTable(lbFileName.Text);
                 lbEvents.Items.Add("json file loaded");
                 tabControl1.SelectedTab = tabPage2;
             }
-
-        }
-
-        private void BTNReload_Click(object sender, EventArgs e)
-        {
-            Reload();
-        }
-        void Reload()
-        {
-            tvFileList.Nodes.Clear();
-            DirectoryInfo di = new DirectoryInfo(TXTOutputFolder.Text);
-            TreeNode tds = tvFileList.Nodes.Add(di.Name);
-            tds.Tag = di.FullName;
-            tds.StateImageIndex = 0;
-            LoadFiles(TXTOutputFolder.Text, tds);
-            LoadSubDirectories(TXTOutputFolder.Text, tds);
-        }
-
-
-
-
-        private void BTNSelect_Click(object sender, EventArgs e)
-        {
-            openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Title = "Select Excel File only..";
-            var result = openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                TXTSelectedFile.Text = ExcelFileName = openFileDialog1.FileName;
-                lbSheetNames.DataSource = Import.ImportData.GetSheetNames(openFileDialog1.FileName);
-                lbEvents.Items.Add("Source file open and sheet name list...");
-            }
-            else
-                lbEvents.Items.Add("Source file  could not  open and sheet name listing failed...");
-        }
-
-        private async void BTNProcess_Click(object sender, EventArgs e)
-        {
-            if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
-            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
-            {
-                MessageBox.Show("Success");
-            }
-            else
-            {
-                MessageBox.Show("Error");
-            }
-        }
-
-        private async void BTNToJSON_Click(object sender, EventArgs e)
-        {
-            if (await ImportProcessor.StartImporting(TXTStoreCode.Text, ExcelFileName, TXTSheetName.Text, (int)NUDCol.Value, (int)NUDRow.Value, (int)NUDMaxRow.Value, 
-                (int)NUDMaxCol.Value, Path.Combine(TXTOutputFolder.Text, TXTFileName.Text), CBFileType.Text, ImportData.SaleVMT.VOY))
-            {
-                Reload();
-                lbEvents.Items.Add("Json is created");
-
-            }
-        }
-
-        private void lbSheetNames_DoubleClick(object sender, EventArgs e)
-        {
-            // MessageBox.Show();
-            if (ExcelSheet != null)
-                ExcelSheet.SetActiveSheet(lbSheetNames.Text);
-        }
-
-        private void BTNShowExcel_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(ExcelFileName))
-            {
-                if (ExcelSheet == null)
-                {
-                    ExcelSheet = new Syncfusion.Windows.Forms.Spreadsheet.Spreadsheet();
-                    ExcelSheet.Dock = DockStyle.Fill;
-                    ExcelSheet.FileName = ExcelFileName;
-                    tabPage1.Controls.Add(ExcelSheet);
-                }
-                ExcelSheet.Open(ExcelFileName);
-            }
-        }
-
-        private void BTNLoad_Click(object sender, EventArgs e)
-        {
-            dataGridView1.DataSource = ImportProcessor.LoadJsonFile(CBXOperations.Text);
         }
     }
 }

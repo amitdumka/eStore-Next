@@ -1,5 +1,8 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
+using Syncfusion.Windows.Forms;
 using System.Data;
+using System.IO.Compression;
+using System.Security.Policy;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
@@ -7,23 +10,64 @@ namespace eStore.SetUp.Import
     public class ImportingPurchase
     {
         private string BasePath;
-        private List<string> Cat1 = new List<string>();
-        private List<string> Cat2 = new List<string>();
-        private List<string> Cat3 = new List<string>();
+        private ImportSetting ImportSetting;
+
         private string StoreCode;
+
+        /*
+       Move this to Database or JSON Dump
+        */
+
+        private void UpdateDatabase()
+        {
+
+        }
+        private bool BackupJSon() {
+
+            try
+            {
+                string filename = "", path = "";
+                ZipFile.CreateFromDirectory(path, filename, CompressionLevel.Fastest, true);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+           
+
+        }
+        private void CleanUp() { 
+        //TODO: Make is Generic,
+        }
 
         public async void StartImportingPurchase(string storeCode, string filename, string basePath)
         {
             BasePath = basePath;
             StoreCode = storeCode;
-            bool flag = await CreateCategoriesAsync(ImportBasic.GetSetting("VoyPurchase"));
+            string PurchaseFilename = ImportBasic.GetSetting("VoyPurchase");
+            bool flag = await CreateCategoriesAsync(PurchaseFilename);
+            flag = SyncWithCategories();
+            flag = await GenerateProductItemfromPurchase(PurchaseFilename);
+            flag=await GeneratePurchaseInvoice(StoreCode,PurchaseFilename);
+            flag = await GeneratePurchaseItemAsync(storeCode, PurchaseFilename);
+            flag=await GenerateStockfromPurchase(PurchaseFilename, StoreCode);
+            flag = await UpdatePurchaseStock();
+            flag=await UpdateShippingCost();
+            flag=BackupJSon();
+
+
+
         }
 
         private async Task<bool> CreateCategoriesAsync(string filename)
         {
             var purchases = ImportData.JsonToObject<VoyPurhcase>(filename);
             var categories = purchases.GroupBy(c => c.ProductName).Select(c => new { KK = c.Key.Split("/") }).ToList();
-
+            List<string> Cat1 = new List<string>();
+            List<string> Cat2 = new List<string>();
+            List<string> Cat3 = new List<string>();
             foreach (var category in categories)
             {
                 Cat1.Add(category.KK[0]);
@@ -216,6 +260,7 @@ namespace eStore.SetUp.Import
             }
         }
 
+        [Obsolete]
         private async Task<bool> GenerateStockData(string code, string pfile, string sfile)
         {
             StreamReader reader = new StreamReader(pfile);
@@ -422,10 +467,11 @@ namespace eStore.SetUp.Import
             products = products.OrderBy(c => c.MultiPrice).ThenBy(c => c.Barcode).ThenBy(c => c.CostPrice).ToList();
             var saveFileName = Path.Combine(Path.Combine(ImportBasic.GetSetting("BasePath"), "Products"), "ProductStocks.json");
             var flag = await ImportData.ObjectsToJSONFile<ProductStock>(products, saveFileName);
-            //ImportBasic.AddSetting("ProductStocks", saveFileName);
+            ImportBasic.AddOrUpdateSetting("ProductStocks", saveFileName);
             return flag;
         }
 
+        [Obsolete]
         private async Task<bool> GetMultiPriceStock()
         {
             var Stocks = ImportData.JsonToObject<ProductStock>(ImportBasic.GetSetting("ProductStocks")).Where(c => c.MultiPrice)
@@ -446,6 +492,27 @@ namespace eStore.SetUp.Import
             return flag;
         }
 
+        private void ReadImportSettings()
+        {
+            ImportSetting = new ImportSetting();
+        }
+
+        private bool SyncWithCategories()
+        {
+            //TODO: add or Update Current List need is need. 
+            if (!string.IsNullOrEmpty(ImportSetting.ProductType))
+            {
+
+                var pTs = ImportData.JsonToObject<ProductType>(ImportSetting.ProductType);
+
+            }
+            if (!string.IsNullOrEmpty(ImportSetting.ProductSubCategory))
+            {
+                var pscs = ImportData.JsonToObject<ProductSubCategory>(ImportSetting.ProductSubCategory);
+            }
+            return true;
+        }
+        /* End ot Json Dump*/
         private async Task<bool> UpdatePurchaseStock()
         {
             var Stocks = ImportData.JsonToObject<ProductStock>(ImportBasic.GetSetting("ProductStocks")).ToList();
@@ -489,5 +556,24 @@ namespace eStore.SetUp.Import
 
             return await ImportData.ObjectsToJSONFile<PurchaseProduct>(Purchases, ImportBasic.GetSetting("Purchase-Invoices"));
         }
+    }
+
+    public class ImportParams
+    {
+        public string FileName { get; set; }
+        public int MaxCol { get; set; }
+        public int MaxRow { get; set; }
+        public string SheetName { get; set; }
+        public int StartCol { get; set; }
+        public int StartRow { get; set; }
+    }
+
+    public class ImportSetting
+    {
+        public string ProductItem { get; set; }
+        public string ProductSubCategory { get; set; }
+        public string ProductType { get; set; }
+        public string Vendors { get; set; }
+
     }
 }

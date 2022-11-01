@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.IO;
+using System.IO.Compression;
+using System.Text.Json;
 
 namespace eStore.SetUp.Import
 {
@@ -71,6 +73,42 @@ namespace eStore.SetUp.Import
             }
             catch (Exception)
             {
+                return false;
+            }
+        }
+
+        public static bool BackupJSon(string filename, string path)
+        {
+
+            try
+            {
+
+                ZipFile.CreateFromDirectory(path, filename, CompressionLevel.Fastest, true);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
+        public static bool ClenJson(string itemName)
+        {
+            try
+            {
+
+                var path = Settings.GetValueOrDefault(itemName, "");
+                if (string.IsNullOrEmpty(path) == false)
+                {
+                    Directory.Delete(Path.GetDirectoryName(path), true);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+
                 return false;
             }
         }

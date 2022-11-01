@@ -5,6 +5,20 @@ namespace eStore.SetUp.Import
 
     public class ImportProcessor
     {
+        /// <summary>
+        /// Import from Excel Sheet to JSON File For Raw Processing
+        /// </summary>
+        /// <param name="storecode"></param>
+        /// <param name="filename"></param>
+        /// <param name="sheetName"></param>
+        /// <param name="startCol"></param>
+        /// <param name="startRow"></param>
+        /// <param name="maxRow"></param>
+        /// <param name="maxCol"></param>
+        /// <param name="outputfilename"></param>
+        /// <param name="fileType"></param>
+        /// <param name="vMT"></param>
+        /// <returns></returns>
         public static async Task<bool> StartImporting(string storecode, string filename, string sheetName, int startCol, int startRow, int maxRow, int maxCol, string outputfilename, string fileType, ImportData.SaleVMT vMT)
         {
             var datatable = ImportData.ReadExcelToDatatable(filename, sheetName, startRow, startCol, maxRow, maxCol);

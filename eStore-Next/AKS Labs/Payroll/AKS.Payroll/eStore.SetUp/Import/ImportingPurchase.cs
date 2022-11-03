@@ -1,8 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
-using Syncfusion.Windows.Forms;
 using System.Data;
 using System.IO.Compression;
-using System.Security.Policy;
 using System.Text.Json;
 
 namespace eStore.SetUp.Import
@@ -18,12 +16,40 @@ namespace eStore.SetUp.Import
        Move this to Database or JSON Dump
         */
 
-        private void UpdateDatabase()
+        private async Task<bool> UpdateDatabase()
         {
+            var bpath = Path.Combine(ImportBasic.GetSetting("BackUppath"), "Purchases");
 
+            var filename = ImportBasic.GetSetting("PurchaseInvoices");
+            var backupfilename = Path.Combine(bpath, "PurchaseInovices.json");
+            bool flag = await ImportData.UpdateBackKupJson<PurchaseProduct>(filename, backupfilename);
+
+            filename = ImportBasic.GetSetting("PurchaseItems");
+            backupfilename = Path.Combine(bpath, "PurchaseItems.json");
+            flag = await ImportData.UpdateBackKupJson<PurchaseItem>(filename, backupfilename);
+
+            filename = ImportBasic.GetSetting("Stocks");
+            backupfilename = Path.Combine(bpath, "Stocks.json");
+            flag = await ImportData.UpdateBackKupJson<ProductStock>(filename, backupfilename);
+
+            bpath = Path.Combine(ImportBasic.GetSetting("BackUppath"), "Commons");
+            filename = ImportBasic.GetSetting("ProductItems");
+            backupfilename = Path.Combine(bpath, "ProductItems.json");
+            flag = await ImportData.UpdateBackKupJson<ProductItem>(filename, backupfilename);
+
+            filename = ImportBasic.GetSetting("ProductSubCategory");
+            backupfilename = Path.Combine(bpath, "ProductSubCategory.json");
+            flag = await ImportData.UpdateBackKupJson<ProductSubCategory>(filename, backupfilename);
+
+            filename = ImportBasic.GetSetting("ProductType");
+            backupfilename = Path.Combine(bpath, "ProductTypes.json");
+            flag = await ImportData.UpdateBackKupJson<ProductType>(filename, backupfilename);
+
+            return flag;
         }
-        private bool BackupJSon() {
 
+        private bool BackupJSon()
+        {
             try
             {
                 string filename = "", path = "";
@@ -32,14 +58,13 @@ namespace eStore.SetUp.Import
             }
             catch (Exception)
             {
-
                 return false;
             }
-           
-
         }
-        private void CleanUp() { 
-        //TODO: Make is Generic,
+
+        private void CleanUp()
+        {
+            //TODO: Make is Generic,
         }
 
         public async void StartImportingPurchase(string storeCode, string filename, string basePath)
@@ -50,14 +75,12 @@ namespace eStore.SetUp.Import
             bool flag = await CreateCategoriesAsync(PurchaseFilename);
             flag = SyncWithCategories();
             flag = await GenerateProductItemfromPurchase(PurchaseFilename);
-            flag=await GeneratePurchaseInvoice(StoreCode,PurchaseFilename);
+            flag = await GeneratePurchaseInvoice(StoreCode, PurchaseFilename);
             flag = await GeneratePurchaseItemAsync(storeCode, PurchaseFilename);
-            flag=await GenerateStockfromPurchase(PurchaseFilename, StoreCode);
+            flag = await GenerateStockfromPurchase(PurchaseFilename, StoreCode);
             flag = await UpdatePurchaseStock();
-            flag=await UpdateShippingCost();
-            flag=BackupJSon();
-
-
+            flag = await UpdateShippingCost();
+            flag = BackupJSon();
 
         }
 
@@ -499,12 +522,10 @@ namespace eStore.SetUp.Import
 
         private bool SyncWithCategories()
         {
-            //TODO: add or Update Current List need is need. 
+            //TODO: add or Update Current List need is need.
             if (!string.IsNullOrEmpty(ImportSetting.ProductType))
             {
-
                 var pTs = ImportData.JsonToObject<ProductType>(ImportSetting.ProductType);
-
             }
             if (!string.IsNullOrEmpty(ImportSetting.ProductSubCategory))
             {
@@ -512,7 +533,9 @@ namespace eStore.SetUp.Import
             }
             return true;
         }
+
         /* End ot Json Dump*/
+
         private async Task<bool> UpdatePurchaseStock()
         {
             var Stocks = ImportData.JsonToObject<ProductStock>(ImportBasic.GetSetting("ProductStocks")).ToList();
@@ -574,6 +597,5 @@ namespace eStore.SetUp.Import
         public string ProductSubCategory { get; set; }
         public string ProductType { get; set; }
         public string Vendors { get; set; }
-
     }
 }

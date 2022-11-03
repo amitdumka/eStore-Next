@@ -88,7 +88,13 @@ namespace eStore.SetUp.Import
             var dataTable = JsonSerializer.Deserialize<DataTable>(json, options);
             return dataTable;
         }
-
+        public static  Task<bool> UpdateBackKupJson<T>(string currentfilename, string backupfilename)
+        {
+            var current = ImportData.JsonToObject<T>(currentfilename);
+            var backup = ImportData.JsonToObject<T>(backupfilename);
+            backup.AddRange(current);
+            return ImportData.ObjectsToJSONFile<T>(backup, backupfilename);
+        }
         public static List<T>? JsonToObject<T>(string filename)
         {
             StreamReader reader = new StreamReader(filename);

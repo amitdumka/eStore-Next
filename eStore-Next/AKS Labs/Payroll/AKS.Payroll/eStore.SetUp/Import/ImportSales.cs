@@ -1,5 +1,6 @@
 ﻿using AKS.Shared.Commons.Models.Inventory;
 using AKS.Shared.Commons.Models.Sales;
+using Syncfusion.XlsIO.Parser.Biff_Records.PivotTable;
 using System.Data;
 using System.Text.Json;
 
@@ -7,7 +8,24 @@ namespace eStore.SetUp.Import
 {
     public class ImportSales
     {
+        private string BasePath = "", StoreCode = "";
         private SortedDictionary<string, string> Salesman = new SortedDictionary<string, string>();
+
+        public async void StartImportingSales(string storeCode, string filename, string basePath)
+        {
+            BasePath = basePath;
+            StoreCode = storeCode;
+            string SalesFileName = ImportBasic.GetSetting("VoySale");
+            string SaleSummary = ImportBasic.GetSetting("VoySaleSummary");
+
+            bool flag = await GenerateSaleInvoice(StoreCode, SalesFileName);
+            flag = await GenerateSaleItem(StoreCode, SalesFileName);
+            flag = await GenerateSalePayment(StoreCode, SalesFileName);
+            flag = await SaleCleanUp();
+            ProcessSaleSummary(SalesFileName, SaleSummary);
+            //flag =  await GenerateDailySale(StoreCode, SalesFileName, "");
+        }
+
 
         private async Task<bool> CreatePayment()
         {
@@ -53,6 +71,7 @@ namespace eStore.SetUp.Import
 
         private void GenerateDailySale(string code, string filename, string filename2)
         {
+            //TODO: Pending 
             StreamReader reader = new StreamReader(filename);
             var json = reader.ReadToEnd();
             var sales = JsonSerializer.Deserialize<List<ProductSale>>(json);
@@ -231,12 +250,12 @@ namespace eStore.SetUp.Import
             return true;
         }
 
-        private void ProcessSaleSummary()
+        private List<InvoiceError> ProcessSaleSummary(string saleFileName, string saleSummaaryFileName)
         {
             //Invoice No	Invoice Date	Invoice Type	Quantity	MRP	Discount Amt	Basic Amt	Tax Amt	Round Off	Bill Amt	Payment Type
 
-            var saleSummary = ImportData.JSONFileToDataTable(ImportBasic.GetSetting("SaleSummary"));
-            var sales = ImportData.JsonToObject<ProductSale>(ImportBasic.GetSetting("SaleInvoice"));
+            var saleSummary = ImportData.JSONFileToDataTable(saleSummaaryFileName);
+            var sales = ImportData.JsonToObject<ProductSale>(saleFileName);
             List<InvoiceError> Errors = new List<InvoiceError>();
             for (int i = 0; i < saleSummary.Rows.Count; i++)
             {
@@ -284,6 +303,8 @@ namespace eStore.SetUp.Import
                     //Inv Missing.
                 }
             }
+
+            return Errors;
         }
 
         private Task<bool> SaleCleanUp()

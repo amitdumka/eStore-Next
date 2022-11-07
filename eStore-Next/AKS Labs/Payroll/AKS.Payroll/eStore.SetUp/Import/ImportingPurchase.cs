@@ -62,11 +62,6 @@ namespace eStore.SetUp.Import
             }
         }
 
-        private void CleanUp()
-        {
-            //TODO: Make is Generic,
-        }
-
         public async void StartImportingPurchase(string storeCode, string filename, string basePath)
         {
             BasePath = basePath;

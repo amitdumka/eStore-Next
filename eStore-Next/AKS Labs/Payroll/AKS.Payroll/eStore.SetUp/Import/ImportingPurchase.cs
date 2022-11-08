@@ -62,11 +62,11 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public async void StartImportingPurchase(string storeCode, string filename, string basePath)
+        public async void StartImportingPurchase(string storeCode, string settingName, string basePath)
         {
             BasePath = basePath;
             StoreCode = storeCode;
-            string PurchaseFilename = ImportBasic.GetSetting("VoyPurchase");
+            string PurchaseFilename = ImportBasic.GetSetting(settingName);
             bool flag = await CreateCategoriesAsync(PurchaseFilename);
             flag = SyncWithCategories();
             flag = await GenerateProductItemfromPurchase(PurchaseFilename);

@@ -56,34 +56,32 @@ namespace eStore.SetUp.Import
             return dt;
         }
 
-        public async Task<bool> ProcessOperation(string store, string ops)
+        public async Task<bool> ProcessOperation(string store, string ops, string filename)
         {
             if (ImportBasic.Settings == null || ImportBasic.Settings.Count <= 0)
                 ImportBasic.ReadSetting();
             bool flag = false;
             switch (ops)
             {
-                case "ToVoyPurchase": flag = await ToVoyPurchaseAsync(); break;
-                case "ToVoySale": flag = await ToVoySale(); break;
+                case "ToVoyPurchase": flag = await ToVoyPurchaseAsync(filename); break;
+                case "ToVoySale": flag = await ToVoySale(filename); break;
                 default: break;
             }
             return flag;
         }
 
-        private async Task<bool> ToVoyPurchaseAsync()
+        private async Task<bool> ToVoyPurchaseAsync(string jsonfilename)
         {
             try
             {
                 if (ImportBasic.Settings == null || ImportBasic.Settings.Count <= 0)
                     ImportBasic.ReadSetting();
-
-                var datatable = ImportData.JSONFileToDataTable(ImportBasic.GetSetting("Purchase"));
+                var datatable = ImportData.JSONFileToDataTable(jsonfilename);
                 var json = ImportData.PurchaseDatatableToJson(datatable);
                 string filename = Path.Combine(ImportBasic.GetSetting("BasePath"), @"Purchase\VoyPurchase.json");
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
                 ImportBasic.AddSetting("VoyPurchase", filename);
                 File.WriteAllText(filename, json);
-
                 return true;
             }
             catch (Exception e)
@@ -92,14 +90,14 @@ namespace eStore.SetUp.Import
             }
         }
 
-        private async Task<bool> ToVoySale()
+        private async Task<bool> ToVoySale(string jsonfilename)
         {
             try
             {
                 if (ImportBasic.Settings == null || ImportBasic.Settings.Count <= 0)
                     ImportBasic.ReadSetting();
 
-                var datatable = ImportData.JSONFileToDataTable(ImportBasic.GetSetting("Sale"));
+                var datatable = ImportData.JSONFileToDataTable(jsonfilename);
 
                 var json = ImportData.SaleDatatableToJSON(datatable, ImportData.SaleVMT.VOY);
                 string filename = Path.Combine(ImportBasic.GetSetting("BasePath"), @"Sales\VoySale.json");
@@ -114,6 +112,12 @@ namespace eStore.SetUp.Import
             {
                 return false;
             }
+        }
+        private bool BackupImportJson(string path)
+        {
+            string fn = $@"{ImportBasic.GetSetting("Store")}_ImportedJSON_{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}.json";
+            return ImportBasic.BackupJSon("", path);
+            
         }
     }
 

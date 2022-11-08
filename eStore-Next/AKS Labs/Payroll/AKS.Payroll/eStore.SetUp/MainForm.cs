@@ -31,8 +31,12 @@ namespace eStore.SetUp
 
         private async void BTNProcess_Click(object sender, EventArgs e)
         {
+            var result = MessageBox.Show("Kindly check properly before going futher, Kinldy  check you have selected correct file from list and correct process. Do You want to continue",
+                "Confirm", MessageBoxButtons.OKCancel);
+            if (result == DialogResult.Cancel) return;
             if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
-            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text))
+
+            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text, lbFileName.Text))
             {
                 MessageBox.Show("Success");
             }

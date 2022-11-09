@@ -75,6 +75,9 @@ namespace eStore.SetUp.Import
                 using FileStream createStream = File.OpenWrite(ConfigFile);
                 await JsonSerializer.SerializeAsync(createStream, config);
                 await createStream.DisposeAsync();
+            }else
+            {
+                ReadSetting();
             }
         }
 

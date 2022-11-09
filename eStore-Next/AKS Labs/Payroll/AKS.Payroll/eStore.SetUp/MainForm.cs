@@ -1,4 +1,5 @@
 using eStore.SetUp.Import;
+using Syncfusion.XlsIO.Parser.Biff_Records;
 
 namespace eStore.SetUp
 {
@@ -36,7 +37,7 @@ namespace eStore.SetUp
             if (result == DialogResult.Cancel) return;
             if (ImportProcessor == null) ImportProcessor = new ImportProcessor();
 
-            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text, lbFileName.Text))
+            if (await ImportProcessor.ProcessOperation(TXTStoreCode.Text.Trim(), CBXOperations.Text, lbFileName.Text,TXTSetting.Text, TXTBasePath.Text))
             {
                 MessageBox.Show("Success");
             }
@@ -76,6 +77,7 @@ namespace eStore.SetUp
                 RootPath = Path.GetDirectoryName(TXTOutputFolder.Text);
                 LoadDirectory(folderBrowserDialog1.SelectedPath);
                 lbEvents.Items.Add("Output folder set");
+                TXTBasePath.Text = folderBrowserDialog1.SelectedPath;
                 ImportBasic.InitSettingAsync(TXTOutputFolder.Text, TXTStoreCode.Text);
             }
         }
@@ -212,6 +214,11 @@ namespace eStore.SetUp
                 dataGridView1.DataSource = ImportData.JSONFileToDataTable(lbFileName.Text);
                 lbEvents.Items.Add("json file loaded");
                 tabControl1.SelectedTab = tabPage2;
+               if(ImportBasic.Settings.ContainsValue(lbFileName.Text))
+                {
+                   var key= ImportBasic.Settings.Where(c=>c.Value==lbFileName.Text).FirstOrDefault().Key;
+                    if(key!=null) TXTSetting.Text = key;    
+                } else  TXTSetting.Text = "";
             }
         }
     }

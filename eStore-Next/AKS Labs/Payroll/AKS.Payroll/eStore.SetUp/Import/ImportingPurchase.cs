@@ -62,11 +62,11 @@ namespace eStore.SetUp.Import
             }
         }
 
-        public async void StartImportingPurchase(string storeCode, string settingName, string basePath)
+        public async Task<bool> StartImportingPurchase(string storeCode, string settingName, string basePath)
         {
             BasePath = basePath;
             StoreCode = storeCode;
-            string PurchaseFilename = ImportBasic.GetSetting(settingName);
+            string PurchaseFilename = settingName;// ImportBasic.GetSetting(settingName);
             bool flag = await CreateCategoriesAsync(PurchaseFilename);
             flag = SyncWithCategories();
             flag = await GenerateProductItemfromPurchase(PurchaseFilename);
@@ -76,6 +76,7 @@ namespace eStore.SetUp.Import
             flag = await UpdatePurchaseStock();
             flag = await UpdateShippingCost();
             flag = BackupJSon();
+            return flag;
 
         }
 

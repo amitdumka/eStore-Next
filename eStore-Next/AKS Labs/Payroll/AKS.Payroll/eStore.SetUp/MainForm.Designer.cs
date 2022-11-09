@@ -81,6 +81,10 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.TXTSetting = new System.Windows.Forms.TextBox();
+            this.TXTBasePath = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -112,7 +116,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1265, 832);
+            this.panel1.Size = new System.Drawing.Size(1415, 832);
             this.panel1.TabIndex = 0;
             // 
             // panel3
@@ -123,7 +127,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(113, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(962, 732);
+            this.panel3.Size = new System.Drawing.Size(1112, 732);
             this.panel3.TabIndex = 6;
             // 
             // tabControl1
@@ -135,7 +139,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 156);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(962, 576);
+            this.tabControl1.Size = new System.Drawing.Size(1112, 576);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -143,7 +147,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(954, 548);
+            this.tabPage1.Size = new System.Drawing.Size(1104, 548);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Excel Sheet";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -175,7 +179,7 @@
             this.tabPage3.Controls.Add(this.tableLayoutPanel1);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(954, 548);
+            this.tabPage3.Size = new System.Drawing.Size(1104, 548);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Config";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -191,7 +195,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(954, 0);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1104, 0);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // panel4
@@ -204,7 +208,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(962, 156);
+            this.panel4.Size = new System.Drawing.Size(1112, 156);
             this.panel4.TabIndex = 7;
             // 
             // groupBox7
@@ -212,16 +216,16 @@
             this.groupBox7.Controls.Add(this.TXTStoreName);
             this.groupBox7.Controls.Add(this.TXTStoreCode);
             this.groupBox7.Controls.Add(this.label10);
-            this.groupBox7.Location = new System.Drawing.Point(806, 19);
+            this.groupBox7.Location = new System.Drawing.Point(7, 70);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(162, 123);
+            this.groupBox7.Size = new System.Drawing.Size(323, 75);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Stores";
             // 
             // TXTStoreName
             // 
-            this.TXTStoreName.Location = new System.Drawing.Point(6, 52);
+            this.TXTStoreName.Location = new System.Drawing.Point(167, 19);
             this.TXTStoreName.Name = "TXTStoreName";
             this.TXTStoreName.Size = new System.Drawing.Size(150, 23);
             this.TXTStoreName.TabIndex = 2;
@@ -229,7 +233,7 @@
             // 
             // TXTStoreCode
             // 
-            this.TXTStoreCode.Location = new System.Drawing.Point(56, 19);
+            this.TXTStoreCode.Location = new System.Drawing.Point(53, 19);
             this.TXTStoreCode.Name = "TXTStoreCode";
             this.TXTStoreCode.Size = new System.Drawing.Size(100, 23);
             this.TXTStoreCode.TabIndex = 1;
@@ -246,21 +250,25 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label12);
+            this.groupBox6.Controls.Add(this.label11);
+            this.groupBox6.Controls.Add(this.TXTBasePath);
+            this.groupBox6.Controls.Add(this.TXTSetting);
             this.groupBox6.Controls.Add(this.BTNLoad);
             this.groupBox6.Controls.Add(this.lbFileName);
             this.groupBox6.Controls.Add(this.BTNProcess);
             this.groupBox6.Controls.Add(this.CBXOperations);
             this.groupBox6.Controls.Add(this.label8);
-            this.groupBox6.Location = new System.Drawing.Point(16, 73);
+            this.groupBox6.Location = new System.Drawing.Point(808, 16);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(314, 77);
+            this.groupBox6.Size = new System.Drawing.Size(314, 129);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Operations";
             // 
             // BTNLoad
             // 
-            this.BTNLoad.Location = new System.Drawing.Point(200, 46);
+            this.BTNLoad.Location = new System.Drawing.Point(223, 76);
             this.BTNLoad.Name = "BTNLoad";
             this.BTNLoad.Size = new System.Drawing.Size(75, 23);
             this.BTNLoad.TabIndex = 4;
@@ -294,24 +302,12 @@
             // 
             this.CBXOperations.FormattingEnabled = true;
             this.CBXOperations.Items.AddRange(new object[] {
-            "Category",
-            "ProductItem",
-            "PurchaseInvoice",
-            "PurchaseItem",
-            "PurchaseCleanup",
-            "Stocks",
-            "SaleInvoice",
-            "SaleItem",
-            "SaleCleanUp",
-            "Payments",
-            "InnerWearPurchase",
-            "InnerWearPurchaseItem",
-            "AnyOtherPurchaseInvoice",
-            "AnyOtherPurchaseItem",
-            "ManualInvoice",
-            "ManualINvoiceItem",
             "ToVoyPurchase",
-            "ToVoySale"});
+            "ToVoySale",
+            "Purchase",
+            "Sale",
+            "PurchaseCleanup",
+            "SaleCleanup"});
             this.CBXOperations.Location = new System.Drawing.Point(73, 22);
             this.CBXOperations.Name = "CBXOperations";
             this.CBXOperations.Size = new System.Drawing.Size(121, 23);
@@ -425,7 +421,7 @@
             // 
             this.TXTFileName.Location = new System.Drawing.Point(75, 88);
             this.TXTFileName.Name = "TXTFileName";
-            this.TXTFileName.Size = new System.Drawing.Size(177, 23);
+            this.TXTFileName.Size = new System.Drawing.Size(194, 23);
             this.TXTFileName.TabIndex = 21;
             // 
             // label9
@@ -577,7 +573,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox5.Location = new System.Drawing.Point(113, 732);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(962, 100);
+            this.groupBox5.Size = new System.Drawing.Size(1112, 100);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Events";
@@ -589,7 +585,7 @@
             this.lbEvents.ItemHeight = 15;
             this.lbEvents.Location = new System.Drawing.Point(3, 19);
             this.lbEvents.Name = "lbEvents";
-            this.lbEvents.Size = new System.Drawing.Size(956, 78);
+            this.lbEvents.Size = new System.Drawing.Size(1106, 78);
             this.lbEvents.TabIndex = 0;
             // 
             // groupBox3
@@ -597,7 +593,7 @@
             this.groupBox3.Controls.Add(this.tvFileList);
             this.groupBox3.Controls.Add(this.panel2);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox3.Location = new System.Drawing.Point(1075, 0);
+            this.groupBox3.Location = new System.Drawing.Point(1225, 0);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(190, 832);
             this.groupBox3.TabIndex = 2;
@@ -693,12 +689,44 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // TXTSetting
+            // 
+            this.TXTSetting.Location = new System.Drawing.Point(73, 73);
+            this.TXTSetting.Name = "TXTSetting";
+            this.TXTSetting.Size = new System.Drawing.Size(144, 23);
+            this.TXTSetting.TabIndex = 5;
+            // 
+            // TXTBasePath
+            // 
+            this.TXTBasePath.Location = new System.Drawing.Point(73, 102);
+            this.TXTBasePath.Name = "TXTBasePath";
+            this.TXTBasePath.Size = new System.Drawing.Size(212, 23);
+            this.TXTBasePath.TabIndex = 6;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 81);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(44, 15);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Setting";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(7, 105);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(58, 15);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Base Path";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1265, 832);
+            this.ClientSize = new System.Drawing.Size(1415, 832);
             this.Controls.Add(this.panel1);
             this.Name = "MainForm";
             this.Text = "Import Data";
@@ -788,5 +816,9 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button BTNLoad;
         private ComboBox CBXSaleMode;
+        private Label label12;
+        private Label label11;
+        private TextBox TXTBasePath;
+        private TextBox TXTSetting;
     }
 }

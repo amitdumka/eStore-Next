@@ -56,7 +56,7 @@ namespace eStore.SetUp.Import
             return dt;
         }
 
-        public async Task<bool> ProcessOperation(string store, string ops, string filename)
+        public async Task<bool> ProcessOperation(string store, string ops, string filename, string setting, string basePath)
         {
             if (ImportBasic.Settings == null || ImportBasic.Settings.Count <= 0)
                 ImportBasic.ReadSetting();
@@ -65,6 +65,10 @@ namespace eStore.SetUp.Import
             {
                 case "ToVoyPurchase": flag = await ToVoyPurchaseAsync(filename); break;
                 case "ToVoySale": flag = await ToVoySale(filename); break;
+                case "Purchase":flag=await new ImportingPurchase().StartImportingPurchase(store, filename, basePath); break;
+                case "Sale": new ImportSales().StartImportingSales(store, filename, basePath); break;
+                case "PurchaseCleanUp": break;
+                case "SaleCleanUp": break;
                 default: break;
             }
             return flag;
@@ -117,7 +121,7 @@ namespace eStore.SetUp.Import
         {
             string fn = $@"{ImportBasic.GetSetting("Store")}_ImportedJSON_{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}.json";
             return ImportBasic.BackupJSon("", path);
-            
+
         }
     }
 

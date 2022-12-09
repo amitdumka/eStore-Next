@@ -42,6 +42,10 @@
             this.TXTStoreCode = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.TXTBasePath = new System.Windows.Forms.TextBox();
+            this.TXTSetting = new System.Windows.Forms.TextBox();
             this.BTNLoad = new System.Windows.Forms.Button();
             this.lbFileName = new System.Windows.Forms.Label();
             this.BTNProcess = new System.Windows.Forms.Button();
@@ -81,10 +85,6 @@
             this.lbSheetNames = new System.Windows.Forms.ListBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.TXTSetting = new System.Windows.Forms.TextBox();
-            this.TXTBasePath = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -158,7 +158,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(954, 548);
+            this.tabPage2.Size = new System.Drawing.Size(1104, 548);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Json Table";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -171,7 +171,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(948, 542);
+            this.dataGridView1.Size = new System.Drawing.Size(1098, 542);
             this.dataGridView1.TabIndex = 0;
             // 
             // tabPage3
@@ -266,6 +266,38 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Operations";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(7, 105);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(58, 15);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Base Path";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 81);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(44, 15);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "Setting";
+            // 
+            // TXTBasePath
+            // 
+            this.TXTBasePath.Location = new System.Drawing.Point(73, 102);
+            this.TXTBasePath.Name = "TXTBasePath";
+            this.TXTBasePath.Size = new System.Drawing.Size(212, 23);
+            this.TXTBasePath.TabIndex = 6;
+            // 
+            // TXTSetting
+            // 
+            this.TXTSetting.Location = new System.Drawing.Point(73, 73);
+            this.TXTSetting.Name = "TXTSetting";
+            this.TXTSetting.Size = new System.Drawing.Size(144, 23);
+            this.TXTSetting.TabIndex = 5;
+            // 
             // BTNLoad
             // 
             this.BTNLoad.Location = new System.Drawing.Point(223, 76);
@@ -274,8 +306,7 @@
             this.BTNLoad.TabIndex = 4;
             this.BTNLoad.Text = "Load";
             this.BTNLoad.UseVisualStyleBackColor = true;
-            this.BTNLoad.Visible = false;
-            this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_Click);
+            this.BTNLoad.Click += new System.EventHandler(this.BTNLoad_ClickAsync);
             // 
             // lbFileName
             // 
@@ -688,38 +719,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // TXTSetting
-            // 
-            this.TXTSetting.Location = new System.Drawing.Point(73, 73);
-            this.TXTSetting.Name = "TXTSetting";
-            this.TXTSetting.Size = new System.Drawing.Size(144, 23);
-            this.TXTSetting.TabIndex = 5;
-            // 
-            // TXTBasePath
-            // 
-            this.TXTBasePath.Location = new System.Drawing.Point(73, 102);
-            this.TXTBasePath.Name = "TXTBasePath";
-            this.TXTBasePath.Size = new System.Drawing.Size(212, 23);
-            this.TXTBasePath.TabIndex = 6;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 81);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(44, 15);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "Setting";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(7, 105);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(58, 15);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "Base Path";
             // 
             // MainForm
             // 

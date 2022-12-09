@@ -1,3 +1,4 @@
+using eStore.SetUp.Export;
 using eStore.SetUp.Import;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 
@@ -25,9 +26,13 @@ namespace eStore.SetUp
             LoadSubDirectories(Dir, tds);
         }
 
-        private void BTNLoad_Click(object sender, EventArgs e)
+        private async void BTNLoad_ClickAsync(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = ImportProcessor.LoadJsonFile(CBXOperations.Text);
+            //TODO:dataGridView1.DataSource = ImportProcessor.LoadJsonFile(CBXOperations.Text);
+            //dataGridView1.DataSource = SQLJson.Test();
+            SQLJson sQL = new SQLJson();
+            var result = await sQL.BackupDatabase();
+            if (result == true) MessageBox.Show("Ok"); else MessageBox.Show("Error");
         }
 
         private async void BTNProcess_Click(object sender, EventArgs e)

@@ -15,7 +15,6 @@ using eStore.ViewModels.List.Dashboard;
 using eStore.ViewModels.List.Inventory;
 using eStore.ViewModels.List.Payroll;
 using Syncfusion.Maui.Core.Hosting;
-using Syncfusion.Maui.DataGrid.Hosting;
 
 public static class MauiProgram
 {
@@ -31,7 +30,7 @@ public static class MauiProgram
                 fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
             });
         builder.ConfigureSyncfusionCore();
-        builder.ConfigureSyncfusionDataGrid();
+       // builder.ConfigureSyncfusionDataGrid();
 
         //Accounting
         //Voucher

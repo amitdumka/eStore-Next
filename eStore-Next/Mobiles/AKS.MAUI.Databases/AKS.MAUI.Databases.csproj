@@ -24,12 +24,17 @@
 	  <None Remove="ServerTask\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.7.22376.2" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.7.22376.2" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0-preview.7.22376.2" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="ServerTask\" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="DevExpress.Maui.Navigation">
+	    <Version>22.1.1-pre-22060</Version>
+	  </PackageReference>
 	</ItemGroup>
 	<Import Project="..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems" Label="Shared" Condition="Exists('..\..\AKS Labs\Payroll\AKS.Shared.Payrolls\AKS.Shared.Payrolls.projitems')" />
 	<Import Project="..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems" Label="Shared" Condition="Exists('..\..\AKS Labs\Shared\AKS.Shared.Commons\AKS.Shared.Commons.projitems')" />

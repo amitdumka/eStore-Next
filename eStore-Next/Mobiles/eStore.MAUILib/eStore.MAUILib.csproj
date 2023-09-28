@@ -67,8 +67,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="20.2.50" />
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	  <PackageReference Include="Syncfusion.Maui.DataGrid" Version="23.1.38" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Pages\Auth\LoginPage.xaml">
@@ -141,5 +141,15 @@
 	  <MauiImage Include="Resources\Images\arlogo.png" />
 	  <MauiImage Include="Resources\Images\shalini.jpg" />
 	  <MauiImage Include="Resources\Images\thearvindstore004.jpg" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="DevExpress.Maui.Navigation">
+	    <Version>22.1.1-pre-22060</Version>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-ios'">
+	  <PackageReference Include="DevExpress.Maui.Navigation">
+	    <Version>22.1.1-pre-22060</Version>
+	  </PackageReference>
 	</ItemGroup>
 </Project>

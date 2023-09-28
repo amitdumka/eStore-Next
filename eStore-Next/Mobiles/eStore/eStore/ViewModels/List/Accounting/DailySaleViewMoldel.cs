@@ -1,12 +1,12 @@
 ﻿using AKS.Shared.Commons.Models.Sales;
 using AKS.Shared.Commons.Ops;
-using Android.OS;
+//using Android.OS;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using eStore.MAUILib.DataModels.Accounting;
 using eStore.MAUILib.Helpers;
 using eStore.MAUILib.ViewModels.Base;
-using Java.Lang;
+//using Java.Lang;
 using Syncfusion.Maui.DataGrid;
 
 namespace eStore.ViewModels.List.Accounting

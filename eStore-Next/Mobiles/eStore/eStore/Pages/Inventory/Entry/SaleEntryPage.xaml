@@ -25,8 +25,8 @@
                     <dxe:AutoCompleteEdit.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Label Padding="10" Text="{Binding MobileNo}" FontAttributes="Bold"/>
-                                <Label Padding="10" Grid.Column="2" Text="{Binding CustomerName}" HorizontalTextAlignment="End"/>
+                                <Label Padding="10" Text="{Binding MobileNo}" FontAttributes="Bold" />
+                                <Label Padding="10" Grid.Column="2" Text="{Binding CustomerName}" HorizontalTextAlignment="End" />
                             </Grid>
                         </DataTemplate>
                     </dxe:AutoCompleteEdit.ItemTemplate>
@@ -35,7 +35,7 @@
                     </dxe:AutoCompleteEdit.ItemsSourceProvider>
                 </dxe:AutoCompleteEdit>
                 <Entry Placeholder="Customer Name" Text="{Binding CustomerName}" />
-                <ImageButton Source="rain.png"  Command="AddCustomerCommand"/>
+                <!--<ImageButton Source="rain.png"  Command="AddCustomerCommand" />-->
             </HorizontalStackLayout>
 
             <HorizontalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
@@ -53,11 +53,11 @@
             </HorizontalStackLayout>
 
             <HorizontalStackLayout BackgroundColor="{x:StaticResource Accent_Blue200}">
-                <dxe:TextEdit PlaceholderText="Barcode" Text="{Binding Barcode}" LabelText="Barcode"  />
-                <dxe:NumericEdit PlaceholderText="Qty" Value="{Binding Qty}" DisplayFormat="n1" MaxDecimalDigitCount="2"/>
-                <dxe:NumericEdit PlaceholderText="Rate" Value="{Binding Rate}" DisplayFormat="c"/>
-                <dxe:NumericEdit PlaceholderText="Discount" Value="{Binding Discount}" DisplayFormat="c"/>
-                <dxe:NumericEdit PlaceholderText="LineTotal" Value="{Binding LineTotal}" DisplayFormat="c"/>
+                <dxe:TextEdit PlaceholderText="Barcode" Text="{Binding Barcode}" LabelText="Barcode" />
+                <dxe:NumericEdit PlaceholderText="Qty" Value="{Binding Qty}" DisplayFormat="n1" MaxDecimalDigitCount="2" />
+                <dxe:NumericEdit PlaceholderText="Rate" Value="{Binding Rate}" DisplayFormat="c" />
+                <dxe:NumericEdit PlaceholderText="Discount" Value="{Binding Discount}" DisplayFormat="c" />
+                <dxe:NumericEdit PlaceholderText="LineTotal" Value="{Binding LineTotal}" DisplayFormat="c" />
                 <ImageButton Command="{Binding AddSaleItemCommand}" Source="rain.png" />
             </HorizontalStackLayout>
             <BoxView
@@ -83,7 +83,6 @@
                             <Grid Padding="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -121,9 +120,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </ScrollView>
-
         </StackLayout>
     </ScrollView>
 </ContentPage>

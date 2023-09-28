@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using eStore.DatabaseSyncService.Services;
 using eStore.MAUILib.DataModels.Auth;
 using eStore.MAUILib.Helpers;
+using eStore.MAUILib.Pages.Auth;
 using eStore.MAUILib.ViewModels.Base;
 using Syncfusion.Maui.DataGrid;
 using System.ComponentModel.DataAnnotations;
@@ -167,6 +168,7 @@ namespace eStore.MAUILib.ViewModels.Auth
         private async Task<bool> SignOut()
         {
             CurrentSession.Clear();
+            Application.Current.MainPage = new LoginPage(new Shell());
             return true;
         }
 

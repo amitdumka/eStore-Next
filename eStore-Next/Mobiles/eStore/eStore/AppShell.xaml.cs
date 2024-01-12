@@ -35,6 +35,7 @@ namespace eStore
             Routing.RegisterRoute("sale/Entry", typeof(SaleEntryPage));
             //Routing.RegisterRoute("banking/banktranscations/Entry", typeof(BankEntryPage));
         }
+
         async void MenuItem_Clicked(System.Object sender, System.EventArgs e)
         {
             var result = await DisplayAlert("Logout", "Do you want to Logout!", "Yes", "No");

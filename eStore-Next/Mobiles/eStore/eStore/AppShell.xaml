@@ -92,7 +92,7 @@
         Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
         FlyoutIcon="{StaticResource CircleIcon}"
-        Route="MAin" />
+        Route="Main" />
     <ShellContent
         Title="Dashboard"
         ContentTemplate="{DataTemplate dashboard:StoreManagerDashboardPage}"
